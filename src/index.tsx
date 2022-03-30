@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './index.css'
 import './styles/raster.grid.css'
 import App from './pages/_app'
 import reportWebVitals from './reportWebVitals'

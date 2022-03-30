@@ -27,7 +27,8 @@ export const globalStyles = globalCss({
     backgroundColor: '$backgroundColor',
     color: '$color',
     transition: 'background-color 1s ease-in-out',
-    fontWeight: 600,
+    '-webkit-font-smoothing': 'antialiased',
+    '-moz-osx-font-smoothing': 'grayscale',
   },
   '@supports (font-variation-settings: normal)': {
     sansFont: 'Inter var',
