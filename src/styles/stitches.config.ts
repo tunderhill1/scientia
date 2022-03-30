@@ -17,15 +17,20 @@ export const darkTheme = createTheme({
 })
 
 export const globalStyles = globalCss({
+  '@import': ["url('https://rsms.me/inter/inter.css')"],
   'html, body': {
     margin: 0,
     padding: 0,
-    fontFamily: `-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    fontFamily: `Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
                  Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
                  sans-serif`,
     backgroundColor: '$backgroundColor',
     color: '$color',
     transition: 'background-color 1s ease-in-out',
+    fontWeight: 600,
+  },
+  '@supports (font-variation-settings: normal)': {
+    sansFont: 'Inter var',
   },
   '*': {
     boxSizing: 'border-box',

@@ -14,6 +14,13 @@ function App() {
   return (
     <ThemeProvider>
       <div className="App">
+        {/* Testing out grid functionality */}
+        <r-grid columns="4">
+          <r-cell>Scientia</r-cell>
+          <r-cell>Scientia</r-cell>
+          <r-cell>Scientia</r-cell>
+          <r-cell>Scientia</r-cell>
+        </r-grid>
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
