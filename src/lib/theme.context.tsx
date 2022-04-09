@@ -1,20 +1,20 @@
 import React, { createContext, useState, useEffect } from 'react'
 import { theme as lightTheme, darkTheme } from '../styles/stitches.config'
 
-/* 
-   Code for the theme provider was heavily inspired by Lucas Arundell (lucastobrazil):
-   https://codesandbox.io/s/stitches-dark-mode-te4ne
-   Lucas in turn references Okiki Ojo's post as inspiration:
-   https://bit.ly/3qIldSj
-
-   The code uses Okiki's method of combining matchMedia, localStorage, and Stitches to
-   allow a user to toggle through multiple colour modes whilst also taking into account
-   the user's default OS theme preferences. 
-
-   To add a new theme:
-   1. Create it in the stitches configuration file (see styles)
-   2. Import the theme on line 2 and add it to the list of available themes (below)
-*/
+/**
+ * Code for the theme provider was heavily inspired by Lucas Arundell (lucastobrazil):
+ * https://codesandbox.io/s/stitches-dark-mode-te4ne
+ * Lucas in turn references Okiki Ojo's post as inspiration:
+ * https://bit.ly/3qIldSj
+ *
+ * The code uses Okiki's method of combining matchMedia, localStorage, and Stitches to
+ * allow a user to toggle through multiple colour modes whilst also taking into account
+ * the user's default OS theme preferences.
+ *
+ * To add a new theme:
+ * 1. Create it in the stitches configuration file (see styles)
+ * 2. Import the theme on line 2 and add it to the list of available themes (below)
+ */
 
 type Theme = string
 type ThemeProviderType = { theme: Theme; toggleTheme: () => void }
@@ -29,10 +29,10 @@ const defaultTheme: ThemeProviderType = {
 
 export const ThemeContext = createContext<ThemeProviderType>(defaultTheme)
 
-/* 
-   A dictionary of available themes
-   The value of each key returns the className from stitches' createTheme()
-*/
+/**
+ * A dictionary of available themes
+ * The value of each key returns the className from stitches' createTheme()
+ */
 const themes: Themes = {
   light: lightTheme.className /* Default theme on Stitches */,
   dark: darkTheme.className,
@@ -67,7 +67,7 @@ const getMediaTheme = (): Theme => {
   return ''
 }
 
-const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setTheme] = useState(defaultTheme.theme)
   const html = document.documentElement
 
@@ -90,8 +90,10 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     setTheme(savedTheme)
   }, [savedTheme])
 
-  /* Check if the user changes the OS theme, but don't save it in localStorage. */
-  /* TODO: "Sync with system" option */
+  /**
+   * Check if the user changes the OS theme, but don't save it in localStorage.
+   * TODO: "Sync with system" option
+   */
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
     applyTheme(e.matches ? 'dark' : 'light')
   })
@@ -116,5 +118,3 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
   return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>
 }
-
-export default ThemeProvider
