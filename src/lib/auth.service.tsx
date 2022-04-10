@@ -1,3 +1,8 @@
+import axios from 'axios'
+import { endpoints } from '../constants/endpoints'
+import useToken from './token.service'
+import { useUser } from './user.context'
+
 /**
  * TODO: The plan is to process authentication- and authorisation-related queries here and update the user context based
  * on the response. This place deals with the JWT and its storage management (cookies).
@@ -5,11 +10,6 @@
  * NOTE: It'd be a good idea to section this off into a services folder and possibly move the providers into a hooks
  * folder? Though, we'd have to reason out what actually goes inside lib.
  */
-
-import axios from 'axios'
-import { endpoints } from '../constants/endpoints'
-import useToken from './token.service'
-import { useUser } from './user.context'
 
 type Credentials = {
   username: string
@@ -47,7 +47,7 @@ export default function useAuth() {
   }
 
   const isLoggedIn = (): boolean => {
-    return isExpired('refresh')
+    return !isExpired('refresh')
   }
 
   const logoutUser = () => {
