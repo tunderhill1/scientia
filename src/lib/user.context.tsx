@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
 /**
  * The materials and emarking login endpoints don't return user information, so we update the username in the context
@@ -9,11 +9,11 @@ import React, { createContext, useContext, useState } from 'react'
  * function.
  */
 
-type UserProviderType = { username: string; setUsername: (username: string) => void }
+type UserProviderType = { username: string; storeUsername: (username: string) => void }
 
 const defaultUser = {
   username: '',
-  setUsername: (_: string) => {},
+  storeUsername: (_: string) => {},
 }
 
 const UserContext = createContext<UserProviderType>(defaultUser)
@@ -22,8 +22,18 @@ const UserContext = createContext<UserProviderType>(defaultUser)
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [username, setUsername] = useState(defaultUser.username)
 
-  /* TODO: Store and retrieve user information from localStorage. Also, you could use a reducer instead of the state! */
-  return <UserContext.Provider value={{ username, setUsername }}>{children}</UserContext.Provider>
+  /* TODO: Use a reducer when there's more data to handle; also, there's a delay on refresh - needs investigation */
+  useEffect(() => {
+    const storedUsername = window.localStorage.getItem('username')
+    if (storedUsername) setUsername(storedUsername)
+  }, [])
+
+  const storeUsername = (username: string) => {
+    setUsername(username)
+    window.localStorage.setItem('username', username)
+  }
+
+  return <UserContext.Provider value={{ username, storeUsername }}>{children}</UserContext.Provider>
 }
 
 /* Allow user information to be accessed and updated in any functional component using the following hook: */

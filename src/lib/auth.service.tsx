@@ -8,6 +8,7 @@
 
 import axios from 'axios'
 import { endpoints } from '../constants/endpoints'
+import useToken from './token.service'
 import { useUser } from './user.context'
 
 type Credentials = {
@@ -16,7 +17,8 @@ type Credentials = {
 }
 
 export default function useAuth() {
-  const { setUsername } = useUser()
+  const { storeUsername } = useUser()
+  const { saveToken, removeTokens, isExpired } = useToken()
 
   const setUserContext = (username: string) => {
     /**
@@ -25,7 +27,7 @@ export default function useAuth() {
      * 2. Make a call to a separate endpoint like /user to query user information (fn. would be async)
      * In both cases, a reducer would have to be used to update the user context.
      */
-    setUsername(username)
+    storeUsername(username)
   }
 
   const loginUser = async (data: Credentials) => {
@@ -35,8 +37,8 @@ export default function useAuth() {
       data: data,
     })
       .then((response) => {
-        /* TODO: Call upon the token service to store these tokens in cookies? */
-        console.log(response.data)
+        saveToken(response.data.access_token, 'access')
+        saveToken(response.data.refresh_token, 'refresh')
         setUserContext(data.username)
       })
       .catch((error) => {
@@ -44,5 +46,14 @@ export default function useAuth() {
       })
   }
 
-  return { loginUser }
+  const isLoggedIn = (): boolean => {
+    return isExpired('refresh')
+  }
+
+  const logoutUser = () => {
+    removeTokens()
+    setUserContext('')
+  }
+
+  return { loginUser, logoutUser, isLoggedIn }
 }
