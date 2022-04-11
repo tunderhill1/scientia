@@ -23,7 +23,7 @@ type Themes = {
 }
 
 const defaultTheme: ThemeProviderType = {
-  theme: 'dark',
+  theme: '',
   toggleTheme: () => {},
 }
 
