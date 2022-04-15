@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 import { endpoints } from '../constants/endpoints'
 import useToken from './token.service'
 import { useUser } from './user.context'
@@ -19,6 +20,7 @@ type Credentials = {
 export default function useAuth() {
   const { storeUsername } = useUser()
   const { saveToken, removeTokens, isExpired } = useToken()
+  const navigate = useNavigate()
 
   const setUserContext = (username: string) => {
     /**
@@ -53,6 +55,7 @@ export default function useAuth() {
   const logoutUser = () => {
     removeTokens()
     setUserContext('')
+    navigate('/')
   }
 
   return { loginUser, logoutUser, isLoggedIn }

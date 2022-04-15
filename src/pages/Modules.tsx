@@ -1,5 +1,4 @@
 import { useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
 import useAuth from '../lib/auth.service'
 import { ThemeContext } from '../lib/theme.context'
 import { useUser } from '../lib/user.context'
@@ -14,7 +13,6 @@ const ToggleTheme = () => {
 const Modules = () => {
   const { logoutUser } = useAuth()
   const { username } = useUser()
-  const navigate = useNavigate()
   return (
     <Container>
       <Logo src="assets/logo.svg" alt="logo" />
@@ -34,7 +32,6 @@ const Modules = () => {
           <Button
             onClick={() => {
               logoutUser()
-              navigate('/')
             }}
           >
             Logout
