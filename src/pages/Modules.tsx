@@ -4,6 +4,8 @@ import { ThemeContext } from '../lib/theme.context'
 import { useUser } from '../lib/user.context'
 import { Button, Container, Logo } from '../styles/_app.style'
 import Avatar from 'boring-avatars'
+import { useAxios } from '../lib/axios.context'
+import { endpoints } from '../constants/endpoints'
 
 const ToggleTheme = () => {
   const { theme, toggleTheme } = useContext(ThemeContext)
@@ -13,6 +15,8 @@ const ToggleTheme = () => {
 const Modules = () => {
   const { logoutUser } = useAuth()
   const { username } = useUser()
+  const { data } = useAxios(endpoints.courses('2021'), 'GET')
+
   return (
     <Container>
       <Logo src="assets/logo.svg" alt="logo" />
@@ -36,6 +40,13 @@ const Modules = () => {
           >
             Logout
           </Button>
+          {data && (
+            <ul>
+              {data.map((module: any) => (
+                <li key={module.title}>{module.title}</li>
+              ))}
+            </ul>
+          )}
         </r-cell>
       </r-grid>
     </Container>

@@ -27,5 +27,5 @@ export default function useToken() {
     return expiration.getTime() <= Date.now()
   }
 
-  return { saveToken, removeTokens, isExpired }
+  return { saveToken, removeTokens, getToken, isExpired }
 }
