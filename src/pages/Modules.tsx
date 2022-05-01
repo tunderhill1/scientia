@@ -20,8 +20,8 @@ const Modules = () => {
   return (
     <Container>
       <Logo src="assets/logo.svg" alt="logo" />
-      <r-grid columns="2">
-        <r-cell style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <r-grid columns="6">
+        <r-cell span="3" span-s="row">
           <p>The Scientia Project</p>
           <i>{username}</i>
           <Avatar
@@ -31,7 +31,7 @@ const Modules = () => {
             colors={['#264653', '#2A9d8F', '#E9C46A', '#F4A261', '#E76F51']}
           />
         </r-cell>
-        <r-cell style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <r-cell span="4-6" span-s="row">
           <ToggleTheme />
           <Button
             onClick={() => {

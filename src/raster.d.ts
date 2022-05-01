@@ -11,24 +11,24 @@ declare global {
 
 interface RasterGridAttributes<T> extends React.HTMLAttributes<T> {
   columns?: string
-  columnsS?: string
-  columnsL?: string
+  'columns-s'?: string
+  'columns-l'?: string
 }
 
 interface RasterCellAttributes<T> extends React.HTMLAttributes<T> {
   span?: string
-  spanS?: string
-  spanL?: string
+  'span-s'?: string
+  'span-l'?: string
 }
 
 interface RasterGridElement extends HTMLElement {
   columns: string
-  columnsS: string
-  columnsL: string
+  'columns-s': string
+  'columns-l': string
 }
 
 interface RasterCellElement extends HTMLElement {
   span: string
-  spanS: string
-  spanL: string
+  'span-s': string
+  'span-l': string
 }
