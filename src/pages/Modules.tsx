@@ -1,11 +1,9 @@
-import { useContext } from 'react'
-import useAuth from '../lib/auth.service'
-import { ThemeContext } from '../lib/theme.context'
-import { useUser } from '../lib/user.context'
-import { Button, Container, Logo } from '../styles/_app.style'
-import Avatar from 'boring-avatars'
-import { useAxios } from '../lib/axios.context'
+import { useContext, useRef, useState } from 'react'
 import { endpoints } from '../constants/endpoints'
+import useAuth from '../lib/auth.service'
+import { useAxios } from '../lib/axios.context'
+import { ThemeContext } from '../lib/theme.context'
+import { Button, Container, Tab, TabsHighlight, TabsWrapper } from '../styles/_app.style'
 
 const ToggleTheme = () => {
   const { theme, toggleTheme } = useContext(ThemeContext)
@@ -14,41 +12,69 @@ const ToggleTheme = () => {
 
 const Modules = () => {
   const { logoutUser } = useAuth()
-  const { username } = useUser()
   const { data } = useAxios(endpoints.courses('2021'), 'GET')
+
+  /* TODO: Extract this into a separate component */
+  const [tabBoundingBox, setTabBoundingBox] = useState<any>(null)
+  const [wrapperBoundingBox, setWrapperBoundingBox] = useState<any>(null)
+  const [highlightedTab, setHighlightedTab] = useState(null)
+  const [isHoveredFromNull, setIsHoveredFromNull] = useState(true)
+
+  const highlightRef = useRef(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
+
+  const highlightStyles: any = {}
+
+  const resetHighlight = () => setHighlightedTab(null)
+  const repositionHighlight = (e: any, tab: any) => {
+    setTabBoundingBox(e.currentTarget.getBoundingClientRect())
+    setWrapperBoundingBox(wrapperRef.current?.getBoundingClientRect())
+    setIsHoveredFromNull(!highlightedTab)
+    setHighlightedTab(tab)
+  }
+
+  /* TODO: Update this to translate along both x and y according to the user preference */
+  if (tabBoundingBox && wrapperBoundingBox) {
+    highlightStyles.transitionDuration = isHoveredFromNull ? '0ms' : '150ms'
+    highlightStyles.opacity = highlightedTab ? 0.3 : 0
+    highlightStyles.width = `${tabBoundingBox.width}px`
+    highlightStyles.transform = `translate(0, ${tabBoundingBox.top - wrapperBoundingBox.top}px)`
+  }
 
   return (
     <Container>
-      <Logo src="assets/logo.svg" alt="logo" />
-      <r-grid columns="6">
-        <r-cell span="3" span-s="row">
-          <p>The Scientia Project</p>
-          <i>{username}</i>
-          <Avatar
-            size={128}
-            name={username}
-            variant="marble"
-            colors={['#264653', '#2A9d8F', '#E9C46A', '#F4A261', '#E76F51']}
-          />
-        </r-cell>
-        <r-cell span="4-6" span-s="row">
-          <ToggleTheme />
-          <Button
-            onClick={() => {
-              logoutUser()
-            }}
-          >
-            Logout
-          </Button>
-          {data && (
-            <ul>
-              {data.map((module: any) => (
-                <li key={module.title}>{module.title}</li>
-              ))}
-            </ul>
-          )}
-        </r-cell>
-      </r-grid>
+      <section style={{ marginBottom: '0.5rem' }}>
+        <h1>Modules</h1>
+        <p>
+          These are the modules you are currently enrolled for. Click on any to access the relevant teaching materials
+          and resources. A yellow dot indicates that a module's under construction and doesn't house any resources at
+          the moment.
+        </p>
+      </section>
+
+      {/* TODO: Extract this into a separate component */}
+      <TabsWrapper ref={wrapperRef} onMouseLeave={resetHighlight}>
+        <TabsHighlight ref={highlightRef} css={highlightStyles} />
+        {data &&
+          data.map((tab: any) => (
+            <Tab key={tab.title} onMouseOver={(event: any) => repositionHighlight(event, tab)} href="/">
+              {/* NOTE: Modularity applies when a custom component can be passed in here */}
+              <span>{tab.title}</span>
+              <span>{tab.code}</span>
+            </Tab>
+          ))}
+      </TabsWrapper>
+
+      <Container>
+        <ToggleTheme />
+        <Button
+          onClick={() => {
+            logoutUser()
+          }}
+        >
+          Logout
+        </Button>
+      </Container>
     </Container>
   )
 }

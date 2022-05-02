@@ -36,6 +36,10 @@ export const globalStyles = globalCss({
   '*': {
     boxSizing: 'border-box',
   },
+  '*::selection, *::-moz-selection': {
+    color: '$backgroundColor',
+    backgroundColor: '$color',
+  },
   a: {
     color: 'inherit',
     textDecoration: 'none',
