@@ -33,8 +33,10 @@ export const globalStyles = globalCss({
   '@supports (font-variation-settings: normal)': {
     sansFont: 'Inter var',
   },
-  '*': {
+  '*, *::before, *::after': {
     boxSizing: 'border-box',
+    margin: 0,
+    padding: 0,
   },
   '*::selection, *::-moz-selection': {
     color: '$backgroundColor',

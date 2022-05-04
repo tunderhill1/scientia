@@ -33,6 +33,7 @@ export default function useAuth() {
   }
 
   const loginUser = async (data: Credentials) => {
+    /* TODO: Use the axios hook here instead! */
     return axios({
       url: endpoints.login,
       method: 'post',
