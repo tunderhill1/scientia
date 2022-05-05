@@ -28,7 +28,7 @@ export const Button = styled('button', {
       true: {
         marginTop: 0,
         width: '2.75rem',
-        backgroundColor: '$appBackground',
+        background: 'none',
       },
     },
   },

@@ -1,4 +1,4 @@
-import { DropdownMenuContent, DropdownMenuItem } from '@radix-ui/react-dropdown-menu'
+import { DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from '@radix-ui/react-dropdown-menu'
 import { styled } from './stitches.config'
 
 export const Header = styled('div', {
@@ -47,4 +47,10 @@ export const Item = styled(DropdownMenuItem, {
     backgroundColor: '$elementHover',
     outline: 'none',
   },
+})
+
+export const Separator = styled(DropdownMenuSeparator, {
+  height: '0.0625rem',
+  margin: '0.25rem',
+  backgroundColor: '$separator',
 })

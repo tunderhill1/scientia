@@ -6,6 +6,7 @@ export type Link = {
   icon: React.ReactNode
 }
 
+/* TODO: Refactor the margin styling to avoid repetition */
 export const links: Link[] = [
   {
     title: 'GitLab',

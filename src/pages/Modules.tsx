@@ -1,23 +1,10 @@
-import { useContext } from 'react'
 import { Tabs } from '../components/Tabs'
 import { endpoints } from '../constants/endpoints'
-import useAuth from '../lib/auth.service'
 import { useAxios } from '../lib/axios.context'
-import { ThemeContext } from '../lib/theme.context'
-import { Button, Container } from '../styles/_app.style'
 import { css } from '../styles/stitches.config'
-
-const ToggleTheme = () => {
-  const { theme, toggleTheme } = useContext(ThemeContext)
-  return (
-    <Button onClick={toggleTheme} css={{ maxWidth: '12rem' }}>
-      Mode: {theme}
-    </Button>
-  )
-}
+import { Container } from '../styles/_app.style'
 
 const Modules = () => {
-  const { logoutUser } = useAuth()
   const { data } = useAxios(endpoints.courses('2021'), 'GET')
 
   return (
@@ -41,18 +28,6 @@ const Modules = () => {
           </>
         )}
       />
-
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '1rem' }}>
-        <ToggleTheme />
-        <Button
-          onClick={() => {
-            logoutUser()
-          }}
-          css={{ maxWidth: '12rem' }}
-        >
-          Logout
-        </Button>
-      </div>
     </Container>
   )
 }

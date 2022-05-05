@@ -1,19 +1,21 @@
 import Avatar from 'boring-avatars'
 import { useContext } from 'react'
-import { Command, Search } from 'react-bootstrap-icons'
+import { Command, DoorClosedFill, MoonFill, Search, SunFill } from 'react-bootstrap-icons'
 import { ThemeContext } from '../lib/theme.context'
 import { useUser } from '../lib/user.context'
-import { Content, Header, Item, Logo, Nav } from '../styles/navigation.style'
+import { Content, Header, Item, Logo, Nav, Separator } from '../styles/navigation.style'
 import { Button } from '../styles/_app.style'
 import { DropdownMenu, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu'
 import { Link, links } from '../constants/links'
+import useAuth from '../lib/auth.service'
 
 /**
  * TODO: Extract the colours as a constant and implement functionality for the buttons!
  */
 export const Navigation = () => {
   const { username } = useUser()
-  const { theme } = useContext(ThemeContext)
+  const { logoutUser } = useAuth()
+  const { theme, toggleTheme } = useContext(ThemeContext)
 
   return (
     <Header>
@@ -30,6 +32,7 @@ export const Navigation = () => {
             <Search size={22} />
           </Button>
 
+          {/* Quick Links */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button icon css={{ marginRight: '1rem' }}>
@@ -46,14 +49,35 @@ export const Navigation = () => {
             </Content>
           </DropdownMenu>
 
-          <Button icon>
-            <Avatar
-              size={32}
-              name={username}
-              variant="marble"
-              colors={['#264653', '#2A9d8F', '#E9C46A', '#F4A261', '#E76F51']}
-            />
-          </Button>
+          {/* User Preferences */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button icon>
+                <Avatar
+                  size={32}
+                  name={username}
+                  variant="marble"
+                  colors={['#264653', '#2A9d8F', '#E9C46A', '#F4A261', '#E76F51']}
+                />
+              </Button>
+            </DropdownMenuTrigger>
+            <Content>
+              {/* TODO: Refactor the margins to avoid repetition */}
+              <Item onSelect={toggleTheme}>
+                {theme === 'light' ? (
+                  <SunFill size={20} style={{ margin: '0 0.5rem 0 0.5rem' }} />
+                ) : (
+                  <MoonFill size={20} style={{ margin: '0 0.5rem 0 0.5rem' }} />
+                )}
+                Toggle Theme
+              </Item>
+              <Separator />
+              <Item onSelect={logoutUser}>
+                <DoorClosedFill size={20} style={{ margin: '0 0.5rem 0 0.5rem' }} />
+                Logout
+              </Item>
+            </Content>
+          </DropdownMenu>
         </div>
       </Nav>
     </Header>
