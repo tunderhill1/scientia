@@ -1,9 +1,10 @@
-import { useContext, useRef, useState } from 'react'
+import { useContext } from 'react'
+import { Tabs } from '../components/Tabs'
 import { endpoints } from '../constants/endpoints'
 import useAuth from '../lib/auth.service'
 import { useAxios } from '../lib/axios.context'
 import { ThemeContext } from '../lib/theme.context'
-import { Button, Container, Tab, TabsHighlight, TabsWrapper } from '../styles/_app.style'
+import { Button, Container } from '../styles/_app.style'
 
 const ToggleTheme = () => {
   const { theme, toggleTheme } = useContext(ThemeContext)
@@ -13,33 +14,6 @@ const ToggleTheme = () => {
 const Modules = () => {
   const { logoutUser } = useAuth()
   const { data } = useAxios(endpoints.courses('2021'), 'GET')
-
-  /* TODO: Extract this into a separate component */
-  const [tabBoundingBox, setTabBoundingBox] = useState<any>(null)
-  const [wrapperBoundingBox, setWrapperBoundingBox] = useState<any>(null)
-  const [highlightedTab, setHighlightedTab] = useState(null)
-  const [isHoveredFromNull, setIsHoveredFromNull] = useState(true)
-
-  const highlightRef = useRef(null)
-  const wrapperRef = useRef<HTMLDivElement>(null)
-
-  const highlightStyles: any = {}
-
-  const resetHighlight = () => setHighlightedTab(null)
-  const repositionHighlight = (e: any, tab: any) => {
-    setTabBoundingBox(e.currentTarget.getBoundingClientRect())
-    setWrapperBoundingBox(wrapperRef.current?.getBoundingClientRect())
-    setIsHoveredFromNull(!highlightedTab)
-    setHighlightedTab(tab)
-  }
-
-  /* TODO: Update this to translate along both x and y according to the user preference */
-  if (tabBoundingBox && wrapperBoundingBox) {
-    highlightStyles.transitionDuration = isHoveredFromNull ? '0ms' : '150ms'
-    highlightStyles.opacity = highlightedTab ? 0.3 : 0
-    highlightStyles.width = `${tabBoundingBox.width}px`
-    highlightStyles.transform = `translate(0, ${tabBoundingBox.top - wrapperBoundingBox.top}px)`
-  }
 
   return (
     <Container>
@@ -52,18 +26,15 @@ const Modules = () => {
         </p>
       </section>
 
-      {/* TODO: Extract this into a separate component */}
-      <TabsWrapper ref={wrapperRef} onMouseLeave={resetHighlight}>
-        <TabsHighlight ref={highlightRef} css={highlightStyles} />
-        {data &&
-          data.map((tab: any) => (
-            <Tab key={tab.title} onMouseOver={(event: any) => repositionHighlight(event, tab)} href="/">
-              {/* NOTE: Modularity applies when a custom component can be passed in here */}
-              <span>{tab.title}</span>
-              <span>{tab.code}</span>
-            </Tab>
-          ))}
-      </TabsWrapper>
+      <Tabs
+        data={data}
+        generator={(tab: any) => (
+          <>
+            <span>{tab.title}</span>
+            <span>{tab.code}</span>
+          </>
+        )}
+      />
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '1rem' }}>
         <ToggleTheme />

@@ -47,29 +47,3 @@ export const Button = styled('button', {
   marginTop: '1rem',
   fontSize: 'medium',
 })
-
-/* TODO: Extract this into a separate component */
-export const TabsWrapper = styled('div', {
-  position: 'relative',
-  display: 'flex',
-  flexDirection: 'column',
-})
-
-export const Tab = styled('a', {
-  padding: '0.75rem',
-  color: '$color',
-  display: 'flex',
-  position: 'relative',
-  cursor: 'pointer',
-  transition: 'color 250ms',
-  justifyContent: 'space-between',
-})
-
-export const TabsHighlight = styled('div', {
-  background: '#828382' /* Temporary fix */,
-  position: 'absolute',
-  borderRadius: '0.5rem',
-  height: '2.75rem',
-  transition: '0.15s ease',
-  transitionProperty: 'width, transform, opacity',
-})

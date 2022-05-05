@@ -1,0 +1,25 @@
+import { styled } from './stitches.config'
+
+export const TabsWrapper = styled('div', {
+  position: 'relative',
+  display: 'flex',
+})
+
+export const Tab = styled('a', {
+  padding: '0.75rem',
+  color: '$color',
+  display: 'flex',
+  position: 'relative',
+  cursor: 'pointer',
+  transition: 'color 250ms',
+  justifyContent: 'space-between',
+})
+
+export const TabsHighlight = styled('div', {
+  background: '#828382' /* Temporary fix */,
+  position: 'absolute',
+  borderRadius: '0.5rem',
+  height: '2.75rem',
+  transition: '0.15s ease',
+  transitionProperty: 'width, transform, opacity',
+})
