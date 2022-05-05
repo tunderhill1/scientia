@@ -9,8 +9,8 @@ export const Container = styled('div', {
 })
 
 export const Button = styled('button', {
-  backgroundColor: '$color',
-  color: '$backgroundColor',
+  backgroundColor: '$elementBackground',
+  color: '$highContrast',
   width: '100%',
   height: '2.75rem',
   maxWidth: '12rem',

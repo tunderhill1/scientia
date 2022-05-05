@@ -50,7 +50,7 @@ export const Tabs = ({
 
   if (tabBoundingBox && wrapperBoundingBox) {
     highlightStyles.transitionDuration = isHoveredFromNull ? '0ms' : '150ms'
-    highlightStyles.opacity = highlightedTab ? 0.3 : 0
+    highlightStyles.opacity = highlightedTab ? 1 : 0
     highlightStyles.width = `${tabBoundingBox.width}px`
     highlightStyles.transform = `translate(${tabBoundingBox.left - wrapperBoundingBox.left}px, ${
       tabBoundingBox.top - wrapperBoundingBox.top

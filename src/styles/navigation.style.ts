@@ -8,11 +8,11 @@ export const Header = styled('div', {
   zIndex: '9999',
   padding: '1rem 0',
   marginBottom: '3rem',
-  borderBottom: '1px solid #82838233' /* Temporary fix */,
-  backgroundColor: '$backgroundColor',
-  transition: 'background-color 1s ease-in-out',
-  '-webkit-font-smoothing': 'antialiased',
-  '-moz-osx-font-smoothing': 'grayscale',
+  borderBottom: '0.0625rem solid $separator',
+  backgroundColor: '$appBackground',
+  transitionProperty: 'background-color, border-bottom',
+  transitionDuration: '1s',
+  transitionTimingFunction: 'ease-in-out',
 })
 
 export const Nav = styled('nav', {

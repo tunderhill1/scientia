@@ -5,6 +5,7 @@ import useAuth from '../lib/auth.service'
 import { useAxios } from '../lib/axios.context'
 import { ThemeContext } from '../lib/theme.context'
 import { Button, Container } from '../styles/_app.style'
+import { css } from '../styles/stitches.config'
 
 const ToggleTheme = () => {
   const { theme, toggleTheme } = useContext(ThemeContext)
@@ -30,8 +31,9 @@ const Modules = () => {
         data={data}
         generator={(tab: any) => (
           <>
+            {/* TODO: Update title style if module has no resources */}
             <span>{tab.title}</span>
-            <span>{tab.code}</span>
+            <span className={css({ color: '$lowContrast' })()}>{tab.code}</span>
           </>
         )}
       />

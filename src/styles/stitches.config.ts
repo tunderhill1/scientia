@@ -1,18 +1,29 @@
 import { createStitches, createTheme } from '@stitches/react'
+import { sand, sandDark } from '@radix-ui/colors'
 
 export const { styled, css, globalCss, theme } = createStitches({
   theme: {
     colors: {
-      backgroundColor: 'white',
-      color: 'black',
+      ...sand,
+      appBackground: '$sand1',
+      subtleBackground: '$sand2',
+      elementBackground: '$sand3',
+      elementHover: '$sand4',
+      elementActive: '$sand5',
+      separator: '$sand6',
+      elementBorder: '$sand7',
+      elementHoverBorder: '$sand8',
+      solidBackground: '$sand9',
+      solidHover: '$sand10',
+      lowContrast: '$sand11',
+      highContrast: '$sand12',
     },
   },
 })
 
 export const darkTheme = createTheme({
   colors: {
-    backgroundColor: 'black',
-    color: 'white',
+    ...sandDark,
   },
 })
 
@@ -24,8 +35,8 @@ export const globalStyles = globalCss({
     fontFamily: `Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
                  Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
                  sans-serif`,
-    backgroundColor: '$backgroundColor',
-    color: '$color',
+    backgroundColor: '$appBackground',
+    color: '$highContrast',
     transition: 'background-color 1s ease-in-out',
     '-webkit-font-smoothing': 'antialiased',
     '-moz-osx-font-smoothing': 'grayscale',
@@ -39,8 +50,8 @@ export const globalStyles = globalCss({
     padding: 0,
   },
   '*::selection, *::-moz-selection': {
-    color: '$backgroundColor',
-    backgroundColor: '$color',
+    color: '$appBackground',
+    backgroundColor: '$highContrast',
   },
   a: {
     color: 'inherit',

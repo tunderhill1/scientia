@@ -7,7 +7,7 @@ export const TabsWrapper = styled('div', {
 
 export const Tab = styled('a', {
   padding: '0.75rem',
-  color: '$color',
+  color: '$highContrast',
   display: 'flex',
   position: 'relative',
   cursor: 'pointer',
@@ -16,7 +16,7 @@ export const Tab = styled('a', {
 })
 
 export const TabsHighlight = styled('div', {
-  background: '#828382' /* Temporary fix */,
+  background: '$elementHover',
   position: 'absolute',
   borderRadius: '0.5rem',
   height: '2.75rem',
