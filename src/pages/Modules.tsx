@@ -9,7 +9,11 @@ import { css } from '../styles/stitches.config'
 
 const ToggleTheme = () => {
   const { theme, toggleTheme } = useContext(ThemeContext)
-  return <Button onClick={toggleTheme}>Mode: {theme}</Button>
+  return (
+    <Button onClick={toggleTheme} css={{ maxWidth: '12rem' }}>
+      Mode: {theme}
+    </Button>
+  )
 }
 
 const Modules = () => {
@@ -44,6 +48,7 @@ const Modules = () => {
           onClick={() => {
             logoutUser()
           }}
+          css={{ maxWidth: '12rem' }}
         >
           Logout
         </Button>

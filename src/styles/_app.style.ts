@@ -13,10 +13,23 @@ export const Button = styled('button', {
   color: '$highContrast',
   width: '100%',
   height: '2.75rem',
-  maxWidth: '12rem',
-  minWidth: '9rem' /* Temporary fix */,
   border: 'none',
   borderRadius: '0.5rem',
   marginTop: '1rem',
   fontSize: 'medium',
+  '&:hover': {
+    backgroundColor: '$elementHover',
+  },
+  '&:active': {
+    backgroundColor: '$elementActive',
+  },
+  variants: {
+    icon: {
+      true: {
+        marginTop: 0,
+        width: '2.75rem',
+        backgroundColor: '$appBackground',
+      },
+    },
+  },
 })
