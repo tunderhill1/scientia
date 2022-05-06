@@ -6,7 +6,9 @@ export const Header = styled('div', {
   width: '100%',
   /* Make sure that the header is fixed and above every component */
   position: 'fixed',
-  zIndex: '9999',
+  top: 0,
+  left: 0,
+  zIndex: '2',
   padding: '0.625rem 0',
   marginBottom: '3rem',
   borderBottom: '0.0625rem solid $separator',
