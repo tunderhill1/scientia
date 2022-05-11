@@ -7,6 +7,34 @@ export const Container = styled('div', {
   padding: '7rem 1rem 0 1rem',
   display: 'flex',
   flexDirection: 'column',
+  variants: {
+    center: {
+      /* Center the content contained within */
+      true: {
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+    },
+    expand: {
+      /* Expand vertically and horizontally to fill the rest of the page */
+      true: {
+        minHeight: '100vh',
+        height: '100%',
+        minWidth: '100vw',
+        width: '100%',
+      },
+    },
+    dotted: {
+      true: {
+        $$dotSpace: '1.5rem',
+        $$dotSize: '0.0625rem',
+        background: `linear-gradient(90deg, $appBackground calc($$dotSpace - $$dotSize), transparent 1%) center,
+                     linear-gradient($appBackground calc($$dotSpace - $$dotSize), transparent 1%) center, 
+                     $solidBackground`,
+        backgroundSize: '$$dotSpace $$dotSpace',
+      },
+    },
+  },
 })
 
 export const Button = styled('button', {
@@ -30,6 +58,9 @@ export const Button = styled('button', {
         marginTop: 0,
         width: '2.75rem',
         background: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       },
     },
   },

@@ -77,7 +77,7 @@ export const globalStyles = globalCss({
     marginBottom: 'unset',
   },
   '@supports (font-variation-settings: normal)': {
-    sansFont: 'Inter var',
+    sansFont: 'Inter var, Inter V',
   },
   '*, *::before, *::after': {
     boxSizing: 'border-box',
