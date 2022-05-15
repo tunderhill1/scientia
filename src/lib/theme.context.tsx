@@ -75,6 +75,9 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const applyTheme = (newTheme: Theme) => {
     html.classList.remove(themes[theme])
     html.classList.add(themes[newTheme])
+    /* Add and remove animation override for smooth theme transition */
+    document.body.classList.add('animate')
+    setTimeout(() => document.body.classList.remove('animate'), 1000)
     setTheme(newTheme)
   }
 

@@ -12,14 +12,20 @@ export enum Alignment {
   Mixed /* TODO: Add support for this (not priority) */,
 }
 
+/**
+ * TODO: Stress test this component to see how many tabs it can handle.
+ * Identify performance improvements if required
+ */
 export const Tabs = ({
   data,
   generator,
   alignment = Alignment.Vertical,
+  onClick = () => {},
 }: {
   data: any
   generator: (tab: any) => ReactNode
   alignment?: Alignment
+  onClick: (tab: any) => void
 }) => {
   const [tabBoundingBox, setTabBoundingBox] = useState<any>(null)
   const [wrapperBoundingBox, setWrapperBoundingBox] = useState<any>(null)
@@ -62,7 +68,11 @@ export const Tabs = ({
       <TabsHighlight ref={highlightRef} css={highlightStyles} />
       {data &&
         data.map((tab: any) => (
-          <Tab key={tab.title} onMouseOver={(event: any) => repositionHighlight(event, tab)} href="/">
+          <Tab
+            key={tab.title}
+            onMouseOver={(event: any) => repositionHighlight(event, tab)}
+            onClick={() => onClick(tab)}
+          >
             {generator(tab)}
           </Tab>
         ))}

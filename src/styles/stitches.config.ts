@@ -66,9 +66,11 @@ export const globalStyles = globalCss({
                  sans-serif`,
     backgroundColor: '$appBackground',
     color: '$highContrast',
-    transition: 'background-color 1s ease-in-out',
     '-webkit-font-smoothing': 'antialiased',
     '-moz-osx-font-smoothing': 'grayscale',
+  },
+  '.animate *': {
+    transition: 'all 1s ease-in-out !important',
   },
   ':first-child': {
     marginTop: 'unset',

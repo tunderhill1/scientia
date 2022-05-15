@@ -8,6 +8,7 @@ import { Button } from '../styles/_app.style'
 import { DropdownMenu, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu'
 import { Link, links } from '../constants/links'
 import useAuth from '../lib/auth.service'
+import { Link as RouterLink } from 'react-router-dom'
 
 /**
  * TODO: Extract the colours as a constant and implement functionality for the buttons!
@@ -20,11 +21,12 @@ export const Navigation = () => {
   return (
     <Header>
       <Nav>
-        <a href="/" style={{ display: 'flex', alignItems: 'center' }}>
+        {/* TODO: Resolve name clash here between Link (custom type for quick links) and "RouterLink" */}
+        <RouterLink to="/" style={{ display: 'flex', alignItems: 'center' }}>
           {/* TODO: We might need to store logos separately if they're theme-configurable */}
-          <Logo alt="Scientia logo" src="assets/logo.svg" style={{ filter: `invert(${theme === 'dark' ? 1 : 0})` }} />
+          <Logo alt="Scientia logo" src="/assets/logo.svg" style={{ filter: `invert(${theme === 'dark' ? 1 : 0})` }} />
           <span style={{ marginLeft: '0.5rem', fontSize: 'x-large', fontWeight: 600 }}>Scientia</span>
-        </a>
+        </RouterLink>
 
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Button icon css={{ marginRight: '1rem' }}>

@@ -63,6 +63,27 @@ export const Button = styled('button', {
         justifyContent: 'center',
       },
     },
+    active: {
+      true: {
+        backgroundColor: '$elementBackground',
+        '&:hover': { backgroundColor: '$elementHover' },
+      },
+      false: {
+        backgroundColor: '$appBackground',
+      },
+    },
+    /* Press and hold animation */
+    animate: {
+      true: {
+        transition: 'transform 250ms cubic-bezier(.2, .8, .4, 1), background-color 250ms ease-in-out',
+        '&:hover': {
+          transform: 'scale(1.05)',
+        },
+        '&:active': {
+          transform: 'scale(0.95)',
+        },
+      },
+    },
   },
 })
 
@@ -79,7 +100,6 @@ export const Viewport = styled(ScrollAreaViewport, {
   height: '100%',
   width: '100%',
   backgroundColor: '$appBackground',
-  transition: 'background-color 1s ease-in-out',
 })
 
 export const Scrollbar = styled(ScrollAreaScrollbar, {
@@ -90,7 +110,6 @@ export const Scrollbar = styled(ScrollAreaScrollbar, {
   width: '0.75rem',
   backgroundColor: '$subtleBackground',
   marginTop: '4rem',
-  transition: 'background-color 1s ease-in-out',
 })
 
 export const Thumb = styled(ScrollAreaThumb, {
