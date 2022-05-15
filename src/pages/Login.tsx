@@ -23,7 +23,7 @@ const Login = () => {
     console.log('submitting...')
     e.preventDefault()
     /* Login and if successful, redirect to the modules page */
-    await loginUser({ username: username, password: password }).then(() => {
+    await loginUser({ username: username, password: password }, remember).then(() => {
       if (isLoggedIn()) navigate(`/${year}/modules`, { replace: true })
     })
   }

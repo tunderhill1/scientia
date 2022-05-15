@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, Method } from 'axios'
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
+import useAuth from './auth.service'
 import useToken from './token.service'
 
 /**
@@ -22,7 +23,8 @@ const AxiosContext = createContext<AxiosInstance>(axios)
 /* TODO: Support multiple instances with additional configurations; i.e. create a ref for each instance */
 export const AxiosInstanceProvider = ({ config = {}, children }: { config: any; children: React.ReactNode }) => {
   const instanceRef = useRef(axios.create(config))
-  const { getToken } = useToken()
+  const { refreshTokens, getToken } = useToken()
+  const { logoutUser } = useAuth()
 
   /* NOTE: I think the interceptors would be added on each refresh? But does the reference last? */
   instanceRef.current.interceptors.request.use((request) => {
@@ -37,7 +39,16 @@ export const AxiosInstanceProvider = ({ config = {}, children }: { config: any; 
       console.log('Response logged.')
       return response
     },
-    (error) => {
+    async (error) => {
+      const request = error.config
+      const refreshToken = getToken('refresh')
+      if (refreshToken === null) logoutUser()
+      if (error.response.status === 401 && !request._retry) {
+        request._retry = true
+        await refreshTokens()
+        instanceRef.current.defaults.headers.common = { Authorization: `Bearer ${getToken('access')}` }
+        return instanceRef.current(request)
+      }
       console.log('Error on response logged.')
       return Promise.reject(error)
     }

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Navigate, Outlet, useParams } from 'react-router-dom'
 import { useYear } from '../lib/year.context'
 
@@ -6,14 +7,19 @@ import { useYear } from '../lib/year.context'
  * parameter supplied in the URL path.
  */
 export const YearRoute = () => {
+  const [redirect, setRedirect] = useState<boolean>(false)
+
   const { year, changeYear } = useYear()
   const { requestedYear } = useParams()
 
-  console.log(requestedYear, parseInt(requestedYear ?? ''), year)
+  useEffect(() => {
+    /* NOTE: Please don't simplify this to just compute setRedirect(condition) to maintain readability */
+    if (requestedYear === undefined) setRedirect(true)
+    else {
+      const requestedYearInt = parseInt(requestedYear)
+      setRedirect(requestedYearInt !== year && !changeYear(requestedYearInt))
+    }
+  }, [changeYear, requestedYear, year])
 
-  return requestedYear !== undefined && (parseInt(requestedYear) === year || changeYear(parseInt(requestedYear))) ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/" replace />
-  )
+  return redirect ? <Navigate to="/" replace /> : <Outlet />
 }

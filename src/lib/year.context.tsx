@@ -12,14 +12,15 @@ const YearContext = createContext<YearProviderType>(defaultYear)
 export const YearProvider = ({ current, children }: { current: number; children: React.ReactNode }) => {
   const [year, setYear] = useState(defaultYear.year)
 
+  let storedYear = window.localStorage.getItem('year')
+  if (storedYear === '') {
+    storedYear = current.toString()
+    window.localStorage.setItem('year', storedYear)
+  }
+
   useEffect(() => {
-    const storedYear = window.localStorage.getItem('year')
-    if (storedYear) setYear(parseInt(storedYear))
-    else {
-      setYear(current)
-      window.localStorage.setItem('year', current.toString())
-    }
-  }, [current])
+    if (storedYear !== null) setYear(parseInt(storedYear))
+  }, [storedYear])
 
   const changeYear = (year: number) => {
     if (!years.includes(year)) return false

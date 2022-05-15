@@ -1,4 +1,6 @@
+import axios from 'axios'
 import { Buffer } from 'buffer'
+import { endpoints } from '../constants/endpoints'
 
 /**
  * The token service manages the storage of JWT tokens from the auth service; the refresh token is used for
@@ -15,6 +17,21 @@ export default function useToken() {
     window.localStorage.removeItem('refresh-token')
   }
 
+  const refreshTokens = async () => {
+    return axios({
+      url: endpoints.refresh,
+      method: 'post',
+      headers: { Authorization: `Bearer ${getToken('refresh')}` },
+    })
+      .then((response) => {
+        saveToken(response.data.access_token, 'access')
+        /* NOTE: Should we save the refresh token as well? */
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
   const getToken = (type: 'access' | 'refresh') => {
     return window.localStorage.getItem(type + '-token')
   }
@@ -27,5 +44,5 @@ export default function useToken() {
     return expiration.getTime() <= Date.now()
   }
 
-  return { saveToken, removeTokens, getToken, isExpired }
+  return { saveToken, removeTokens, refreshTokens, getToken, isExpired }
 }

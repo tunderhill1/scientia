@@ -32,7 +32,7 @@ export default function useAuth() {
     storeUsername(username)
   }
 
-  const loginUser = async (data: Credentials) => {
+  const loginUser = async (data: Credentials, remember: boolean) => {
     /* TODO: Use the axios hook here instead! */
     return axios({
       url: endpoints.login,
@@ -41,7 +41,8 @@ export default function useAuth() {
     })
       .then((response) => {
         saveToken(response.data.access_token, 'access')
-        saveToken(response.data.refresh_token, 'refresh')
+        /* Only save the refresh token if the user has checked the "remember me" box */
+        if (remember) saveToken(response.data.refresh_token, 'refresh')
         setUserContext(data.username)
       })
       .catch((error) => {

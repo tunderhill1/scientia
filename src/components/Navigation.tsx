@@ -44,7 +44,7 @@ export const Navigation = () => {
             </DropdownMenuTrigger>
             <Content>
               {links.map((link: Link) => (
-                <Item onSelect={() => window.open(link.url, '_blank')}>
+                <Item key={link.title} onSelect={() => window.open(link.url, '_blank')}>
                   {link.icon}
                   {link.title}
                 </Item>
