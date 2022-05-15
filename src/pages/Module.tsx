@@ -29,7 +29,7 @@ const Module = () => {
         {data &&
           data.map((tab) => (
             <Button
-              css={{ minWidth: '9rem', maxWidth: '12rem', flex: '1 1 9rem', margin: 0 }}
+              css={{ minWidth: '9rem', flex: '1 1 9rem', margin: 0 }}
               active={RegExp(`.*/${tab.to}`).test(pathname)}
               onClick={() => navigate(tab.to)}
               animate

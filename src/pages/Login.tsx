@@ -3,6 +3,7 @@ import { Check } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router-dom'
 import useAuth from '../lib/auth.service'
 import { ThemeContext } from '../lib/theme.context'
+import { useYear } from '../lib/year.context'
 import { Checkbox, Fieldset, Form, Indicator, Input, Label, Logo, Name, Tagline } from '../styles/login.style'
 import { Button, Container } from '../styles/_app.style'
 
@@ -14,6 +15,7 @@ const Login = () => {
 
   const { loginUser, isLoggedIn } = useAuth()
   const navigate = useNavigate()
+  const { year } = useYear()
   const { theme } = useContext(ThemeContext)
 
   /* TODO: Update the login user to take in the remember preference; only store the refresh token if it's checked. */
@@ -22,14 +24,14 @@ const Login = () => {
     e.preventDefault()
     /* Login and if successful, redirect to the modules page */
     await loginUser({ username: username, password: password }).then(() => {
-      if (isLoggedIn()) navigate('/modules', { replace: true })
+      if (isLoggedIn()) navigate(`/${year}/modules`, { replace: true })
     })
   }
 
   useEffect(() => {
     /* Navigate to /modules if the user's already logged in */
-    if (isLoggedIn()) navigate('/modules', { replace: true })
-  }, [isLoggedIn, navigate])
+    if (isLoggedIn()) navigate(`/${year}/modules`, { replace: true })
+  }, [isLoggedIn, navigate, year])
 
   return (
     <Container center expand dotted css={{ paddingTop: '0' }}>

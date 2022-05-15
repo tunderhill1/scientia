@@ -12,6 +12,7 @@ import { Link as RouterLink } from 'react-router-dom'
 
 /**
  * TODO: Extract the colours as a constant and implement functionality for the buttons!
+ * TODO: Show a banner under the header if the requested year isn't the current year.
  */
 export const Navigation = () => {
   const { username } = useUser()
