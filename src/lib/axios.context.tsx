@@ -22,72 +22,97 @@ const AxiosContext = createContext<AxiosInstance>(axios)
 
 /* TODO: Support multiple instances with additional configurations; i.e. create a ref for each instance */
 export const AxiosInstanceProvider = ({ config = {}, children }: { config: any; children: React.ReactNode }) => {
-  const instanceRef = useRef(axios.create(config))
+  const instanceRef = useRef<AxiosInstance | null>(null)
   const { refreshTokens, getToken } = useToken()
   const { logoutUser } = useAuth()
 
-  /* NOTE: I think the interceptors would be added on each refresh? But does the reference last? */
-  instanceRef.current.interceptors.request.use((request) => {
-    console.log('Request logged.')
-    /* TODO: Need to check if the user's logged in before adding the token */
-    request.headers = { Authorization: `Bearer ${getToken('access')}` }
-    return request
-  })
-
-  instanceRef.current.interceptors.response.use(
-    (response) => {
-      console.log('Response logged.')
-      return response
-    },
-    async (error) => {
-      const request = error.config
-      const refreshToken = getToken('refresh')
-      if (refreshToken === null) logoutUser()
-      if (error.response.status === 401 && !request._retry) {
-        request._retry = true
-        await refreshTokens()
-        instanceRef.current.defaults.headers.common = { Authorization: `Bearer ${getToken('access')}` }
-        return instanceRef.current(request)
+  /* NOTE: See https://beta.reactjs.org/apis/useref#avoiding-recreating-the-ref-contents */
+  if (instanceRef.current === null) {
+    /* Setup instance and interceptors */
+    instanceRef.current = axios.create(config)
+    instanceRef.current.interceptors.request.use((request) => {
+      /* TODO: Need to check if the user's logged in before adding the token */
+      request.headers = { Authorization: `Bearer ${getToken('access')}` }
+      return request
+    })
+    instanceRef.current.interceptors.response.use(
+      (response) => {
+        return response
+      },
+      async (error) => {
+        const request = error.config
+        const refreshToken = getToken('refresh')
+        if (refreshToken === null) logoutUser()
+        if (error.response.status === 401 && !request._retry && instanceRef.current !== null) {
+          request._retry = true
+          await refreshTokens()
+          instanceRef.current.defaults.headers.common = { Authorization: `Bearer ${getToken('access')}` }
+          return instanceRef.current(request)
+        }
+        return Promise.reject(error)
       }
-      console.log('Error on response logged.')
-      return Promise.reject(error)
-    }
-  )
+    )
+  }
 
+  /* NOTE: I think the interceptors would be added on each refresh? But does the reference last? */
   return <AxiosContext.Provider value={instanceRef.current}>{children}</AxiosContext.Provider>
 }
 
-/* The following hook allows use of the axios instance from any functional component */
-export const useAxios = (url: string, method: Method, payload: any = null) => {
+/**
+ * The following hook allows use of the axios instance from any functional component
+ * NOTE: It assumes that the config passed in doesn't change on a re-render!
+ */
+export const useAxios = (config: { url: string; method: Method; payload?: any; params?: any }) => {
   const [data, setData] = useState<any>(null)
   const [error, setError] = useState('')
   const [loaded, setLoaded] = useState(false)
 
   const instance = useContext(AxiosContext)
-  const controllerRef = useRef(new AbortController())
+  const controllerRef = useRef<AbortController | null>(null)
+  const configRef = useRef(config)
 
-  const cancel = () => {
-    controllerRef.current.abort()
+  /* NOTE: See https://beta.reactjs.org/apis/useref#avoiding-recreating-the-ref-contents */
+  if (controllerRef.current === null) {
+    controllerRef.current = new AbortController()
   }
 
+  const cancel = () => {
+    controllerRef.current?.abort()
+  }
+
+  /**
+   * NOTE: It's crucial to understand how useEffect works to reason out why we don't use the config prop directly. On a
+   * re-render, useEffect only runs the callback when any of the listed dependencies change. This change is detected
+   * through a referential equality check between values at the previous and current render. That is, if prev ===
+   * current, then don't run the callback; else run it. For objects (like config) where the structure is unknown (i.e.
+   * payload and params), this check fails. Options:
+   * 1. Implement a wrapper around useEffect that would use a deep comparison (e.g. lodash.isequal).
+   * 2. Create a temporary dependency that's initialized to JSON.stringify(config) and parse this using JSON.parse(...)
+   *    inside the useEffect. This is OK if the object is shallow (lightweight).
+   * 3. The third option is to wrap the config in a ref and use this instead as a dependency. We know that the config
+   *    isn't going to change on a re-render. Refs guarantee the same object on a re-render.
+   *    See https://beta.reactjs.org/apis/useref
+   */
   useEffect(() => {
-    ;(async () => {
+    const request = async () => {
       try {
         const response = await instance.request({
-          signal: controllerRef.current.signal,
-          data: payload,
-          method,
-          url,
+          signal: controllerRef.current?.signal,
+          data: configRef.current.payload,
+          params: configRef.current.params,
+          method: configRef.current.method,
+          url: configRef.current.url,
         })
-
         setData(response.data)
       } catch (e: unknown) {
         if (e instanceof Error) setError(e.message)
       } finally {
         setLoaded(true)
       }
-    })()
-  }, [instance, method, payload, url])
+    }
+
+    request()
+  }, [instance])
 
   return { cancel, data, error, loaded }
 }

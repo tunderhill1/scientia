@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Tabs } from '../components/Tabs'
 import { endpoints } from '../constants/endpoints'
@@ -6,16 +7,18 @@ import { css } from '../styles/stitches.config'
 import { Container } from '../styles/_app.style'
 
 const Modules = () => {
-  const { data } = useAxios(endpoints.courses('2021'), 'GET')
+  const { data } = useAxios({ url: endpoints.courses('2021'), method: 'GET' })
   const navigate = useNavigate()
 
   /**
    * TODO: Memoise the data into local storage or into a context so that you don't have to hit the endpoint again to
    * retrieve the module name?
    */
-  if (data !== null) {
-    window.localStorage.setItem('modules', JSON.stringify(data))
-  }
+  useEffect(() => {
+    if (data !== null) {
+      window.localStorage.setItem('modules', JSON.stringify(data))
+    }
+  }, [data])
 
   return (
     <Container>
