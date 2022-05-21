@@ -65,12 +65,16 @@ export const globalStyles = globalCss({
                  Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
                  sans-serif`,
     backgroundColor: '$appBackground',
-    color: '$highContrast',
     '-webkit-font-smoothing': 'antialiased',
     '-moz-osx-font-smoothing': 'grayscale',
+    '& *': {
+      /* Fix for Chrome and Safari that don't otherwise transition text smoothly */
+      color: '$highContrast',
+    },
   },
+  /* Animation override on theme toggle; see applyTheme function in src/lib/theme.context.tsx */
   '.animate *': {
-    transition: 'all 1s ease-in-out !important',
+    transition: 'all 1000ms ease-in-out 0s !important',
   },
   ':first-child': {
     marginTop: 'unset',
