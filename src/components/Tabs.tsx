@@ -15,17 +15,20 @@ export enum Alignment {
 /**
  * TODO: Stress test this component to see how many tabs it can handle.
  * Identify performance improvements if required
+ * NOTE: The identifier string describes the name of the property in data that uniquely identifies each entry.
  */
 export const Tabs = ({
   data,
   generator,
   alignment = Alignment.Vertical,
   onClick = () => {},
+  identifier = 'title',
 }: {
   data: any
   generator: (tab: any) => ReactNode
   alignment?: Alignment
   onClick: (tab: any) => void
+  identifier?: string
 }) => {
   const [tabBoundingBox, setTabBoundingBox] = useState<any>(null)
   const [wrapperBoundingBox, setWrapperBoundingBox] = useState<any>(null)
@@ -69,7 +72,7 @@ export const Tabs = ({
       {data &&
         data.map((tab: any) => (
           <Tab
-            key={tab.title}
+            key={tab[identifier]}
             onMouseOver={(event: any) => repositionHighlight(event, tab)}
             onClick={() => onClick(tab)}
           >
