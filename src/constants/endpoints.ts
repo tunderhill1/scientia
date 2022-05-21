@@ -11,4 +11,5 @@ export const endpoints = {
   login: `${baseURL}/auth/login`,
   refresh: `${baseURL}/auth/refresh`,
   courses: (year: string) => `${baseURL}/courses/${year}`,
+  resources: `${baseURL}/resources`,
 }

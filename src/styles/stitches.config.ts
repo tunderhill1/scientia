@@ -182,7 +182,7 @@ export const globalStyles = globalCss({
     },
     '&:not([start])': {
       listStyle: 'none',
-      counterReset: 'ol-coutner',
+      counterReset: 'ol-counter',
       paddingLeft: '1.5rem',
       '&>li': {
         counterIncrement: 'ol-counter',
