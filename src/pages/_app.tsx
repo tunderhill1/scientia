@@ -1,6 +1,7 @@
 import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { ProtectedRoute } from '../components/ProtectedRoute'
+import { GroupedList } from '../components/GroupedList'
 import { baseURL } from '../constants/endpoints'
 import { AxiosInstanceProvider } from '../lib/axios.context'
 import { ThemeProvider } from '../lib/theme.context'
@@ -14,6 +15,7 @@ import Materials from './Materials'
 import Modules from './Modules'
 import { YearProvider } from '../lib/year.context'
 import { YearRoute } from '../components/YearRoute'
+import { Container } from '../styles/_app.style'
 
 function App() {
   globalStyles()
@@ -27,6 +29,14 @@ function App() {
                 {/* TODO: Add a no-match route (i.e. 404 Not Found) */}
                 <Routes>
                   <Route index element={<Login />} />
+                  <Route
+                    path="staff"
+                    element={
+                      <Container>
+                        <GroupedList />
+                      </Container>
+                    }
+                  />
                   <Route element={<ProtectedRoute />}>
                     <Route path=":requestedYear" element={<YearRoute />}>
                       <Route path="modules">
