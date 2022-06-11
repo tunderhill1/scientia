@@ -34,7 +34,10 @@ export const Tabs = ({
   const [wrapperBoundingBox, setWrapperBoundingBox] = useState<any>(null)
   const [highlightedTab, setHighlightedTab] = useState(null)
   const [isHoveredFromNull, setIsHoveredFromNull] = useState(true)
+  const [currentIndex, setCurrentIndex] = useState(0)
 
+  /* NOTE: The prefix is a random string used to help uniquely identify a tab */
+  const prefixRef = useRef(Math.random().toString(36).slice(2))
   const highlightRef = useRef(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
 
@@ -56,6 +59,45 @@ export const Tabs = ({
     setIsHoveredFromNull(!highlightedTab)
     setHighlightedTab(tab)
   }
+  const keyHandler = (e: any) => {
+    /* NOTE: Valid navigation keys that move the highlight */
+    const keys = ['ArrowDown', 'ArrowUp', 'Home', 'End', 'j', 'k', 'g', 'G']
+
+    if (keys.includes(e.key)) {
+      e.preventDefault()
+      let nextIndex = 0
+      switch (e.key) {
+        case 'ArrowDown':
+        case 'j':
+          nextIndex = (currentIndex + 1) % data.length
+          break
+        case 'ArrowUp':
+        case 'k':
+          nextIndex = currentIndex === 0 ? data.length - 1 : currentIndex - 1
+          break
+        case 'Home':
+        case 'g':
+          nextIndex = 0
+          break
+        case 'End':
+        case 'G':
+          nextIndex = data.length - 1
+          break
+      }
+
+      const id = prefixRef.current.toString() + nextIndex.toString()
+      /* TODO: Need to investigate performance as this is most likely inefficient */
+      document.getElementById(id)?.focus()
+      setCurrentIndex(nextIndex)
+    } else if (e.key === 'Tab') {
+      /* NOTE: We only update the index as the default tab event behavior moves the focus around */
+      if (e.shiftKey) {
+        setCurrentIndex(currentIndex === 0 ? data.length - 1 : currentIndex - 1)
+      } else {
+        setCurrentIndex((currentIndex + 1) % data.length)
+      }
+    }
+  }
 
   if (tabBoundingBox && wrapperBoundingBox) {
     highlightStyles.transitionDuration = isHoveredFromNull ? '0ms' : '150ms'
@@ -67,13 +109,49 @@ export const Tabs = ({
   }
 
   return (
-    <TabsWrapper ref={wrapperRef} onMouseLeave={resetHighlight} css={wrapperStyles}>
+    <TabsWrapper
+      ref={wrapperRef}
+      onMouseLeave={resetHighlight}
+      css={wrapperStyles}
+      onBlur={(e) => {
+        /**
+         * NOTE: The following code was yanked from the following source:
+         * https://muffinman.io/blog/catching-the-blur-event-on-an-element-and-its-children/
+         */
+        const currentTarget = e.currentTarget
+
+        /* Give browser time to focus the next element */
+        requestAnimationFrame(() => {
+          /* Check if the new focused element is a child of the original container */
+          if (!currentTarget.contains(document.activeElement)) {
+            setCurrentIndex(0)
+            resetHighlight()
+          }
+        })
+      }}
+      onKeyDown={keyHandler}
+    >
       <TabsHighlight ref={highlightRef} css={highlightStyles} />
       {data &&
-        data.map((tab: any) => (
+        data.map((tab: any, index: number) => (
           <Tab
             key={tab[identifier]}
-            onMouseOver={(event: any) => repositionHighlight(event, tab)}
+            /* TODO: Add user preference for autofocus */
+            autoFocus={index === 0}
+            /* NOTE: Unique identifier to find the element */
+            id={prefixRef.current.toString() + index.toString()}
+            onMouseOver={(event: any) => {
+              repositionHighlight(event, tab)
+            }}
+            onFocus={(event: any) => {
+              /* NOTE: Repositions the highlight on a focus event (e.g. tab key press) */
+              repositionHighlight(event, tab)
+            }}
+            onKeyPress={(event: any) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.currentTarget.click()
+              }
+            }}
             onClick={() => onClick(tab)}
           >
             {generator(tab)}

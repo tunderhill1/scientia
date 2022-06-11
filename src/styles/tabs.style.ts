@@ -5,7 +5,9 @@ export const TabsWrapper = styled('div', {
   display: 'flex',
 })
 
-export const Tab = styled('a', {
+/* TODO: Implement user specified overrides */
+export const Tab = styled('button', {
+  all: 'unset',
   padding: '0.75rem',
   color: '$highContrast',
   display: 'flex',

@@ -46,12 +46,26 @@ export const Button = styled('button', {
   borderRadius: '0.5rem',
   marginTop: '1rem',
   fontSize: 'medium',
+  userSelect: 'none',
+  cursor: 'pointer',
+  transition: 'all 250ms ease-in-out 0s',
+
   '&:hover': {
     backgroundColor: '$elementHover',
   },
   '&:active': {
     backgroundColor: '$elementActive',
   },
+
+  '&:focus': {
+    outline: 'none',
+  },
+  '&:focus-visible': {
+    outline: '0.25rem solid $elementBorder',
+    /* NOTE: Transition "all" would cause a weird visual artefact as you're transitioning the outline width */
+    transition: 'outline-color 250ms ease-in-out 0s',
+  },
+
   variants: {
     icon: {
       true: {

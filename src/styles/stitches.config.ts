@@ -1,5 +1,5 @@
+import { blue, sand, sandDark } from '@radix-ui/colors'
 import { createStitches, createTheme } from '@stitches/react'
-import { sand, sandDark } from '@radix-ui/colors'
 
 export const { styled, css, globalCss, theme } = createStitches({
   theme: {
@@ -16,6 +16,7 @@ export const { styled, css, globalCss, theme } = createStitches({
     },
     colors: {
       ...sand,
+      ...blue,
       appBackground: '$sand1',
       subtleBackground: '$sand2',
       elementBackground: '$sand3',
@@ -70,11 +71,19 @@ export const globalStyles = globalCss({
     '& *': {
       /* Fix for Chrome and Safari that don't otherwise transition text smoothly */
       color: '$highContrast',
+      fontFamily: 'inherit',
+      outlineColor: 'transparent',
     },
   },
   /* Animation override on theme toggle; see applyTheme function in src/lib/theme.context.tsx */
   '.animate *': {
     transition: 'all 1000ms ease-in-out 0s !important',
+    '&:focus-visible': {
+      outlineColor: 'transparent !important',
+    },
+  },
+  ':focus-visible': {
+    transition: 'background-color 250ms ease-in-out 0s',
   },
   ':first-child': {
     marginTop: 'unset',

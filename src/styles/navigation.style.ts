@@ -4,15 +4,21 @@ import { styled } from './stitches.config'
 export const Header = styled('div', {
   height: '4rem',
   width: '100%',
+
   /* Make sure that the header is fixed and above every component */
   position: 'fixed',
   top: 0,
   left: 0,
   zIndex: '2',
-  padding: '0.625rem 0',
+
+  display: 'flex',
+  alignContent: 'center',
+
+  padding: '0',
   marginBottom: '3rem',
   borderBottom: '0.0625rem solid $separator',
   backgroundColor: '$appBackground',
+
   transitionProperty: 'background-color, border-bottom',
   transitionDuration: '1s',
   transitionTimingFunction: 'ease-in-out',
@@ -20,14 +26,17 @@ export const Header = styled('div', {
 
 export const Nav = styled('nav', {
   maxWidth: '42rem',
+
+  display: 'flex',
+  flexGrow: 1,
+  justifyContent: 'space-between',
+
   padding: '0 1rem',
   margin: 'auto',
-  display: 'flex',
-  justifyContent: 'space-between',
 })
 
 export const Logo = styled('img', {
-  height: '2rem',
+  height: '1.75rem',
 })
 
 export const Content = styled(DropdownMenuContent, {
@@ -45,6 +54,7 @@ export const Item = styled(DropdownMenuItem, {
   display: 'flex',
   alignItems: 'center',
   cursor: 'pointer',
+  transition: 'all 250ms ease-in-out 0s',
   '&:focus': {
     backgroundColor: '$elementHover',
     outline: 'none',
