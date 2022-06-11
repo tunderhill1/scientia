@@ -136,8 +136,6 @@ export const Tabs = ({
         data.map((tab: any, index: number) => (
           <Tab
             key={tab[identifier]}
-            /* TODO: Add user preference for autofocus */
-            autoFocus={index === 0}
             /* NOTE: Unique identifier to find the element */
             id={prefixRef.current.toString() + index.toString()}
             onMouseOver={(event: any) => {
