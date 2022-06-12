@@ -36,7 +36,7 @@ export const Nav = styled('nav', {
 })
 
 export const Logo = styled('img', {
-  height: '1.75rem',
+  height: '2rem',
 })
 
 export const Content = styled(DropdownMenuContent, {

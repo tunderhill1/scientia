@@ -24,7 +24,12 @@ export const Navigation = () => {
     <Header>
       <Nav>
         {/* TODO: Is it a good idea to use an modified icon button here instead of a custom variant? */}
-        <Button icon onClick={() => navigate('/')} role="link" css={{ width: 'auto', padding: '0 0.5rem' }}>
+        <Button
+          icon
+          onClick={() => navigate('/')}
+          role="link"
+          css={{ width: 'auto', '&:hover': { backgroundColor: 'transparent' } }}
+        >
           {/* TODO: We might need to store logos separately if they're theme-configurable */}
           <Logo alt="Scientia logo" src="/assets/logo.svg" style={{ filter: `invert(${theme === 'dark' ? 1 : 0})` }} />
           <span style={{ marginLeft: '0.5rem', fontSize: 'x-large', fontWeight: 600 }}>Scientia</span>

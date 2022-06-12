@@ -55,6 +55,7 @@ export const GroupedList = () => {
               {/* TODO: Allow user to specify unique identifier attribute instead */}
               <Header>
                 <Trigger
+                  /* TODO: It loses focus on sub-list interaction and hovering over the trigger doesn't recover it */
                   onMouseOver={(event) => {
                     event.currentTarget.focus()
                   }}
