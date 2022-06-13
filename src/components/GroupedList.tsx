@@ -2,7 +2,7 @@ import { Accordion, Box, Caret, Content, Header, Item, Trigger } from '../styles
 import { Tabs } from './Tabs'
 
 /* TODO: Remove dummy data once the grouped list accepts data */
-const groups = [
+export const groups = [
   {
     name: 'Group 1',
     resources: [
@@ -37,7 +37,15 @@ const groups = [
  * TODO: We need to accept, as parameters, the group data, a generator function for the content box, along with misc.
  *       parameters (i.e. relevant attribute names and other preferences)
  */
-export const GroupedList = () => {
+export const GroupedList = ({
+  data,
+  headerKey = 'header',
+  childrenKey = 'children',
+}: {
+  data: any
+  headerKey?: string
+  childrenKey?: string
+}) => {
   return (
     <Accordion type="multiple">
       {
@@ -49,9 +57,9 @@ export const GroupedList = () => {
          *       and the cursor happens to be over another group's header, it switches focus to that group instead,
          *       which might throw off the user temporarily.
          */
-        groups &&
-          groups.map((group: any) => (
-            <Item value={group.name}>
+        data &&
+          data.map((group: any) => (
+            <Item value={group[headerKey]}>
               {/* TODO: Allow user to specify unique identifier attribute instead */}
               <Header>
                 <Trigger
@@ -62,15 +70,19 @@ export const GroupedList = () => {
                 >
                   <Caret style={{ marginRight: '0.5rem' }} />
                   {/* TODO: Allow user to specify attribute to use instead */}
-                  <span>{group.name}</span>
+                  <span>{group[headerKey]}</span>
                 </Trigger>
               </Header>
               {/* TODO: Allow user to specify a way to calculate the max height */}
-              <Content css={{ maxHeight: `calc(${group.resources.length} * 2.75rem + 1rem)` }}>
+              <Content css={{ maxHeight: `calc(${group[childrenKey].length} * 2.75rem + 1rem)` }}>
                 {/* TODO: Allow user to pass in styling overrides for this box */}
                 <Box>
                   {/* TODO: Provide user with a generator function instead for modularity */}
-                  <Tabs data={group.resources} generator={(tab: any) => <span>{tab.title}</span>} onClick={() => {}} />
+                  <Tabs
+                    data={group[childrenKey]}
+                    generator={(tab: any) => <span>{tab.title}</span>}
+                    onClick={() => {}}
+                  />
                 </Box>
               </Content>
             </Item>

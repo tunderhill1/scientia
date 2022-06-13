@@ -1,13 +1,13 @@
 import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { ProtectedRoute } from '../components/ProtectedRoute'
-import { GroupedList } from '../components/GroupedList'
+import { GroupedList, groups } from '../components/GroupedList'
 import { baseURL } from '../constants/endpoints'
 import { AxiosInstanceProvider } from '../lib/axios.context'
 import { ThemeProvider } from '../lib/theme.context'
 import { UserProvider } from '../lib/user.context'
 import { globalStyles } from '../styles/stitches.config'
-import { Area, Scrollbar, Thumb, Viewport } from '../styles/_app.style'
+import { Area, Container, Scrollbar, Thumb, Viewport } from '../styles/_app.style'
 import Login from './Login'
 import Module from './Module'
 import Exercises from './Exercises'
@@ -15,7 +15,6 @@ import Materials from './Materials'
 import Modules from './Modules'
 import { YearProvider } from '../lib/year.context'
 import { YearRoute } from '../components/YearRoute'
-import { Container } from '../styles/_app.style'
 
 function App() {
   globalStyles()
@@ -33,7 +32,7 @@ function App() {
                     path="staff"
                     element={
                       <Container>
-                        <GroupedList />
+                        <GroupedList data={groups} headerKey="name" childrenKey="resources" />
                       </Container>
                     }
                   />
