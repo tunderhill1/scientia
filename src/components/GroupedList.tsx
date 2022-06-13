@@ -59,7 +59,7 @@ export const GroupedList = ({
          */
         data &&
           data.map((group: any) => (
-            <Item value={group[headerKey]}>
+            <Item value={group[headerKey]} key={group[headerKey]}>
               {/* TODO: Allow user to specify unique identifier attribute instead */}
               <Header>
                 <Trigger
@@ -74,7 +74,7 @@ export const GroupedList = ({
                 </Trigger>
               </Header>
               {/* TODO: Allow user to specify a way to calculate the max height */}
-              <Content css={{ maxHeight: `calc(${group[childrenKey].length} * 2.75rem + 1rem)` }}>
+              <Content css={{ maxHeight: `calc(${group[childrenKey]?.length} * 2.75rem + 1rem)` }}>
                 {/* TODO: Allow user to pass in styling overrides for this box */}
                 <Box>
                   {/* TODO: Provide user with a generator function instead for modularity */}
