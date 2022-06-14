@@ -1,9 +1,11 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { years } from '../constants/years'
+import { currentShortYear } from '../utilities/datetime'
+
 type YearProviderType = { year: number; changeYear: (year: number) => boolean }
 
 const defaultYear = {
-  year: 0,
+  year: currentShortYear(),
   changeYear: (_: number) => false,
 }
 
