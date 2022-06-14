@@ -2,50 +2,37 @@ import { Accordion, Box, Caret, Content, Header, Item, Trigger } from '../styles
 import { Tabs } from './Tabs'
 
 /* TODO: Remove dummy data once the grouped list accepts data */
-export const groups = [
-  {
-    name: 'Group 1',
-    resources: [
-      { title: 'Resource 1' },
-      { title: 'Resource 2' },
-      { title: 'Resource 3' },
-      { title: 'Resource 4' },
-      { title: 'Resource 5' },
-      { title: 'Resource 6' },
-    ],
-  },
-  {
-    name: 'Group 2',
-    resources: [
-      { title: 'Resource 1' },
-      { title: 'Resource 2' },
-      { title: 'Resource 3' },
-      { title: 'Resource 4' },
-      { title: 'Resource 5' },
-      { title: 'Resource 6' },
-      { title: 'Resource 7' },
-      { title: 'Resource 8' },
-      { title: 'Resource 9' },
-      { title: 'Resource 10' },
-      { title: 'Resource 11' },
-      { title: 'Resource 12' },
-    ],
-  },
-]
+export const groups = {
+  'Group 1': [
+    { title: 'Resource 1' },
+    { title: 'Resource 2' },
+    { title: 'Resource 3' },
+    { title: 'Resource 4' },
+    { title: 'Resource 5' },
+    { title: 'Resource 6' },
+  ],
+  'Group 2': [
+    { title: 'Resource 1' },
+    { title: 'Resource 2' },
+    { title: 'Resource 3' },
+    { title: 'Resource 4' },
+    { title: 'Resource 5' },
+    { title: 'Resource 6' },
+    { title: 'Resource 7' },
+    { title: 'Resource 8' },
+    { title: 'Resource 9' },
+    { title: 'Resource 10' },
+    { title: 'Resource 11' },
+    { title: 'Resource 12' },
+  ],
+}
 
 /**
  * TODO: We need to accept, as parameters, the group data, a generator function for the content box, along with misc.
  *       parameters (i.e. relevant attribute names and other preferences)
  */
-export const GroupedList = ({
-  data,
-  headerKey = 'header',
-  childrenKey = 'children',
-}: {
-  data: any
-  headerKey?: string
-  childrenKey?: string
-}) => {
+
+export const GroupedList = ({ data }: { data: { [key: string]: object[] } }) => {
   return (
     <Accordion type="multiple">
       {
@@ -58,8 +45,8 @@ export const GroupedList = ({
          *       which might throw off the user temporarily.
          */
         data &&
-          data.map((group: any) => (
-            <Item value={group[headerKey]} key={group[headerKey]}>
+          Object.entries(data).map(([header, group]) => (
+            <Item value={header} key={header}>
               {/* TODO: Allow user to specify unique identifier attribute instead */}
               <Header>
                 <Trigger
@@ -70,19 +57,15 @@ export const GroupedList = ({
                 >
                   <Caret style={{ marginRight: '0.5rem' }} />
                   {/* TODO: Allow user to specify attribute to use instead */}
-                  <span>{group[headerKey]}</span>
+                  <span>{header}</span>
                 </Trigger>
               </Header>
               {/* TODO: Allow user to specify a way to calculate the max height */}
-              <Content css={{ maxHeight: `calc(${group[childrenKey]?.length} * 2.75rem + 1rem)` }}>
+              <Content css={{ maxHeight: `calc(${group?.length} * 2.75rem + 1rem)` }}>
                 {/* TODO: Allow user to pass in styling overrides for this box */}
                 <Box>
                   {/* TODO: Provide user with a generator function instead for modularity */}
-                  <Tabs
-                    data={group[childrenKey]}
-                    generator={(tab: any) => <span>{tab.title}</span>}
-                    onClick={() => {}}
-                  />
+                  <Tabs data={group} generator={(tab: any) => <span>{tab.title}</span>} onClick={() => {}} />
                 </Box>
               </Content>
             </Item>

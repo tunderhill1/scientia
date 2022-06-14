@@ -1,13 +1,12 @@
 import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { ProtectedRoute } from '../components/ProtectedRoute'
-import { GroupedList, groups } from '../components/GroupedList'
 import { baseURL } from '../constants/endpoints'
 import { AxiosInstanceProvider } from '../lib/axios.context'
 import { ThemeProvider } from '../lib/theme.context'
 import { UserProvider } from '../lib/user.context'
 import { globalStyles } from '../styles/stitches.config'
-import { Area, Container, Scrollbar, Thumb, Viewport } from '../styles/_app.style'
+import { Area, Scrollbar, Thumb, Viewport } from '../styles/_app.style'
 import Login from './Login'
 import Module from './Module'
 import Exercises from './Exercises'
@@ -28,14 +27,6 @@ function App() {
                 {/* TODO: Add a no-match route (i.e. 404 Not Found) */}
                 <Routes>
                   <Route index element={<Login />} />
-                  <Route
-                    path="staff"
-                    element={
-                      <Container>
-                        <GroupedList data={groups} headerKey="name" childrenKey="resources" />
-                      </Container>
-                    }
-                  />
                   <Route element={<ProtectedRoute />}>
                     <Route path=":requestedYear" element={<YearRoute />}>
                       <Route path="modules">
@@ -43,6 +34,10 @@ function App() {
                         <Route path=":moduleCode" element={<Module />}>
                           {/* TODO: Replace with the overview page afer Scientia backend is up and ready */}
                           <Route index element={<Navigate to="materials" />} />
+
+                          {/*This is for UI design purposes only. The *materials pages will need to be merged*/}
+                          {/*once logic to distinguish between staff and student is sorted out*/}
+                          {/*<Route path="staff-materials" element={<StaffMaterials />} />*/}
                           <Route path="materials" element={<Materials />} />
                           <Route path="exercises" element={<Exercises />} />
                         </Route>
