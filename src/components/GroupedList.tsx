@@ -1,38 +1,20 @@
-import { Accordion, Box, Caret, Content, Header, Item, Trigger } from '../styles/grouped-list.style'
-import { Tabs } from './Tabs'
-
-/* TODO: Remove dummy data once the grouped list accepts data */
-export const groups = {
-  'Group 1': [
-    { title: 'Resource 1' },
-    { title: 'Resource 2' },
-    { title: 'Resource 3' },
-    { title: 'Resource 4' },
-    { title: 'Resource 5' },
-    { title: 'Resource 6' },
-  ],
-  'Group 2': [
-    { title: 'Resource 1' },
-    { title: 'Resource 2' },
-    { title: 'Resource 3' },
-    { title: 'Resource 4' },
-    { title: 'Resource 5' },
-    { title: 'Resource 6' },
-    { title: 'Resource 7' },
-    { title: 'Resource 8' },
-    { title: 'Resource 9' },
-    { title: 'Resource 10' },
-    { title: 'Resource 11' },
-    { title: 'Resource 12' },
-  ],
-}
+import { Accordion, Box, Content, Header, Item, Trigger } from '../styles/grouped-list.style'
+import { ReactNode } from 'react'
 
 /**
  * TODO: We need to accept, as parameters, the group data, a generator function for the content box, along with misc.
  *       parameters (i.e. relevant attribute names and other preferences)
  */
 
-export const GroupedList = ({ data }: { data: { [key: string]: object[] } }) => {
+export const GroupedList = ({
+  data,
+  contentGenerator,
+  headerGenerator,
+}: {
+  data: { [key: string]: object[] }
+  contentGenerator: (header: string, group: object[]) => ReactNode
+  headerGenerator: (header: string, group: object[]) => {}
+}) => {
   return (
     <Accordion type="multiple" defaultValue={Object.keys(data)}>
       {
@@ -55,18 +37,13 @@ export const GroupedList = ({ data }: { data: { [key: string]: object[] } }) => 
                     event.currentTarget.focus()
                   }}
                 >
-                  <Caret style={{ marginRight: '0.5rem' }} />
-                  {/* TODO: Allow user to specify attribute to use instead */}
-                  <span>{header}</span>
+                  {headerGenerator(header, group)}
                 </Trigger>
               </Header>
               {/* TODO: Allow user to specify a way to calculate the max height */}
               <Content css={{ maxHeight: `calc(${group?.length} * 2.75rem + 1rem)` }}>
                 {/* TODO: Allow user to pass in styling overrides for this box */}
-                <Box>
-                  {/* TODO: Provide user with a generator function instead for modularity */}
-                  <Tabs data={group} generator={(tab: any) => <span>{tab.title}</span>} onClick={() => {}} />
-                </Box>
+                <Box>{contentGenerator(header, group)}</Box>
               </Content>
             </Item>
           ))

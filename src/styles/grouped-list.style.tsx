@@ -79,6 +79,7 @@ export const Box = styled('div', {
 })
 
 export const Caret = styled(CaretRightFill, {
+  marginRight: '0.5rem',
   fill: '$lowContrast',
   transition: 'transform 300ms cubic-bezier(0.87, 0, 0.13, 1)',
   '[data-state=open] &': { transform: 'rotate(90deg)' },

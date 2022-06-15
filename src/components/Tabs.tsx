@@ -27,7 +27,7 @@ export const Tabs = ({
   data: any
   generator: (tab: any) => ReactNode
   alignment?: Alignment
-  onClick: (tab: any) => void
+  onClick?: (tab: any) => void
   identifier?: string
 }) => {
   const [tabBoundingBox, setTabBoundingBox] = useState<any>(null)
