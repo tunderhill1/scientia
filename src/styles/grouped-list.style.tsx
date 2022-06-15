@@ -14,17 +14,11 @@ export const Accordion = styled(AccordionPrimitive, {})
 
 export const Item = styled(AccordionItem, {})
 
-/* TODO: Make the header height and style user-configurable */
 export const Header = styled(AccordionHeader, {
   all: 'unset',
-  display: 'flex',
-  height: '2.75rem',
-  position: 'sticky',
-  backgroundColor: '$appBackground',
-  zIndex: 1,
-  top: '0',
 })
 
+/* TODO: Make the trigger height and style user-configurable */
 export const Trigger = styled(AccordionTrigger, {
   all: 'unset',
   userSelect: 'none',
@@ -34,17 +28,36 @@ export const Trigger = styled(AccordionTrigger, {
   flexGrow: 1,
   alignItems: 'center',
 
+  boxSizing: 'border-box',
+  height: '2.75rem',
+  width: '100%',
   padding: '0.75rem',
   borderRadius: '0.5rem',
 
+  zIndex: 1,
+  position: 'sticky',
+  backgroundColor: '$appBackground',
+  top: '4rem' /* Height of navigation bar */,
+
   transition: 'all 250ms ease-in-out',
 
-  /* NOTE: "Hover" effect is taken care of by the onMouseEnter event */
   '&:active': {
     backgroundColor: '$elementActive',
   },
-  '&:focus-visible': {
+  '&:hover': {
     backgroundColor: '$elementHover',
+  },
+
+  /* TODO: The style below is copied over from button; investigate a way to extract as common style */
+  outlineColor: 'transparent',
+  '&:focus': {
+    outline: 'none',
+  },
+  '&:focus-visible': {
+    outline: '0.25rem solid $elementBorder',
+    zIndex: 2,
+    /* NOTE: Transition "all" would cause a weird visual artefact as you're transitioning the outline width */
+    transition: 'outline-color 250ms ease-in-out 0s',
   },
 })
 

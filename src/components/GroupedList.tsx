@@ -21,24 +21,13 @@ export const GroupedList = ({
         /**
          * NOTE: We're iterating over the groups while creating an accordion toggle for each group with a tab list of
          *       resources contained in that group.
-         * TODO: A minor issue exists because we're using the mouse to switch focus. Note that we do so to simulate the
-         *       hover effect to avoid having two highlighted group triggers. The issue is that when a group is toggled
-         *       and the cursor happens to be over another group's header, it switches focus to that group instead,
-         *       which might throw off the user temporarily.
          */
         data &&
           Object.entries(data).map(([header, group]) => (
             <Item value={header} key={header}>
               {/* TODO: Allow user to specify unique identifier attribute instead */}
-              <Header>
-                <Trigger
-                  /* TODO: It loses focus on sub-list interaction and hovering over the trigger doesn't recover it */
-                  onMouseOver={(event) => {
-                    event.currentTarget.focus()
-                  }}
-                >
-                  {headerGenerator(header, group)}
-                </Trigger>
+              <Header asChild>
+                <Trigger>{headerGenerator(header, group)}</Trigger>
               </Header>
               {/* TODO: Allow user to specify a way to calculate the max height */}
               <Content css={{ maxHeight: `calc(${group?.length} * 2.75rem + 1rem)` }}>
