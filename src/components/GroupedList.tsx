@@ -34,7 +34,7 @@ export const groups = {
 
 export const GroupedList = ({ data }: { data: { [key: string]: object[] } }) => {
   return (
-    <Accordion type="multiple">
+    <Accordion type="multiple" defaultValue={Object.keys(data)}>
       {
         /**
          * NOTE: We're iterating over the groups while creating an accordion toggle for each group with a tab list of
