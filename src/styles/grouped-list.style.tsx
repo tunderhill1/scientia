@@ -14,13 +14,12 @@ export const Accordion = styled(AccordionPrimitive, {})
 
 export const Item = styled(AccordionItem, {})
 
-export const Header = styled(AccordionHeader, {
-  all: 'unset',
-})
+export const Header = styled(AccordionHeader, {})
 
 /* TODO: Make the trigger height and style user-configurable */
 export const Trigger = styled(AccordionTrigger, {
   all: 'unset',
+  boxSizing: 'border-box',
   userSelect: 'none',
   cursor: 'pointer',
 
@@ -28,7 +27,6 @@ export const Trigger = styled(AccordionTrigger, {
   flexGrow: 1,
   alignItems: 'center',
 
-  boxSizing: 'border-box',
   height: '2.75rem',
   width: '100%',
   padding: '0.75rem',

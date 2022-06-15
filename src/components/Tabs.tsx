@@ -88,6 +88,7 @@ export const Tabs = ({
       const id = prefixRef.current.toString() + nextIndex.toString()
       /* TODO: Need to investigate performance as this is most likely inefficient */
       document.getElementById(id)?.focus()
+      document.getElementById(id)?.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'smooth' })
       setCurrentIndex(nextIndex)
     } else if (e.key === 'Tab') {
       /* NOTE: We only update the index as the default tab event behavior moves the focus around */
