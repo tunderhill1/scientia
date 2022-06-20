@@ -1,0 +1,54 @@
+image: node:16
+
+stages:
+  - linting
+  - testing
+
+cache:
+  paths:
+    - node_modules/
+    - .yarn
+
+before_script:
+  - yarn install --cache-folder .yarn
+
+type-checks:
+  stage: linting
+  interruptible: true
+  except:
+    refs:
+      - schedules
+    changes:
+      - "**/README.md"
+  script:
+    - yarn tsc
+
+style-checks:
+  stage: linting
+  interruptible: true
+  except:
+    refs:
+      - schedules
+    changes:
+      - "**/README.md"
+  script:
+    - yarn prettier -c src/**/*
+
+unit-tests:
+  stage: testing
+  interruptible: true
+  except:
+    refs:
+      - schedules
+    changes:
+      - "**/README.md"
+  script:
+    - yarn test:ci
+  artifacts:
+    reports:
+      junit:
+        - junit.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml
+

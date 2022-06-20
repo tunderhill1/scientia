@@ -19,6 +19,7 @@
     "axios": "^0.26.1",
     "boring-avatars": "^1.6.3",
     "buffer": "^6.0.3",
+    "jest-junit": "^13.2.0",
     "react": "^17.0.2",
     "react-bootstrap-icons": "^1.8.2",
     "react-dom": "^17.0.2",
@@ -32,6 +33,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:ci": "yarn test --coverage --all src --watchAll=false --reporters=default --reporters=jest-junit",
     "eject": "react-scripts eject",
     "format": "prettier --write .",
     "prepare": "husky install",
@@ -66,5 +68,15 @@
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
       "prettier --write"
     ]
+  },
+  "jest": {
+    "coverageReporters": [
+      "cobertura"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!**/node_modules/**"
+    ]
   }
+
 }
