@@ -1,3 +1,4 @@
+import { secureHeapUsed } from 'crypto'
 import { useEffect, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { GroupedList } from '../components/GroupedList'
@@ -75,7 +76,14 @@ const Materials = () => {
   const loaded = true
 
   const [checkedItems, setCheckedItems] = useState(defaultCheckboxTableForProperty(data, 'title'))
+  const [selectionMode, setSelectionMode] = useState(true)
 
+  const onHeaderSelection = (header: string, checked: any) => {
+    setCheckedItems({
+      ...checkedItems,
+      [header]: Object.fromEntries(Object.keys(checkedItems[header]).map((k) => [k, checked])),
+    })
+  }
   return (
     <div
       style={
@@ -87,9 +95,13 @@ const Materials = () => {
       {loaded && (
         <GroupedList
           data={data}
+          selectionMode={selectionMode}
+          selectionTable={checkedItems}
+          onHeaderSelection={onHeaderSelection}
+          onContentSelection={() => {}}
           headerGenerator={(header, _) => (
             <>
-              <Caret />
+              {!selectionMode && <Caret />}
               <span>{header}</span>
             </>
           )}

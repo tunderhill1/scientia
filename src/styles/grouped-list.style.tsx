@@ -72,6 +72,8 @@ const slideUp = keyframes({
 
 export const Content = styled(AccordionContent, {
   overflow: 'hidden',
+  display: 'flex',
+  flexDirection: 'row',
 
   /* NOTE: Timing curve sourced from Radix UI's accordion example */
   '&[data-state="open"]': {
@@ -84,6 +86,8 @@ export const Content = styled(AccordionContent, {
 
 /* TODO: Allow user to override these styles */
 export const Box = styled('div', {
+  flexGrow: 1,
+  width: '100%',
   borderLeft: '0.0625rem solid $separator',
   padding: '0.5rem 0 0.5rem 0.5rem',
   marginLeft: '1.25rem',
