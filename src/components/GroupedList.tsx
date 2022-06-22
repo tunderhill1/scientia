@@ -49,14 +49,7 @@ export const GroupedList = ({
                     </Indicator>
                   </Checkbox>
                 )}
-                <Trigger
-                  /* TODO: It loses focus on sub-list interaction and hovering over the trigger doesn't recover it */
-                  onMouseOver={(event) => {
-                    event.currentTarget.focus()
-                  }}
-                >
-                  {headerGenerator(header, group)}
-                </Trigger>
+                <Trigger>{headerGenerator(header, group)}</Trigger>
               </Header>
               {/* TODO: Allow user to specify a way to calculate the max height */}
               <Content css={{ maxHeight: `calc(${group?.length} * 2.75rem + 1rem)` }}>
