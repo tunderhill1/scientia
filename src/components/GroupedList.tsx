@@ -39,6 +39,7 @@ export const GroupedList = ({
               {/* TODO: Allow user to specify unique identifier attribute instead */}
               <Header>
                 {/* MARK: Checkbox here! */}
+                <Trigger>{headerGenerator(header, group)}</Trigger>
                 {selectionMode && (
                   <Checkbox
                     checked={Object.values(selectionTable[header]).every((checked) => checked)}
@@ -49,7 +50,6 @@ export const GroupedList = ({
                     </Indicator>
                   </Checkbox>
                 )}
-                <Trigger>{headerGenerator(header, group)}</Trigger>
               </Header>
               {/* TODO: Allow user to specify a way to calculate the max height */}
               <Content css={{ maxHeight: `calc(${group?.length} * 2.75rem + 1rem)` }}>
@@ -61,7 +61,7 @@ export const GroupedList = ({
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'space-evenly',
-                    minWidth: '2.75rem',
+                    minWidth: '1.75rem',
                     minHeight: '100%',
                   }}
                 >
@@ -80,7 +80,6 @@ export const GroupedList = ({
                       )
                     })}
                 </div>
-                {/* MARK: Checkbox generator here! */}
               </Content>
             </Item>
           ))

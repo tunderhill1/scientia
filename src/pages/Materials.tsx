@@ -106,7 +106,7 @@ const Materials = () => {
           onContentSelection={onContentSelection}
           headerGenerator={(header, _) => (
             <>
-              {!selectionMode && <Caret />}
+              <Caret />
               <span>{header}</span>
             </>
           )}

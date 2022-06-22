@@ -1,10 +1,10 @@
 import { styled } from './stitches.config'
 import {
   Accordion as AccordionPrimitive,
-  AccordionItem,
-  AccordionTrigger,
   AccordionContent,
   AccordionHeader,
+  AccordionItem,
+  AccordionTrigger,
 } from '@radix-ui/react-accordion'
 import { CaretRightFill } from 'react-bootstrap-icons'
 import { keyframes } from '@stitches/react'
@@ -14,7 +14,13 @@ export const Accordion = styled(AccordionPrimitive, {})
 
 export const Item = styled(AccordionItem, {})
 
-export const Header = styled(AccordionHeader, {})
+export const Header = styled(AccordionHeader, {
+  all: 'unset',
+  boxSizing: 'border-box',
+  display: 'flex',
+  gap: '0.75rem',
+  alignItems: 'center',
+})
 
 /* TODO: Make the trigger height and style user-configurable */
 export const Trigger = styled(AccordionTrigger, {
@@ -74,6 +80,7 @@ export const Content = styled(AccordionContent, {
   overflow: 'hidden',
   display: 'flex',
   flexDirection: 'row',
+  gap: '0.75rem',
 
   /* NOTE: Timing curve sourced from Radix UI's accordion example */
   '&[data-state="open"]': {
