@@ -45,6 +45,7 @@ export const GroupedList = ({
                   <Trigger>{headerGenerator(header, group)}</Trigger>
                   {selectionMode && (
                     <Checkbox
+                      css={{ minWidth: '1.75rem' }}
                       checked={someButNotAllSelected ? 'indeterminate' : selections.every(Boolean)}
                       onCheckedChange={(checked) => onHeaderSelection(header, checked)}
                     >
