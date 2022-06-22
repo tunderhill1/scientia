@@ -1,7 +1,7 @@
 import { Accordion, Box, Content, Header, Item, Trigger } from '../styles/grouped-list.style'
 import { ReactNode } from 'react'
 import { Checkbox, Indicator } from '../styles/login.style'
-import { Check } from 'react-bootstrap-icons'
+import { Check, Dash } from 'react-bootstrap-icons'
 
 /**
  * TODO: We need to accept, as parameters, the group data, a generator function for the content box, along with misc.
@@ -42,11 +42,21 @@ export const GroupedList = ({
                 <Trigger>{headerGenerator(header, group)}</Trigger>
                 {selectionMode && (
                   <Checkbox
-                    checked={Object.values(selectionTable[header]).every((checked) => checked)}
+                    checked={
+                      Object.values(selectionTable[header]).some((checked) => checked) &&
+                      !Object.values(selectionTable[header]).every((checked) => checked)
+                        ? 'indeterminate'
+                        : Object.values(selectionTable[header]).every((checked) => checked)
+                    }
                     onCheckedChange={(checked) => onHeaderSelection(header, checked)}
                   >
                     <Indicator>
-                      <Check />
+                      {Object.values(selectionTable[header]).some((checked) => checked) &&
+                      !Object.values(selectionTable[header]).every((checked) => checked) ? (
+                        <Dash />
+                      ) : (
+                        <Check />
+                      )}
                     </Indicator>
                   </Checkbox>
                 )}
