@@ -3,6 +3,7 @@ import { useOutletContext } from 'react-router-dom'
 import { GroupedList } from '../components/GroupedList'
 import { Tabs } from '../components/Tabs'
 import { Caret } from '../styles/grouped-list.style'
+import { Button, Separator, ToggleGroup, ToggleItem, Toolbar } from '../styles/toolbar.style'
 
 const materials = [
   {
@@ -55,6 +56,20 @@ export function defaultCheckboxTableForProperty(
   )
 }
 
+const FullToolbar = () => {
+  return (
+    <Toolbar aria-label="Formatting options">
+      <ToggleGroup type="multiple" aria-label="Text formatting">
+        <ToggleItem value="select" aria-label="select">
+          Select
+        </ToggleItem>
+      </ToggleGroup>
+      <Separator />
+      <Button css={{ marginLeft: 'auto' }}>Share</Button>
+    </Toolbar>
+  )
+}
+
 const Materials = () => {
   const moduleCode = useOutletContext<string | null>()
   // const { data, loaded } = useAxios({
@@ -97,6 +112,7 @@ const Materials = () => {
           : { width: '100%', marginTop: '1rem' }
       }
     >
+      <FullToolbar />
       {loaded && (
         <GroupedList
           data={data}
