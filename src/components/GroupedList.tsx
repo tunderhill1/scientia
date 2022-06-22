@@ -78,6 +78,7 @@ export const GroupedList = ({
                         <Checkbox
                           checked={selectionTable[header][groupItem.title]}
                           onCheckedChange={(checked) => onContentSelection(header, groupItem, checked)}
+                          key={groupItem.title} // TODO: use id
                         >
                           <Indicator>
                             <Check />
