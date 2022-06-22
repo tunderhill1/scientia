@@ -30,69 +30,61 @@ export const GroupedList = ({
     <Accordion type="multiple" defaultValue={Object.keys(data)}>
       {
         /**
-         * NOTE: We're iterating over the groups while creating an accordion toggle for each group with a tab list of
-         *       resources contained in that group.
+         * NOTE: We're iterating over the groups while creating
+         * an accordion toggle for each group with a tab list of
+         * resources contained in that group.
          */
         data &&
-          Object.entries(data).map(([header, group]) => (
-            <Item value={header} key={header}>
-              {/* TODO: Allow user to specify unique identifier attribute instead */}
-              <Header>
-                {/* MARK: Checkbox here! */}
-                <Trigger>{headerGenerator(header, group)}</Trigger>
-                {selectionMode && (
-                  <Checkbox
-                    checked={
-                      Object.values(selectionTable[header]).some((checked) => checked) &&
-                      !Object.values(selectionTable[header]).every((checked) => checked)
-                        ? 'indeterminate'
-                        : Object.values(selectionTable[header]).every((checked) => checked)
-                    }
-                    onCheckedChange={(checked) => onHeaderSelection(header, checked)}
+          Object.entries(data).map(([header, group]) => {
+            let selections = selectionMode ? Object.values(selectionTable[header]) : []
+            let someButNotAllSelected = selections.some(Boolean) && !selections.every(Boolean)
+            return (
+              <Item value={header} key={header}>
+                {/* TODO: Allow user to specify unique identifier attribute instead */}
+                <Header>
+                  <Trigger>{headerGenerator(header, group)}</Trigger>
+                  {selectionMode && (
+                    <Checkbox
+                      checked={someButNotAllSelected ? 'indeterminate' : selections.every(Boolean)}
+                      onCheckedChange={(checked) => onHeaderSelection(header, checked)}
+                    >
+                      <Indicator>{someButNotAllSelected ? <Dash /> : <Check />}</Indicator>
+                    </Checkbox>
+                  )}
+                </Header>
+                {/* TODO: Allow user to specify a way to calculate the max height */}
+                <Content css={{ maxHeight: `calc(${group?.length} * 2.75rem + 1rem)` }}>
+                  {/* TODO: Allow user to pass in styling overrides for this box */}
+                  <Box>{contentGenerator(header, group)}</Box>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'space-evenly',
+                      minWidth: '1.75rem',
+                      minHeight: '100%',
+                    }}
                   >
-                    <Indicator>
-                      {Object.values(selectionTable[header]).some((checked) => checked) &&
-                      !Object.values(selectionTable[header]).every((checked) => checked) ? (
-                        <Dash />
-                      ) : (
-                        <Check />
-                      )}
-                    </Indicator>
-                  </Checkbox>
-                )}
-              </Header>
-              {/* TODO: Allow user to specify a way to calculate the max height */}
-              <Content css={{ maxHeight: `calc(${group?.length} * 2.75rem + 1rem)` }}>
-                {/* TODO: Allow user to pass in styling overrides for this box */}
-                <Box>{contentGenerator(header, group)}</Box>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'space-evenly',
-                    minWidth: '1.75rem',
-                    minHeight: '100%',
-                  }}
-                >
-                  {selectionMode &&
-                    group.map((groupItem: any) => {
-                      return (
-                        <Checkbox
-                          checked={selectionTable[header][groupItem.title]}
-                          onCheckedChange={(checked) => onContentSelection(header, groupItem, checked)}
-                          key={groupItem.title} // TODO: use id
-                        >
-                          <Indicator>
-                            <Check />
-                          </Indicator>
-                        </Checkbox>
-                      )
-                    })}
-                </div>
-              </Content>
-            </Item>
-          ))
+                    {selectionMode &&
+                      group.map((groupItem: any) => {
+                        return (
+                          <Checkbox
+                            checked={selectionTable[header][groupItem.title]}
+                            onCheckedChange={(checked) => onContentSelection(header, groupItem, checked)}
+                            key={groupItem.title} // TODO: use id
+                          >
+                            <Indicator>
+                              <Check />
+                            </Indicator>
+                          </Checkbox>
+                        )
+                      })}
+                  </div>
+                </Content>
+              </Item>
+            )
+          })
       }
     </Accordion>
   )
