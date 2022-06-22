@@ -1,10 +1,7 @@
-import { secureHeapUsed } from 'crypto'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { GroupedList } from '../components/GroupedList'
 import { Tabs } from '../components/Tabs'
-import { endpoints } from '../constants/endpoints'
-import { useAxios } from '../lib/axios.context'
 import { Caret } from '../styles/grouped-list.style'
 
 const materials = [
@@ -84,6 +81,14 @@ const Materials = () => {
       [header]: Object.fromEntries(Object.keys(checkedItems[header]).map((k) => [k, checked])),
     })
   }
+
+  const onContentSelection = (header: string, groupItem: any, checked: any) => {
+    setCheckedItems({
+      ...checkedItems,
+      [header]: { ...checkedItems[header], [groupItem.title]: checked },
+    })
+  }
+
   return (
     <div
       style={
@@ -98,7 +103,7 @@ const Materials = () => {
           selectionMode={selectionMode}
           selectionTable={checkedItems}
           onHeaderSelection={onHeaderSelection}
-          onContentSelection={() => {}}
+          onContentSelection={onContentSelection}
           headerGenerator={(header, _) => (
             <>
               {!selectionMode && <Caret />}

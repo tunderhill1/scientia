@@ -1,7 +1,6 @@
 import { Accordion, Box, Content, Header, Item, Trigger } from '../styles/grouped-list.style'
 import { ReactNode } from 'react'
 import { Checkbox, Indicator } from '../styles/login.style'
-import { CheckboxIndicator } from '@radix-ui/react-checkbox'
 import { Check } from 'react-bootstrap-icons'
 
 /**
@@ -14,15 +13,16 @@ export const GroupedList = ({
   selectionMode = false,
   selectionTable = {},
   onHeaderSelection = (header, checked) => {},
-  onContentSelection = (header, group, checked) => {},
+  onContentSelection = (header, groupItem, checked) => {},
   contentGenerator,
   headerGenerator,
 }: {
   data: { [key: string]: object[] }
   selectionMode?: boolean
   selectionTable?: { [key: string]: { [key: string]: boolean } }
+  // TODO: checked should be CheckedState, possibly using some coercion later on
   onHeaderSelection?: (header: string, checked: any) => void
-  onContentSelection?: (header: string, group: string, checked: any) => void
+  onContentSelection?: (header: string, groupItem: any, checked: any) => void
   contentGenerator: (header: string, group: object[]) => ReactNode
   headerGenerator: (header: string, group: object[]) => ReactNode
 }) => {
@@ -43,7 +43,6 @@ export const GroupedList = ({
                   <Checkbox
                     checked={Object.values(selectionTable[header]).every((checked) => checked)}
                     onCheckedChange={(checked) => onHeaderSelection(header, checked)}
-                    id={`${header}-checkbox`}
                   >
                     <Indicator>
                       <Check />
@@ -63,8 +62,31 @@ export const GroupedList = ({
               <Content css={{ maxHeight: `calc(${group?.length} * 2.75rem + 1rem)` }}>
                 {/* TODO: Allow user to pass in styling overrides for this box */}
                 <Box>{contentGenerator(header, group)}</Box>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'space-evenly',
+                    minWidth: '2.75rem',
+                    minHeight: '100%',
+                  }}
+                >
+                  {selectionMode &&
+                    group.map((groupItem: any) => {
+                      return (
+                        <Checkbox
+                          checked={selectionTable[header][groupItem.title]}
+                          onCheckedChange={(checked) => onContentSelection(header, groupItem, checked)}
+                        >
+                          <Indicator>
+                            <Check />
+                          </Indicator>
+                        </Checkbox>
+                      )
+                    })}
+                </div>
                 {/* MARK: Checkbox generator here! */}
-                <div style={{ backgroundColor: 'red', flexGrow: '2', minWidth: '2.75rem', minHeight: '100%' }} />
               </Content>
             </Item>
           ))
