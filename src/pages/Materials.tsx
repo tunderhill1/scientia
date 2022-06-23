@@ -6,7 +6,10 @@ import { Toolbar } from '../components/Toolbar'
 import { Caret } from '../styles/grouped-list.style'
 import { Button } from '../styles/_app.style'
 import { ToggleGroup, ToggleItem } from '../styles/toolbar.style'
+import { ToolbarButton } from '@radix-ui/react-toolbar'
 import { Check, CheckSquare, UiChecks, UiChecksGrid } from 'react-bootstrap-icons'
+
+type CheckboxTable = { [key: string]: { [key: string]: boolean } }
 
 const materials = [
   {
@@ -43,14 +46,15 @@ export function groupByProperty(data: object[], property: string): { [key: strin
 
 export function defaultCheckboxTableForProperty(
   data: { [key: string]: object[] },
-  property: string
-): { [key: string]: { [key: string]: boolean } } {
+  property: string,
+  defaultValue: boolean = false
+): CheckboxTable {
   return Object.fromEntries(
     Object.entries(data).map(([header, list]: [string, object[]]) => {
       const table: { [key: string]: boolean } = list.reduce(
         (accTable: { [key: string]: boolean }, item: any) => ({
           ...accTable,
-          [item[property]]: false,
+          [item[property]]: defaultValue,
         }),
         {}
       )
@@ -78,6 +82,7 @@ const Materials = () => {
 
   const [checkedItems, setCheckedItems] = useState(defaultCheckboxTableForProperty(data, 'title'))
   const [selectionMode, setSelectionMode] = useState(false)
+  const [selectedAll, setSelectedAll] = useState(false)
 
   const onHeaderSelection = (header: string, checked: any) => {
     setCheckedItems({
@@ -107,6 +112,18 @@ const Materials = () => {
             <UiChecks size={22} />
           </ToggleItem>
         </ToggleGroup>
+        {selectionMode && (
+          <Button
+            css={{ marginTop: 0, maxWidth: '9rem', padding: '0.5rem', marginLeft: 'auto' }}
+            as={ToolbarButton}
+            onClick={() => {
+              setCheckedItems(defaultCheckboxTableForProperty(data, 'title', !selectedAll))
+              setSelectedAll(!selectedAll)
+            }}
+          >
+            {selectedAll ? 'Deselect all' : 'Select all'}
+          </Button>
+        )}
       </Toolbar>
       {loaded && (
         <GroupedList
