@@ -2,8 +2,11 @@ import { useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { GroupedList } from '../components/GroupedList'
 import { Tabs } from '../components/Tabs'
+import { Toolbar } from '../components/Toolbar'
 import { Caret } from '../styles/grouped-list.style'
-import { Button, Separator, ToggleGroup, ToggleItem, Toolbar } from '../styles/toolbar.style'
+import { Button } from '../styles/_app.style'
+import { ToggleGroup, ToggleItem } from '../styles/toolbar.style'
+import { Check, CheckSquare, UiChecks, UiChecksGrid } from 'react-bootstrap-icons'
 
 const materials = [
   {
@@ -56,20 +59,6 @@ export function defaultCheckboxTableForProperty(
   )
 }
 
-const FullToolbar = () => {
-  return (
-    <Toolbar aria-label="Formatting options">
-      <ToggleGroup type="multiple" aria-label="Text formatting">
-        <ToggleItem value="select" aria-label="select">
-          Select
-        </ToggleItem>
-      </ToggleGroup>
-      <Separator />
-      <Button css={{ marginLeft: 'auto' }}>Share</Button>
-    </Toolbar>
-  )
-}
-
 const Materials = () => {
   const moduleCode = useOutletContext<string | null>()
   // const { data, loaded } = useAxios({
@@ -88,7 +77,7 @@ const Materials = () => {
   const loaded = true
 
   const [checkedItems, setCheckedItems] = useState(defaultCheckboxTableForProperty(data, 'title'))
-  const [selectionMode, setSelectionMode] = useState(true)
+  const [selectionMode, setSelectionMode] = useState(false)
 
   const onHeaderSelection = (header: string, checked: any) => {
     setCheckedItems({
@@ -112,7 +101,13 @@ const Materials = () => {
           : { width: '100%', marginTop: '1rem' }
       }
     >
-      <FullToolbar />
+      <Toolbar style={{ marginBottom: '1rem' }}>
+        <ToggleGroup type="single">
+          <ToggleItem value="select" onClick={(event) => setSelectionMode(!selectionMode)}>
+            <UiChecks size={22} />
+          </ToggleItem>
+        </ToggleGroup>
+      </Toolbar>
       {loaded && (
         <GroupedList
           data={data}
