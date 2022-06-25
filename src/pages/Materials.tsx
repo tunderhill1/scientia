@@ -7,9 +7,8 @@ import { Caret } from '../styles/grouped-list.style'
 import { Button } from '../styles/_app.style'
 import { ToggleGroup, ToggleItem } from '../styles/toolbar.style'
 import { ToolbarButton } from '@radix-ui/react-toolbar'
-import { Check, CheckSquare, UiChecks, UiChecksGrid } from 'react-bootstrap-icons'
-
-type CheckboxTable = { [key: string]: { [key: string]: boolean } }
+import { UiChecks } from 'react-bootstrap-icons'
+import useChecklist from '../lib/checkbox.service'
 
 const materials = [
   {
@@ -44,25 +43,6 @@ export function groupByProperty(data: object[], property: string): { [key: strin
   )
 }
 
-export function defaultCheckboxTableForProperty(
-  data: { [key: string]: object[] },
-  property: string,
-  defaultValue: boolean = false
-): CheckboxTable {
-  return Object.fromEntries(
-    Object.entries(data).map(([header, list]: [string, object[]]) => {
-      const table: { [key: string]: boolean } = list.reduce(
-        (accTable: { [key: string]: boolean }, item: any) => ({
-          ...accTable,
-          [item[property]]: defaultValue,
-        }),
-        {}
-      )
-      return [header, table]
-    })
-  )
-}
-
 const Materials = () => {
   const moduleCode = useOutletContext<string | null>()
   // const { data, loaded } = useAxios({
@@ -80,23 +60,8 @@ const Materials = () => {
   const data = groupByProperty(materials, 'category')
   const loaded = true
 
-  const [checkedItems, setCheckedItems] = useState(defaultCheckboxTableForProperty(data, 'title'))
+  const checklistManager = useChecklist(data, 'title', false)
   const [selectionMode, setSelectionMode] = useState(false)
-  const [selectedAll, setSelectedAll] = useState(false)
-
-  const onHeaderSelection = (header: string, checked: any) => {
-    setCheckedItems({
-      ...checkedItems,
-      [header]: Object.fromEntries(Object.keys(checkedItems[header]).map((k) => [k, checked])),
-    })
-  }
-
-  const onContentSelection = (header: string, groupItem: any, checked: any) => {
-    setCheckedItems({
-      ...checkedItems,
-      [header]: { ...checkedItems[header], [groupItem.title]: checked },
-    })
-  }
 
   return (
     <div
@@ -116,12 +81,9 @@ const Materials = () => {
           <Button
             css={{ marginTop: 0, maxWidth: '9rem', padding: '0.5rem', marginLeft: 'auto' }}
             as={ToolbarButton}
-            onClick={() => {
-              setCheckedItems(defaultCheckboxTableForProperty(data, 'title', !selectedAll))
-              setSelectedAll(!selectedAll)
-            }}
+            onClick={checklistManager.onToggle}
           >
-            {selectedAll ? 'Deselect all' : 'Select all'}
+            {checklistManager.getGlobalState() === true ? 'Deselect all' : 'Select all'}
           </Button>
         )}
       </Toolbar>
@@ -129,9 +91,7 @@ const Materials = () => {
         <GroupedList
           data={data}
           selectionMode={selectionMode}
-          selectionTable={checkedItems}
-          onHeaderSelection={onHeaderSelection}
-          onContentSelection={onContentSelection}
+          checklistManager={checklistManager}
           headerGenerator={(header, _) => (
             <>
               <Caret />
@@ -147,28 +107,3 @@ const Materials = () => {
 }
 
 export default Materials
-
-/**
- * SCRATCH SPACE:
- *
- * > Expected Behaviour:
- *   -> We want to click on a category header to select all elements in the content
- *
- * > Consumer of GroupedList: defines check/uncheck callback
- *   -> pass the callback to the header generator AND the items generator, so that each checkbox triggers it
- *
- *  [GROUPED LIST]
- *   |-> [HEADER]  # Header has checkbox that when clicked would select all content
- *   |    |-> [USER GENERTOR]
- *   |-> [CONTENT]  # Each item in content has a checkbox that selects that item
- *        |-> [USER GENERATOR]
- *
- * Materials.tsx
- *
- * const [checkedValues, setCheckedValues] = useState<>()
- *
- * <GroupedList headerCallback={(header, group) => {K}}
- *              headerGenerator=({header, group} => <Header onClick={() => K} />)
- *              generator={(header, group) => <Checkbox value={checkedValues[header][ite]} onChecked={() => console.log("checked")}}
- *
- */

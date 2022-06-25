@@ -10,21 +10,16 @@ import { Check, Dash } from 'react-bootstrap-icons'
 
 export const GroupedList = ({
   data,
-  selectionMode = false,
-  selectionTable = {},
-  onHeaderSelection = (header, checked) => {},
-  onContentSelection = (header, groupItem, checked) => {},
   contentGenerator,
   headerGenerator,
+  selectionMode = false,
+  checklistManager = {},
 }: {
   data: { [key: string]: object[] }
-  selectionMode?: boolean
-  selectionTable?: { [key: string]: { [key: string]: boolean } }
-  // TODO: checked should be CheckedState, possibly using some coercion later on
-  onHeaderSelection?: (header: string, checked: any) => void
-  onContentSelection?: (header: string, groupItem: any, checked: any) => void
   contentGenerator: (header: string, group: object[]) => ReactNode
   headerGenerator: (header: string, group: object[]) => ReactNode
+  selectionMode?: boolean
+  checklistManager?: any
 }) => {
   return (
     <Accordion type="multiple" defaultValue={Object.keys(data)}>
@@ -36,8 +31,6 @@ export const GroupedList = ({
          */
         data &&
           Object.entries(data).map(([header, group]) => {
-            let selections = selectionMode ? Object.values(selectionTable[header]) : []
-            let someButNotAllSelected = selections.some(Boolean) && !selections.every(Boolean)
             return (
               <Item value={header} key={header}>
                 {/* TODO: Allow user to specify unique identifier attribute instead */}
@@ -46,10 +39,12 @@ export const GroupedList = ({
                   {selectionMode && (
                     <Checkbox
                       css={{ minWidth: '1.75rem' }}
-                      checked={someButNotAllSelected ? 'indeterminate' : selections.every(Boolean)}
-                      onCheckedChange={(checked) => onHeaderSelection(header, checked)}
+                      checked={
+                        checklistManager.isIndeterminate(header) ? 'indeterminate' : checklistManager.isComplete(header)
+                      }
+                      onCheckedChange={(checked) => checklistManager.onCollectionCheck(header, checked)}
                     >
-                      <Indicator>{someButNotAllSelected ? <Dash /> : <Check />}</Indicator>
+                      <Indicator>{checklistManager.isIndeterminate(header) ? <Dash /> : <Check />}</Indicator>
                     </Checkbox>
                   )}
                 </Header>
@@ -71,8 +66,10 @@ export const GroupedList = ({
                       group.map((groupItem: any) => {
                         return (
                           <Checkbox
-                            checked={selectionTable[header][groupItem.title]}
-                            onCheckedChange={(checked) => onContentSelection(header, groupItem, checked)}
+                            checked={checklistManager.getItemState(header, groupItem.title)}
+                            onCheckedChange={(checked) =>
+                              checklistManager.onItemCheck(header, groupItem.title, checked)
+                            }
                             key={groupItem.title} // TODO: use id
                           >
                             <Indicator>

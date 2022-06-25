@@ -20,6 +20,7 @@
  */
 
 import { CheckedState } from '@radix-ui/react-checkbox'
+import { check } from 'prettier'
 import { useRef, useState } from 'react'
 
 type Flat = { [key: string]: CheckedState }
@@ -83,9 +84,10 @@ export default function useChecklist(data: { [key: string]: object[] }, property
   }
 
   /* Toggle all checklist items between true and false */
-  function onToggle(value: boolean) {
-    setChecklist(defaultChecklist(configRef.current.data, configRef.current.property, !value))
-    setCheckedState(value)
+  function onToggle() {
+    const newCheckedState: boolean = !(checkedState === 'indeterminate' || checkedState)
+    setChecklist(defaultChecklist(configRef.current.data, configRef.current.property, newCheckedState))
+    setCheckedState(newCheckedState)
   }
 
   function isIndeterminate(title: string): boolean {
@@ -97,14 +99,26 @@ export default function useChecklist(data: { [key: string]: object[] }, property
     return Object.values(checklist[title]).every(Boolean)
   }
 
-  function getCheckedState(): CheckedState {
+  function getItemState(title: string, property: string): CheckedState {
+    return (checklist[title] as Flat)[property]
+  }
+
+  function getGlobalState(): CheckedState {
     return checkedState
   }
 
   const [checklist, setChecklist] = useState<Checklist>(defaultChecklist(data, property, value))
   const [checkedState, setCheckedState] = useState<CheckedState>(false)
   const configRef = useRef({ data, property })
-  const checklistManager = { onCollectionCheck, onItemCheck, isIndeterminate, isComplete, onToggle, getCheckedState }
+  const checklistManager = {
+    onCollectionCheck,
+    onItemCheck,
+    isIndeterminate,
+    isComplete,
+    onToggle,
+    getItemState,
+    getGlobalState,
+  }
 
   return checklistManager
 }
