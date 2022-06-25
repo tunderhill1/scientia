@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { GroupedList } from '../components/GroupedList'
 import { Tabs } from '../components/Tabs'
@@ -7,8 +7,10 @@ import { Caret } from '../styles/grouped-list.style'
 import { Button } from '../styles/_app.style'
 import { ToggleGroup, ToggleItem } from '../styles/toolbar.style'
 import { ToolbarButton } from '@radix-ui/react-toolbar'
-import { UiChecks } from 'react-bootstrap-icons'
+import { Check, Dash, UiChecks } from 'react-bootstrap-icons'
 import useChecklist from '../lib/checkbox.service'
+import { Checkbox, Indicator } from '../styles/login.style'
+import { CheckedState } from '@radix-ui/react-checkbox'
 
 const materials = [
   {
@@ -62,6 +64,11 @@ const Materials = () => {
 
   const checklistManager = useChecklist(data, 'title', false)
   const [selectionMode, setSelectionMode] = useState(false)
+  const [checkedState, setCheckedState] = useState<CheckedState>(false)
+
+  useEffect(() => {
+    setCheckedState(checklistManager.checkedState)
+  }, [checklistManager.checkedState])
 
   return (
     <div
@@ -78,13 +85,13 @@ const Materials = () => {
           </ToggleItem>
         </ToggleGroup>
         {selectionMode && (
-          <Button
-            css={{ marginTop: 0, maxWidth: '9rem', padding: '0.5rem', marginLeft: 'auto' }}
-            as={ToolbarButton}
-            onClick={checklistManager.onToggle}
+          <Checkbox
+            css={{ marginLeft: 'auto', marginTop: '0.5rem' }}
+            checked={checklistManager.checkedState}
+            onCheckedChange={checklistManager.onToggle}
           >
-            {checklistManager.getGlobalState() === true ? 'Deselect all' : 'Select all'}
-          </Button>
+            <Indicator>{checklistManager.checkedState === 'indeterminate' ? <Dash /> : <Check />}</Indicator>
+          </Checkbox>
         )}
       </Toolbar>
       {loaded && (

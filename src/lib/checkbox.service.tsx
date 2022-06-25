@@ -20,8 +20,7 @@
  */
 
 import { CheckedState } from '@radix-ui/react-checkbox'
-import { check } from 'prettier'
-import { useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 type Flat = { [key: string]: CheckedState }
 type Nest = { [key: string]: Checklist }
@@ -29,6 +28,10 @@ type Checklist = Flat | Nest
 
 /* TODO: Update functionality to handle deeply nested checklists */
 export default function useChecklist(data: { [key: string]: object[] }, property: string, value: boolean = false) {
+  const [checklist, setChecklist] = useState<Checklist>(defaultChecklist(data, property, value))
+  const [checkedState, setCheckedState] = useState<CheckedState>(false)
+  const configRef = useRef({ data, property })
+
   /**
    * NOTE: For each collection, we reduce the items (e.g. [{a-1: ..., ...}, ...]) into a checklist that takes the
    * title of the collection (e.g. c-1). We then collect all the collection-specific checklists into a nested one (see
@@ -50,19 +53,6 @@ export default function useChecklist(data: { [key: string]: object[] }, property
     )
   }
 
-  function recomputeCheckedState(checklist: Checklist) {
-    const indeterminate: boolean = Object.keys(checklist).reduce(
-      (accumulator: boolean, title: string) => accumulator || isIndeterminate(title),
-      false
-    )
-    const complete: boolean = Object.keys(checklist).reduce(
-      (accumulator: boolean, title: string) => accumulator && isComplete(title),
-      true
-    )
-    const newCheckedState: CheckedState = indeterminate ? 'indeterminate' : complete
-    setCheckedState(newCheckedState)
-  }
-
   /* Marks all items in the named checklist (as specified by title) with the provided value */
   function onCollectionCheck(title: string, value: CheckedState) {
     const updatedChecklist: Checklist = {
@@ -70,7 +60,6 @@ export default function useChecklist(data: { [key: string]: object[] }, property
       [title]: Object.fromEntries(Object.keys(checklist[title]).map((property) => [property, value])),
     }
     setChecklist(updatedChecklist)
-    recomputeCheckedState(updatedChecklist)
   }
 
   /* Marks a specific item in the named checklist (as specified by title) with the provided value */
@@ -80,7 +69,6 @@ export default function useChecklist(data: { [key: string]: object[] }, property
       [title]: { ...(checklist[title] as Flat), [property]: value },
     }
     setChecklist(updatedChecklist)
-    recomputeCheckedState(updatedChecklist)
   }
 
   /* Toggle all checklist items between true and false */
@@ -90,34 +78,49 @@ export default function useChecklist(data: { [key: string]: object[] }, property
     setCheckedState(newCheckedState)
   }
 
-  function isIndeterminate(title: string): boolean {
-    const values = Object.values(checklist[title])
-    return values.some(Boolean) && !values.every(Boolean)
-  }
+  /* NOTE: Callbacks are used so that the function's only redefined when checklist changes */
+  const isIndeterminate = useCallback(
+    (title: string) => {
+      const values = Object.values(checklist[title])
+      return values.some(Boolean) && !values.every(Boolean)
+    },
+    [checklist]
+  )
 
-  function isComplete(title: string): boolean {
-    return Object.values(checklist[title]).every(Boolean)
-  }
+  const isComplete = useCallback(
+    (title: string) => {
+      return Object.values(checklist[title]).every(Boolean)
+    },
+    [checklist]
+  )
 
   function getItemState(title: string, property: string): CheckedState {
     return (checklist[title] as Flat)[property]
   }
 
-  function getGlobalState(): CheckedState {
-    return checkedState
-  }
+  useEffect(() => {
+    function recomputeCheckedState(updatedChecklist: Checklist) {
+      const values: boolean[] = Object.values(updatedChecklist).flatMap(Object.values)
+      const indeterminate: boolean = values.some(Boolean) && !values.every(Boolean)
+      const complete: boolean = Object.keys(updatedChecklist).reduce(
+        (accumulator: boolean, title: string) => accumulator && isComplete(title),
+        true
+      )
 
-  const [checklist, setChecklist] = useState<Checklist>(defaultChecklist(data, property, value))
-  const [checkedState, setCheckedState] = useState<CheckedState>(false)
-  const configRef = useRef({ data, property })
+      const newCheckedState: CheckedState = indeterminate ? 'indeterminate' : complete
+      setCheckedState(newCheckedState)
+    }
+    recomputeCheckedState(checklist)
+  }, [checklist, isComplete, isIndeterminate])
+
   const checklistManager = {
+    checkedState,
     onCollectionCheck,
     onItemCheck,
     isIndeterminate,
     isComplete,
     onToggle,
     getItemState,
-    getGlobalState,
   }
 
   return checklistManager
