@@ -14,6 +14,7 @@ import Materials from './Materials'
 import Modules from './Modules'
 import { YearProvider } from '../lib/year.context'
 import { YearRoute } from '../components/YearRoute'
+import Timeline from './Timeline'
 
 function App() {
   globalStyles()
@@ -27,6 +28,7 @@ function App() {
                 {/* TODO: Add a no-match route (i.e. 404 Not Found) */}
                 <Routes>
                   <Route index element={<Login />} />
+                  <Route path="timeline" element={<Timeline />} />
                   <Route element={<ProtectedRoute />}>
                     <Route path=":requestedYear" element={<YearRoute />}>
                       <Route path="modules">
