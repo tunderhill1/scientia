@@ -12,51 +12,16 @@
 
 Spearheaded by the [DoC EdTech Lab](https://edtech.pages.doc.ic.ac.uk/), Scientia is a platform that focuses on ehancing the remote learning experience for staff and students alike.
 
-_🚧 This platform is currently under development! 🚧_
 
-### Getting Started with Create React App
+# Running the app in dev
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> Make sure that the project folder sits next to **Materials** project folder.
 
-## Available Scripts
+To make sure that cookies are sent correctly from the backend and stored correctly in the client, we use a docker-compose
+stack with an Nginx reverse proxy (pretty much what we use in production -just with simpler configs).
 
-In the project directory, you can run:
+```shell
+docker-compose up [--build]
+```
 
-### `yarn start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+The stack so-composed (pardon the pun) should allow for hot-reload in both Scientia and Materials (as the respective services' source codes are attached as volumes).

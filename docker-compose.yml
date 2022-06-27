@@ -1,0 +1,26 @@
+services:
+  materials_api:
+    image: materials
+    build: 
+      context: ../materials
+      dockerfile: dev.Dockerfile
+    expose:
+      - 5000
+    command: flask run -h '0.0.0.0' -p 5000
+    volumes:
+      - ../materials:/materials
+  reverse_proxy:
+    image: nginx
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    volumes:
+      - ./dev-reverse-proxy.conf:/etc/nginx/conf.d/dev.conf
+  scientia:
+    image: node:16
+    expose:
+      - 3000
+    working_dir: /scientia
+    volumes:
+      - ./:/scientia 
+    command: yarn start
