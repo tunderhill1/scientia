@@ -6,9 +6,11 @@
  * that's mapped to your device's IP address and temporarily update the baseURL to use this instead of development:
  * const local = 'http://X.X.X.X:5000'
  * Next, start materials (and/or emarking) with the --host 0.0.0.0 argument.
+ *
+ * TODO: Not verified after latest updates using docker for local development.
  */
 
-const development = 'http://127.0.0.1:5000'
+const development = 'http://localhost:8080/api'
 const production = 'https://api-materials.doc.ic.ac.uk'
 export const baseURL = process.env.NODE_ENV === 'production' ? production : development
 

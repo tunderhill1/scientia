@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { endpoints } from '../constants/endpoints'
-import useToken from './token.service'
 import { useUser } from './user.context'
 
 /**
@@ -19,7 +18,6 @@ type Credentials = {
 
 export default function useAuth() {
   const { storeUsername } = useUser()
-  const { saveToken, removeTokens, isExpired } = useToken()
   const navigate = useNavigate()
 
   const setUserContext = (username: string) => {
@@ -40,9 +38,6 @@ export default function useAuth() {
       data: data,
     })
       .then((response) => {
-        saveToken(response.data.access_token, 'access')
-        /* Only save the refresh token if the user has checked the "remember me" box */
-        if (remember) saveToken(response.data.refresh_token, 'refresh')
         setUserContext(data.username)
       })
       .catch((error) => {
@@ -51,11 +46,11 @@ export default function useAuth() {
   }
 
   const isLoggedIn = (): boolean => {
-    return !isExpired('refresh')
+    return localStorage.hasOwnProperty('username') && localStorage.getItem('username') !== ''
   }
 
   const logoutUser = () => {
-    removeTokens()
+    /* TODO: perform logout with apis to revoke authentication tokens */
     setUserContext('')
     navigate('/')
   }

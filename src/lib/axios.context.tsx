@@ -3,6 +3,8 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 import useAuth from './auth.service'
 import useToken from './token.service'
 
+const ANTI_CSRF_COOKIE_NAME = 'csrf_access_token'
+
 /**
  * Code for the axios instance provider and the accompanying useAxios hook was sourced (and modified) from the following
  * blog post by Arek Nawo:
@@ -18,6 +20,12 @@ import useToken from './token.service'
  * TODO: Implement functionality; currently, they're dummy interceptors
  */
 
+function getCookie(cookieName: string): string {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${cookieName}=`)
+  return parts.length === 2 ? parts.pop()?.split(';').shift() || '' : ''
+}
+
 const AxiosContext = createContext<AxiosInstance>(axios)
 
 /* TODO: Support multiple instances with additional configurations; i.e. create a ref for each instance */
@@ -32,7 +40,8 @@ export const AxiosInstanceProvider = ({ config = {}, children }: { config: any; 
     instanceRef.current = axios.create(config)
     instanceRef.current.interceptors.request.use((request) => {
       /* TODO: Need to check if the user's logged in before adding the token */
-      request.headers = { Authorization: `Bearer ${getToken('access')}` }
+      request.headers = { 'X-CSRF-TOKEN': getCookie(ANTI_CSRF_COOKIE_NAME) }
+      request.withCredentials = true
       return request
     })
     instanceRef.current.interceptors.response.use(
@@ -40,15 +49,7 @@ export const AxiosInstanceProvider = ({ config = {}, children }: { config: any; 
         return response
       },
       async (error) => {
-        const request = error.config
-        const refreshToken = getToken('refresh')
-        if (refreshToken === null) logoutUser()
-        if (error.response.status === 401 && !request._retry && instanceRef.current !== null) {
-          request._retry = true
-          await refreshTokens()
-          instanceRef.current.defaults.headers.common = { Authorization: `Bearer ${getToken('access')}` }
-          return instanceRef.current(request)
-        }
+        if (error.response.status === 401) logoutUser()
         return Promise.reject(error)
       }
     )
