@@ -11,7 +11,7 @@ export const links: Link[] = [
   {
     title: 'GitLab',
     url: 'https://gitlab.doc.ic.ac.uk',
-    icon: <Git size={20} style={{ margin: '0 0.5rem 0 0.5rem' }} />,
+    icon: <Git size={16} style={{ margin: '0 0.5rem 0 0.5rem' }} />,
   },
   {
     title: 'Outlook',

@@ -1,38 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { Check, Dash, Download, UiChecks } from 'react-bootstrap-icons'
 import { useOutletContext } from 'react-router-dom'
 import { GroupedList } from '../components/GroupedList'
 import { Tabs } from '../components/Tabs'
 import { Toolbar } from '../components/Toolbar'
-import { Caret } from '../styles/grouped-list.style'
-import { Button } from '../styles/_app.style'
-import { ToggleGroup, ToggleItem } from '../styles/toolbar.style'
-import { Check, Dash, Download, UiChecks } from 'react-bootstrap-icons'
+import { mockMaterials } from '../constants/mock'
 import useChecklist from '../lib/checkbox.service'
+import { Caret } from '../styles/grouped-list.style'
 import { Checkbox, Indicator } from '../styles/login.style'
-import { CheckedState } from '@radix-ui/react-checkbox'
-
-const materials = [
-  {
-    category: 'Lecture Notes',
-    title: 'Haskell Notes Week 1',
-    other: '...other stuff...',
-  },
-  {
-    category: 'Lecture Notes',
-    title: 'Haskell Notes Week 2',
-    other: '...other stuff...',
-  },
-  {
-    category: 'Lecture Notes',
-    title: 'Haskell Notes Week 3',
-    other: '...other stuff...',
-  },
-  {
-    category: 'Unassessed Courseworks',
-    title: 'Unassessed 1',
-    other: '...other stuff...',
-  },
-]
+import { ToggleGroup, ToggleItem } from '../styles/toolbar.style'
+import { Button } from '../styles/_app.style'
 
 export function groupByProperty(data: object[], property: string): { [key: string]: object[] } {
   return data.reduce(
@@ -58,16 +35,11 @@ const Materials = () => {
   //   }
   // }, [data])
 
-  const data = groupByProperty(materials, 'category')
+  const data = groupByProperty(mockMaterials, 'category')
   const loaded = true
 
   const checklistManager = useChecklist(data, 'title', false)
   const [selectionMode, setSelectionMode] = useState(false)
-  const [checkedState, setCheckedState] = useState<CheckedState>(false)
-
-  useEffect(() => {
-    setCheckedState(checklistManager.checkedState)
-  }, [checklistManager.checkedState])
 
   return (
     <div
@@ -86,7 +58,7 @@ const Materials = () => {
         {selectionMode && (
           <>
             <Button icon css={{ marginLeft: 'auto' }}>
-              <Download />
+              <Download size={22} />
             </Button>
             <Checkbox
               css={{ marginTop: '0.5rem' }}
