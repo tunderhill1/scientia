@@ -6,8 +6,7 @@ import { Toolbar } from '../components/Toolbar'
 import { Caret } from '../styles/grouped-list.style'
 import { Button } from '../styles/_app.style'
 import { ToggleGroup, ToggleItem } from '../styles/toolbar.style'
-import { ToolbarButton } from '@radix-ui/react-toolbar'
-import { Check, Dash, UiChecks } from 'react-bootstrap-icons'
+import { Check, Dash, Download, UiChecks } from 'react-bootstrap-icons'
 import useChecklist from '../lib/checkbox.service'
 import { Checkbox, Indicator } from '../styles/login.style'
 import { CheckedState } from '@radix-ui/react-checkbox'
@@ -85,13 +84,18 @@ const Materials = () => {
           </ToggleItem>
         </ToggleGroup>
         {selectionMode && (
-          <Checkbox
-            css={{ marginLeft: 'auto', marginTop: '0.5rem' }}
-            checked={checklistManager.checkedState}
-            onCheckedChange={checklistManager.onToggle}
-          >
-            <Indicator>{checklistManager.checkedState === 'indeterminate' ? <Dash /> : <Check />}</Indicator>
-          </Checkbox>
+          <>
+            <Button icon css={{ marginLeft: 'auto' }}>
+              <Download />
+            </Button>
+            <Checkbox
+              css={{ marginTop: '0.5rem' }}
+              checked={checklistManager.checkedState}
+              onCheckedChange={checklistManager.onToggle}
+            >
+              <Indicator>{checklistManager.checkedState === 'indeterminate' ? <Dash /> : <Check />}</Indicator>
+            </Checkbox>
+          </>
         )}
       </Toolbar>
       {loaded && (
