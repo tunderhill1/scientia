@@ -101,6 +101,37 @@ export const Button = styled('button', {
   },
 })
 
+export const Footnote = styled('p', {
+  fontSize: '$footnote',
+  variants: {
+    muted: {
+      true: {
+        color: '$lowContrast',
+      },
+    },
+    center: {
+      true: {
+        textAlign: 'center',
+      },
+    },
+  },
+})
+
+/* Syntatic sugar for a plain div with functionality to center content if needed */
+export const Wrapper = styled('div', {
+  width: '100%',
+  variants: {
+    center: {
+      true: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+    },
+  },
+})
+
 /* The following code was inspired by the Radix UI scroll area codesandbox:
  * https://codesandbox.io/s/vwrqpu?module=App.js&file=/App.js
  */

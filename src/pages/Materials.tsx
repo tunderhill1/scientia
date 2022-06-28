@@ -10,7 +10,7 @@ import { groupByProperty } from '../lib/utilities.service'
 import { Caret } from '../styles/grouped-list.style'
 import { Checkbox, Indicator } from '../styles/login.style'
 import { ToggleGroup, ToggleItem } from '../styles/toolbar.style'
-import { Button } from '../styles/_app.style'
+import { Button, Footnote, Wrapper } from '../styles/_app.style'
 
 const Materials = () => {
   const moduleCode = useOutletContext<string | null>()
@@ -32,14 +32,17 @@ const Materials = () => {
   const checklistManager = useChecklist(data, 'title', false)
   const [selectionMode, setSelectionMode] = useState(false)
 
+  const noMaterials = () => data && Object.keys(data).length === 0
+
+  if (noMaterials())
+    return (
+      <Wrapper center>
+        <span>No materials for this module.</span>
+      </Wrapper>
+    )
+
   return (
-    <div
-      style={
-        data && Object.keys(data).length === 0
-          ? { display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center' }
-          : { width: '100%', marginTop: '1rem' }
-      }
-    >
+    <Wrapper>
       <Toolbar style={{ marginBottom: '1rem' }}>
         <ToggleGroup type="single">
           <ToggleItem value="select" onClick={(event) => setSelectionMode(!selectionMode)}>
@@ -48,7 +51,7 @@ const Materials = () => {
         </ToggleGroup>
         {selectionMode && (
           <>
-            <Button icon css={{ marginLeft: 'auto' }}>
+            <Button icon css={{ marginLeft: 'auto', marginRight: '0.75rem' }}>
               <Download size={22} />
             </Button>
             <Checkbox
@@ -75,8 +78,11 @@ const Materials = () => {
           contentGenerator={(_, group) => <Tabs data={group} generator={(tab: any) => <span>{tab.title}</span>} />}
         />
       )}
-      {data && Object.keys(data).length === 0 && <span>No materials for this module.</span>}
-    </div>
+      <Footnote muted center css={{ margin: '2rem 0' }}>
+        Please contact the relevant module leader(s) for missing resources or if you'd like materials to be better
+        organised; we recommend using EdStem to help them gauge the peer response.
+      </Footnote>
+    </Wrapper>
   )
 }
 

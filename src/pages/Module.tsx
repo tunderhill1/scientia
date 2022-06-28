@@ -27,12 +27,8 @@ const Module = () => {
       <h3 className={css({ color: '$lowContrast', margin: '0.5rem 0rem', marginBottom: '1rem', fontWeight: '400' })()}>
         {moduleCode}
       </h3>
-      <p style={{ marginBottom: '0.5rem' }}>
-        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque
-        corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in
-        culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.
-      </p>
-      <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
+      {/* TODO: Introduce module leader information or overview here when the data is available */}
+      <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
         {tabs.map((tab) => (
           <Button
             key={tab.title}

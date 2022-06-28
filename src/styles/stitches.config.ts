@@ -5,6 +5,7 @@ export const { styled, css, globalCss, theme } = createStitches({
   theme: {
     fontSizes: {
       fontSize: '16px' /* Root element's font size */,
+      footnote: '0.875rem',
       /* The following follows the "major second" scale */
       h1Size: '1.8rem',
       h2Size: '1.6rem',

@@ -52,18 +52,18 @@ export const GroupedList = ({
                 <Content css={{ maxHeight: `calc(${group?.length} * 2.75rem + 1rem)` }}>
                   {/* TODO: Allow user to pass in styling overrides for this box */}
                   <Box>{contentGenerator(header, group)}</Box>
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'space-evenly',
-                      minWidth: '1.75rem',
-                      minHeight: '100%',
-                    }}
-                  >
-                    {selectionMode &&
-                      group.map((groupItem: any) => {
+                  {selectionMode && (
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'space-evenly',
+                        minWidth: '1.75rem',
+                        minHeight: '100%',
+                      }}
+                    >
+                      {group.map((groupItem: any) => {
                         return (
                           <Checkbox
                             checked={checklistManager.getItemState(header, groupItem.title)}
@@ -78,7 +78,8 @@ export const GroupedList = ({
                           </Checkbox>
                         )
                       })}
-                  </div>
+                    </div>
+                  )}
                 </Content>
               </Item>
             )

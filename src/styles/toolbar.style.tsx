@@ -8,18 +8,14 @@ import {
 
 export const ToolbarContainer = styled(ToolbarPrimitive, {
   display: 'flex',
-  padding: '0.5rem',
   width: '100%',
   minWidth: 'max-content',
-  borderRadius: '0.75rem',
-  backgroundColor: '$subtleBackground',
 })
 
 export const itemStyles = {
   all: 'unset',
   flex: '0 0 auto',
   height: '2.75rem',
-  // padding: '0.5rem',
   borderRadius: '0.5rem',
   display: 'inline-flex',
   alignItems: 'center',
