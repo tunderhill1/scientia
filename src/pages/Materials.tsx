@@ -33,6 +33,12 @@ const Materials = () => {
     if (data !== null) setGroupedMaterials(groupByProperty(data, 'category'))
   }, [data])
 
+  const onDownload = () => {
+    const idsToDownload = checklistManager.getCheckedItems()
+    const queryParameter = idsToDownload.map((id) => `id=${id}`).join('&')
+    window.open(`${endpoints.resourcesArchive}?year=${year}&course=${moduleCode}&${queryParameter}`)
+  }
+
   if (noMaterials())
     return (
       <Wrapper center>
@@ -50,7 +56,12 @@ const Materials = () => {
         </ToggleGroup>
         {selectionMode && (
           <>
-            <Button icon css={{ marginLeft: 'auto', marginRight: '0.75rem' }}>
+            <Button
+              icon
+              css={{ marginLeft: 'auto', marginRight: '0.75rem' }}
+              onClick={onDownload}
+              disabled={checklistManager.getCheckedItems().length === 0}
+            >
               <Download size={22} />
             </Button>
             <Checkbox

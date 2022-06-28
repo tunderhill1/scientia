@@ -101,6 +101,13 @@ export default function useChecklist(data: { [key: string]: object[] }, property
     return checkedState
   }
 
+  function getCheckedItems(): any[] {
+    return Object.values(checklist)
+      .flatMap(Object.entries)
+      .filter(([_, value]) => value)
+      .map(([key, _]) => key)
+  }
+
   useEffect(() => {
     function recomputeCheckedState(updatedChecklist: Checklist) {
       const values: boolean[] = Object.values(updatedChecklist).flatMap(Object.values)
@@ -128,5 +135,6 @@ export default function useChecklist(data: { [key: string]: object[] }, property
     onToggle,
     getItemState,
     getCheckedState,
+    getCheckedItems,
   }
 }
