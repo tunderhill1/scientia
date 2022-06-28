@@ -16,6 +16,7 @@ export const baseURL = process.env.NODE_ENV === 'production' ? production : deve
 
 export const endpoints = {
   login: `${baseURL}/auth/login`,
+  logout: `${baseURL}/auth/logout`,
   refresh: `${baseURL}/auth/refresh`,
   courses: (year: string) => `${baseURL}/courses/${year}`,
   resources: `${baseURL}/resources`,

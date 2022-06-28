@@ -50,9 +50,18 @@ export default function useAuth() {
   }
 
   const logoutUser = () => {
-    /* TODO: perform logout with apis to revoke authentication tokens */
-    setUserContext('')
-    navigate('/')
+    axios({
+      url: endpoints.login,
+      method: 'delete',
+      headers: { 'X-CSRF-TOKEN': getCookie(ANTI_CSRF_COOKIE_NAME) },
+    })
+      .catch((error) => {
+        console.log(error)
+      })
+      .finally(() => {
+        setUserContext('')
+        navigate('/')
+      })
   }
 
   return { loginUser, logoutUser, isLoggedIn }
