@@ -20,7 +20,7 @@ const Materials = () => {
 
   const moduleCode = useOutletContext<string | null>()
   const { year } = useYear()
-  const checklistManager = useChecklist(groupedMaterials, 'title', false)
+  const checklistManager = useChecklist(groupedMaterials, 'id', false)
   const { data, loaded } = useAxios({
     url: endpoints.resources,
     method: 'GET',
@@ -74,7 +74,16 @@ const Materials = () => {
               <span>{header}</span>
             </>
           )}
-          contentGenerator={(_, group) => <Tabs data={group} generator={(tab: any) => <span>{tab.title}</span>} />}
+          contentGenerator={(_, group) => (
+            <Tabs
+              data={group}
+              generator={(tab: any) => <span>{tab.title}</span>}
+              onClick={(tab: any) => {
+                const link = tab.type === 'link' ? tab.path : endpoints.resourceFile(tab.id)
+                window.open(link)
+              }}
+            />
+          )}
         />
       )}
       <Footnote muted center css={{ margin: '2rem 0' }}>

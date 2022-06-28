@@ -19,4 +19,5 @@ export const endpoints = {
   refresh: `${baseURL}/auth/refresh`,
   courses: (year: string) => `${baseURL}/courses/${year}`,
   resources: `${baseURL}/resources`,
+  resourceFile: (id: number) => `${baseURL}/resources/${id}/file`,
 }
