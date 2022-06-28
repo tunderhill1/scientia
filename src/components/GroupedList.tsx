@@ -12,12 +12,14 @@ export const GroupedList = ({
   data,
   contentGenerator,
   headerGenerator,
+  selectionProperty = 'id',
   selectionMode = false,
   checklistManager = {},
 }: {
   data: { [key: string]: object[] }
   contentGenerator: (header: string, group: object[]) => ReactNode
   headerGenerator: (header: string, group: object[]) => ReactNode
+  selectionProperty?: string
   selectionMode?: boolean
   checklistManager?: any
 }) => {
@@ -66,11 +68,11 @@ export const GroupedList = ({
                       {group.map((groupItem: any) => {
                         return (
                           <Checkbox
-                            checked={checklistManager.getItemState(header, groupItem.title)}
+                            checked={checklistManager.getItemState(header, groupItem[selectionProperty])}
                             onCheckedChange={(checked) =>
-                              checklistManager.onItemCheck(header, groupItem.title, checked)
+                              checklistManager.onItemCheck(header, groupItem[selectionProperty], checked)
                             }
-                            key={groupItem.title} // TODO: use id
+                            key={groupItem[selectionProperty]} // TODO: use id
                           >
                             <Indicator>
                               <Check />
