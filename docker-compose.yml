@@ -18,8 +18,8 @@ services:
       - ./dev-reverse-proxy.conf:/etc/nginx/conf.d/dev.conf
   scientia:
     image: node:16
-    expose:
-      - 3000
+    ports:
+      - 3000:3000
     working_dir: /scientia
     volumes:
       - ./:/scientia 
