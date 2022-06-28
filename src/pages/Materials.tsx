@@ -6,20 +6,11 @@ import { Tabs } from '../components/Tabs'
 import { Toolbar } from '../components/Toolbar'
 import { mockMaterials } from '../constants/mock'
 import useChecklist from '../lib/checkbox.service'
+import { groupByProperty } from '../lib/utilities.service'
 import { Caret } from '../styles/grouped-list.style'
 import { Checkbox, Indicator } from '../styles/login.style'
 import { ToggleGroup, ToggleItem } from '../styles/toolbar.style'
 import { Button } from '../styles/_app.style'
-
-export function groupByProperty(data: object[], property: string): { [key: string]: object[] } {
-  return data.reduce(
-    (groups: any, item: any) => ({
-      ...groups,
-      [item[property]]: [...(groups[item[property]] || []), item],
-    }),
-    {}
-  )
-}
 
 const Materials = () => {
   const moduleCode = useOutletContext<string | null>()
