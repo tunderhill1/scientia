@@ -22,6 +22,7 @@ stack with an Nginx reverse proxy (pretty much what we use in production -just w
 
 ```shell
 docker-compose up [--build]
+docker exec $(docker ps -qf "name=materials_api" | head -n1) flask load_dev_resources
 ```
 
 The stack so-composed (pardon the pun) should allow for hot-reload in both Scientia and Materials (as the respective services' source codes are attached as volumes).
