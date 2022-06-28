@@ -20,7 +20,7 @@
  */
 
 import { CheckedState } from '@radix-ui/react-checkbox'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 type Flat = { [key: string]: CheckedState }
 type Nest = { [key: string]: Checklist }
@@ -28,9 +28,8 @@ type Checklist = Flat | Nest
 
 /* TODO: Update functionality to handle deeply nested checklists */
 export default function useChecklist(data: { [key: string]: object[] }, property: string, value: boolean = false) {
-  const [checklist, setChecklist] = useState<Checklist>(defaultChecklist(data, property, value))
+  const [checklist, setChecklist] = useState<Checklist>({})
   const [checkedState, setCheckedState] = useState<CheckedState>(false)
-  const configRef = useRef({ data, property })
 
   /**
    * NOTE: For each collection, we reduce the items (e.g. [{a-1: ..., ...}, ...]) into a checklist that takes the
@@ -74,7 +73,7 @@ export default function useChecklist(data: { [key: string]: object[] }, property
   /* Toggle all checklist items between true and false */
   function onToggle() {
     const newCheckedState: boolean = !(checkedState === 'indeterminate' || checkedState)
-    setChecklist(defaultChecklist(configRef.current.data, configRef.current.property, newCheckedState))
+    setChecklist(defaultChecklist(data, property, newCheckedState))
     setCheckedState(newCheckedState)
   }
 
@@ -98,6 +97,10 @@ export default function useChecklist(data: { [key: string]: object[] }, property
     return (checklist[title] as Flat)[property]
   }
 
+  function getCheckedState(): CheckedState {
+    return checkedState
+  }
+
   useEffect(() => {
     function recomputeCheckedState(updatedChecklist: Checklist) {
       const values: boolean[] = Object.values(updatedChecklist).flatMap(Object.values)
@@ -113,15 +116,17 @@ export default function useChecklist(data: { [key: string]: object[] }, property
     recomputeCheckedState(checklist)
   }, [checklist, isComplete, isIndeterminate])
 
-  const checklistManager = {
-    checkedState,
+  useEffect(() => {
+    setChecklist(defaultChecklist(data, property, value))
+  }, [data, property, value])
+
+  return {
     onCollectionCheck,
     onItemCheck,
     isIndeterminate,
     isComplete,
     onToggle,
     getItemState,
+    getCheckedState,
   }
-
-  return checklistManager
 }

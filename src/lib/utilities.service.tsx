@@ -7,13 +7,15 @@
  * NOTE: This assumes that the property chosen doesn't have duplicate values!
  */
 export function groupByProperty(data: object[], property: string): { [key: string]: object[] } {
-  return data.reduce(
-    (groups: any, item: any) => ({
-      ...groups,
-      [item[property]]: [...(groups[item[property]] || []), item],
-    }),
-    {}
-  )
+  return data === null
+    ? {}
+    : data.reduce(
+        (groups: any, item: any) => ({
+          ...groups,
+          [item[property]]: [...(groups[item[property]] || []), item],
+        }),
+        {}
+      )
 }
 
 /**

@@ -3,7 +3,7 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 import useAuth from './auth.service'
 import useToken from './token.service'
 
-const ANTI_CSRF_COOKIE_NAME = 'csrf_access_token'
+export const ANTI_CSRF_COOKIE_NAME = 'csrf_access_token'
 
 /**
  * Code for the axios instance provider and the accompanying useAxios hook was sourced (and modified) from the following
@@ -20,7 +20,7 @@ const ANTI_CSRF_COOKIE_NAME = 'csrf_access_token'
  * TODO: Implement functionality; currently, they're dummy interceptors
  */
 
-function getCookie(cookieName: string): string {
+export function getCookie(cookieName: string): string {
   const value = `; ${document.cookie}`
   const parts = value.split(`; ${cookieName}=`)
   return parts.length === 2 ? parts.pop()?.split(';').shift() || '' : ''
@@ -31,7 +31,6 @@ const AxiosContext = createContext<AxiosInstance>(axios)
 /* TODO: Support multiple instances with additional configurations; i.e. create a ref for each instance */
 export const AxiosInstanceProvider = ({ config = {}, children }: { config: any; children: React.ReactNode }) => {
   const instanceRef = useRef<AxiosInstance | null>(null)
-  const { refreshTokens, getToken } = useToken()
   const { logoutUser } = useAuth()
 
   /* NOTE: See https://beta.reactjs.org/apis/useref#avoiding-recreating-the-ref-contents */

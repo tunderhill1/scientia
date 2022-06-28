@@ -1,38 +1,37 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Check, Dash, Download, UiChecks } from 'react-bootstrap-icons'
 import { useOutletContext } from 'react-router-dom'
 import { GroupedList } from '../components/GroupedList'
 import { Tabs } from '../components/Tabs'
 import { Toolbar } from '../components/Toolbar'
-import { mockMaterials } from '../constants/mock'
+import { endpoints } from '../constants/endpoints'
+import { useAxios } from '../lib/axios.context'
 import useChecklist from '../lib/checkbox.service'
 import { groupByProperty } from '../lib/utilities.service'
+import { useYear } from '../lib/year.context'
 import { Caret } from '../styles/grouped-list.style'
 import { Checkbox, Indicator } from '../styles/login.style'
 import { ToggleGroup, ToggleItem } from '../styles/toolbar.style'
 import { Button, Footnote, Wrapper } from '../styles/_app.style'
 
 const Materials = () => {
-  const moduleCode = useOutletContext<string | null>()
-  // const { data, loaded } = useAxios({
-  //   url: endpoints.resources,
-  //   method: 'GET',
-  //   params: { year: '2021', course: moduleCode },
-  // })
-
-  // useEffect(() => {
-  //   if (data !== null) {
-  //     console.log(data)
-  //   }
-  // }, [data])
-
-  const data = groupByProperty(mockMaterials, 'category')
-  const loaded = true
-
-  const checklistManager = useChecklist(data, 'title', false)
   const [selectionMode, setSelectionMode] = useState(false)
+  const [groupedMaterials, setGroupedMaterials] = useState({})
 
-  const noMaterials = () => data && Object.keys(data).length === 0
+  const moduleCode = useOutletContext<string | null>()
+  const { year } = useYear()
+  const checklistManager = useChecklist(groupedMaterials, 'title', false)
+  const { data, loaded } = useAxios({
+    url: endpoints.resources,
+    method: 'GET',
+    params: { year: year, course: moduleCode },
+  })
+
+  const noMaterials = () => groupedMaterials && Object.keys(groupedMaterials).length === 0
+
+  useEffect(() => {
+    if (data !== null) setGroupedMaterials(groupByProperty(data, 'category'))
+  }, [data])
 
   if (noMaterials())
     return (
@@ -56,17 +55,17 @@ const Materials = () => {
             </Button>
             <Checkbox
               css={{ marginTop: '0.5rem' }}
-              checked={checklistManager.checkedState}
+              checked={checklistManager.getCheckedState()}
               onCheckedChange={checklistManager.onToggle}
             >
-              <Indicator>{checklistManager.checkedState === 'indeterminate' ? <Dash /> : <Check />}</Indicator>
+              <Indicator>{checklistManager.getCheckedState() === 'indeterminate' ? <Dash /> : <Check />}</Indicator>
             </Checkbox>
           </>
         )}
       </Toolbar>
       {loaded && (
         <GroupedList
-          data={data}
+          data={groupedMaterials}
           selectionMode={selectionMode}
           checklistManager={checklistManager}
           headerGenerator={(header, _) => (
