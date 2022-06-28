@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { years } from '../constants/years'
-import { currentShortYear } from '../utilities/datetime'
+import { currentShortYear } from './utilities.service'
 
 type YearProviderType = { year: number; changeYear: (year: number) => boolean }
 

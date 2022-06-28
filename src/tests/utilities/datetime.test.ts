@@ -1,4 +1,4 @@
-import { currentShortYear } from '../../utilities/datetime'
+import { currentShortYear } from '../../lib/utilities.service'
 
 beforeAll(() => {
   jest.useFakeTimers()
