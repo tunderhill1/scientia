@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { endpoints } from '../constants/endpoints'
-import { useUser } from './user.context'
+import { ANTI_CSRF_COOKIE_NAME, getCookie } from './axios.context'
+import { Role, useUser } from './user.context'
 
 /**
  * TODO: The plan is to process authentication- and authorisation-related queries here and update the user context based
@@ -17,10 +18,10 @@ type Credentials = {
 }
 
 export default function useAuth() {
-  const { storeUsername } = useUser()
+  const { storeUsername, storeRole } = useUser()
   const navigate = useNavigate()
 
-  const setUserContext = (username: string) => {
+  const setUserContext = (username: string, role: Role) => {
     /**
      * TODO: Later on when the API provides user information, this function can be modified in two ways:
      * 1. Take in the body of the response from the login endpoint containing user information
@@ -28,6 +29,7 @@ export default function useAuth() {
      * In both cases, a reducer would have to be used to update the user context.
      */
     storeUsername(username)
+    storeRole(role)
   }
 
   const loginUser = async (data: Credentials, remember: boolean) => {
@@ -38,7 +40,8 @@ export default function useAuth() {
       data: data,
     })
       .then((response) => {
-        setUserContext(data.username)
+        /* TODO: Get the role from the response when data is available */
+        setUserContext(data.username, 'staff' as Role)
       })
       .catch((error) => {
         console.log(error)
@@ -59,7 +62,7 @@ export default function useAuth() {
         console.log(error)
       })
       .finally(() => {
-        setUserContext('')
+        setUserContext('', undefined)
         navigate('/')
       })
   }

@@ -9,11 +9,19 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
  * function.
  */
 
-type UserProviderType = { username: string; storeUsername: (username: string) => void }
+export type Role = undefined | 'student' | 'staff'
+type UserProviderType = {
+  username: string
+  role: Role
+  storeUsername: (username: string) => void
+  storeRole: (role: Role) => void
+}
 
 const defaultUser = {
   username: '',
+  role: undefined,
   storeUsername: (_: string) => {},
+  storeRole: (_: Role) => {},
 }
 
 const UserContext = createContext<UserProviderType>(defaultUser)
@@ -21,19 +29,27 @@ const UserContext = createContext<UserProviderType>(defaultUser)
 /* The username can be retrieved and set from anywhere in the app. */
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [username, setUsername] = useState(defaultUser.username)
+  const [role, setRole] = useState<Role>(defaultUser.role)
 
   /* TODO: Use a reducer when there's more data to handle; also, there's a delay on refresh - needs investigation */
   useEffect(() => {
-    const storedUsername = window.localStorage.getItem('username')
+    const storedUsername = localStorage.getItem('username')
+    const storedRole = localStorage.getItem('role')
     if (storedUsername) setUsername(storedUsername)
+    if (storedRole) setRole(storedRole as Role)
   }, [])
 
   const storeUsername = (username: string) => {
     setUsername(username)
-    window.localStorage.setItem('username', username)
+    localStorage.setItem('username', username)
   }
 
-  return <UserContext.Provider value={{ username, storeUsername }}>{children}</UserContext.Provider>
+  const storeRole = (role: Role) => {
+    setRole(role)
+    localStorage.setItem('role', role ?? '')
+  }
+
+  return <UserContext.Provider value={{ username, role, storeUsername, storeRole }}>{children}</UserContext.Provider>
 }
 
 /* Allow user information to be accessed and updated in any functional component using the following hook: */
