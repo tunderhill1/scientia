@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Check, Dash, Download, UiChecks } from 'react-bootstrap-icons'
+import { Check, Dash, Download, UiChecks, PencilSquare, Trash3Fill } from 'react-bootstrap-icons'
 import { useOutletContext } from 'react-router-dom'
 import { GroupedList } from '../components/GroupedList'
 import { Tabs } from '../components/Tabs'
@@ -7,6 +7,7 @@ import { Toolbar } from '../components/Toolbar'
 import { endpoints } from '../constants/endpoints'
 import { useAxios } from '../lib/axios.context'
 import useChecklist from '../lib/checkbox.service'
+import { useUser } from '../lib/user.context'
 import { groupByProperty } from '../lib/utilities.service'
 import { useYear } from '../lib/year.context'
 import { Caret } from '../styles/grouped-list.style'
@@ -18,6 +19,7 @@ const Materials = () => {
   const [selectionMode, setSelectionMode] = useState(false)
   const [groupedMaterials, setGroupedMaterials] = useState({})
 
+  const { role } = useUser()
   const moduleCode = useOutletContext<string | null>()
   const { year } = useYear()
   const checklistManager = useChecklist(groupedMaterials, 'id', false)
@@ -28,6 +30,7 @@ const Materials = () => {
   })
 
   const noMaterials = () => groupedMaterials && Object.keys(groupedMaterials).length === 0
+  const isStaff = () => role === 'staff'
 
   useEffect(() => {
     if (data !== null) setGroupedMaterials(groupByProperty(data, 'category'))
@@ -37,6 +40,11 @@ const Materials = () => {
     const idsToDownload = checklistManager.getCheckedItems()
     const queryParameter = idsToDownload.map((id) => `id=${id}`).join('&')
     window.open(`${endpoints.resourcesArchive}?year=${year}&course=${moduleCode}&${queryParameter}`)
+  }
+
+  const onDelete = () => {
+    const idsToDownload = checklistManager.getCheckedItems()
+    console.log('Deleting ', idsToDownload)
   }
 
   if (noMaterials())
@@ -51,14 +59,24 @@ const Materials = () => {
       <Toolbar style={{ marginBottom: '1rem' }}>
         <ToggleGroup type="single">
           <ToggleItem value="select" onClick={(event) => setSelectionMode(!selectionMode)}>
-            <UiChecks size={22} />
+            {isStaff() ? <PencilSquare size={22} /> : <UiChecks size={22} />}
           </ToggleItem>
         </ToggleGroup>
         {selectionMode && (
           <>
+            {isStaff() && (
+              <Button
+                icon
+                css={{ marginLeft: 'auto', marginRight: '0.75rem' }}
+                onClick={onDelete}
+                disabled={checklistManager.getCheckedItems().length === 0}
+              >
+                <Trash3Fill size={22} />
+              </Button>
+            )}
             <Button
               icon
-              css={{ marginLeft: 'auto', marginRight: '0.75rem' }}
+              css={{ marginRight: '0.75rem' }}
               onClick={onDownload}
               disabled={checklistManager.getCheckedItems().length === 0}
             >
