@@ -12,6 +12,17 @@
 
 Spearheaded by the [DoC EdTech Lab](https://edtech.pages.doc.ic.ac.uk/), Scientia is a platform that focuses on ehancing the remote learning experience for staff and students alike.
 
+# Tech Stack
+
+- 🛠 [nvm](https://github.com/nvm-sh/nvm) for managing different Node versions [recommended]
+
+- Node 16
+- React & Typescript for the baseline
+- [Radix UI](https://www.radix-ui.com/) for unstyled accessible components
+- [Stitches](https://stitches.dev/) for styling
+- [Bootstrap Icons](https://icons.getbootstrap.com/) for... well, icons
+- [Yarn](https://yarnpkg.com/) for dependency management
+
 
 # Running the app in dev
 
@@ -26,3 +37,7 @@ docker exec $(docker ps -qf "name=materials_api" | head -n1) flask load_dev_reso
 ```
 
 The stack so-composed (pardon the pun) should allow for hot-reload in both Scientia and Materials (as the respective services' source codes are attached as volumes).
+
+# Running tests locally
+
+After `yarn install`, go for `yarn test`.
