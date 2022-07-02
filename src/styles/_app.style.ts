@@ -19,9 +19,9 @@ export const Container = styled('div', {
       /* Expand vertically and horizontally to fill the rest of the page */
       true: {
         minHeight: '100vh',
-        height: '100%',
+        height: '100vh',
         minWidth: '100vw',
-        width: '100%',
+        width: '100vw',
       },
     },
     dotted: {

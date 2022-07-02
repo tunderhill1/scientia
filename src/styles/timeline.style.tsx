@@ -1,39 +1,54 @@
 import { styled } from './stitches.config'
+import { Wrapper } from './_app.style'
+import { ToggleGroup as ToggleGroupPrimitive, ToggleGroupItem } from '@radix-ui/react-toggle-group'
+import { itemStyles } from './toolbar.style'
 
 const FST_COL_FIXED_WIDTH = '16.875rem'
+const FST_ROW_FIXED_HEIGHT = '7rem'
 
 export const TimelineContainer = styled('div', {
   display: 'grid',
   gridTemplateAreas: '"switcher weeks" "modules background"',
-  gridTemplateRow: 'auto',
+  gridTemplateRows: `${FST_ROW_FIXED_HEIGHT} auto`,
 
   // Lock width of the first column while letting the second expand
   gridTemplateColumns: `${FST_COL_FIXED_WIDTH} auto`,
-  minWidth: '200rem',
-  minHeight: '100rem',
+  width: '100%',
+  height: '100%',
 })
 
-export const Switcher = styled('div', {
+export const Switcher = styled(Wrapper, {
   gridArea: 'switcher',
   backgroundColor: 'blue',
-  minWidth: '100%',
 })
 
 export const Weeks = styled('div', {
   gridArea: 'weeks',
   backgroundColor: 'yellow',
-  minWidth: '100%',
 })
 
 export const Modules = styled('div', {
   gridArea: 'modules',
   backgroundColor: 'green',
-  minWidth: '100%',
 })
 
 // This is the main timeline area
 export const Background = styled('div', {
   gridArea: 'background',
   backgroundColor: 'red',
-  minWidth: '100%',
+})
+
+export const SwitcherItem = styled(ToggleGroupItem, {
+  ...itemStyles,
+  width: '2.75rem',
+  height: '2.75rem',
+  background: 'none',
+  '&[data-state=on]': {
+    backgroundColor: '$elementActive',
+  },
+})
+
+export const SwitcherGroup = styled(ToggleGroupPrimitive, {
+  display: 'flex',
+  borderRadius: '0.25rem',
 })

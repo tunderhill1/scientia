@@ -106,6 +106,7 @@ const Materials = () => {
           contentGenerator={(_, group) => (
             <Tabs
               data={group}
+              /* TODO: Add the file tags to the generator; this would require layout (height) styling fixes elsewhere */
               generator={(tab: any) => <span>{tab.title}</span>}
               onClick={(tab: any) => {
                 const link = tab.type === 'link' ? tab.path : endpoints.resourceFile(tab.id)
