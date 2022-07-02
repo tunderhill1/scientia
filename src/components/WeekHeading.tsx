@@ -18,11 +18,11 @@ let days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']
 const WeekHeading: React.FC<WeekHeadingProps> = ({ weekNumber, dateRangeStart, dateRangeEnd, activeDay }) => {
   return (
     <div className="weekCard">
-      <div>
-        <div className="weekHeading">Week {weekNumber}</div>
+      <div className="weekHeader">
+        <div className="weekHeading">Week {weekNumber + 1}</div>
         <div className="weekDateRange">{formatDate(dateRangeStart, dateRangeEnd)}</div>
       </div>
-      <div>
+      <div className="weekBody">
         {days.map((day, i) => {
           let isActive = toDayCount(dateRangeStart) + i === toDayCount(activeDay)
           return (

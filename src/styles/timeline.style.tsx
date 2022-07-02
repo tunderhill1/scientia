@@ -25,6 +25,11 @@ export const Switcher = styled(Wrapper, {
 export const Weeks = styled('div', {
   gridArea: 'weeks',
   backgroundColor: 'yellow',
+  display: 'flex',
+  flexDirection: 'row',
+  overflowX: 'scroll',
+  overflowY: 'hidden',
+  gap: '0.5rem',
 })
 
 export const Modules = styled('div', {

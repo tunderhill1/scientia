@@ -7,7 +7,7 @@
   box-sizing: border-box;
 }
 
-.weekCard :global(.card-header) {
+.weekHeader {
   font-size: 1.125rem;
   display: flex;
   justify-content: space-between;
@@ -19,7 +19,7 @@
   height: 2.25rem !important;
 }
 
-.weekCard :global(.card-body) {
+.weekBody {
   font-size: 1rem;
   padding: 0rem;
   padding-top: 0.5rem;

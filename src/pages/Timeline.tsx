@@ -11,6 +11,23 @@ import {
   Weeks,
 } from '../styles/timeline.style'
 import { Container, Wrapper } from '../styles/_app.style'
+import { add } from 'date-fns'
+import WeekHeading from '../components/WeekHeading'
+
+// Terms from the backend to have the folling shape:
+// {
+//   name: string,
+//   start: date, << --- Monday
+//   end: date,   << --- Friday
+//   weeks: number << --- Number of Mondays
+// }
+
+const defaultTerm = {
+  name: 'Autumn term',
+  start: new Date(2021, 9, 4),
+  end: new Date(2021, 11, 17),
+  weeks: 11,
+}
 
 /* TODO: Move this into constant folder */
 export const landmarks = {
@@ -53,6 +70,24 @@ export const TermSwitcher = ({
   )
 }
 
+export const WeekHeadings = ({ rangeStart, weeks }: { rangeStart: Date; weeks: number }) => {
+  /* Calculate active day here  along with ranges for weeks in between; the weeks would be numbered from 0 for each 
+     term to line up with module materials.  */
+  return (
+    <Weeks css={{ alignItems: 'center', padding: '0rem 1rem' }}>
+      {[...Array(weeks)].map((_, week) => (
+        <WeekHeading
+          key={week}
+          dateRangeStart={add(rangeStart, { weeks: week })}
+          dateRangeEnd={add(rangeStart, { weeks: week, days: 4 })}
+          activeDay={new Date()}
+          weekNumber={week}
+        />
+      ))}
+    </Weeks>
+  )
+}
+
 const Timeline = () => {
   // Fetch from relevant endpoint using the year from the context
   const data = mockTimeline
@@ -66,7 +101,7 @@ const Timeline = () => {
     <Container expand css={{ padding: 0 }}>
       <TimelineContainer>
         <TermSwitcher selectedTerm={selectedTerm} onTermSwitch={onTermSwitch} />
-        <Weeks />
+        <WeekHeadings rangeStart={defaultTerm.start} weeks={defaultTerm.weeks} />
         <Modules />
         <Background as={Wrapper} center>
           <h1>{selectedTerm}</h1>
