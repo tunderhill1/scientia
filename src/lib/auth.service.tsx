@@ -54,7 +54,7 @@ export default function useAuth() {
 
   const logoutUser = () => {
     axios({
-      url: endpoints.login,
+      url: endpoints.logout,
       method: 'delete',
       headers: { 'X-CSRF-TOKEN': getCookie(ANTI_CSRF_COOKIE_NAME) },
     })

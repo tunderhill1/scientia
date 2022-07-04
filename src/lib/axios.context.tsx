@@ -48,7 +48,7 @@ export const AxiosInstanceProvider = ({ config = {}, children }: { config: any; 
         return response
       },
       async (error) => {
-        if (error.response.status === 401) logoutUser()
+        if ([401, 422].includes(error.response.status)) logoutUser()
         return Promise.reject(error)
       }
     )
