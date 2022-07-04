@@ -11,7 +11,6 @@ import { Button, Container } from '../styles/_app.style'
 const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [remember, setRemember] = useState(false)
 
   const { loginUser, isLoggedIn } = useAuth()
   const navigate = useNavigate()
@@ -23,7 +22,7 @@ const Login = () => {
     console.log('submitting...')
     e.preventDefault()
     /* Login and if successful, redirect to the modules page */
-    await loginUser({ username: username, password: password }, remember).then(() => {
+    await loginUser({ username: username, password: password }).then(() => {
       if (isLoggedIn()) navigate(`/${year}/modules`, { replace: true })
     })
   }
@@ -62,14 +61,6 @@ const Login = () => {
           />
         </Fieldset>
 
-        <Fieldset horizontal>
-          <Checkbox onCheckedChange={(checked) => setRemember(checked === 'indeterminate' ? false : checked)}>
-            <Indicator>
-              <Check />
-            </Indicator>
-          </Checkbox>
-          <p>Remember me</p>
-        </Fieldset>
         <Button type="submit">Login</Button>
       </Form>
     </Container>

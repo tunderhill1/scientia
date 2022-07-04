@@ -32,7 +32,7 @@ export default function useAuth() {
     storeRole(role)
   }
 
-  const loginUser = async (data: Credentials, remember: boolean) => {
+  const loginUser = async (data: Credentials) => {
     /* TODO: Use the axios hook here instead! */
     return axios({
       url: endpoints.login,
