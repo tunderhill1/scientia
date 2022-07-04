@@ -33,6 +33,7 @@ stack with an Nginx reverse proxy (pretty much what we use in production -just w
 
 ```shell
 docker-compose up [--build]
+docker exec $(docker ps -qf "name=materials_api" | head -n1) flask create_all
 docker exec $(docker ps -qf "name=materials_api" | head -n1) flask load_dev_resources
 ```
 
