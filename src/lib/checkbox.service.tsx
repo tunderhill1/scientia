@@ -27,23 +27,23 @@ type Nest = { [key: string]: Checklist }
 type Checklist = Flat | Nest
 
 /* TODO: Update functionality to handle deeply nested checklists */
-export default function useChecklist(data: { [key: string]: object[] }, property: string, value: boolean = false) {
+export default function useChecklist(data: { [key: string]: object[] }, attribute: string, value: boolean = false) {
   const [checklist, setChecklist] = useState<Checklist>({})
   const [checkedState, setCheckedState] = useState<CheckedState>(false)
 
   /**
    * NOTE: For each collection, we reduce the items (e.g. [{a-1: ..., ...}, ...]) into a checklist that takes the
    * title of the collection (e.g. c-1). We then collect all the collection-specific checklists into a nested one (see
-   * the type of Checklist). Also, property is the identifier of the external element (e.g. title or id)
+   * the type of Checklist). Also, attribute is the identifier of the external element (e.g. title or id)
    */
-  function defaultChecklist(data: { [key: string]: object[] }, property: string, value: boolean = false): Checklist {
+  function defaultChecklist(data: { [key: string]: object[] }, attribute: string, value: boolean = false): Checklist {
     return Object.fromEntries(
       Object.entries(data).map(([title, items]: [string, object[]]) => {
         /* Generate a collection-specific flat checklist */
         const checklist: Flat = items.reduce(
           (accumulator: Flat, item: any) => ({
             ...accumulator,
-            [item[property]]: value,
+            [item[attribute]]: value,
           }),
           {}
         )
@@ -56,16 +56,16 @@ export default function useChecklist(data: { [key: string]: object[] }, property
   function onCollectionCheck(title: string, value: CheckedState) {
     const updatedChecklist: Checklist = {
       ...(checklist as Nest),
-      [title]: Object.fromEntries(Object.keys(checklist[title]).map((property) => [property, value])),
+      [title]: Object.fromEntries(Object.keys(checklist[title]).map((attribute) => [attribute, value])),
     }
     setChecklist(updatedChecklist)
   }
 
   /* Marks a specific item in the named checklist (as specified by title) with the provided value */
-  function onItemCheck(title: string, property: string, value: CheckedState) {
+  function onItemCheck(title: string, attribute: string, value: CheckedState) {
     const updatedChecklist: Checklist = {
       ...(checklist as Nest),
-      [title]: { ...(checklist[title] as Flat), [property]: value },
+      [title]: { ...(checklist[title] as Flat), [attribute]: value },
     }
     setChecklist(updatedChecklist)
   }
@@ -73,7 +73,7 @@ export default function useChecklist(data: { [key: string]: object[] }, property
   /* Toggle all checklist items between true and false */
   function onToggle() {
     const newCheckedState: boolean = !(checkedState === 'indeterminate' || checkedState)
-    setChecklist(defaultChecklist(data, property, newCheckedState))
+    setChecklist(defaultChecklist(data, attribute, newCheckedState))
     setCheckedState(newCheckedState)
   }
 
@@ -93,12 +93,16 @@ export default function useChecklist(data: { [key: string]: object[] }, property
     [checklist]
   )
 
-  function getItemState(title: string, property: string): CheckedState {
-    return (checklist[title] as Flat)[property]
+  function getItemState(title: string, attribute: string): CheckedState {
+    return (checklist[title] as Flat)[attribute]
   }
 
   function getCheckedState(): CheckedState {
     return checkedState
+  }
+
+  function getAttribute(): string {
+    return attribute
   }
 
   function getCheckedItems(): any[] {
@@ -124,8 +128,8 @@ export default function useChecklist(data: { [key: string]: object[] }, property
   }, [checklist, isComplete, isIndeterminate])
 
   useEffect(() => {
-    setChecklist(defaultChecklist(data, property, value))
-  }, [data, property, value])
+    setChecklist(defaultChecklist(data, attribute, value))
+  }, [data, attribute, value])
 
   return {
     onCollectionCheck,
@@ -136,5 +140,6 @@ export default function useChecklist(data: { [key: string]: object[] }, property
     getItemState,
     getCheckedState,
     getCheckedItems,
+    getAttribute,
   }
 }

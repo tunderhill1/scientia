@@ -1,22 +1,12 @@
-import { styled } from './stitches.config'
-import {
-  Accordion as AccordionPrimitive,
-  AccordionContent,
-  AccordionHeader,
-  AccordionItem,
-  AccordionTrigger,
-} from '@radix-ui/react-accordion'
-import { CaretRightFill } from 'react-bootstrap-icons'
+import { AccordionContent, AccordionHeader, AccordionTrigger } from '@radix-ui/react-accordion'
 import { keyframes } from '@stitches/react'
-
-/* TODO: Remove Accordion and Item and use it directly in the file */
-export const Accordion = styled(AccordionPrimitive, {})
-
-export const Item = styled(AccordionItem, {})
+import { CaretRightFill } from 'react-bootstrap-icons'
+import { styled } from './stitches.config'
 
 export const Header = styled(AccordionHeader, {
   all: 'unset',
   boxSizing: 'border-box',
+  /* The header aligns the trigger and collection checkbox */
   display: 'flex',
   gap: '0.75rem',
   alignItems: 'center',
@@ -78,6 +68,7 @@ const slideUp = keyframes({
 
 export const Content = styled(AccordionContent, {
   overflow: 'hidden',
+  /* The content aligns the items (wrapped in Box) and the checkboxes */
   display: 'flex',
   flexDirection: 'row',
   gap: '0.75rem',
@@ -89,15 +80,6 @@ export const Content = styled(AccordionContent, {
   '&[data-state="closed"]': {
     animation: `${slideUp} 300ms cubic-bezier(0.87, 0, 0.13, 1) forwards`,
   },
-})
-
-/* TODO: Allow user to override these styles */
-export const Box = styled('div', {
-  flexGrow: 1,
-  width: '100%',
-  borderLeft: '0.0625rem solid $separator',
-  padding: '0.5rem 0 0.5rem 0.5rem',
-  marginLeft: '1.25rem',
 })
 
 export const Caret = styled(CaretRightFill, {

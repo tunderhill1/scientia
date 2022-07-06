@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { GroupedList } from '../components/GroupedList'
+import { Collapsible } from '../components/Collapsible'
 
 describe('GroupedList', () => {
   it.each([
@@ -8,7 +8,7 @@ describe('GroupedList', () => {
     ['two data objects', { 'header 1': [], 'header 2': [] }],
   ])(`renders an expanded accordion trigger for each header: case with %s`, (_, data) => {
     render(
-      <GroupedList headerGenerator={(header, _) => <span>{header}</span>} contentGenerator={() => <></>} data={data} />
+      <Collapsible headerGenerator={(header, _) => <span>{header}</span>} contentGenerator={() => <></>} data={data} />
     )
     const headers = Object.keys(data)
     const triggers = screen.queryAllByRole('button', { expanded: true })
@@ -18,7 +18,7 @@ describe('GroupedList', () => {
   it('renders data headers values as trigger button text', () => {
     const HEADER_TEXT = 'header 1'
     render(
-      <GroupedList
+      <Collapsible
         headerGenerator={(header, _) => <span>{header}</span>}
         contentGenerator={() => <></>}
         data={{ [HEADER_TEXT]: [] }}
@@ -36,7 +36,7 @@ describe('GroupedList', () => {
       </ul>
     )
     render(
-      <GroupedList
+      <Collapsible
         headerGenerator={(header, _) => <span>{header}</span>}
         contentGenerator={generator}
         data={{ notes: [{ title: 'slides 1' }, { title: 'slides 2' }] }}

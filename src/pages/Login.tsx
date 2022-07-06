@@ -1,10 +1,9 @@
 import { useContext, useEffect, useState } from 'react'
-import { Check } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router-dom'
 import useAuth from '../lib/auth.service'
 import { ThemeContext } from '../lib/theme.context'
 import { useYear } from '../lib/year.context'
-import { Checkbox, Fieldset, Form, Indicator, Input, Label, Logo, Name, Tagline } from '../styles/login.style'
+import { Fieldset, Form, Input, Label, Logo, Name, Tagline } from '../styles/login.style'
 import { Button, Container } from '../styles/_app.style'
 
 /* TODO: Add a help toggle to the login form (i.e. information for new users to the platform) */
