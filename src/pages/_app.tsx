@@ -22,7 +22,7 @@ function App() {
     <ThemeProvider>
       <UserProvider>
         <YearProvider current={2122}>
-          <AxiosInstanceProvider config={{ baseURL: baseURL }}>
+          <AxiosInstanceProvider config={{ baseURL }}>
             <Area>
               <Viewport>
                 {/* TODO: Add a no-match route (i.e. 404 Not Found) */}

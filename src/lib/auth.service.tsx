@@ -41,7 +41,7 @@ export default function useAuth() {
     })
       .then((response) => {
         /* TODO: Get the role from the response when data is available */
-        setUserContext(data.username, 'staff' as Role)
+        setUserContext(data.username, 'student' as Role)
       })
       .catch((error) => {
         console.log(error)

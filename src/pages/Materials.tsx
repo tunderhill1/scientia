@@ -16,13 +16,14 @@ import { ToggleGroup, ToggleItem } from '../styles/toolbar.style'
 import { Button, Footnote, Wrapper } from '../styles/_app.style'
 
 const Materials = () => {
-  const [selectionMode, setSelectionMode] = useState(false)
+  const [checklistMode, setSelectionMode] = useState(false)
   const [groupedMaterials, setGroupedMaterials] = useState({})
 
-  const { role } = useUser()
   const moduleCode = useOutletContext<string | null>()
-  const { year } = useYear()
   const checklistManager = useChecklist(groupedMaterials, 'id', false)
+
+  const { role } = useUser()
+  const { year } = useYear()
   const { data, loaded } = useAxios({
     url: endpoints.resources,
     method: 'GET',
@@ -36,6 +37,7 @@ const Materials = () => {
     if (data !== null) setGroupedMaterials(groupByProperty(data, 'category'))
   }, [data])
 
+  /* Toolbar button callbacks */
   const onDownload = () => {
     const idsToDownload = checklistManager.getCheckedItems()
     const queryParameter = idsToDownload.map((id) => `id=${id}`).join('&')
@@ -47,6 +49,64 @@ const Materials = () => {
     console.log('Deleting ', idsToDownload)
   }
 
+  const headerGenerator = (collection: string, _: object[]) => (
+    <>
+      <Caret />
+      <span>{collection}</span>
+    </>
+  )
+
+  const contentGenerator = (_: string, items: object[]) => (
+    <Tabs
+      data={items}
+      /* TODO: Add the file tags to the generator; this would require layout (height) styling fixes elsewhere */
+      generator={(tab: any) => <span>{tab.title}</span>}
+      onClick={(tab: any) => {
+        const link = tab.type === 'link' ? tab.path : endpoints.resourceFile(tab.id)
+        window.open(link)
+      }}
+    />
+  )
+
+  const toolbar = (
+    <Toolbar style={{ marginBottom: '1rem' }}>
+      <ToggleGroup type="single">
+        <ToggleItem value="select" onClick={(event) => setSelectionMode(!checklistMode)}>
+          {isStaff() ? <PencilSquare size={22} /> : <UiChecks size={22} />}
+        </ToggleItem>
+      </ToggleGroup>
+      {checklistMode && (
+        <>
+          {isStaff() && (
+            <Button
+              icon
+              css={{ marginLeft: 'auto', marginRight: '0.75rem' }}
+              onClick={onDelete}
+              disabled={checklistManager.getCheckedItems().length === 0}
+            >
+              <Trash3Fill size={22} />
+            </Button>
+          )}
+          <Button
+            icon
+            css={{ marginRight: '0.75rem' }}
+            onClick={onDownload}
+            disabled={checklistManager.getCheckedItems().length === 0}
+          >
+            <Download size={22} />
+          </Button>
+          <Checkbox
+            css={{ marginTop: '0.5rem' }}
+            checked={checklistManager.getCheckedState()}
+            onCheckedChange={checklistManager.onToggle}
+          >
+            <Indicator>{checklistManager.getCheckedState() === 'indeterminate' ? <Dash /> : <Check />}</Indicator>
+          </Checkbox>
+        </>
+      )}
+    </Toolbar>
+  )
+
   if (noMaterials())
     return (
       <Wrapper center>
@@ -56,65 +116,14 @@ const Materials = () => {
 
   return (
     <Wrapper>
-      <Toolbar style={{ marginBottom: '1rem' }}>
-        <ToggleGroup type="single">
-          <ToggleItem value="select" onClick={(event) => setSelectionMode(!selectionMode)}>
-            {isStaff() ? <PencilSquare size={22} /> : <UiChecks size={22} />}
-          </ToggleItem>
-        </ToggleGroup>
-        {selectionMode && (
-          <>
-            {isStaff() && (
-              <Button
-                icon
-                css={{ marginLeft: 'auto', marginRight: '0.75rem' }}
-                onClick={onDelete}
-                disabled={checklistManager.getCheckedItems().length === 0}
-              >
-                <Trash3Fill size={22} />
-              </Button>
-            )}
-            <Button
-              icon
-              css={{ marginRight: '0.75rem' }}
-              onClick={onDownload}
-              disabled={checklistManager.getCheckedItems().length === 0}
-            >
-              <Download size={22} />
-            </Button>
-            <Checkbox
-              css={{ marginTop: '0.5rem' }}
-              checked={checklistManager.getCheckedState()}
-              onCheckedChange={checklistManager.onToggle}
-            >
-              <Indicator>{checklistManager.getCheckedState() === 'indeterminate' ? <Dash /> : <Check />}</Indicator>
-            </Checkbox>
-          </>
-        )}
-      </Toolbar>
+      {toolbar}
       {loaded && (
         <Collapsible
           data={groupedMaterials}
-          checklistMode={selectionMode}
-          collapsed={false}
+          checklistMode={checklistMode}
           checklistManager={checklistManager}
-          headerGenerator={(header, _) => (
-            <>
-              <Caret />
-              <span>{header}</span>
-            </>
-          )}
-          contentGenerator={(_, group) => (
-            <Tabs
-              data={group}
-              /* TODO: Add the file tags to the generator; this would require layout (height) styling fixes elsewhere */
-              generator={(tab: any) => <span>{tab.title}</span>}
-              onClick={(tab: any) => {
-                const link = tab.type === 'link' ? tab.path : endpoints.resourceFile(tab.id)
-                window.open(link)
-              }}
-            />
-          )}
+          headerGenerator={headerGenerator}
+          contentGenerator={contentGenerator}
         />
       )}
       <Footnote muted center css={{ margin: '2rem 0' }}>
