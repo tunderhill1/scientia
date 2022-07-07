@@ -19,14 +19,14 @@ export const Modules = ({ term }: { term: string }) => {
   }, [data])
 
   return (
-    <Wrapper>
+    <Wrapper css={{ padding: '0.5rem' }}>
       <Tabs
         data={data}
         generator={(tab: any) => (
-          <>
-            <span>{tab.title}</span>
+          <Wrapper css={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <span className={css({ color: '$lowContrast' })()}>{tab.code}</span>
-          </>
+            <span>{tab.title}</span>
+          </Wrapper>
         )}
       />
     </Wrapper>
