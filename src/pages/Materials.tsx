@@ -14,6 +14,7 @@ import { Caret } from '../styles/collapsible.style'
 import { Checkbox, Indicator } from '../styles/_app.style'
 import { ToggleGroup, ToggleItem } from '../styles/toolbar.style'
 import { Button, Footnote, Wrapper } from '../styles/_app.style'
+import React from 'react'
 
 const Materials = () => {
   const [checklistMode, setSelectionMode] = useState(false)
@@ -34,7 +35,7 @@ const Materials = () => {
   const isStaff = () => role === 'staff'
 
   useEffect(() => {
-    if (data !== null) setGroupedMaterials(groupByProperty(data, 'category'))
+    if (data !== null) setGroupedMaterials(groupByProperty(data, 'category', 'index'))
   }, [data])
 
   /* Toolbar button callbacks */

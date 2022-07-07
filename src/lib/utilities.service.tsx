@@ -1,21 +1,22 @@
 /* A file to store miscellaneous utility functions */
 
 /**
- * Groups a given data object by a given property to form a dictionary. Example:
- * data = [{ title: 'a', field: 'n' }, { title: 'b', field: 'm' }]
- * dict = groupByProperty(data) would return { 'a': { field: 'n' }, 'b': { field: 'm' } }
- * NOTE: This assumes that the property chosen doesn't have duplicate values!
- */
-export function groupByProperty(data: object[], property: string): { [key: string]: object[] } {
+ * Groups a given data object by the given 'groupBy' property to form a dictionary of lists. Each list of objects
+ * is sorted by the 'orderBy' property. */
+export function groupByProperty(data: object[], groupBy: string, orderBy: string): { [key: string]: object[] } {
+  if (!data.every((d) => groupBy in d && orderBy in d))
+    throw `'${groupBy}' and '${orderBy}' need be properties of provided objects`
   return data === null
     ? {}
-    : data.reduce(
-        (groups: any, item: any) => ({
-          ...groups,
-          [item[property]]: [...(groups[item[property]] || []), item],
-        }),
-        {}
-      )
+    : data
+        .sort((a: any, b: any) => (a[orderBy] > b[orderBy] ? 1 : -1))
+        .reduce(
+          (groups: any, item: any) => ({
+            ...groups,
+            [item[groupBy]]: [...(groups[item[groupBy]] || []), item],
+          }),
+          {}
+        )
 }
 
 /**
