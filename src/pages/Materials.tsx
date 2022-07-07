@@ -76,11 +76,11 @@ const Materials = () => {
         </ToggleItem>
       </ToggleGroup>
       {checklistMode && (
-        <>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
           {isStaff() && (
             <Button
               icon
-              css={{ marginLeft: 'auto', marginRight: '0.75rem' }}
+              css={{ marginRight: '0.75rem' }}
               onClick={onDelete}
               disabled={checklistManager.getCheckedItems().length === 0}
             >
@@ -102,7 +102,7 @@ const Materials = () => {
           >
             <Indicator>{checklistManager.getCheckedState() === 'indeterminate' ? <Dash /> : <Check />}</Indicator>
           </Checkbox>
-        </>
+        </div>
       )}
     </Toolbar>
   )
