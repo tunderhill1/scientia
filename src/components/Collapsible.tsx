@@ -16,6 +16,8 @@ import { Checkbox, Indicator, Wrapper } from '../styles/_app.style'
  *
  * PRE: We expect the data to be organised as one-depth collections of items
  *      See lib/checklist.service.tsx for more information
+ *
+ * TODO: Make sure that when checklistMode is enabled, the checklistManger isn't undefined!
  */
 
 export const Collapsible = ({
@@ -24,7 +26,7 @@ export const Collapsible = ({
   headerGenerator,
   collapsed = true,
   checklistMode = false,
-  checklistManager = {},
+  checklistManager = undefined,
 }: {
   data: { [key: string]: object[] }
   contentGenerator: (header: string, group: object[]) => React.ReactNode
@@ -37,7 +39,7 @@ export const Collapsible = ({
    * NOTE: The checklist attribute is the data attribute that uniquely identifies an item; this is the same attribute
    * used in the checklist service hook that's used as a key of the flat checklist.
    */
-  const checklistAttribute: string = checklistManager.getAttribute() ?? ''
+  const checklistAttribute: string = checklistManager ? checklistManager.getAttribute() : ''
 
   /* TODO: Make these style configurable by the user */
   const itemsWrapperStyle = {
