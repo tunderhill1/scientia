@@ -15,20 +15,22 @@ export enum Alignment {
 /**
  * TODO: Stress test this component to see how many tabs it can handle.
  * Identify performance improvements if required
- * NOTE: The identifier string describes the name of the property in data that uniquely identifies each entry.
+ * NOTE: The attribute string describes the name of the property in data that uniquely identifies each entry.
  */
 export const Tabs = ({
   data,
   generator,
   alignment = Alignment.Vertical,
+  attribute = 'title',
+  animate = false,
   onClick = () => {},
-  identifier = 'title',
 }: {
   data: any
   generator: (tab: any) => ReactNode
   alignment?: Alignment
+  attribute?: string
+  animate?: boolean
   onClick?: (tab: any) => void
-  identifier?: string
 }) => {
   const [tabBoundingBox, setTabBoundingBox] = useState<any>(null)
   const [wrapperBoundingBox, setWrapperBoundingBox] = useState<any>(null)
@@ -101,9 +103,11 @@ export const Tabs = ({
   }
 
   if (tabBoundingBox && wrapperBoundingBox) {
-    highlightStyles.transitionDuration = isHoveredFromNull ? '0ms' : '150ms'
+    highlightStyles.transitionDuration = isHoveredFromNull && animate ? '0ms' : '150ms'
+    highlightStyles.transitionProperty = animate ? 'width, height, transform, opacity' : 'opacity'
     highlightStyles.opacity = highlightedTab ? 1 : 0
     highlightStyles.width = `${tabBoundingBox.width}px`
+    highlightStyles.height = `${tabBoundingBox.height}px`
     highlightStyles.transform = `translate(${tabBoundingBox.left - wrapperBoundingBox.left}px, ${
       tabBoundingBox.top - wrapperBoundingBox.top
     }px)`
@@ -136,7 +140,7 @@ export const Tabs = ({
       {data &&
         data.map((tab: any, index: number) => (
           <Tab
-            key={tab[identifier]}
+            key={tab[attribute]}
             /* NOTE: Unique identifier to find the element */
             id={prefixRef.current.toString() + index.toString()}
             onMouseOver={(event: any) => {
