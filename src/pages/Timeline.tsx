@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { mockTimeline } from '../constants/mock'
-import { Area, Container, Scrollbar, Thumb, Viewport } from '../styles/_app.style'
+import { Area, Container, Corner, Scrollbar, Thumb, Viewport } from '../styles/_app.style'
 import { Switcher } from '../components/timeline/Switcher'
 import { Weeks } from '../components/timeline/Weeks'
 import { Modules } from '../components/timeline/Modules'
+import { Indicator } from '../components/timeline/Indicator'
 import { NAVIGATION_HEIGHT } from '../constants/global'
 import { Events } from '../components/timeline/Events'
 import { Rows } from '../components/timeline/Rows'
@@ -23,7 +24,7 @@ const defaultTerm = {
 }
 
 /* Top margin to position the scroll area 1rem right under the navigation bar */
-const TOP_MARGIN = `(${NAVIGATION_HEIGHT} + 1rem)`
+const TOP_MARGIN = `(${NAVIGATION_HEIGHT})`
 
 /* The timeline's laid out in four sections: switcher, weeks, modules and main grid. The main grid is a stack of three
  * components: events, indicator and rows; note that the layers are ordered based on their relative heights.
@@ -36,13 +37,14 @@ const Timeline = () => {
 
   return (
     <Area css={{ height: `calc(100vh - ${TOP_MARGIN})`, marginTop: `calc${TOP_MARGIN}` }}>
-      <Viewport>
+      <Viewport css={{ paddingTop: '1rem' }}>
         <Container timeline>
           <Switcher term={term} onSwitch={setTerm} />
           <Weeks start={defaultTerm.start} weeks={defaultTerm.weeks} />
           <Modules term={term} />
           {/* NOTE: Everything under here will be placed in the background area */}
           <Events />
+          <Indicator />
           <Rows weeks={defaultTerm.weeks} />
         </Container>
       </Viewport>
@@ -52,6 +54,7 @@ const Timeline = () => {
       <Scrollbar orientation="horizontal">
         <Thumb />
       </Scrollbar>
+      <Corner />
     </Area>
   )
 }

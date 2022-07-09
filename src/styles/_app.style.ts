@@ -1,4 +1,10 @@
-import { ScrollArea, ScrollAreaScrollbar, ScrollAreaThumb, ScrollAreaViewport } from '@radix-ui/react-scroll-area'
+import {
+  ScrollArea,
+  ScrollAreaCorner,
+  ScrollAreaScrollbar,
+  ScrollAreaThumb,
+  ScrollAreaViewport,
+} from '@radix-ui/react-scroll-area'
 import { styled } from './stitches.config'
 import { Checkbox as CheckboxPrimitive, CheckboxIndicator } from '@radix-ui/react-checkbox'
 
@@ -199,6 +205,10 @@ export const Thumb = styled(ScrollAreaThumb, {
   '&:hover, &:active': {
     backgroundColor: '$solidHover',
   },
+})
+
+export const Corner = styled(ScrollAreaCorner, {
+  background: '$subtleBackground',
 })
 
 export const Checkbox = styled(CheckboxPrimitive, {
