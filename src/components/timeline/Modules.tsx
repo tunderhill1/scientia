@@ -13,13 +13,27 @@ const terms = {
 
 export const Modules = ({ term }: { term: string }) => {
   const { data } = useAxios({ url: endpoints.courses('2021'), method: 'GET' })
+  const modulesWrapperStyle = {
+    gridArea: 'modules',
+
+    display: 'grid',
+    gridGap: '0.5rem',
+
+    padding: '0.5rem',
+    paddingBottom: '1rem',
+    position: 'sticky',
+    left: '0',
+
+    zIndex: '4',
+    backgroundColor: '$appBackground',
+  }
 
   useEffect(() => {
     console.log({ modules: data })
   }, [data])
 
   return (
-    <Wrapper css={{ padding: '0.5rem' }}>
+    <Wrapper css={modulesWrapperStyle}>
       <Tabs
         data={data}
         generator={(tab: any) => (

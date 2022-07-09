@@ -6,16 +6,20 @@ export const Weeks = ({ start, weeks }: { start: Date; weeks: number }) => {
   const weeksWrapperStyle = {
     gridArea: 'weeks',
 
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: '0.5rem',
+    display: 'grid',
+    gridAutoFlow: 'row',
+    gridTemplateColumns: `repeat(${weeks}, 15rem)`,
+    gridGap: '0.5rem',
 
-    padding: '0rem 1rem',
-    overflowX: 'auto',
-    overflowY: 'auto',
+    position: 'sticky',
+    top: '0',
 
-    backgroundColor: 'transparent',
+    paddingRight: '1rem',
+    height: '5.5rem',
+    width: 'auto',
+
+    zIndex: '4',
+    backgroundColor: '$appBackground',
   }
 
   return (

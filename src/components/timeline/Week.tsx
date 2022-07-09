@@ -1,4 +1,5 @@
 import { formatDate, toDayCount } from '../../lib/utilities.service'
+import { css } from '../../styles/stitches.config'
 import { Content, Day, Header } from '../../styles/timeline/week.style'
 import { Wrapper } from '../../styles/_app.style'
 
@@ -14,7 +15,7 @@ export const Week = ({ start, end, week }: { start: Date; end: Date; week: numbe
     <Wrapper css={weekWrapperStyle}>
       <Header>
         <span>Week {week + 1}</span>
-        <span>{formatDate(start, end)}</span>
+        <span className={css({ color: '$lowContrast' })()}>{formatDate(start, end)}</span>
       </Header>
       <Content>
         {days.map((day, i) => (

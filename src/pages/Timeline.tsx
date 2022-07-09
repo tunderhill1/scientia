@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { mockTimeline } from '../constants/mock'
-import { Background, TimelineContainer } from '../styles/timeline.style'
-import { Container, Wrapper } from '../styles/_app.style'
+import { Background, Grid } from '../styles/timeline.style'
+import { Area, Container, Scrollbar, Thumb, Viewport, Wrapper } from '../styles/_app.style'
 import { Switcher } from '../components/timeline/Switcher'
 import { Weeks } from '../components/timeline/Weeks'
 import { Modules } from '../components/timeline/Modules'
+import { css } from '../styles/stitches.config'
 
 /**
  * NOTE: Terms from the backend have the following shape.
@@ -27,16 +28,32 @@ const Timeline = () => {
   const data = mockTimeline
 
   return (
-    <Container expand css={{ padding: 0 }}>
-      <TimelineContainer>
-        <Switcher term={term} onSwitch={setTerm} />
-        <Weeks start={defaultTerm.start} weeks={defaultTerm.weeks} />
-        <Modules term={term} />
-        <Background as={Wrapper} center>
-          <h1>{term}</h1>
-        </Background>
-      </TimelineContainer>
-    </Container>
+    <Area css={{ height: 'calc(100vh - 5rem)', marginTop: '5rem' }}>
+      <Viewport>
+        <Container timeline>
+          <Switcher term={term} onSwitch={setTerm} />
+          <Weeks start={defaultTerm.start} weeks={defaultTerm.weeks} />
+          <Modules term={term} />
+          <Background>
+            <h1>{term}</h1>
+          </Background>
+          <Grid css={{ gridTemplateColumns: `repeat(${defaultTerm.weeks}, 15rem)` }}>
+            {[...Array(11)].map((_, id) => (
+              <div
+                key={id}
+                className={css({ height: `100%`, backgroundColor: '$subtleBackground', borderRadius: '0.5rem' })()}
+              />
+            ))}
+          </Grid>
+        </Container>
+      </Viewport>
+      <Scrollbar orientation="vertical">
+        <Thumb />
+      </Scrollbar>
+      <Scrollbar orientation="horizontal">
+        <Thumb />
+      </Scrollbar>
+    </Area>
   )
 }
 

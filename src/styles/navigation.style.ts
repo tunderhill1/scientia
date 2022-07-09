@@ -15,7 +15,6 @@ export const Header = styled('div', {
   alignContent: 'center',
 
   padding: '0',
-  marginBottom: '3rem',
   borderBottom: '0.0625rem solid $separator',
   backgroundColor: '$appBackground',
 

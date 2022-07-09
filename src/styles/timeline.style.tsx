@@ -1,25 +1,33 @@
 import { styled } from './stitches.config'
 
-const FST_COL_FIXED_WIDTH = '16.875rem'
-const FST_ROW_FIXED_HEIGHT = '7rem'
+/* Background layout: general overview */
+/* +------------+------------+------------+------------+------------+--------+ */
+/* | Week                                                                    | */
+/* | Mon          Tue          Wed          Thu          Fri                 | */
+/* +------------+------------+------------+------------+------------+--------+ */
+/* | <- 3rem -> | <- 3rem -> | <- 3rem -> | <- 3rem -> | <- 3rem -> | 0.5rem | */
 
-export const TimelineContainer = styled('div', {
-  display: 'grid',
-  gridTemplateAreas: '"switcher weeks" "modules background"',
-  gridTemplateRows: `${FST_ROW_FIXED_HEIGHT} auto`,
-  /* Lock width of the first column while letting the second expand */
-  gridTemplateColumns: `${FST_COL_FIXED_WIDTH} auto`,
-  width: '100%',
-  height: '100%',
-})
-
-export const Modules = styled('div', {
-  gridArea: 'modules',
-  backgroundColor: 'green',
-})
+const WEEKDAYS_WIDTHS = '3rem 3rem 3rem 3rem 3rem'
+const WEEKEND_WIDTH = '0.5rem'
 
 // This is the main timeline area
 export const Background = styled('div', {
   gridArea: 'background',
   backgroundColor: '$appBackground',
+  display: 'grid',
+  gridTemplateColumns: `repeat(10, ${WEEKDAYS_WIDTHS} ${WEEKEND_WIDTH})`,
+  gridTemplateRows: 'repeat(10, 4rem)',
+  padding: '0.5rem',
+})
+
+export const Grid = styled('div', {
+  gridArea: 'background',
+  display: 'grid',
+  gridTemplateRows: 'auto',
+  rowGap: 0,
+  columnGap: '0.5rem',
+
+  zIndex: 1,
+  paddingRight: '1rem',
+  paddingBottom: '1rem',
 })

@@ -24,10 +24,18 @@ const phases = {
 }
 
 export const Switcher = ({ term, onSwitch }: { term: string; onSwitch: (term: string) => void }) => {
-  const switcherGroupStyle = { maxWidth: '9.75rem', gap: '0.5rem', flexWrap: 'wrap' }
+  const switcherGroupStyle = { maxWidth: '8.25rem', flexWrap: 'wrap' }
+  const switcherWrapperStyle = {
+    gridArea: 'switcher',
+    top: 0,
+    left: 0,
+    position: 'sticky',
+    zIndex: 5,
+    background: '$appBackground',
+  }
 
   return (
-    <Wrapper center css={{ gridArea: 'switcher' }}>
+    <Wrapper center css={switcherWrapperStyle}>
       <Group type="single" defaultValue={term} onValueChange={onSwitch} css={switcherGroupStyle}>
         {Object.entries(phases).map(([phase, periods]) =>
           Object.entries(periods).map(([period, icon]) => (

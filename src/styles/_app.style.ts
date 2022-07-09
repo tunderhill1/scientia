@@ -35,6 +35,22 @@ export const Container = styled('div', {
         backgroundSize: '$$dotSpace $$dotSpace',
       },
     },
+    timeline: {
+      true: {
+        $$columnWidth: '16.875rem',
+        $$rowHeight: '7rem',
+        $$navHeight: '4rem',
+        display: 'grid',
+        gridTemplateAreas: "'switcher weeks' 'modules background'",
+        gridTemplateRows: 'auto',
+        gridTemplateColumns: '$$columnWidth auto',
+        gridGap: '0.5rem',
+
+        /* Overridden default values */
+        padding: '0',
+        maxWidth: '100%',
+      },
+    },
   },
 })
 
@@ -153,9 +169,15 @@ export const Scrollbar = styled(ScrollAreaScrollbar, {
   userSelect: 'none',
   touchAction: 'none',
   padding: '0.125rem',
-  width: '0.75rem',
+
+  '&[data-orientation="vertical"]': { width: '0.75rem' },
+  '&[data-orientation="horizontal"]': {
+    flexDirection: 'column',
+    height: '0.75rem',
+  },
+
   backgroundColor: '$subtleBackground',
-  marginTop: '4rem',
+  zIndex: 6,
 })
 
 export const Thumb = styled(ScrollAreaThumb, {
