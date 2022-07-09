@@ -1,4 +1,4 @@
-import { currentShortYear, daysSinceEpoch } from '../../lib/utilities.service'
+import { currentShortYear, daysSinceEpoch, formatDate } from '../../lib/utilities.service'
 
 beforeAll(() => {
   jest.useFakeTimers()
@@ -17,6 +17,16 @@ test.each`
 `('short year for $year/$month is $expected', ({ year, month, expected }) => {
   jest.setSystemTime(new Date(year, month, 1))
   expect(currentShortYear()).toBe(expected)
+})
+
+test.each`
+  start                     | end                     | expected
+  ${new Date(2022, 9, 4)}   | ${new Date(2022, 9, 8)} | ${'04/10 - 08/10'}
+  ${new Date(2019, 9, 4)}   | ${new Date(2019, 9, 8)} | ${'04/10 - 08/10'}
+  ${new Date(2022, 11, 25)} | ${new Date(2023, 0, 1)} | ${'25/12 - 01/01'}
+`('can format date range into $expected', ({ start, end, expected }) => {
+  let actual = formatDate(start, end)
+  expect(actual).toBe(expected)
 })
 
 test.each`

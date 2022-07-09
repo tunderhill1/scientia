@@ -1,4 +1,4 @@
-import { formatDate, toDayCount } from '../../lib/utilities.service'
+import { daysSinceEpoch, formatDate } from '../../lib/utilities.service'
 import { css } from '../../styles/stitches.config'
 import { Content, Day, Header } from '../../styles/timeline/week.style'
 import { Wrapper } from '../../styles/_app.style'
@@ -19,7 +19,7 @@ export const Week = ({ start, end, week }: { start: Date; end: Date; week: numbe
       </Header>
       <Content>
         {days.map((day, i) => (
-          <Day key={day} active={toDayCount(start) + i === toDayCount(new Date())}>
+          <Day key={day} active={daysSinceEpoch(start) + i === daysSinceEpoch(new Date())}>
             {day}
           </Day>
         ))}

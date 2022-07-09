@@ -82,17 +82,14 @@ export function computeTracks(exercises: Exercise[]): Track[] {
 
 /* Produces a string with the input start and end dates as "DD/MM - DD/MM" */
 export function formatDate(start: Date, end: Date) {
-  const startMonth = new Intl.DateTimeFormat('en', {
-    month: '2-digit',
-  }).format(start)
-  const startDay = new Intl.DateTimeFormat('en', {
-    day: '2-digit',
-  }).format(start)
-  const endMonth = new Intl.DateTimeFormat('en', {
-    month: '2-digit',
-  }).format(end)
-  const endDay = new Intl.DateTimeFormat('en', {
-    day: '2-digit',
-  }).format(end)
+  const TwoDigitDatePeriod = (date: Date, period: string): string => {
+    return new Intl.DateTimeFormat('en', {
+      [period]: '2-digit',
+    }).format(date)
+  }
+  const startMonth = TwoDigitDatePeriod(start, 'month')
+  const startDay = TwoDigitDatePeriod(start, 'day')
+  const endMonth = TwoDigitDatePeriod(end, 'month')
+  const endDay = TwoDigitDatePeriod(end, 'day')
   return `${startDay}/${startMonth} - ${endDay}/${endMonth}`
 }
