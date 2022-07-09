@@ -1,16 +1,20 @@
-import { Type } from 'class-transformer'
+import { Type, Expose } from 'class-transformer'
 
 export class Exercise {
   number: number
   title: string
   type: string
-  submission_type: string
+
+  @Expose({ name: 'submission_type' })
+  submissionType: string
 
   @Type(() => Date)
-  start_date: Date
+  @Expose({ name: 'start_date' })
+  startDate: Date
 
+  @Expose({ name: 'end_date' })
   @Type(() => Date)
-  end_date: Date
+  endDate: Date
 }
 
 export class Module {
@@ -22,3 +26,6 @@ export class Module {
   @Type(() => Exercise)
   exercises: Exercise[]
 }
+
+/* A track is a list of non-overlapping exercises */
+export type Track = Exercise[]

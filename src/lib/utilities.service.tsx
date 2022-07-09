@@ -1,11 +1,16 @@
+import { MILLISECONDS_IN_A_DAY } from '../constants/global'
+import { Exercise, Track } from '../constants/types'
+
 /* A file to store miscellaneous utility functions */
 
 /**
  * Groups a given data object by the given 'groupBy' property to form a dictionary of lists. Each list of objects
- * is sorted by the 'orderBy' property. */
+ * is sorted by the 'orderBy' property.
+ */
 export function groupByProperty(data: object[], groupBy: string, orderBy: string): { [key: string]: object[] } {
+  /* Preliminary check to make sure that the groupBy and orderBy attributes are in the data */
   if (!data.every((d) => groupBy in d && orderBy in d))
-    throw `'${groupBy}' and '${orderBy}' need be properties of provided objects`
+    throw Error(`'${groupBy}' and '${orderBy}' need be properties of provided objects`)
   return data === null
     ? {}
     : data
@@ -40,10 +45,39 @@ export function currentShortYear(): number {
     : complementYear * SHORT_YEAR_SHIFT + currentYear
 }
 
-/* TODO: Document what this function does */
-export function toDayCount(date: Date) {
-  const milliSecInADay = 86400000
-  return Math.floor(date.getTime() / milliSecInADay)
+/* Compute the number of days practically since the first second of January 2nd 1970 for a given date */
+export function daysSinceEpoch(date: Date): number {
+  return Math.floor(date.getTime() / MILLISECONDS_IN_A_DAY)
+}
+
+/* Returns whether the given two exercises overlap */
+export function exercisesOverlap(e1: Exercise, e2: Exercise): boolean {
+  return (
+    daysSinceEpoch(e1.startDate) <= daysSinceEpoch(e2.endDate) &&
+    daysSinceEpoch(e1.endDate) >= daysSinceEpoch(e2.startDate)
+  )
+}
+
+/* Compute the exercise tracks for the exercises of each module */
+export function computeTracks(exercises: Exercise[]): Track[] {
+  /* Pre: Ordering input by the start date */
+  const orderedExercises = exercises.sort((e1, e2) => daysSinceEpoch(e1.startDate) - daysSinceEpoch(e2.startDate))
+  const tracks: Track[] = []
+  /* The 'of' is used instead of 'in' to enforce the type of exercise */
+  for (const exercise of orderedExercises) {
+    let exerciseAssignedToTrack = false
+    /* Try to fit the given exercise into one of the tracks */
+    for (const track of tracks) {
+      if (track.every((trackExercise) => !exercisesOverlap(exercise, trackExercise))) {
+        exerciseAssignedToTrack = true
+        track.push(exercise)
+        break
+      }
+    }
+    /* Create a new track if none of the previous tracks can accommodate the exercise */
+    if (!exerciseAssignedToTrack) tracks.push([exercise])
+  }
+  return tracks
 }
 
 /* Produces a string with the input start and end dates as "DD/MM - DD/MM" */

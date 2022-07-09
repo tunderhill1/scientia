@@ -25,6 +25,9 @@ const defaultTerm = {
 /* Top margin to position the scroll area 1rem right under the navigation bar */
 const TOP_MARGIN = `(${NAVIGATION_HEIGHT} + 1rem)`
 
+/* The timeline's laid out in four sections: switcher, weeks, modules and main grid. The main grid is a stack of three
+ * components: events, indicator and rows; note that the layers are ordered based on their relative heights.
+ */
 const Timeline = () => {
   const [term, setTerm] = useState<string>('Autumn Term')
 

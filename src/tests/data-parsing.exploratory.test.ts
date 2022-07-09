@@ -14,9 +14,9 @@ test('can parse Date correctly from string', () => {
     number: 4,
     title: 'Pintos Task 1 - Scheduling',
     type: 'CW',
-    start_date: new Date(Date.UTC(2021, 9, 11, 12)),
-    end_date: new Date(Date.UTC(2021, 9, 29, 19)),
-    submission_type: 'group',
+    startDate: new Date(Date.UTC(2021, 9, 11, 12)),
+    endDate: new Date(Date.UTC(2021, 9, 29, 19)),
+    submissionType: 'group',
   }
 
   let actual = plainToClass(Exercise, rawExercise)
