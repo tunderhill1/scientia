@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { mockTimeline } from '../constants/mock'
-import { Background, Grid } from '../styles/timeline.style'
-import { Area, Container, Scrollbar, Thumb, Viewport, Wrapper } from '../styles/_app.style'
+import { Area, Container, Scrollbar, Thumb, Viewport } from '../styles/_app.style'
 import { Switcher } from '../components/timeline/Switcher'
 import { Weeks } from '../components/timeline/Weeks'
 import { Modules } from '../components/timeline/Modules'
-import { css } from '../styles/stitches.config'
+import { NAVIGATION_HEIGHT } from '../constants/global'
+import { Events } from '../components/timeline/Events'
+import { Rows } from '../components/timeline/Rows'
 
 /**
  * NOTE: Terms from the backend have the following shape.
@@ -21,6 +22,9 @@ const defaultTerm = {
   weeks: 11,
 }
 
+/* Top margin to position the scroll area 1rem right under the navigation bar */
+const TOP_MARGIN = `(${NAVIGATION_HEIGHT} + 1rem)`
+
 const Timeline = () => {
   const [term, setTerm] = useState<string>('Autumn Term')
 
@@ -28,23 +32,15 @@ const Timeline = () => {
   const data = mockTimeline
 
   return (
-    <Area css={{ height: 'calc(100vh - 5rem)', marginTop: '5rem' }}>
+    <Area css={{ height: `calc(100vh - ${TOP_MARGIN})`, marginTop: `calc${TOP_MARGIN}` }}>
       <Viewport>
         <Container timeline>
           <Switcher term={term} onSwitch={setTerm} />
           <Weeks start={defaultTerm.start} weeks={defaultTerm.weeks} />
           <Modules term={term} />
-          <Background>
-            <h1>{term}</h1>
-          </Background>
-          <Grid css={{ gridTemplateColumns: `repeat(${defaultTerm.weeks}, 15rem)` }}>
-            {[...Array(11)].map((_, id) => (
-              <div
-                key={id}
-                className={css({ height: `100%`, backgroundColor: '$subtleBackground', borderRadius: '0.5rem' })()}
-              />
-            ))}
-          </Grid>
+          {/* NOTE: Everything under here will be placed in the background area */}
+          <Events />
+          <Rows weeks={defaultTerm.weeks} />
         </Container>
       </Viewport>
       <Scrollbar orientation="vertical">

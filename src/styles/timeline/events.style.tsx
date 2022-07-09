@@ -1,4 +1,4 @@
-import { styled } from './stitches.config'
+import { styled } from '../stitches.config'
 
 /* Background layout: general overview */
 /* +------------+------------+------------+------------+------------+--------+ */
@@ -18,16 +18,4 @@ export const Background = styled('div', {
   gridTemplateColumns: `repeat(10, ${WEEKDAYS_WIDTHS} ${WEEKEND_WIDTH})`,
   gridTemplateRows: 'repeat(10, 4rem)',
   padding: '0.5rem',
-})
-
-export const Grid = styled('div', {
-  gridArea: 'background',
-  display: 'grid',
-  gridTemplateRows: 'auto',
-  rowGap: 0,
-  columnGap: '0.5rem',
-
-  zIndex: 1,
-  paddingRight: '1rem',
-  paddingBottom: '1rem',
 })
