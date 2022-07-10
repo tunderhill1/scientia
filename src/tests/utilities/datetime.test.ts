@@ -30,9 +30,9 @@ test.each`
 })
 
 test.each`
-  date                      | expected
-  ${new Date(1970, 0, 2)}   | ${0}
-  ${new Date(2022, 11, 25)} | ${19351}
+  date                                | expected
+  ${new Date(Date.UTC(1970, 0, 2))}   | ${1}
+  ${new Date(Date.UTC(2022, 11, 25))} | ${19351}
 `('can calculate number of days since epoch for date', ({ date, expected }) => {
   const actual = daysSinceEpoch(date)
   expect(actual).toBe(expected)
