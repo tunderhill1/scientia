@@ -26,11 +26,11 @@ export const Tabs = ({
   onClick = () => {},
 }: {
   data: any
-  generator: (tab: any) => ReactNode
+  generator: (_: any) => ReactNode
   alignment?: Alignment
   attribute?: string
   animate?: boolean
-  onClick?: (tab: any) => void
+  onClick?: (_: any) => void
 }) => {
   const [tabBoundingBox, setTabBoundingBox] = useState<any>(null)
   const [wrapperBoundingBox, setWrapperBoundingBox] = useState<any>(null)

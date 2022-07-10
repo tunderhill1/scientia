@@ -1,5 +1,5 @@
 import { MILLISECONDS_IN_A_DAY } from '../constants/global'
-import { Exercise, Track } from '../constants/types'
+import { Exercise, Module, Track, TrackMap } from '../constants/types'
 
 /* A file to store miscellaneous utility functions */
 
@@ -78,6 +78,14 @@ export function computeTracks(exercises: Exercise[]): Track[] {
     if (!exerciseAssignedToTrack) tracks.push([exercise])
   }
   return tracks
+}
+
+/* Creates a track map given a list of modules with exercises */
+export function generateTrackMap(modules: Module[]): TrackMap {
+  return modules.reduce((accumulator: TrackMap, module) => {
+    accumulator[module.code] = computeTracks(module.exercises)
+    return accumulator
+  }, {})
 }
 
 /* Produces a string with the input start and end dates as "DD/MM - DD/MM" */

@@ -1,13 +1,16 @@
-import { useState } from 'react'
-import { mockTimeline } from '../constants/mock'
-import { Area, Container, Corner, Scrollbar, Thumb, Viewport } from '../styles/_app.style'
+import { plainToInstance } from 'class-transformer'
+import { useEffect, useState, useRef } from 'react'
+import { Events } from '../components/timeline/Events'
+import { Indicator } from '../components/timeline/Indicator'
+import { Modules } from '../components/timeline/Modules'
+import { Rows } from '../components/timeline/Rows'
 import { Switcher } from '../components/timeline/Switcher'
 import { Weeks } from '../components/timeline/Weeks'
-import { Modules } from '../components/timeline/Modules'
-import { Indicator } from '../components/timeline/Indicator'
-import { NAVIGATION_HEIGHT } from '../constants/global'
-import { Events } from '../components/timeline/Events'
-import { Rows } from '../components/timeline/Rows'
+import { NAVIGATION_HEIGHT, TIMELINE_TRACK_HEIGHT } from '../constants/global'
+import { mockTimeline } from '../constants/mock'
+import { Module, TrackMap } from '../constants/types'
+import { generateTrackMap } from '../lib/utilities.service'
+import { Area, Container, Corner, Scrollbar, Thumb, Viewport } from '../styles/_app.style'
 
 /**
  * NOTE: Terms from the backend have the following shape.
@@ -31,17 +34,36 @@ const TOP_MARGIN = `(${NAVIGATION_HEIGHT})`
  */
 const Timeline = () => {
   const [term, setTerm] = useState<string>('Autumn Term')
+  const [trackMap, setTrackMap] = useState<TrackMap>({})
+  const [rowHeights, setRowHeights] = useState<{ [code: string]: string }>({})
 
   /* TODO: Fetch from the relevant endpoint using the year from the context */
-  const data = mockTimeline
+  const dataRef = useRef<Module[]>(plainToInstance(Module, mockTimeline))
+
+  useEffect(() => {
+    if (dataRef.current !== []) {
+      setTrackMap(generateTrackMap(dataRef.current))
+    }
+  }, [])
+
+  useEffect(() => {
+    const rowHeights = Object.entries(trackMap).reduce(
+      (accumulator: { [code: string]: string }, [code, tracks]): { [code: string]: string } => {
+        accumulator[code] = `calc(${TIMELINE_TRACK_HEIGHT} * ${tracks.length})`
+        return accumulator
+      },
+      {}
+    )
+    setRowHeights(rowHeights)
+  }, [trackMap])
 
   return (
     <Area css={{ height: `calc(100vh - ${TOP_MARGIN})`, marginTop: `calc${TOP_MARGIN}` }}>
-      <Viewport css={{ paddingTop: '1rem' }}>
+      <Viewport>
         <Container timeline>
           <Switcher term={term} onSwitch={setTerm} />
           <Weeks start={defaultTerm.start} weeks={defaultTerm.weeks} />
-          <Modules term={term} />
+          <Modules term={term} rowHeights={rowHeights} />
           {/* NOTE: Everything under here will be placed in the background area */}
           <Events />
           <Indicator />

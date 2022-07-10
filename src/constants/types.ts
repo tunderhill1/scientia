@@ -29,3 +29,6 @@ export class Module {
 
 /* A track is a list of non-overlapping exercises */
 export type Track = Exercise[]
+
+/* A track map associates a list of tracks with a module code */
+export type TrackMap = { [code: string]: Track[] }

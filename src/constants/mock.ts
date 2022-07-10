@@ -71,7 +71,7 @@ export const mockMaterials = [
  */
 export const mockTimeline = [
   {
-    code: '50007.1',
+    code: '40001',
     title: 'Laboratory 2',
     terms: [1] /* A list of ints where Autumn (1), Spring (2) and Summer (3) */,
     staff: [] /* Temporarily omitted */,
@@ -95,7 +95,7 @@ export const mockTimeline = [
     ],
   },
   {
-    code: '50002',
+    code: '40002',
     title: 'Software Engineering Design',
     terms: [1, 2],
     staff: [] /* Temporarily omitted */,
@@ -112,8 +112,8 @@ export const mockTimeline = [
         number: 2,
         title: 'Mock Objects',
         type: 'CW',
-        start_date: '2021-10-18T12:00:00Z',
-        end_date: '2021-10-21T19:00:00Z',
+        start_date: '2021-10-13T12:00:00Z',
+        end_date: '2021-10-18T19:00:00Z',
         submission_type: 'individual',
       },
     ],

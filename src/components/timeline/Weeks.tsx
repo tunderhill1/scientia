@@ -15,7 +15,8 @@ export const Weeks = ({ start, weeks }: { start: Date; weeks: number }) => {
     top: '0',
 
     paddingRight: '1rem',
-    height: '5.5rem',
+    paddingTop: '1rem',
+    height: '6.5rem',
     width: 'auto',
 
     zIndex: '4',

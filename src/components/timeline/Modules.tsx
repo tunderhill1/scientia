@@ -11,8 +11,8 @@ const terms = {
   3: 'Summer Term',
 }
 
-export const Modules = ({ term }: { term: string }) => {
-  const { data } = useAxios({ url: endpoints.courses('2021'), method: 'GET' })
+export const Modules = ({ term, rowHeights }: { term: string; rowHeights: { [code: string]: string } }) => {
+  const { data } = useAxios({ url: endpoints.courses('2122'), method: 'GET' })
   const modulesWrapperStyle = {
     gridArea: 'modules',
 
@@ -28,18 +28,34 @@ export const Modules = ({ term }: { term: string }) => {
     backgroundColor: '$appBackground',
   }
 
-  useEffect(() => {
-    console.log({ modules: data })
-  }, [data])
-
   return (
     <Wrapper css={modulesWrapperStyle}>
       <Tabs
         data={data}
-        generator={(tab: any) => (
-          <Wrapper css={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <span className={css({ color: '$lowContrast' })()}>{tab.code}</span>
-            <span>{tab.title}</span>
+        generator={(module: any) => (
+          <Wrapper
+            css={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.5rem',
+              height: rowHeights[module.code] ?? '3.25rem',
+              /* TODO: Extract constants */
+              width: 'calc(16.875rem - 2rem)',
+            }}
+          >
+            <span className={css({ color: '$lowContrast' })()}>{module.code}</span>
+            <span
+              /* TODO: Extract styling */
+              className={css({
+                whiteSpace: 'nowrap',
+                textOverflow: 'ellipsis',
+                minWidth: '0',
+                overflow: 'hidden',
+                marginRight: '0.5rem',
+              })()}
+            >
+              {module.title}
+            </span>
           </Wrapper>
         )}
       />

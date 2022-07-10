@@ -32,6 +32,7 @@ export const Switcher = ({ term, onSwitch }: { term: string; onSwitch: (term: st
     position: 'sticky',
     zIndex: 5,
     background: '$appBackground',
+    paddingTop: '1rem',
   }
 
   return (
