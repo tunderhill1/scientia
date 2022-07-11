@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Check, Dash, Download, UiChecks, PencilSquare, Trash3Fill } from 'react-bootstrap-icons'
 import { useOutletContext } from 'react-router-dom'
 import { Collapsible } from '../components/Collapsible'
 import { Tabs } from '../components/Tabs'
 import { Toolbar } from '../components/Toolbar'
 import { endpoints } from '../constants/endpoints'
-import { useAxios } from '../lib/axios.context'
+import { useAxios, AxiosContext } from '../lib/axios.context'
 import useChecklist from '../lib/checkbox.service'
 import { useUser } from '../lib/user.context'
 import { groupByProperty } from '../lib/utilities.service'
@@ -15,10 +15,13 @@ import { Checkbox, Indicator } from '../styles/_app.style'
 import { ToggleGroup, ToggleItem } from '../styles/toolbar.style'
 import { Button, Footnote, Wrapper } from '../styles/_app.style'
 import React from 'react'
+import Dialog from '../components/Dialog'
 
 const Materials = () => {
+  const axiosInstance = useContext(AxiosContext)
   const [checklistMode, setSelectionMode] = useState(false)
   const [groupedMaterials, setGroupedMaterials] = useState({})
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   const moduleCode = useOutletContext<string | null>()
   const checklistManager = useChecklist(groupedMaterials, 'id', false)
@@ -45,9 +48,36 @@ const Materials = () => {
     window.open(`${endpoints.resourcesArchive}?year=${year}&course=${moduleCode}&${queryParameter}`)
   }
 
-  const onDelete = () => {
-    const idsToDownload = checklistManager.getCheckedItems()
-    console.log('Deleting ', idsToDownload)
+  const onDelete = () => setDialogOpen(true)
+
+  const onConfirmDelete = async () => {
+    await axiosInstance
+      .request({
+        method: 'DELETE',
+        url: endpoints.resources,
+        params: {
+          year: year,
+          course: moduleCode,
+          id: checklistManager.getCheckedItems(),
+        },
+      })
+      .then((response: any) => {
+        axiosInstance
+          .request({
+            method: 'GET',
+            url: endpoints.resources,
+            params: { year: year, course: moduleCode },
+          })
+          .then((response: any) => setGroupedMaterials(groupByProperty(response.data, 'category', 'index')))
+          .catch((error: any) => {
+            // TODO:TOAST to report that getting new materials failed
+            console.error(error)
+          })
+      })
+      .catch((error: any) => {
+        // TODO:TOAST to report that deletion failed
+        console.error(error)
+      })
   }
 
   const headerGenerator = (collection: string, _: object[]) => (
@@ -127,6 +157,14 @@ const Materials = () => {
           contentGenerator={contentGenerator}
         />
       )}
+      <Dialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        onPrimaryClick={onConfirmDelete}
+        title={'Are you sure you want to delete the selected resources?'}
+        primaryButtonText={'Delete'}
+        secondaryButtonText={'Cancel'}
+      />
       <Footnote muted center css={{ margin: '2rem 0' }}>
         Please contact the relevant module leader(s) for missing resources or if you'd like materials to be better
         organised; we recommend using EdStem to help them gauge the peer response.

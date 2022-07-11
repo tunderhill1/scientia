@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, Method } from 'axios'
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
 import useAuth from './auth.service'
-import useToken from './token.service'
+import qs from 'qs'
 
 export const ANTI_CSRF_COOKIE_NAME = 'csrf_access_token'
 
@@ -26,7 +26,7 @@ export function getCookie(cookieName: string): string {
   return parts.length === 2 ? parts.pop()?.split(';').shift() || '' : ''
 }
 
-const AxiosContext = createContext<AxiosInstance>(axios)
+export const AxiosContext = createContext<AxiosInstance>(axios)
 
 /* TODO: Support multiple instances with additional configurations; i.e. create a ref for each instance */
 export const AxiosInstanceProvider = ({ config = {}, children }: { config: any; children: React.ReactNode }) => {
@@ -41,6 +41,9 @@ export const AxiosInstanceProvider = ({ config = {}, children }: { config: any; 
       /* TODO: Need to check if the user's logged in before adding the token */
       request.headers = { 'X-CSRF-TOKEN': getCookie(ANTI_CSRF_COOKIE_NAME) }
       request.withCredentials = true
+      request.paramsSerializer = (params) => {
+        return qs.stringify(params, { indices: false })
+      }
       return request
     })
     instanceRef.current.interceptors.response.use(

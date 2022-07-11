@@ -9,7 +9,7 @@ export const Header = styled('div', {
   position: 'fixed',
   top: 0,
   left: 0,
-  zIndex: '2',
+  zIndex: 2,
 
   display: 'flex',
   alignContent: 'center',
