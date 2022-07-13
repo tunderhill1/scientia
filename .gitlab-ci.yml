@@ -83,7 +83,7 @@ build docker image:
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
 
 
-.deploy prod:
+deploy prod:
   variables:
     AUTH_JWT_SECRET_KEY: $AUTH_JWT_SECRET_KEY
     SECRET_KEY: $SECRET_KEY

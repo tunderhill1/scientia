@@ -31,7 +31,7 @@ services:
       - 8080:8080
     volumes:
       - ./dev-reverse-proxy.conf:/etc/nginx/conf.d/dev.conf
-  scientia:
+  frontend:
     image: node:16
     ports:
       - 3000:3000

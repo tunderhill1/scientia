@@ -32,7 +32,7 @@ To make sure that cookies are sent correctly from the backend and stored correct
 stack with an Nginx reverse proxy (pretty much what we use in production -just with simpler configs).
 
 ```shell
-docker-compose up [--build]
+docker-compose -f dev.docker-compose.yml up [--build]
 docker exec $(docker ps -qf "name=materials" | head -n1) flask create_all
 docker exec $(docker ps -qf "name=materials" | head -n1) flask setup_clean_dev_env
 ```
