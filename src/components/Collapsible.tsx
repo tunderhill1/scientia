@@ -1,7 +1,8 @@
 import { Accordion, Item } from '@radix-ui/react-accordion'
 import { Check, Dash } from 'react-bootstrap-icons'
-import { Content, Header, Trigger } from '../styles/collapsible.style'
+
 import { Checkbox, Indicator, Wrapper } from '../styles/_app.style'
+import { Content, Header, Trigger } from '../styles/collapsible.style'
 
 /**
  * The collapsible behaves like an accordion with an optional checklist.

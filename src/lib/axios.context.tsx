@@ -1,7 +1,8 @@
 import axios, { AxiosInstance, Method } from 'axios'
-import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
-import useAuth from './auth.service'
 import qs from 'qs'
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
+
+import useAuth from './auth.service'
 
 export const ANTI_CSRF_COOKIE_NAME = 'csrf_access_token'
 

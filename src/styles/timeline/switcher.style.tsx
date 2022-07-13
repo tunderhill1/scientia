@@ -1,5 +1,6 @@
+import { ToggleGroupItem, ToggleGroup as ToggleGroupPrimitive } from '@radix-ui/react-toggle-group'
+
 import { styled } from '../stitches.config'
-import { ToggleGroup as ToggleGroupPrimitive, ToggleGroupItem } from '@radix-ui/react-toggle-group'
 import { itemStyles } from '../toolbar.style'
 
 /* Both group and item have no styling connections with the timeline and can be extracted to _app.style if needed */

@@ -1,21 +1,22 @@
 import { useContext, useEffect, useState } from 'react'
-import { Check, Dash, Download, UiChecks, PencilSquare, Trash3Fill } from 'react-bootstrap-icons'
+import React from 'react'
+import { Check, Dash, Download, PencilSquare, Trash3Fill, UiChecks } from 'react-bootstrap-icons'
 import { useOutletContext } from 'react-router-dom'
+
 import { Collapsible } from '../components/Collapsible'
+import Dialog from '../components/Dialog'
 import { Tabs } from '../components/Tabs'
 import { Toolbar } from '../components/Toolbar'
 import { endpoints } from '../constants/endpoints'
-import { useAxios, AxiosContext } from '../lib/axios.context'
+import { AxiosContext, useAxios } from '../lib/axios.context'
 import useChecklist from '../lib/checkbox.service'
 import { useUser } from '../lib/user.context'
 import { groupByProperty } from '../lib/utilities.service'
 import { useYear } from '../lib/year.context'
-import { Caret } from '../styles/collapsible.style'
 import { Checkbox, Indicator } from '../styles/_app.style'
-import { ToggleGroup, ToggleItem } from '../styles/toolbar.style'
 import { Button, Footnote, Wrapper } from '../styles/_app.style'
-import React from 'react'
-import Dialog from '../components/Dialog'
+import { Caret } from '../styles/collapsible.style'
+import { ToggleGroup, ToggleItem } from '../styles/toolbar.style'
 
 const Materials = () => {
   const axiosInstance = useContext(AxiosContext)

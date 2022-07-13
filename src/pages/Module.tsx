@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
-import { css } from '../styles/stitches.config'
+
 import { Button, Container } from '../styles/_app.style'
+import { css } from '../styles/stitches.config'
 
 const Module = () => {
   const { moduleCode } = useParams()

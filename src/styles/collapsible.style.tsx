@@ -1,6 +1,7 @@
 import { AccordionContent, AccordionHeader, AccordionTrigger } from '@radix-ui/react-accordion'
 import { keyframes } from '@stitches/react'
 import { CaretRightFill } from 'react-bootstrap-icons'
+
 import { styled } from './stitches.config'
 
 export const Header = styled(AccordionHeader, {
