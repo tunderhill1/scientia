@@ -1,10 +1,11 @@
-import { styled } from './stitches.config'
 import {
-  Toolbar as ToolbarPrimitive,
   ToolbarButton,
-  ToolbarToggleItem,
+  Toolbar as ToolbarPrimitive,
   ToolbarToggleGroup,
+  ToolbarToggleItem,
 } from '@radix-ui/react-toolbar'
+
+import { styled } from './stitches.config'
 
 export const ToolbarContainer = styled(ToolbarPrimitive, {
   display: 'flex',

@@ -1,4 +1,5 @@
 import { plainToInstance } from 'class-transformer'
+
 import { Exercise, Module } from '../constants/types'
 
 test('can parse Date correctly from string', () => {

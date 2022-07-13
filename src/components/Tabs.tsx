@@ -1,5 +1,6 @@
 import React, { ReactNode, useRef, useState } from 'react'
-import { TabsWrapper, TabsHighlight, Tab } from '../styles/tabs.style'
+
+import { Tab, TabsHighlight, TabsWrapper } from '../styles/tabs.style'
 
 /**
  * NOTE: The following code was heavily inspired by Emil Kowalski's blog on tabs and the accompanying code sandbox:

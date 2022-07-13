@@ -1,4 +1,5 @@
-import { ToastViewport, Root as ToastRoot, ToastTitle, ToastDescription, ToastClose } from '@radix-ui/react-toast'
+import { ToastClose, ToastDescription, Root as ToastRoot, ToastTitle, ToastViewport } from '@radix-ui/react-toast'
+
 import { styled } from '../styles/stitches.config'
 
 export const Viewport = styled(ToastViewport, {

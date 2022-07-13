@@ -1,5 +1,6 @@
 import { plainToInstance } from 'class-transformer'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+
 import { Events } from '../components/timeline/Events'
 import { Indicator } from '../components/timeline/Indicator'
 import { Modules } from '../components/timeline/Modules'

@@ -1,5 +1,6 @@
-import React, { createContext, useState, useEffect } from 'react'
-import { theme as lightTheme, darkTheme } from '../styles/stitches.config'
+import React, { createContext, useEffect, useState } from 'react'
+
+import { darkTheme, theme as lightTheme } from '../styles/stitches.config'
 
 /**
  * Code for the theme provider was heavily inspired by Lucas Arundell (lucastobrazil):

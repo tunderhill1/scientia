@@ -1,7 +1,8 @@
+import { DialogClose, DialogPortal, Dialog as DialogRoot } from '@radix-ui/react-dialog'
 import React, { ReactNode } from 'react'
-import { Dialog as DialogRoot, DialogClose, DialogPortal } from '@radix-ui/react-dialog'
-import { Overlay, Content, Title } from '../styles/dialog.style'
+
 import { Button } from '../styles/_app.style'
+import { Content, Overlay, Title } from '../styles/dialog.style'
 
 const ContentFrame = ({ children, ...props }: { children: ReactNode; props?: { [x: string]: any } }) => (
   <DialogPortal>

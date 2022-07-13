@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
+
 import { endpoints } from '../../constants/endpoints'
 import { useAxios } from '../../lib/axios.context'
-import { css } from '../../styles/stitches.config'
 import { Wrapper } from '../../styles/_app.style'
+import { css } from '../../styles/stitches.config'
 import { Tabs } from '../Tabs'
 
 const terms = {

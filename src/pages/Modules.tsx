@@ -1,10 +1,11 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+
 import { Tabs } from '../components/Tabs'
 import { endpoints } from '../constants/endpoints'
 import { useAxios } from '../lib/axios.context'
-import { css } from '../styles/stitches.config'
 import { Container } from '../styles/_app.style'
+import { css } from '../styles/stitches.config'
 
 const Modules = () => {
   const { data } = useAxios({ url: endpoints.courses('2021'), method: 'GET' })

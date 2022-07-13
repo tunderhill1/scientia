@@ -1,4 +1,4 @@
-import { Type, Expose } from 'class-transformer'
+import { Expose, Type } from 'class-transformer'
 
 export class Exercise {
   number: number

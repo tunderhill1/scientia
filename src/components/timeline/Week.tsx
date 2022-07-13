@@ -1,7 +1,7 @@
 import { daysSinceEpoch, formatDate } from '../../lib/utilities.service'
+import { Wrapper } from '../../styles/_app.style'
 import { css } from '../../styles/stitches.config'
 import { Content, Day, Header } from '../../styles/timeline/week.style'
-import { Wrapper } from '../../styles/_app.style'
 
 const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']
 

@@ -1,3 +1,4 @@
+import { CheckboxIndicator, Checkbox as CheckboxPrimitive } from '@radix-ui/react-checkbox'
 import {
   ScrollArea,
   ScrollAreaCorner,
@@ -5,8 +6,8 @@ import {
   ScrollAreaThumb,
   ScrollAreaViewport,
 } from '@radix-ui/react-scroll-area'
+
 import { styled } from './stitches.config'
-import { Checkbox as CheckboxPrimitive, CheckboxIndicator } from '@radix-ui/react-checkbox'
 
 export const Container = styled('div', {
   maxWidth: '42rem',

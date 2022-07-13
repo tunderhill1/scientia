@@ -1,14 +1,15 @@
+import { DropdownMenu, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu'
 import Avatar from 'boring-avatars'
 import { useContext } from 'react'
 import { Command, DoorClosedFill, MoonFill, Search, SunFill } from 'react-bootstrap-icons'
-import { ThemeContext } from '../lib/theme.context'
-import { useUser } from '../lib/user.context'
-import { Content, Header, Item, Logo, Nav, Separator } from '../styles/navigation.style'
-import { Button } from '../styles/_app.style'
-import { DropdownMenu, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu'
+import { useNavigate } from 'react-router-dom'
+
 import { Link, links } from '../constants/links'
 import useAuth from '../lib/auth.service'
-import { useNavigate } from 'react-router-dom'
+import { ThemeContext } from '../lib/theme.context'
+import { useUser } from '../lib/user.context'
+import { Button } from '../styles/_app.style'
+import { Content, Header, Item, Logo, Nav, Separator } from '../styles/navigation.style'
 
 /**
  * TODO: Extract the colours as a constant and implement functionality for the buttons!

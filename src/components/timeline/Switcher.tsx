@@ -1,6 +1,7 @@
-import { CloudDrizzleFill, TreeFill, SunFill, Snow, EggFill, Rainbow } from 'react-bootstrap-icons'
-import { Group, Item } from '../../styles/timeline/switcher.style'
+import { CloudDrizzleFill, EggFill, Rainbow, Snow, SunFill, TreeFill } from 'react-bootstrap-icons'
+
 import { Wrapper } from '../../styles/_app.style'
+import { Group, Item } from '../../styles/timeline/switcher.style'
 
 /**
  * The timeline switcher houses a toggle group of six term and break toggles.
