@@ -26,15 +26,15 @@ Spearheaded by the [DoC EdTech Lab](https://edtech.pages.doc.ic.ac.uk/), Scienti
 
 # Running the app in dev
 
-> Make sure that the project folder sits next to **Materials** project folder.
+> Make sure that the project folder sits next to the **Materials** and **ScientiaAPI** project folders.
 
 To make sure that cookies are sent correctly from the backend and stored correctly in the client, we use a docker-compose
 stack with an Nginx reverse proxy (pretty much what we use in production -just with simpler configs).
 
 ```shell
 docker-compose up [--build]
-docker exec $(docker ps -qf "name=materials_api" | head -n1) flask create_all
-docker exec $(docker ps -qf "name=materials_api" | head -n1) flask load_dev_resources
+docker exec $(docker ps -qf "name=materials" | head -n1) flask create_all
+docker exec $(docker ps -qf "name=materials" | head -n1) flask setup_clean_dev_env
 ```
 
 The stack so-composed (pardon the pun) should allow for hot-reload in both Scientia and Materials (as the respective services' source codes are attached as volumes).

@@ -10,9 +10,7 @@
  * TODO: Not verified after latest updates using docker for local development.
  */
 
-const development = 'http://localhost:8080/api'
-const production = 'https://api-materials.doc.ic.ac.uk'
-export const baseURL = process.env.NODE_ENV === 'production' ? production : development
+export const baseURL = process.env.API_ENTRYPOINT || 'http://localhost:8080/api'
 
 export const endpoints = {
   login: `${baseURL}/auth/login`,
