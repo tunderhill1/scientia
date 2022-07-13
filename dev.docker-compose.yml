@@ -1,0 +1,41 @@
+services:
+  gateway:
+    image: gateway
+    build: 
+      context: ../scientia-api
+      dockerfile: dev.Dockerfile
+    expose:
+      - 6000
+    command: uvicorn main:app --reload --host 0.0.0.0 --port 6000
+    environment:
+      - ENVIRONMENT=development
+      - MATERIALS_ENTRYPOINT=http://materials:5001
+      - API_ROLE_USERNAME=role_user1
+      - API_ROLE_PASSWORD=role_user_password
+    volumes:
+      - ../scientia-api:/api-gateway
+  materials:
+    image: materials
+    build: 
+      context: ../materials
+      dockerfile: dev.Dockerfile
+    expose:
+      - 5001
+    command: flask run -h '0.0.0.0' -p 5001
+    volumes:
+      - ../materials:/materials
+  reverse_proxy:
+    image: nginx
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    volumes:
+      - ./dev-reverse-proxy.conf:/etc/nginx/conf.d/dev.conf
+  scientia:
+    image: node:16
+    ports:
+      - 3000:3000
+    working_dir: /scientia
+    volumes:
+      - ./:/scientia 
+    command: yarn start
