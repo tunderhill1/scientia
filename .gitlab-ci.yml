@@ -3,6 +3,8 @@ image: node:16
 stages:
   - linting
   - testing
+  - building
+  - deploying
 
 cache:
   paths:
@@ -90,16 +92,16 @@ build docker image:
     DB_CONN_STR: $DB_CONN_STR
     DB_EDTECH_CONNECTION_STRING: $DB_EDTECH_CONNECTION_STRING
     STORAGE_ROOT: $STORAGE_ROOT
-  stage: deploy
+  stage: deploying
   except:
     changes:
       - README.md
   only:
-    - master
+    - rewrite
   when: manual
   script:
     - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
-    - docker stack deploy -c docker-compose.yml answerbook --with-registry-auth
+    - docker stack deploy -c docker-compose.yml scientia --with-registry-auth
   tags:
     - deploy_swarm
   environment:
