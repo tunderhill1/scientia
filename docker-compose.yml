@@ -42,6 +42,8 @@ services:
       - ./prod-reverse-proxy.conf:/etc/nginx/conf.d/scientia.doc.ic.ac.uk.conf
   scientia:
     image: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}
+    environment:
+      - API_ENTRYPOINT=https://scientia.doc.ic.ac.uk/api
     expose:
       - 3000
     deploy:

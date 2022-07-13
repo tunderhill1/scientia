@@ -52,3 +52,60 @@ unit-tests:
         coverage_format: cobertura
         path: coverage/cobertura-coverage.xml
 
+
+build docker image:
+  image: docker:latest
+  stage: building
+  interruptible: true
+  except:
+    changes:
+      - "**/README.md"
+  only:
+    - rewrite
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+    GIT_SUBMODULE_STRATEGY: recursive
+  tags:
+    - docker
+  services:
+    - docker:dind
+  before_script: []
+  script:
+    - >
+      docker build
+      -t $CI_REGISTRY_IMAGE:latest
+      --cache-from $CI_REGISTRY_IMAGE:latest
+      .
+    - docker tag $CI_REGISTRY_IMAGE:latest $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+
+
+.deploy prod:
+  variables:
+    AUTH_JWT_SECRET_KEY: $AUTH_JWT_SECRET_KEY
+    SECRET_KEY: $SECRET_KEY
+    API_ROLE_USERNAME: $API_ROLE_USERNAME
+    API_ROLE_PASSWORD: $API_ROLE_PASSWORD
+    DB_CONN_STR: $DB_CONN_STR
+    DB_EDTECH_CONNECTION_STRING: $DB_EDTECH_CONNECTION_STRING
+    STORAGE_ROOT: $STORAGE_ROOT
+  stage: deploy
+  except:
+    changes:
+      - README.md
+  only:
+    - master
+  when: manual
+  script:
+    - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
+    - docker stack deploy -c docker-compose.yml answerbook --with-registry-auth
+  tags:
+    - deploy_swarm
+  environment:
+    name: production-swarm
+    url: https://scientia.doc.ic.ac.uk
+
+
+
+
