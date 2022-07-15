@@ -3,8 +3,6 @@ version: "3.9"
 services:
   gateway:
     image: gitlab.doc.ic.ac.uk:4567/edtech/scientia-api:master
-    expose:
-      - 6000
     environment:
       - ENVIRONMENT=production
       - MATERIALS_ENTRYPOINT=http://materials:5001
@@ -17,8 +15,6 @@ services:
       replicas: 1
   materials:
     image: gitlab.doc.ic.ac.uk:4567/edtech/materials:basic-auth
-    expose:
-      - 5001
     environment:
       - ENV=production
       - SECRET_KEY
@@ -29,6 +25,13 @@ services:
       - STORAGE_ROOT
     volumes:
       - /vol/materials:/vol/materials
+    deploy:
+      mode: replicated
+      replicas: 1
+  frontend:
+    image: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}
+    environment:
+      - API_ENTRYPOINT=https://scientia.doc.ic.ac.uk/api
     deploy:
       mode: replicated
       replicas: 1
@@ -44,12 +47,7 @@ services:
       placement:
         constraints:
           - node.role == manager
-  frontend:
-    image: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}
-    environment:
-      - API_ENTRYPOINT=https://scientia.doc.ic.ac.uk/api
-    expose:
-      - 3000
-    deploy:
-      mode: replicated
-      replicas: 1
+    depends_on:
+      - gateway
+      - materials
+      - frontend
