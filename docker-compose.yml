@@ -40,6 +40,9 @@ services:
       - "443:443"
     volumes:
       - ./prod-reverse-proxy.conf:/etc/nginx/conf.d/scientia.doc.ic.ac.uk.conf
+    placement:
+      constraints:
+        - node.role == manager
   frontend:
     image: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}
     environment:
