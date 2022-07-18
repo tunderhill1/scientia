@@ -32,3 +32,16 @@ export type Track = Exercise[]
 
 /* A track map associates a list of tracks with a module code */
 export type TrackMap = { [code: string]: Track[] }
+
+/**
+ * NOTE: Terms from the backend have the following shape.
+ * { name: string, start: Date, end: Date, weeks: number }
+ * The start date's always a Monday and the end date's always a Friday
+ * The weeks holds a count of the number of mondays in the term
+ */
+export type Term = {
+  name: string
+  start: Date
+  end: Date
+  weeks: number
+}

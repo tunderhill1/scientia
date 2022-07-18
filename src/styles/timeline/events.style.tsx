@@ -1,4 +1,5 @@
 import { styled } from '../stitches.config'
+import { WEEKDAYS_WIDTHS, WEEKEND_WIDTH } from './constants.style'
 
 /* Background layout: general overview */
 /* +------------+------------+------------+------------+------------+--------+ */
@@ -6,9 +7,6 @@ import { styled } from '../stitches.config'
 /* | Mon          Tue          Wed          Thu          Fri                 | */
 /* +------------+------------+------------+------------+------------+--------+ */
 /* | <- 3rem -> | <- 3rem -> | <- 3rem -> | <- 3rem -> | <- 3rem -> | 0.5rem | */
-
-const WEEKDAYS_WIDTHS = '3rem 3rem 3rem 3rem 3rem'
-const WEEKEND_WIDTH = '0.5rem'
 
 // This is the main timeline area
 export const Background = styled('div', {
