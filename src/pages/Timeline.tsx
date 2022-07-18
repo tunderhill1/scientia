@@ -27,9 +27,11 @@ const defaultTerm: Term = {
 }
 
 export function dateToColumn(date: Date, referenceDate: Date): number {
-  return (
-    Math.ceil(((daysSinceEpoch(date) - daysSinceEpoch(referenceDate)) / DAYS_IN_WEEK) * COLS_IN_WEEK) + INDEXING_OFFSET
-  )
+  if (referenceDate.getDay() !== 1) throw new Error('Parameter referenceDate MUST be a monday.')
+  const weeksDelta = Math.floor((daysSinceEpoch(date) - daysSinceEpoch(referenceDate)) / DAYS_IN_WEEK)
+  const daysRemainder = (daysSinceEpoch(date) - daysSinceEpoch(referenceDate)) % DAYS_IN_WEEK
+
+  return weeksDelta * COLS_IN_WEEK + daysRemainder + (daysRemainder !== DAYS_IN_WEEK - 1 ? INDEXING_OFFSET : 0)
 }
 
 /* Top margin to position the scroll area 1rem right under the navigation bar */
