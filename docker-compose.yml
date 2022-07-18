@@ -37,7 +37,6 @@ services:
       replicas: 1
   reverse_proxy:
     image: nginx
-    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
