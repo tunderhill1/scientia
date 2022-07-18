@@ -1,14 +1,12 @@
-import * as Portal from '@radix-ui/react-portal'
-import { ToastProvider } from '@radix-ui/react-toast'
 import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { ProtectedRoute } from '../components/ProtectedRoute'
-import { Viewport as ToastViewport } from '../components/Toast'
 import { YearRoute } from '../components/YearRoute'
 import { baseURL } from '../constants/endpoints'
 import { AxiosInstanceProvider } from '../lib/axios.context'
 import { ThemeProvider } from '../lib/theme.context'
+import { ToastProvider } from '../lib/toast.context'
 import { UserProvider } from '../lib/user.context'
 import { YearProvider } from '../lib/year.context'
 import { Area, Viewport as ScrollViewport, Scrollbar, Thumb } from '../styles/_app.style'
@@ -27,9 +25,9 @@ function App() {
       <UserProvider>
         <YearProvider current={2122}>
           <AxiosInstanceProvider config={{ baseURL }}>
-            <ToastProvider>
-              <Area>
-                <ScrollViewport>
+            <Area>
+              <ScrollViewport>
+                <ToastProvider>
                   {/* TODO: Add a no-match route (i.e. 404 Not Found) */}
                   <Routes>
                     <Route index element={<Login />} />
@@ -51,15 +49,12 @@ function App() {
                       </Route>
                     </Route>
                   </Routes>
-                  <Portal.Root>
-                    <ToastViewport />
-                  </Portal.Root>
-                </ScrollViewport>
-                <Scrollbar orientation="vertical">
-                  <Thumb />
-                </Scrollbar>
-              </Area>
-            </ToastProvider>
+                </ToastProvider>
+              </ScrollViewport>
+              <Scrollbar orientation="vertical">
+                <Thumb />
+              </Scrollbar>
+            </Area>
           </AxiosInstanceProvider>
         </YearProvider>
       </UserProvider>

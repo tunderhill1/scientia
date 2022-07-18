@@ -1,30 +1,23 @@
-import { ToastClose, ToastDescription, Root as ToastRoot, ToastTitle, ToastViewport } from '@radix-ui/react-toast'
+import { ToastIcon, Root as ToastRoot, Title as ToastTitle, ToastVariant } from '../styles/toast.style'
 
-import { styled } from '../styles/stitches.config'
+/*  Toasts display brief, temporary notifications.
+    Only be used for:
+      - confirmations
+      - simple notifications
+      - low-priority alerts
+    They are noticeable, do not disrupt the user experience and do not require an action to be taken. 
+    Usage Guide: https://spectrum.adobe.com/page/toast/   */
 
-export const Viewport = styled(ToastViewport, {
-  position: 'fixed',
-  bottom: '1rem',
-  right: '1rem',
-  listStyle: 'none',
-})
-
-export const Toast = ({
-  open,
-  onOpenChange,
-  title,
-  description,
-}: {
-  open: boolean
-  onOpenChange: (_: boolean) => void
+export interface ToastProps {
+  variant: ToastVariant
   title: string
-  description: string
-}) => {
+}
+
+export const Toast = ({ variant, title }: ToastProps) => {
   return (
-    <ToastRoot open={open} onOpenChange={onOpenChange}>
+    <ToastRoot color={variant.toString()}>
+      <ToastIcon variant={variant} />
       <ToastTitle>{title}</ToastTitle>
-      <ToastDescription asChild>{description}</ToastDescription>
-      <ToastClose />
     </ToastRoot>
   )
 }
