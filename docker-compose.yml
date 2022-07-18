@@ -31,7 +31,7 @@ services:
   frontend:
     image: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}
     environment:
-      - API_ENTRYPOINT=https://scientia.doc.ic.ac.uk/api
+      - REACT_APP_API_ENTRYPOINT=https://nova-scientia.doc.ic.ac.uk/api
     deploy:
       mode: replicated
       replicas: 1

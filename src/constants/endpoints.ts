@@ -10,7 +10,7 @@
  * TODO: Not verified after latest updates using docker for local development.
  */
 
-export const baseURL = process.env.API_ENTRYPOINT || 'http://localhost:8080/api'
+export const baseURL = process.env.REACT_APP_API_ENTRYPOINT || 'http://localhost:8080/api'
 
 export const endpoints = {
   login: `${baseURL}/auth/login`,
