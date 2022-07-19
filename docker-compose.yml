@@ -39,7 +39,9 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./prod-reverse-proxy.conf:/etc/nginx/conf.d/scientia.doc.ic.ac.uk.conf
+      - ./nginx/prod.conf:/etc/nginx/conf.d/scientia.doc.ic.ac.uk.conf
+      - ${CERT_CHAIN_PEM}:/etc/nginx/certs/fullchain.pem
+      - ${CERT_PRIV_KEY}:/etc/nginx/certs/privkey.key
     deploy:
       placement:
         constraints:

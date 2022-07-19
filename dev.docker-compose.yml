@@ -37,7 +37,7 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - ./dev-reverse-proxy.conf:/etc/nginx/conf.d/dev.conf
+      - ./nginx/dev.conf:/etc/nginx/conf.d/dev.conf
     depends_on:
       - gateway
       - materials
