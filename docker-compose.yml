@@ -34,14 +34,10 @@ services:
       mode: replicated
       replicas: 1
   reverse_proxy:
-    image: nginx
+    image: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}-nginx
     ports:
       - "80:80"
       - "443:443"
-    volumes:
-      - ./nginx/prod.conf:/etc/nginx/conf.d/scientia.doc.ic.ac.uk.conf
-      - ${CERT_CHAIN_PEM}:/etc/nginx/certs/fullchain.pem
-      - ${CERT_PRIV_KEY}:/etc/nginx/certs/privkey.key
     deploy:
       placement:
         constraints:

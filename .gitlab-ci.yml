@@ -55,7 +55,7 @@ unit-tests:
         path: coverage/cobertura-coverage.xml
 
 
-build docker image:
+build frontend image:
   image: docker:latest
   stage: building
   interruptible: true
@@ -75,7 +75,7 @@ build docker image:
   script:
     - >
       docker build
-      -t $CI_REGISTRY_IMAGE:latest
+      --tag $CI_REGISTRY_IMAGE:latest
       --build-arg api_entrypoint=https://nova-scientia.doc.ic.ac.uk/api
       --cache-from $CI_REGISTRY_IMAGE:latest
       .
@@ -83,6 +83,37 @@ build docker image:
     - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
 
+build nginx image:
+  image: docker:latest
+  stage: building
+  interruptible: true
+  except:
+    changes:
+      - "**/README.md"
+  only:
+    - rewrite
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+    GIT_SUBMODULE_STRATEGY: recursive
+    CERTIFICATE: $CERT_CHAIN_PEM
+    PRIVATE_KEY: $CERT_PRIV_KEY
+  tags:
+    - docker
+  services:
+    - docker:dind
+  before_script: []
+  script:
+    - >
+      docker build
+      --tag $CI_REGISTRY_IMAGE-nginx:latest
+      --build-arg certificate="$CERTIFICATE"
+      --build-arg private_key="$PRIVATE_KEY"
+      --cache-from $CI_REGISTRY_IMAGE-nginx:latest
+      --file nginx.Dockerfile
+      .
+    - docker tag $CI_REGISTRY_IMAGE-nginx:latest $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME-nginx
+    - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME-nginx
 
 deploy prod:
   variables:
