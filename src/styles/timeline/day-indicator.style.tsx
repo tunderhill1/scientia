@@ -5,6 +5,7 @@ export const Grid = styled('div', {
   zIndex: 2,
   display: 'grid',
   gridTemplateRows: 'auto',
+  paddingTop: '0.5rem',
   paddingBottom: '1rem',
 })
 
