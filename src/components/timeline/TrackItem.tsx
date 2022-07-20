@@ -1,0 +1,43 @@
+import React from 'react'
+
+import { Exercise } from '../../constants/types'
+import { css } from '../../styles/stitches.config'
+import { TrackItemTitle, TrackItemWrapper } from '../../styles/timeline/track-item.style'
+
+export const TrackItem = ({
+  exercise,
+  startColumn,
+  endColumn,
+  row,
+  onClick,
+}: {
+  exercise: Exercise
+  startColumn: number
+  endColumn: number
+  row: number
+  onClick: () => void
+}) => {
+  const isSingleDay = endColumn - startColumn < 2
+  return (
+    <TrackItemWrapper
+      onClick={onClick}
+      className={css({
+        gridColumn: `${startColumn} / ${endColumn}`,
+        gridRow: `${row}`,
+        justifyContent: isSingleDay ? 'center' : 'space-between',
+        padding: isSingleDay ? '0.25rem' : '0.5rem',
+        textAlign: isSingleDay ? 'center' : 'left',
+        backgroundColor: `$blue`,
+        // color: `...`,
+        // borderColor: `...`,
+      })()}
+    >
+      {!isSingleDay && (
+        <TrackItemTitle>
+          <span style={{ fontWeight: 500 }}>{exercise.type}</span>
+          &nbsp;{exercise.title}
+        </TrackItemTitle>
+      )}
+    </TrackItemWrapper>
+  )
+}

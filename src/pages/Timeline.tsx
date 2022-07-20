@@ -2,10 +2,10 @@ import { plainToInstance } from 'class-transformer'
 import { useEffect, useState } from 'react'
 
 import { DayIndicator } from '../components/timeline/DayIndicator'
-import { Events } from '../components/timeline/Events'
 import { MainBackground } from '../components/timeline/MainBackground'
 import { Modules } from '../components/timeline/Modules'
 import { Switcher } from '../components/timeline/Switcher'
+import { Tracks } from '../components/timeline/Tracks'
 import { Weeks } from '../components/timeline/Weeks'
 import {
   COLS_IN_WEEK,
@@ -41,7 +41,9 @@ const TOP_MARGIN = `(${NAVIGATION_HEIGHT})`
  * components: events, indicator and rows; note that the layers are ordered based on their relative heights.
  */
 const Timeline = () => {
-  const [modules, setModules] = useState<Module[]>(plainToInstance(Module, mockTimeline))
+  const [modules, setModules] = useState<Module[]>(
+    plainToInstance(Module, mockTimeline).sort((m1, m2) => (m1.code > m2.code ? 1 : -1))
+  )
   const [term, setTerm] = useState<Term>(defaultTerm)
   const [trackMap, setTrackMap] = useState<TrackMap>({})
   const [rowHeights, setRowHeights] = useState<{ [code: string]: string }>({})
@@ -81,7 +83,7 @@ const Timeline = () => {
           <Weeks start={defaultTerm.start} weeks={defaultTerm.weeks} />
           <Modules modules={modules} term={term.name} rowHeights={rowHeights} />
           {/* NOTE: Everything under here will be placed in the background area */}
-          <Events />
+          <Tracks weeks={term.weeks} trackMap={trackMap} rowHeights={rowHeights} />
           <DayIndicator weeks={term.weeks} currentDayColumn={dateToColumn(new Date(2021, 9, 21), term.start)} />
           <MainBackground cols={defaultTerm.weeks} rowHeights={rowHeights} />
         </Container>
