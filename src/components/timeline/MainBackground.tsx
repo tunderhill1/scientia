@@ -1,19 +1,6 @@
 import { css } from '../../styles/stitches.config'
 import { Grid } from '../../styles/timeline/rows.style'
 
-// export const MainBackground = ({ cols, rowHeights }: { cols: number, rowHeights:  {[code: string]: string} }) => {
-//   return (
-//       <Grid css={{ gridTemplateColumns: `repeat(${cols}, 15rem)`, paddingTop: '0.5rem',}}>
-//         {[...Array(cols)].map((_, id) => (
-//             <div
-//                 key={id}
-//                 className={css({ height: `100%`, backgroundColor: '$subtleBackground', borderRadius: '0.5rem' })()}
-//             />
-//         ))}
-//       </Grid>
-//   )
-// }
-
 export const MainBackground = ({ cols, rowHeights }: { cols: number; rowHeights: { [code: string]: string } }) => {
   return (
     <Grid css={{ gridTemplateColumns: `repeat(${cols}, 15rem)` }}>
