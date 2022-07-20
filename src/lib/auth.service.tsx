@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
 import { endpoints } from '../constants/endpoints'
-import { ANTI_CSRF_COOKIE_NAME, getCookie } from './axios.context'
+import { CSRF_ACCESS_COOKIE, getCookie } from './axios.context'
 import { Role, useUser } from './user.context'
 
 /**
@@ -57,7 +57,7 @@ export default function useAuth() {
     axios({
       url: endpoints.logout,
       method: 'delete',
-      headers: { 'X-CSRF-TOKEN': getCookie(ANTI_CSRF_COOKIE_NAME) },
+      headers: { 'X-CSRF-TOKEN': getCookie(CSRF_ACCESS_COOKIE) },
     })
       .catch((error) => {
         console.log(error)

@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Check, Dash, Download, PencilSquare, Trash3Fill, UiChecks } from 'react-bootstrap-icons'
 import { useOutletContext } from 'react-router-dom'
 
@@ -13,8 +12,7 @@ import useChecklist from '../lib/checkbox.service'
 import { useUser } from '../lib/user.context'
 import { groupByProperty } from '../lib/utilities.service'
 import { useYear } from '../lib/year.context'
-import { Checkbox, Indicator } from '../styles/_app.style'
-import { Button, Footnote, Wrapper } from '../styles/_app.style'
+import { Button, Checkbox, Footnote, Indicator, Wrapper } from '../styles/_app.style'
 import { Caret } from '../styles/collapsible.style'
 import { ToggleGroup, ToggleItem } from '../styles/toolbar.style'
 
