@@ -77,7 +77,7 @@ export const mockTimeline = [
     staff: [] /* Temporarily omitted */,
     exercises: [
       {
-        number: 4 /* Unique identifier for a module exercise */,
+        number: 1 /* Unique identifier for a module exercise */,
         title: 'Pintos Task 1 - Scheduling',
         type: 'CW' /* Interestingly, there's no locked values for this (e.g. include PMT, PPT, CDT, WES, etc.) */,
         start_date: '2021-10-11T12:00:00Z',
@@ -85,7 +85,7 @@ export const mockTimeline = [
         submission_type: 'group' /* One of "no submission required", "individual" or "group" */,
       },
       {
-        number: 5,
+        number: 2,
         title: 'Pintos Task 2 - User Programs',
         type: 'CW',
         start_date: '2021-11-01T12:00:00Z',
@@ -115,6 +115,54 @@ export const mockTimeline = [
         start_date: '2021-10-13T12:00:00Z',
         end_date: '2021-10-18T19:00:00Z',
         submission_type: 'individual',
+      },
+    ],
+  },
+  {
+    code: '40003',
+    title: 'Introduction to Logic',
+    terms: [1] /* A list of ints where Autumn (1), Spring (2) and Summer (3) */,
+    staff: [] /* Temporarily omitted */,
+    exercises: [
+      {
+        number: 1 /* Unique identifier for a module exercise */,
+        title: 'First Order Logic',
+        type: 'CW' /* Interestingly, there's no locked values for this (e.g. include PMT, PPT, CDT, WES, etc.) */,
+        start_date: '2021-10-15T12:00:00Z',
+        end_date: '2021-10-25T19:00:00Z',
+        submission_type: 'group' /* One of "no submission required", "individual" or "group" */,
+      },
+      {
+        number: 2,
+        title: 'Predicate Logic',
+        type: 'CW',
+        start_date: '2021-11-27T12:00:00Z',
+        end_date: '2021-12-02T19:00:00Z',
+        submission_type: 'group',
+      },
+    ],
+  },
+  {
+    code: '40004',
+    title: 'Mathematical Methods',
+    terms: [1] /* A list of ints where Autumn (1), Spring (2) and Summer (3) */,
+    staff: [] /* Temporarily omitted */,
+    exercises: [
+      {
+        number: 1 /* Unique identifier for a module exercise */,
+        title: 'Vectors and Matrices',
+        type: 'CW' /* Interestingly, there's no locked values for this (e.g. include PMT, PPT, CDT, WES, etc.) */,
+        start_date: '2021-10-10T12:00:00Z',
+        end_date: '2021-10-20T19:00:00Z',
+        submission_type: 'group' /* One of "no submission required", "individual" or "group" */,
+      },
+      {
+        number: 2,
+        title: 'Series',
+        type: 'CW',
+        start_date: '2021-11-22T12:00:00Z',
+        end_date: '2021-12-28T19:00:00Z',
+        submission_type: 'group',
       },
     ],
   },

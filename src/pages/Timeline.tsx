@@ -1,10 +1,10 @@
 import { plainToInstance } from 'class-transformer'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { DayIndicator } from '../components/timeline/DayIndicator'
 import { Events } from '../components/timeline/Events'
+import { MainBackground } from '../components/timeline/MainBackground'
 import { Modules } from '../components/timeline/Modules'
-import { Rows } from '../components/timeline/Rows'
 import { Switcher } from '../components/timeline/Switcher'
 import { Weeks } from '../components/timeline/Weeks'
 import {
@@ -41,18 +41,16 @@ const TOP_MARGIN = `(${NAVIGATION_HEIGHT})`
  * components: events, indicator and rows; note that the layers are ordered based on their relative heights.
  */
 const Timeline = () => {
+  const [modules, setModules] = useState<Module[]>(plainToInstance(Module, mockTimeline))
   const [term, setTerm] = useState<Term>(defaultTerm)
   const [trackMap, setTrackMap] = useState<TrackMap>({})
   const [rowHeights, setRowHeights] = useState<{ [code: string]: string }>({})
 
-  /* TODO: Fetch from the relevant endpoint using the year from the context */
-  const dataRef = useRef<Module[]>(plainToInstance(Module, mockTimeline))
-
   useEffect(() => {
-    if (dataRef.current !== []) {
-      setTrackMap(generateTrackMap(dataRef.current))
+    if (modules !== []) {
+      setTrackMap(generateTrackMap(modules))
     }
-  }, [])
+  }, [modules])
 
   useEffect(() => {
     const rowHeights = Object.entries(trackMap).reduce(
@@ -81,11 +79,11 @@ const Timeline = () => {
         <Container timeline>
           <Switcher term={term.name} onSwitch={switchTerm} />
           <Weeks start={defaultTerm.start} weeks={defaultTerm.weeks} />
-          <Modules term={term.name} rowHeights={rowHeights} />
+          <Modules modules={modules} term={term.name} rowHeights={rowHeights} />
           {/* NOTE: Everything under here will be placed in the background area */}
           <Events />
           <DayIndicator weeks={term.weeks} currentDayColumn={dateToColumn(new Date(2021, 9, 21), term.start)} />
-          <Rows weeks={defaultTerm.weeks} />
+          <MainBackground cols={defaultTerm.weeks} rowHeights={rowHeights} />
         </Container>
       </Viewport>
       <Scrollbar orientation="vertical">

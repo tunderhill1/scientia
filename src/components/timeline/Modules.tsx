@@ -1,19 +1,17 @@
-import { useEffect } from 'react'
-
-import { endpoints } from '../../constants/endpoints'
-import { useAxios } from '../../lib/axios.context'
+import { Module } from '../../constants/types'
 import { Wrapper } from '../../styles/_app.style'
 import { css } from '../../styles/stitches.config'
 import { Tabs } from '../Tabs'
 
-const terms = {
-  1: 'Autumn Term',
-  2: 'Spring Term',
-  3: 'Summer Term',
-}
-
-export const Modules = ({ term, rowHeights }: { term: string; rowHeights: { [code: string]: string } }) => {
-  const { data } = useAxios({ url: endpoints.courses('2122'), method: 'GET' })
+export const Modules = ({
+  modules,
+  term,
+  rowHeights,
+}: {
+  modules: Module[]
+  term: string
+  rowHeights: { [code: string]: string }
+}) => {
   const modulesWrapperStyle = {
     gridArea: 'modules',
 
@@ -32,7 +30,7 @@ export const Modules = ({ term, rowHeights }: { term: string; rowHeights: { [cod
   return (
     <Wrapper css={modulesWrapperStyle}>
       <Tabs
-        data={data}
+        data={modules}
         generator={(module: any) => (
           <Wrapper
             css={{
