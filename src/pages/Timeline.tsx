@@ -83,7 +83,7 @@ const Timeline = () => {
           <Weeks start={defaultTerm.start} weeks={defaultTerm.weeks} />
           <Modules modules={modules} term={term.name} rowHeights={rowHeights} />
           {/* NOTE: Everything under here will be placed in the background area */}
-          <Tracks weeks={term.weeks} trackMap={trackMap} rowHeights={rowHeights} />
+          <Tracks term={term} weeks={term.weeks} trackMap={trackMap} />
           <DayIndicator weeks={term.weeks} currentDayColumn={dateToColumn(new Date(2021, 9, 21), term.start)} />
           <MainBackground cols={defaultTerm.weeks} rowHeights={rowHeights} />
         </Container>

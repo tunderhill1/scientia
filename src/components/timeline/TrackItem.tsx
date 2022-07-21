@@ -27,9 +27,8 @@ export const TrackItem = ({
         justifyContent: isSingleDay ? 'center' : 'space-between',
         padding: isSingleDay ? '0.25rem' : '0.5rem',
         textAlign: isSingleDay ? 'center' : 'left',
-        backgroundColor: `$blue`,
+        backgroundColor: `cyan`,
         // color: `...`,
-        // borderColor: `...`,
       })()}
     >
       {!isSingleDay && (

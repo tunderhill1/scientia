@@ -1,5 +1,5 @@
 import { css } from '../../styles/stitches.config'
-import { Grid } from '../../styles/timeline/rows.style'
+import { Grid } from '../../styles/timeline/main-background.style'
 
 export const MainBackground = ({ cols, rowHeights }: { cols: number; rowHeights: { [code: string]: string } }) => {
   return (
