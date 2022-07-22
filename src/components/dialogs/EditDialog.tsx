@@ -8,6 +8,7 @@ import { endpoints } from '../../constants/endpoints'
 import { LONDON_TIMEZONE } from '../../constants/global'
 import { AxiosContext } from '../../lib/axios.context'
 import { ThemeContext } from '../../lib/theme.context'
+import { useToast } from '../../lib/toast.context'
 import {
   CalendarInput,
   DropdownStyle,
@@ -51,6 +52,7 @@ const EditDialog = ({
   const [visibleTime, setVisibleTime] = useState('')
   const [visibleAfter, setVisibleAfter] = useState<Date>(new Date(Date.UTC(3000, 1)))
   const { theme } = useContext(ThemeContext)
+  const { addToast } = useToast()
 
   const onSubmit = async () => {
     await axiosInstance
@@ -64,6 +66,7 @@ const EditDialog = ({
         },
       })
       .then(() => {
+        addToast({ variant: 'success', title: 'Resource successfully edited' })
         axiosInstance
           .request({
             method: 'GET',
@@ -72,12 +75,12 @@ const EditDialog = ({
           })
           .then(({ data }: any) => setGroupedMaterials(groupByProperty(data, 'category', 'index')))
           .catch((error: any) => {
-            // TODO:TOAST to report that getting new materials failed
+            addToast({ variant: 'error', title: 'There was an error fetching resources' })
             console.error(error)
           })
       })
       .catch((error: any) => {
-        // TODO:TOAST to report that edit failed
+        addToast({ variant: 'error', title: 'There was an error editing this resource' })
         console.error(error)
       })
   }
