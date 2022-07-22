@@ -2,6 +2,7 @@ import { useContext } from 'react'
 
 import { endpoints } from '../../constants/endpoints'
 import { AxiosContext } from '../../lib/axios.context'
+import { useToast } from '../../lib/toast.context'
 import { styled } from '../../styles/stitches.config'
 import Dialog from './Dialog'
 
@@ -24,6 +25,7 @@ const DeleteDialog = ({
   setGroupedMaterials: any
   groupByProperty: any
 }) => {
+  const { addToast } = useToast()
   const axiosInstance = useContext(AxiosContext)
   const onDelete = async () => {
     await axiosInstance
@@ -37,6 +39,7 @@ const DeleteDialog = ({
         },
       })
       .then(() => {
+        addToast({ variant: 'success', title: 'Resource(s) successfully deleted' })
         axiosInstance
           .request({
             method: 'GET',
@@ -45,12 +48,12 @@ const DeleteDialog = ({
           })
           .then((response: any) => setGroupedMaterials(groupByProperty(response.data, 'category', 'index')))
           .catch((error: any) => {
-            // TODO:TOAST to report that getting new materials failed
+            addToast({ variant: 'error', title: 'There was an error fetching resources' })
             console.error(error)
           })
       })
       .catch((error: any) => {
-        // TODO:TOAST to report that deletion failed
+        addToast({ variant: 'error', title: 'There was an error deleting the selected resources.' })
         console.error(error)
       })
   }
