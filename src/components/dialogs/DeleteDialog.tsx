@@ -3,7 +3,7 @@ import { useContext } from 'react'
 import { endpoints } from '../../constants/endpoints'
 import { AxiosContext } from '../../lib/axios.context'
 import { useToast } from '../../lib/toast.context'
-import { styled } from '../../styles/stitches.config'
+import { css } from '../../styles/stitches.config'
 import Dialog from './Dialog'
 
 const DeleteDialog = ({
@@ -63,10 +63,6 @@ const DeleteDialog = ({
       .flat()
       .find((res: any) => res.id.toString() === id)
 
-  const DialogLi = styled('li', {
-    color: '$highContrast',
-  })
-
   return (
     <Dialog
       title={'Are you sure you want to delete the selected resources?'}
@@ -77,7 +73,9 @@ const DeleteDialog = ({
     >
       <ul>
         {selectedIDs.map((id) => (
-          <DialogLi key={id}>{getResourceById(id).title}</DialogLi>
+          <li className={css({ color: '$highContrast' })()} key={id}>
+            {getResourceById(id)?.title}
+          </li>
         ))}
       </ul>
     </Dialog>
