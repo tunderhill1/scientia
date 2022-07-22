@@ -1,9 +1,11 @@
 import axios from 'axios'
+import { plainToInstance } from 'class-transformer'
 import { useNavigate } from 'react-router-dom'
 
 import { endpoints } from '../constants/endpoints'
+import { UserDetails } from '../constants/types'
 import { CSRF_ACCESS_COOKIE, getCookie } from './axios.context'
-import { Role, useUser } from './user.context'
+import { useUser } from './user.context'
 
 /**
  * TODO: The plan is to process authentication- and authorisation-related queries here and update the user context based
@@ -19,19 +21,8 @@ type Credentials = {
 }
 
 export default function useAuth() {
-  const { storeUsername, storeRole } = useUser()
+  const { storeUserDetails, clearUserDetails } = useUser()
   const navigate = useNavigate()
-
-  const setUserContext = (username: string, role: Role) => {
-    /**
-     * TODO: Later on when the API provides user information, this function can be modified in two ways:
-     * 1. Take in the body of the response from the login endpoint containing user information
-     * 2. Make a call to a separate endpoint like /user to query user information (fn. would be async)
-     * In both cases, a reducer would have to be used to update the user context.
-     */
-    storeUsername(username)
-    storeRole(role)
-  }
 
   const loginUser = async (data: Credentials) => {
     /* TODO: Use the axios hook here instead! */
@@ -41,8 +32,7 @@ export default function useAuth() {
       data: data,
     })
       .then((response) => {
-        /* TODO: Get the role from the response when data is available */
-        setUserContext(data.username, data.username === 'hpotter' ? 'student' : ('staff' as Role))
+        storeUserDetails(plainToInstance(UserDetails, response.data))
       })
       .catch((error) => {
         console.log(error)
@@ -50,7 +40,7 @@ export default function useAuth() {
   }
 
   const isLoggedIn = (): boolean => {
-    return localStorage.hasOwnProperty('username') && localStorage.getItem('username') !== ''
+    return localStorage.hasOwnProperty('userDetails') && localStorage.getItem('userDetails') !== ''
   }
 
   const logoutUser = () => {
@@ -63,7 +53,7 @@ export default function useAuth() {
         console.log(error)
       })
       .finally(() => {
-        setUserContext('', undefined)
+        clearUserDetails()
         navigate('/')
       })
   }

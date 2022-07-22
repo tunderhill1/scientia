@@ -1,9 +1,12 @@
 import axios, { AxiosInstance, Method } from 'axios'
+import { plainToInstance } from 'class-transformer'
 import qs from 'qs'
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
 
 import { endpoints } from '../constants/endpoints'
+import { UserDetails } from '../constants/types'
 import useAuth from './auth.service'
+import { useUser } from './user.context'
 
 export const CSRF_ACCESS_COOKIE = 'csrf_access_token'
 export const CSRF_REFRESH_COOKIE = 'csrf_refresh_token'
@@ -29,22 +32,27 @@ export function getCookie(cookieName: string): string {
   return parts.length === 2 ? parts.pop()?.split(';').shift() || '' : ''
 }
 
-function refreshAccessToken() {
-  return axios({
-    method: 'post',
-    headers: { 'X-CSRF-TOKEN': getCookie(CSRF_REFRESH_COOKIE) },
-    url: endpoints.refresh,
-  }).then((response) => {
-    // TODO: save new user information in userContext
-  })
-}
-
 export const AxiosContext = createContext<AxiosInstance>(axios)
 
 /* TODO: Support multiple instances with additional configurations; i.e. create a ref for each instance */
 export const AxiosInstanceProvider = ({ config = {}, children }: { config: any; children: React.ReactNode }) => {
   const instanceRef = useRef<AxiosInstance | null>(null)
+  const { storeUserDetails } = useUser()
   const { logoutUser } = useAuth()
+
+  function refreshAccessToken() {
+    return axios({
+      method: 'post',
+      headers: { 'X-CSRF-TOKEN': getCookie(CSRF_REFRESH_COOKIE) },
+      url: endpoints.refresh,
+    })
+      .then((response) => {
+        storeUserDetails(plainToInstance(UserDetails, response.data))
+      })
+      .catch((_) => {
+        logoutUser()
+      })
+  }
 
   /* NOTE: See https://beta.reactjs.org/apis/useref#avoiding-recreating-the-ref-contents */
   if (instanceRef.current === null) {

@@ -17,9 +17,7 @@ const Login = () => {
   const { year } = useYear()
   const { theme } = useContext(ThemeContext)
 
-  /* TODO: Update the login user to take in the remember preference; only store the refresh token if it's checked. */
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log('submitting...')
     e.preventDefault()
     /* Login and if successful, redirect to the modules page */
     await loginUser({ username: username, password: password }).then(() => {

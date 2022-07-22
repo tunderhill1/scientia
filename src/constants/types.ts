@@ -1,5 +1,37 @@
 import { Expose, Type } from 'class-transformer'
 
+export class UserDetails {
+  login: string
+  email: string
+  firstname: string
+  lastname: string
+
+  @Expose({ name: 'role_in_department' })
+  roleInDepartment: string
+
+  @Type(() => Module)
+  modules: Module[]
+}
+
+export class ModuleStaff {
+  login: string
+  email: string
+  firstname: string
+  lastname: string
+  department: string
+  cid: string
+}
+
+export class Module {
+  code: string
+  title: string
+  terms: number[]
+  level: number
+
+  @Type(() => ModuleStaff)
+  staff: ModuleStaff[]
+}
+
 export class Exercise {
   number: number
   title: string
@@ -17,7 +49,7 @@ export class Exercise {
   endDate: Date
 }
 
-export class Module {
+export class ModuleWithExercises {
   code: string
   title: string
   terms: number[]

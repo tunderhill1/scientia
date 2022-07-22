@@ -15,7 +15,7 @@ import {
   TIMELINE_TRACK_HEIGHT,
 } from '../constants/global'
 import { mockTimeline } from '../constants/mock'
-import { Module, Term, TrackMap } from '../constants/types'
+import { ModuleWithExercises, Term, TrackMap } from '../constants/types'
 import { daysSinceEpoch, generateTrackMap } from '../lib/utilities.service'
 import { Area, Container, Corner, Scrollbar, Thumb, Viewport } from '../styles/_app.style'
 
@@ -41,8 +41,8 @@ const TOP_MARGIN = `(${NAVIGATION_HEIGHT})`
  * components: events, indicator and rows; note that the layers are ordered based on their relative heights.
  */
 const Timeline = () => {
-  const [modules, setModules] = useState<Module[]>(
-    plainToInstance(Module, mockTimeline).sort((m1, m2) => (m1.code > m2.code ? 1 : -1))
+  const [modules, setModules] = useState<ModuleWithExercises[]>(
+    plainToInstance(ModuleWithExercises, mockTimeline).sort((m1, m2) => (m1.code > m2.code ? 1 : -1))
   )
   const [term, setTerm] = useState<Term>(defaultTerm)
   const [trackMap, setTrackMap] = useState<TrackMap>({})

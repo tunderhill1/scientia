@@ -1,6 +1,6 @@
 import { plainToInstance } from 'class-transformer'
 
-import { Exercise, Module } from '../constants/types'
+import { Exercise, ModuleWithExercises } from '../constants/types'
 
 test('can parse Date correctly from string', () => {
   const rawExercise = {
@@ -74,6 +74,6 @@ test('can parse module with nested exercises correctly', () => {
     ],
   }
 
-  let actual = plainToInstance(Module, rawModule)
+  let actual = plainToInstance(ModuleWithExercises, rawModule)
   expect(actual).toEqual(expectedModule)
 })

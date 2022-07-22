@@ -1,5 +1,5 @@
 import { TIMELINE_TRACK_HEIGHT } from '../../constants/global'
-import { Module } from '../../constants/types'
+import { ModuleWithExercises } from '../../constants/types'
 import { Wrapper } from '../../styles/_app.style'
 import { css } from '../../styles/stitches.config'
 import { Tabs } from '../Tabs'
@@ -9,7 +9,7 @@ export const Modules = ({
   term,
   rowHeights,
 }: {
-  modules: Module[]
+  modules: ModuleWithExercises[]
   term: string
   rowHeights: { [code: string]: string }
 }) => {

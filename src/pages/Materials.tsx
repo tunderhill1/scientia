@@ -27,7 +27,7 @@ const Materials = () => {
   const moduleCode = useOutletContext<string | null>()
   const checklistManager = useChecklist(groupedMaterials, 'id', false)
 
-  const { role } = useUser()
+  const { userDetails } = useUser()
   const { year } = useYear()
   const { data, loaded } = useAxios({
     url: endpoints.resources,
@@ -36,7 +36,6 @@ const Materials = () => {
   })
 
   const noMaterials = () => groupedMaterials && Object.keys(groupedMaterials).length === 0
-  const isStaff = () => role === 'staff'
 
   useEffect(() => {
     if (data !== null) setGroupedMaterials(groupByProperty(data, 'category', 'index'))
@@ -77,7 +76,7 @@ const Materials = () => {
       </ToggleGroup>
       {checklistMode && (
         <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-          {isStaff() && (
+          {userDetails.roleInDepartment === 'staff' && (
             <Button
               icon
               css={{ marginRight: '0.75rem' }}

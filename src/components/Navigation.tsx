@@ -16,7 +16,7 @@ import { Content, Header, Item, Logo, Nav, Separator } from '../styles/navigatio
  * TODO: Show a banner under the header if the requested year isn't the current year.
  */
 export const Navigation = () => {
-  const { username } = useUser()
+  const { userDetails } = useUser()
   const { logoutUser } = useAuth()
   const { theme, toggleTheme } = useContext(ThemeContext)
   const navigate = useNavigate()
@@ -65,7 +65,7 @@ export const Navigation = () => {
               <Button icon>
                 <Avatar
                   size={32}
-                  name={username}
+                  name={userDetails.login}
                   variant="marble"
                   colors={['#264653', '#2A9d8F', '#E9C46A', '#F4A261', '#E76F51']}
                 />

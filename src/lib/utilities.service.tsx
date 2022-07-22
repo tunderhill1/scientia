@@ -1,5 +1,5 @@
 import { MILLISECONDS_IN_A_DAY } from '../constants/global'
-import { Exercise, Module, Track, TrackMap } from '../constants/types'
+import { Exercise, ModuleWithExercises, Track, TrackMap } from '../constants/types'
 
 /* A file to store miscellaneous utility functions */
 
@@ -81,7 +81,7 @@ export function computeTracks(exercises: Exercise[]): Track[] {
 }
 
 /* Creates a track map given a list of modules with exercises */
-export function generateTrackMap(modules: Module[]): TrackMap {
+export function generateTrackMap(modules: ModuleWithExercises[]): TrackMap {
   return modules.reduce((accumulator: TrackMap, module) => {
     accumulator[module.code] = computeTracks(module.exercises)
     return accumulator
