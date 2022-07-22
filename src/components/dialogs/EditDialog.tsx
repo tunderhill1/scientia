@@ -183,6 +183,7 @@ const EditDialog = ({
           <Visibility
             style={{
               visibility: visibleAfter <= new Date() ? 'visible' : 'hidden',
+              marginTop: '1rem',
             }}
           >
             <InfoCircle style={{ marginRight: '0.25rem' }} />
