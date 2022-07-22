@@ -1,14 +1,14 @@
 import { fireEvent, render, screen, within } from '@testing-library/react'
 
-import Dialog from '../components/Dialog'
+import Dialog from '../components/dialogs/Dialog'
 
 const DialogFactory = ({
   open = true,
   onOpenChange = (_) => {},
   onPrimaryClick = () => {},
   title = 'Dialog title',
-  primaryButtonText = 'confirm',
-  secondaryButtonText = 'cancel',
+  primaryButtonText = 'primary',
+  secondaryButtonText = 'secondary',
 }: {
   open?: boolean
   onOpenChange?: (_: boolean) => void
@@ -21,7 +21,7 @@ const DialogFactory = ({
 }
 
 describe('Dialog', () => {
-  it(`renders dialog when open`, () => {
+  it(`renders dialog with 2 buttons when open`, () => {
     render(DialogFactory({ open: true }))
     const dialog = screen.queryByRole('dialog')
     expect(dialog).toBeInTheDocument()
@@ -36,17 +36,17 @@ describe('Dialog', () => {
     expect(screen.queryByRole('button')).not.toBeInTheDocument()
   })
 
-  it.each(['confirm', 'cancel'])(`closes dialog when you click %s button`, (buttonText) => {
+  it.each(['primary', 'secondary'])(`closes dialog when you click %s button`, (buttonText) => {
     const onOpenChange = jest.fn((_: boolean) => {})
     render(DialogFactory({ onOpenChange }))
     fireEvent.click(screen.getByText(buttonText))
     expect(onOpenChange).toHaveBeenCalledTimes(1)
   })
 
-  it('calls for deletion of resources when clicking primary button', () => {
+  it('calls for intended action when clicking primary button', () => {
     const onPrimaryClick = jest.fn()
     render(DialogFactory({ onPrimaryClick }))
-    fireEvent.click(screen.getByText('confirm'))
+    fireEvent.click(screen.getByText('primary'))
     expect(onPrimaryClick).toHaveBeenCalledTimes(1)
   })
 })

@@ -15,7 +15,7 @@ const contentShow = keyframes({
 })
 
 export const Overlay = styled(DialogOverlay, {
-  backgroundColor: blackA.blackA9,
+  backgroundColor: '$overlayBackground',
   position: 'fixed',
   zIndex: 9,
   inset: 0,
@@ -25,8 +25,8 @@ export const Overlay = styled(DialogOverlay, {
 })
 
 export const Content = styled(DialogContent, {
-  backgroundColor: 'white',
-  borderRadius: 6,
+  backgroundColor: '$sand5',
+  borderRadius: 8,
   boxShadow: 'hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px',
   position: 'fixed',
   top: '50%',
@@ -36,7 +36,7 @@ export const Content = styled(DialogContent, {
   width: '90vw',
   maxWidth: '450px',
   maxHeight: '85vh',
-  padding: 25,
+  padding: '2rem',
   '@media (prefers-reduced-motion: no-preference)': {
     animation: `${contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1) forwards`,
   },
@@ -45,7 +45,8 @@ export const Content = styled(DialogContent, {
 
 export const Title = styled(DialogTitle, {
   margin: 0,
+  marginBottom: '1rem',
   fontWeight: 500,
-  color: mauve.mauve12,
+  color: '$highContrast',
   fontSize: 17,
 })

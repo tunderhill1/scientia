@@ -1,26 +1,28 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Check, Dash, Download, PencilSquare, Trash3Fill, UiChecks } from 'react-bootstrap-icons'
 import { useOutletContext } from 'react-router-dom'
 
-import { Collapsible } from '../components/Collapsible'
-import Dialog from '../components/Dialog'
+import { CollapsibleList } from '../components/CollapsibleList'
 import { Tabs } from '../components/Tabs'
 import { Toolbar } from '../components/Toolbar'
+import DeleteDialog from '../components/dialogs/DeleteDialog'
+import EditDialog from '../components/dialogs/EditDialog'
 import { endpoints } from '../constants/endpoints'
-import { AxiosContext, useAxios } from '../lib/axios.context'
+import { useAxios } from '../lib/axios.context'
 import useChecklist from '../lib/checkbox.service'
 import { useUser } from '../lib/user.context'
 import { groupByProperty } from '../lib/utilities.service'
 import { useYear } from '../lib/year.context'
 import { Button, Checkbox, Footnote, Indicator, Wrapper } from '../styles/_app.style'
-import { Caret } from '../styles/collapsible.style'
+import { Caret } from '../styles/collapsible-list.style'
 import { ToggleGroup, ToggleItem } from '../styles/toolbar.style'
 
 const Materials = () => {
-  const axiosInstance = useContext(AxiosContext)
   const [checklistMode, setSelectionMode] = useState(false)
   const [groupedMaterials, setGroupedMaterials] = useState({})
-  const [dialogOpen, setDialogOpen] = useState(false)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [editDialogOpen, setEditDialogOpen] = useState(false)
+  const [resourceToEdit, setResourceToEdit] = useState(null)
 
   const moduleCode = useOutletContext<string | null>()
   const checklistManager = useChecklist(groupedMaterials, 'id', false)
@@ -47,38 +49,6 @@ const Materials = () => {
     window.open(`${endpoints.resourcesArchive}?year=${year}&course=${moduleCode}&${queryParameter}`)
   }
 
-  const onDelete = () => setDialogOpen(true)
-
-  const onConfirmDelete = async () => {
-    await axiosInstance
-      .request({
-        method: 'DELETE',
-        url: endpoints.resources,
-        params: {
-          year: year,
-          course: moduleCode,
-          id: checklistManager.getCheckedItems(),
-        },
-      })
-      .then((response: any) => {
-        axiosInstance
-          .request({
-            method: 'GET',
-            url: endpoints.resources,
-            params: { year: year, course: moduleCode },
-          })
-          .then((response: any) => setGroupedMaterials(groupByProperty(response.data, 'category', 'index')))
-          .catch((error: any) => {
-            // TODO:TOAST to report that getting new materials failed
-            console.error(error)
-          })
-      })
-      .catch((error: any) => {
-        // TODO:TOAST to report that deletion failed
-        console.error(error)
-      })
-  }
-
   const headerGenerator = (collection: string, _: object[]) => (
     <>
       <Caret />
@@ -102,7 +72,7 @@ const Materials = () => {
     <Toolbar style={{ marginBottom: '1rem' }}>
       <ToggleGroup type="single">
         <ToggleItem value="select" onClick={(event) => setSelectionMode(!checklistMode)}>
-          {isStaff() ? <PencilSquare size={22} /> : <UiChecks size={22} />}
+          <UiChecks size={22} />
         </ToggleItem>
       </ToggleGroup>
       {checklistMode && (
@@ -111,7 +81,7 @@ const Materials = () => {
             <Button
               icon
               css={{ marginRight: '0.75rem' }}
-              onClick={onDelete}
+              onClick={() => setDeleteDialogOpen(true)}
               disabled={checklistManager.getCheckedItems().length === 0}
             >
               <Trash3Fill size={22} />
@@ -148,22 +118,47 @@ const Materials = () => {
     <Wrapper>
       {toolbar}
       {loaded && (
-        <Collapsible
+        <CollapsibleList
           data={groupedMaterials}
           checklistMode={checklistMode}
           checklistManager={checklistManager}
           headerGenerator={headerGenerator}
           contentGenerator={contentGenerator}
+          mainItemAction={{
+            icon: <PencilSquare size={22} />,
+            action: (item: any) => {
+              setResourceToEdit(item)
+              setEditDialogOpen(true)
+            },
+          }}
         />
       )}
-      <Dialog
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
-        onPrimaryClick={onConfirmDelete}
-        title={'Are you sure you want to delete the selected resources?'}
-        primaryButtonText={'Delete'}
-        secondaryButtonText={'Cancel'}
+      <DeleteDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        selectedIDs={checklistManager.getCheckedItems()}
+        {...{
+          year,
+          moduleCode,
+          groupedMaterials,
+          setGroupedMaterials,
+          groupByProperty,
+        }}
       />
+
+      <EditDialog
+        open={editDialogOpen}
+        onOpenChange={setEditDialogOpen}
+        resource={resourceToEdit}
+        categories={Object.keys(groupedMaterials)}
+        {...{
+          year,
+          moduleCode,
+          setGroupedMaterials,
+          groupByProperty,
+        }}
+      />
+
       <Footnote muted center css={{ margin: '2rem 0' }}>
         Please contact the relevant module leader(s) for missing resources or if you'd like materials to be better
         organised; we recommend using EdStem to help them gauge the peer response.

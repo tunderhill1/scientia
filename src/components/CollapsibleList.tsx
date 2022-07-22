@@ -1,8 +1,9 @@
 import { Accordion, Item } from '@radix-ui/react-accordion'
+import { ReactElement } from 'react'
 import { Check, Dash } from 'react-bootstrap-icons'
 
-import { Checkbox, Indicator, Wrapper } from '../styles/_app.style'
-import { Content, Header, Trigger } from '../styles/collapsible.style'
+import { Button, Checkbox, Indicator, Wrapper } from '../styles/_app.style'
+import { Content, Header, Trigger } from '../styles/collapsible-list.style'
 
 /**
  * The collapsible behaves like an accordion with an optional checklist.
@@ -21,13 +22,19 @@ import { Content, Header, Trigger } from '../styles/collapsible.style'
  * TODO: Make sure that when checklistMode is enabled, the checklistManger isn't undefined!
  */
 
-export const Collapsible = ({
+interface MainAction {
+  icon: ReactElement
+  action: (item: any) => void
+}
+
+export const CollapsibleList = ({
   data,
   contentGenerator,
   headerGenerator,
   collapsed = true,
   checklistMode = false,
   checklistManager = undefined,
+  mainItemAction = null,
 }: {
   data: { [key: string]: object[] }
   contentGenerator: (header: string, group: object[]) => React.ReactNode
@@ -35,6 +42,7 @@ export const Collapsible = ({
   collapsed?: boolean
   checklistMode?: boolean
   checklistManager?: any
+  mainItemAction?: MainAction | null
 }) => {
   /**
    * NOTE: The checklist attribute is the data attribute that uniquely identifies an item; this is the same attribute
@@ -56,6 +64,7 @@ export const Collapsible = ({
     justifyContent: 'space-evenly',
     width: 'auto',
     minWidth: '1.75rem',
+    cursor: 'pointer',
   }
 
   /* Checkbox generators for both the header (collection-level) and content (item-level) */
@@ -85,6 +94,19 @@ export const Collapsible = ({
     </Wrapper>
   )
 
+  const mainItemActionGenerator = (collection: string, items: object[]) => {
+    return (
+      mainItemAction && (
+        <Wrapper css={checkboxesWrapperStyle}>
+          {items.map((item: any, index) => (
+            <Button icon onClick={() => mainItemAction.action(item)} key={`${collection}${index}`}>
+              {mainItemAction.icon}
+            </Button>
+          ))}
+        </Wrapper>
+      )
+    )
+  }
   /* TODO: Allow the user to specify a way to calculate the max height and provide styling overrides for Box */
   return (
     <Accordion type="multiple" defaultValue={collapsed ? Object.keys(data) : []}>
@@ -98,6 +120,7 @@ export const Collapsible = ({
             <Content css={{ maxHeight: `calc(${items?.length} * 2.75rem + 1rem)` }}>
               <Wrapper css={itemsWrapperStyle}>{contentGenerator(collection, items)}</Wrapper>
               {checklistMode && itemCheckboxesGenerator(collection, items)}
+              {!checklistMode && mainItemAction && mainItemActionGenerator(collection, items)}
             </Content>
           </Item>
         ))}

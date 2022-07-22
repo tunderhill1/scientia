@@ -1,8 +1,8 @@
 import { DialogClose, DialogPortal, Dialog as DialogRoot } from '@radix-ui/react-dialog'
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
-import { Button } from '../styles/_app.style'
-import { Content, Overlay, Title } from '../styles/dialog.style'
+import { Button } from '../../styles/_app.style'
+import { Content, Overlay, Title } from '../../styles/dialog.style'
 
 const ContentFrame = ({ children, ...props }: { children: ReactNode; props?: { [x: string]: any } }) => (
   <DialogPortal>
@@ -18,6 +18,7 @@ const Dialog = ({
   title,
   primaryButtonText,
   secondaryButtonText,
+  children,
 }: {
   open: boolean
   onOpenChange: (_: boolean) => void
@@ -25,10 +26,12 @@ const Dialog = ({
   title: string
   primaryButtonText: string
   secondaryButtonText: string
+  children?: ReactNode
 }) => (
   <DialogRoot open={open} onOpenChange={onOpenChange}>
     <ContentFrame>
       <Title>{title}</Title>
+      {children}
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <DialogClose asChild>
           <Button style={{ display: 'inline-block', width: '6rem' }}>{secondaryButtonText}</Button>
