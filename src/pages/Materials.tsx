@@ -36,6 +36,7 @@ const Materials = () => {
   })
 
   const noMaterials = () => groupedMaterials && Object.keys(groupedMaterials).length === 0
+  const isStaff = () => userDetails.roleInDepartment === 'staff'
 
   useEffect(() => {
     if (data !== null) setGroupedMaterials(groupByProperty(data, 'category', 'index'))
@@ -76,7 +77,7 @@ const Materials = () => {
       </ToggleGroup>
       {checklistMode && (
         <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-          {userDetails.roleInDepartment === 'staff' && (
+          {isStaff() && (
             <Button
               icon
               css={{ marginRight: '0.75rem' }}
@@ -123,13 +124,16 @@ const Materials = () => {
           checklistManager={checklistManager}
           headerGenerator={headerGenerator}
           contentGenerator={contentGenerator}
-          mainItemAction={{
-            icon: <PencilSquare size={22} />,
-            action: (item: any) => {
-              setResourceToEdit(item)
-              setEditDialogOpen(true)
-            },
-          }}
+          mainItemAction={
+            (isStaff() && {
+              icon: <PencilSquare size={22} />,
+              action: (item: any) => {
+                setResourceToEdit(item)
+                setEditDialogOpen(true)
+              },
+            }) ||
+            undefined
+          }
         />
       )}
       <DeleteDialog

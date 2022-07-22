@@ -34,7 +34,7 @@ export const CollapsibleList = ({
   collapsed = true,
   checklistMode = false,
   checklistManager = undefined,
-  mainItemAction = null,
+  mainItemAction = undefined,
 }: {
   data: { [key: string]: object[] }
   contentGenerator: (header: string, group: object[]) => React.ReactNode
@@ -42,7 +42,7 @@ export const CollapsibleList = ({
   collapsed?: boolean
   checklistMode?: boolean
   checklistManager?: any
-  mainItemAction?: MainAction | null
+  mainItemAction?: MainAction | undefined
 }) => {
   /**
    * NOTE: The checklist attribute is the data attribute that uniquely identifies an item; this is the same attribute
