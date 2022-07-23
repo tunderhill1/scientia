@@ -75,7 +75,6 @@ export const AxiosInstanceProvider = ({ config = {}, children }: { config: any; 
           await refreshAccessToken()
           return axiosInstance(originalRequest)
         }
-        logoutUser()
         return Promise.reject(error)
       }
     )
@@ -92,7 +91,7 @@ export const AxiosInstanceProvider = ({ config = {}, children }: { config: any; 
  */
 export const useAxios = (config: { url: string; method: Method; payload?: any; params?: any }) => {
   const [data, setData] = useState<any>(null)
-  const [error, setError] = useState('')
+  const [error, setError] = useState<string>('')
   const [loaded, setLoaded] = useState(false)
 
   const instance = useContext(AxiosContext)
@@ -132,8 +131,10 @@ export const useAxios = (config: { url: string; method: Method; payload?: any; p
           url: configRef.current.url,
         })
         setData(response.data)
-      } catch (e: unknown) {
-        if (e instanceof Error) setError(e.message)
+      } catch (error) {
+        if (axios.isAxiosError(error))
+          if (error.response) setError(error.response.data.detail)
+          else setError(error.message)
       } finally {
         setLoaded(true)
       }
