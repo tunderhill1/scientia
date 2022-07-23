@@ -16,7 +16,7 @@ export const endpoints = {
   login: `${baseURL}/auth/login`,
   logout: `${baseURL}/auth/logout`,
   refresh: `${baseURL}/auth/refresh`,
-  courses: (year: string) => `${baseURL}/courses/${year}`,
+  module: (year: string, moduleCode: string) => `${baseURL}/${year}/modules/${moduleCode}`,
   resources: `${baseURL}/resources`,
   resource: (id: number) => `${baseURL}/resources/${id}`,
   resourceFile: (id: number) => `${baseURL}/resources/${id}/file`,

@@ -1,30 +1,46 @@
-import { useEffect, useState } from 'react'
+import { plainToInstance } from 'class-transformer'
+import React, { useEffect, useState } from 'react'
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
 
+import { endpoints } from '../constants/endpoints'
+import { Module as ModuleType } from '../constants/types'
+import { useAxios } from '../lib/axios.context'
+import { useYear } from '../lib/year.context'
 import { Button, Container } from '../styles/_app.style'
 import { css } from '../styles/stitches.config'
 
 const Module = () => {
   const { moduleCode } = useParams()
   const { pathname } = useLocation()
-  const [moduleTitle, setModuleTitle] = useState<string>('')
+  const { year } = useYear()
+  const [module, setModule] = useState<ModuleType | undefined>(undefined)
+  const { data, error } = useAxios({
+    url: endpoints.module(`${year}`, moduleCode as string),
+    method: 'GET',
+  })
   const navigate = useNavigate()
 
-  /* TODO: Remove hacky localStorage fix to get the module titles working */
   useEffect(() => {
-    let data = JSON.parse(window.localStorage.getItem('modules') ?? '')
-    data = data.filter((module: any) => module.code === moduleCode)
-    setModuleTitle(data[0].title) /* Not a good assumption! */
-  }, [moduleCode])
+    if (data !== null) setModule(plainToInstance(ModuleType, data))
+  }, [data])
 
   const tabs = [
     { title: 'Materials', to: 'materials' },
     { title: 'Exercises', to: 'exercises' },
   ]
 
+  if (module === undefined) {
+    return (
+      <Container>
+        <h1 style={{ margin: 0 }}> {moduleCode}</h1>
+        <p style={{ marginBottom: '0.5rem' }}>{error}</p>
+      </Container>
+    )
+  }
+
   return (
     <Container>
-      <h1 style={{ margin: 0 }}> {moduleTitle}</h1>
+      <h1 style={{ margin: 0 }}> {module.title}</h1>
       <h3 className={css({ color: '$lowContrast', margin: '0.5rem 0rem', marginBottom: '1rem', fontWeight: '400' })()}>
         {moduleCode}
       </h3>
