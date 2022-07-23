@@ -1,25 +1,13 @@
-import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { Tabs } from '../components/Tabs'
-import { endpoints } from '../constants/endpoints'
-import { useAxios } from '../lib/axios.context'
+import { useUser } from '../lib/user.context'
 import { Container } from '../styles/_app.style'
 import { css } from '../styles/stitches.config'
 
 const Modules = () => {
-  const { data } = useAxios({ url: endpoints.courses('2021'), method: 'GET' })
+  const { userDetails } = useUser()
   const navigate = useNavigate()
-
-  /**
-   * TODO: Memoise the data into local storage or into a context so that you don't have to hit the endpoint again to
-   * retrieve the module name?
-   */
-  useEffect(() => {
-    if (data !== null) {
-      window.localStorage.setItem('modules', JSON.stringify(data))
-    }
-  }, [data])
 
   return (
     <Container>
@@ -33,7 +21,7 @@ const Modules = () => {
       </section>
 
       <Tabs
-        data={data}
+        data={userDetails.modules}
         generator={(tab: any) => (
           <>
             {/* TODO: Update title style if module has no resources */}
