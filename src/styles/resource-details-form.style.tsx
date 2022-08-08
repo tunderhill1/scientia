@@ -1,11 +1,10 @@
 import * as LabelPrimitive from '@radix-ui/react-label'
 
-import { styled, theme } from '../styles/stitches.config'
 import './editDialog.css'
+import { styled, theme } from './stitches.config'
 
 export const Label = styled(LabelPrimitive.Root, {
   fontSize: 14,
-  // fontWeight: 500,
   color: '$lowContrast',
   lineHeight: '0.2rem',
   marginBottom: '0.2rem',
@@ -22,6 +21,18 @@ export const NowButton = styled('button', {
   cursor: 'pointer',
   '&:hover': {
     backgroundColor: '$sand7',
+  },
+})
+
+export const ApplyToAllButton = styled('button', {
+  cursor: 'pointer',
+  float: 'right',
+  padding: '0.25rem',
+  backgroundColor: '$sand6',
+  borderRadius: '8px',
+  borderStyle: 'none',
+  '&:hover': {
+    backgroundColor: '$sand8',
   },
 })
 

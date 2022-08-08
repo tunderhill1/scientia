@@ -15,6 +15,7 @@ const Dialog = ({
   open,
   onOpenChange,
   onPrimaryClick,
+  isFormValid = () => true,
   title,
   primaryButtonText,
   secondaryButtonText,
@@ -23,6 +24,7 @@ const Dialog = ({
   open: boolean
   onOpenChange: (_: boolean) => void
   onPrimaryClick: () => void
+  isFormValid?: () => boolean
   title: string
   primaryButtonText: string
   secondaryButtonText: string
@@ -31,17 +33,30 @@ const Dialog = ({
   <DialogRoot open={open} onOpenChange={onOpenChange}>
     <ContentFrame>
       <Title>{title}</Title>
-      {children}
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <DialogClose asChild>
-          <Button style={{ display: 'inline-block', width: '6rem' }}>{secondaryButtonText}</Button>
-        </DialogClose>
-        <DialogClose asChild>
-          <Button style={{ display: 'inline-block', marginLeft: '1rem', width: '6rem' }} onClick={onPrimaryClick}>
+      <form
+        onSubmit={(event) => {
+          event.preventDefault()
+          if (!isFormValid()) {
+            return false
+          } else {
+            onPrimaryClick()
+            onOpenChange(false)
+            return true
+          }
+        }}
+      >
+        {children}
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <DialogClose asChild>
+            <Button type="button" style={{ display: 'inline-block', width: '6rem' }}>
+              {secondaryButtonText}
+            </Button>
+          </DialogClose>
+          <Button type="submit" style={{ display: 'inline-block', marginLeft: '1rem', width: '6rem' }}>
             {primaryButtonText}
           </Button>
-        </DialogClose>
-      </div>
+        </div>
+      </form>
     </ContentFrame>
   </DialogRoot>
 )

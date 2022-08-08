@@ -1,33 +1,15 @@
-import { format } from 'date-fns'
-import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz'
-import { useContext, useEffect, useState } from 'react'
-import { InfoCircle } from 'react-bootstrap-icons'
-import Creatable from 'react-select/creatable'
+import { useContext, useState } from 'react'
 
 import { endpoints } from '../../constants/endpoints'
-import { LONDON_TIMEZONE } from '../../constants/global'
+import { ResourceCreate } from '../../constants/types'
 import { AxiosContext } from '../../lib/axios.context'
-import { ThemeContext } from '../../lib/theme.context'
 import { useToast } from '../../lib/toast.context'
-import {
-  CalendarInput,
-  DropdownStyle,
-  Label,
-  NowButton,
-  TimeInput,
-  TitleInput,
-  Visibility,
-} from '../../styles/editDialog.style'
 import Dialog from './Dialog'
-
-const utcFormat = (date: Date, formatSpec: string): string => {
-  const zonedDate = utcToZonedTime(`${date}Z`, LONDON_TIMEZONE)
-  return format(zonedDate, formatSpec)
-}
+import ResourceDetailsForm from './upload/components/ResourceDetailsForm'
 
 const EditDialog = ({
-  resource,
-  open,
+  resourceToEdit,
+  setResourceToEdit,
   onOpenChange,
   categories,
   year,
@@ -35,8 +17,8 @@ const EditDialog = ({
   setGroupedMaterials,
   groupByProperty,
 }: {
-  resource: any | null
-  open: boolean
+  resourceToEdit: any
+  setResourceToEdit: (_: any) => void
   onOpenChange: (_: boolean) => void
   categories: string[]
   year: number
@@ -45,24 +27,21 @@ const EditDialog = ({
   groupByProperty: any
 }) => {
   const axiosInstance = useContext(AxiosContext)
-  const [categoryOptions, setCategoryOptions] = useState<string[]>(categories)
-  const [title, setTitle] = useState('')
-  const [category, setCategory] = useState<string | null>('')
-  const [visibleDate, setVisibleDate] = useState('')
-  const [visibleTime, setVisibleTime] = useState('')
-  const [visibleAfter, setVisibleAfter] = useState<Date>(new Date(Date.UTC(3000, 1)))
-  const { theme } = useContext(ThemeContext)
   const { addToast } = useToast()
+
+  const [categoryOptions, setCategoryOptions] = useState<{ value: string; label: string }[]>(
+    categories.map((category) => ({ value: category, label: category }))
+  )
 
   const onSubmit = async () => {
     await axiosInstance
       .request({
         method: 'PUT',
-        url: endpoints.resource(resource.id),
+        url: endpoints.resource(resourceToEdit.id),
         data: {
-          title,
-          category,
-          visible_after: visibleAfter,
+          title: resourceToEdit.title,
+          category: resourceToEdit.category,
+          visible_after: resourceToEdit.visible_after,
         },
       })
       .then(() => {
@@ -85,112 +64,35 @@ const EditDialog = ({
       })
   }
 
-  useEffect(() => {
-    const visibleAfterUTC = zonedTimeToUtc(`${visibleDate} ${visibleTime}`, LONDON_TIMEZONE)
-    setVisibleAfter(visibleAfterUTC)
-  }, [visibleDate, visibleTime])
+  const isFormValid = (): boolean => {
+    if (resourceToEdit.category === null) {
+      addToast({ variant: 'error', title: 'Missing category' })
+      return false
+    }
+    return true
+  }
 
-  useEffect(() => {
-    setCategoryOptions(categories)
-  }, [categories])
+  const onResourceChange = (key: string, value: string) => {
+    setResourceToEdit((resource: ResourceCreate) => ({ ...resource, [key]: value }))
+  }
 
-  useEffect(() => {
-    if (resource === null) return
-    setTitle(resource.title)
-    setCategory(resource.category)
-    setVisibleDate(utcFormat(resource.visible_after, 'yyyy-MM-dd'))
-    setVisibleTime(utcFormat(resource.visible_after, 'HH:mm'))
-  }, [resource])
-
-  if (resource === null) return null
+  if (resourceToEdit === null) return null
   return (
     <Dialog
-      title={`Edit "${resource.title}"`}
+      title={`Edit "${resourceToEdit.title}"`}
       primaryButtonText="Save"
       secondaryButtonText="Cancel"
       onPrimaryClick={onSubmit}
-      {...{ open, onOpenChange }}
+      open={true}
+      onOpenChange={onOpenChange}
+      isFormValid={isFormValid}
     >
-      <div style={{ marginTop: '0.5rem' }}>
-        <Label htmlFor="resourceTitle" css={{ lineHeight: '2rem', marginRight: '1rem' }}>
-          Title of resource
-        </Label>
-
-        <TitleInput
-          type="text"
-          value={title}
-          name="resourceTitle"
-          onChange={({ target: { value } }) => setTitle(value)}
-        />
-      </div>
-
-      <div style={{ marginTop: '1rem' }}>
-        <Label htmlFor="editCategory" css={{ marginRight: '1rem', marginTop: '0.5rem', marginBottom: '0.5rem' }}>
-          Category
-        </Label>
-
-        <div style={{ marginTop: '0.5rem' }}>
-          <Creatable
-            styles={DropdownStyle}
-            isClearable
-            value={{ value: category, label: category }}
-            onChange={(selected) => selected && setCategory(selected.value)}
-            options={categories.map((c) => {
-              return { value: c, label: c }
-            })}
-            onCreateOption={(value: string) => {
-              setCategory(value)
-              if (value !== null) setCategoryOptions([...categoryOptions, value])
-            }}
-            classNamePrefix={'edit-select'}
-          />
-        </div>
-      </div>
-
-      <div style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}>
-        <Label htmlFor="editVisibleAfter" css={{ lineHeight: '2rem', marginRight: '1rem', marginTop: '15rem' }}>
-          Visible after:
-        </Label>
-
-        <div style={{ display: 'flex', colorScheme: theme }}>
-          <CalendarInput
-            type="date"
-            min={'2021-10-01'}
-            max={'2022-09-30'}
-            style={{ marginRight: '1rem' }}
-            value={visibleDate}
-            onChange={(event) => setVisibleDate(event.target.value)}
-            required
-          />
-          <TimeInput
-            type="time"
-            value={visibleTime}
-            onChange={(event) => setVisibleTime(event.target.value)}
-            required
-          />
-        </div>
-
-        <div style={{ marginTop: '0.8rem' }}>
-          <NowButton
-            onClick={() => {
-              const now = utcToZonedTime(new Date(), LONDON_TIMEZONE)
-              setVisibleDate(format(now, 'yyyy-MM-dd'))
-              setVisibleTime(format(now, 'HH:mm'))
-            }}
-          >
-            Set to now
-          </NowButton>
-          <Visibility
-            style={{
-              visibility: visibleAfter <= new Date() ? 'visible' : 'hidden',
-              marginTop: '1rem',
-            }}
-          >
-            <InfoCircle style={{ marginRight: '0.25rem' }} />
-            This resource will be visible to students
-          </Visibility>
-        </div>
-      </div>
+      <ResourceDetailsForm
+        resource={resourceToEdit}
+        onResourceChange={onResourceChange}
+        categoryOptions={categoryOptions}
+        setCategoryOptions={setCategoryOptions}
+      />
     </Dialog>
   )
 }

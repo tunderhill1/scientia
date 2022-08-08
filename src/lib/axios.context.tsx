@@ -70,7 +70,11 @@ export const AxiosInstanceProvider = ({ config = {}, children }: { config: any; 
       (response) => response,
       async (error) => {
         const originalRequest = error.config
-        if (error.response.status === 401 && !originalRequest._retry) {
+        if (
+          (error.response.status === 401 ||
+            (error.response.status === 422 && error.response.data?.detail === 'Signature has expired')) &&
+          !originalRequest._retry
+        ) {
           originalRequest._retry = true
           await refreshAccessToken()
           return axiosInstance(originalRequest)

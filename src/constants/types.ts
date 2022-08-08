@@ -77,3 +77,12 @@ export type Term = {
   end: Date
   weeks: number
 }
+
+export interface ResourceCreate {
+  title: string
+  category: string | null
+  file?: File
+  visible_after: Date
+  type: string
+  path: string
+}
