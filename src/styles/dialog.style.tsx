@@ -1,4 +1,3 @@
-import { blackA, mauve } from '@radix-ui/colors'
 import { DialogContent, DialogOverlay, DialogTitle } from '@radix-ui/react-dialog'
 import { keyframes } from '@stitches/react'
 
@@ -25,6 +24,7 @@ export const Overlay = styled(DialogOverlay, {
 })
 
 export const Content = styled(DialogContent, {
+  overflowY: 'scroll',
   backgroundColor: '$sand5',
   borderRadius: 8,
   boxShadow: 'hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px',

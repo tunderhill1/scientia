@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { Check, Dash, Download, PencilSquare, Trash3Fill, UiChecks } from 'react-bootstrap-icons'
+import { utcToZonedTime } from 'date-fns-tz'
+import { useEffect, useState } from 'react'
+import { Check, Dash, Download, Link45deg, PencilSquare, Trash3Fill, UiChecks, Upload } from 'react-bootstrap-icons'
 import { useOutletContext } from 'react-router-dom'
 
 import { CollapsibleList } from '../components/CollapsibleList'
@@ -7,7 +8,10 @@ import { Tabs } from '../components/Tabs'
 import { Toolbar } from '../components/Toolbar'
 import DeleteDialog from '../components/dialogs/DeleteDialog'
 import EditDialog from '../components/dialogs/EditDialog'
+import FileUploadDialog from '../components/dialogs/upload/FileUploadDialog'
+import LinkUploadDialog from '../components/dialogs/upload/LinkUploadDialog'
 import { endpoints } from '../constants/endpoints'
+import { LONDON_TIMEZONE } from '../constants/global'
 import { useAxios } from '../lib/axios.context'
 import useChecklist from '../lib/checkbox.service'
 import { useUser } from '../lib/user.context'
@@ -20,8 +24,10 @@ import { ToggleGroup, ToggleItem } from '../styles/toolbar.style'
 const Materials = () => {
   const [checklistMode, setSelectionMode] = useState(false)
   const [groupedMaterials, setGroupedMaterials] = useState({})
+  const [uploadDialogOpen, setUploadDialogOpen] = useState(false)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [editDialogOpen, setEditDialogOpen] = useState(false)
+  const [linkUploadDialogOpen, setLinkUploadDialogOpen] = useState(false)
   const [resourceToEdit, setResourceToEdit] = useState(null)
 
   const moduleCode = useOutletContext<string | null>()
@@ -75,35 +81,48 @@ const Materials = () => {
           <UiChecks size={22} />
         </ToggleItem>
       </ToggleGroup>
-      {checklistMode && (
-        <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-          {isStaff() && (
+      <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+        {!checklistMode && isStaff() && (
+          <>
+            <Button icon onClick={() => setUploadDialogOpen(true)}>
+              <Upload size={22} />
+            </Button>
+
+            <Button icon onClick={() => setLinkUploadDialogOpen(true)}>
+              <Link45deg size={22} />
+            </Button>
+          </>
+        )}
+        {checklistMode && (
+          <>
+            {isStaff() && (
+              <Button
+                icon
+                css={{ marginRight: '0.75rem' }}
+                onClick={() => setDeleteDialogOpen(true)}
+                disabled={checklistManager.getCheckedItems().length === 0}
+              >
+                <Trash3Fill size={22} />
+              </Button>
+            )}
             <Button
               icon
               css={{ marginRight: '0.75rem' }}
-              onClick={() => setDeleteDialogOpen(true)}
+              onClick={onDownload}
               disabled={checklistManager.getCheckedItems().length === 0}
             >
-              <Trash3Fill size={22} />
+              <Download size={22} />
             </Button>
-          )}
-          <Button
-            icon
-            css={{ marginRight: '0.75rem' }}
-            onClick={onDownload}
-            disabled={checklistManager.getCheckedItems().length === 0}
-          >
-            <Download size={22} />
-          </Button>
-          <Checkbox
-            css={{ marginTop: '0.5rem' }}
-            checked={checklistManager.getCheckedState()}
-            onCheckedChange={checklistManager.onToggle}
-          >
-            <Indicator>{checklistManager.getCheckedState() === 'indeterminate' ? <Dash /> : <Check />}</Indicator>
-          </Checkbox>
-        </div>
-      )}
+            <Checkbox
+              css={{ marginTop: '0.5rem' }}
+              checked={checklistManager.getCheckedState()}
+              onCheckedChange={checklistManager.onToggle}
+            >
+              <Indicator>{checklistManager.getCheckedState() === 'indeterminate' ? <Dash /> : <Check />}</Indicator>
+            </Checkbox>
+          </>
+        )}
+      </div>
     </Toolbar>
   )
 
@@ -128,7 +147,7 @@ const Materials = () => {
             (isStaff() && {
               icon: <PencilSquare size={22} />,
               action: (item: any) => {
-                setResourceToEdit(item)
+                setResourceToEdit({ ...item, visible_after: utcToZonedTime(item.visible_after, LONDON_TIMEZONE) })
                 setEditDialogOpen(true)
               },
             }) ||
@@ -136,30 +155,43 @@ const Materials = () => {
           }
         />
       )}
-      <DeleteDialog
-        open={deleteDialogOpen}
-        onOpenChange={setDeleteDialogOpen}
-        selectedIDs={checklistManager.getCheckedItems()}
-        {...{
-          year,
-          moduleCode,
-          groupedMaterials,
-          setGroupedMaterials,
-          groupByProperty,
-        }}
+      {deleteDialogOpen && (
+        <DeleteDialog
+          onOpenChange={setDeleteDialogOpen}
+          selectedIDs={checklistManager.getCheckedItems()}
+          year={year}
+          moduleCode={moduleCode}
+          groupedMaterials={groupedMaterials}
+          setGroupedMaterials={setGroupedMaterials}
+          groupByProperty={groupByProperty}
+        />
+      )}
+
+      {editDialogOpen && resourceToEdit !== null && (
+        <EditDialog
+          onOpenChange={setEditDialogOpen}
+          categories={Object.keys(groupedMaterials)}
+          setResourceToEdit={setResourceToEdit}
+          resourceToEdit={resourceToEdit}
+          year={year}
+          moduleCode={moduleCode}
+          setGroupedMaterials={setGroupedMaterials}
+          groupByProperty={groupByProperty}
+        />
+      )}
+
+      <FileUploadDialog
+        open={uploadDialogOpen}
+        onOpenChange={setUploadDialogOpen}
+        categories={Object.keys(groupedMaterials)}
+        setGroupedMaterials={setGroupedMaterials}
       />
 
-      <EditDialog
-        open={editDialogOpen}
-        onOpenChange={setEditDialogOpen}
-        resource={resourceToEdit}
+      <LinkUploadDialog
+        open={linkUploadDialogOpen}
+        onOpenChange={setLinkUploadDialogOpen}
         categories={Object.keys(groupedMaterials)}
-        {...{
-          year,
-          moduleCode,
-          setGroupedMaterials,
-          groupByProperty,
-        }}
+        setGroupedMaterials={setGroupedMaterials}
       />
 
       <Footnote muted center css={{ margin: '2rem 0' }}>

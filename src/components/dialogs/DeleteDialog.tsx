@@ -7,7 +7,6 @@ import { css } from '../../styles/stitches.config'
 import Dialog from './Dialog'
 
 const DeleteDialog = ({
-  open,
   onOpenChange,
   selectedIDs,
   year,
@@ -16,7 +15,6 @@ const DeleteDialog = ({
   setGroupedMaterials,
   groupByProperty,
 }: {
-  open: boolean
   onOpenChange: (_: boolean) => void
   selectedIDs: number[]
   year: number
@@ -69,12 +67,13 @@ const DeleteDialog = ({
       primaryButtonText={'Delete'}
       secondaryButtonText={'Cancel'}
       onPrimaryClick={onDelete}
-      {...{ open, onOpenChange }}
+      onOpenChange={onOpenChange}
+      open={true}
     >
       <ul>
         {selectedIDs.map((id) => (
           <li className={css({ color: '$highContrast' })()} key={id}>
-            {getResourceById(id)?.title}
+            {getResourceById(id).title}
           </li>
         ))}
       </ul>
