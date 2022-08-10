@@ -12,7 +12,13 @@ const defaultYear = {
 
 const YearContext = createContext<YearProviderType>(defaultYear)
 
-export const YearProvider = ({ current, children }: { current: number; children: React.ReactNode }) => {
+export const YearProvider = ({
+  current,
+  children,
+}: {
+  current: number
+  children: React.ReactNode
+}) => {
   const [year, setYear] = useState(defaultYear.year)
 
   let storedYear = window.localStorage.getItem('year')

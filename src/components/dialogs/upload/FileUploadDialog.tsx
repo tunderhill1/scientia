@@ -8,11 +8,21 @@ import { LONDON_TIMEZONE } from '../../../constants/global'
 import { ResourceCreate } from '../../../constants/types'
 import { useResources } from '../../../lib/resource.service'
 import { useToast } from '../../../lib/toast.context'
-import { Caret, Content, DropzoneContainer, Header, Trigger } from '../../../styles/upload-dialog.style'
+import {
+  Caret,
+  Content,
+  DropzoneContainer,
+  Header,
+  Trigger,
+} from '../../../styles/upload-dialog.style'
 import Dialog from '../Dialog'
 import ResourceDetailsForm from './components/ResourceDetailsForm'
 
-function borderRadiusForIndex(index: number, totalItems: number, isIndexOfSelectedItem: boolean): string {
+function borderRadiusForIndex(
+  index: number,
+  totalItems: number,
+  isIndexOfSelectedItem: boolean
+): string {
   let borderRadius = '0'
   if (totalItems === 1 && !isIndexOfSelectedItem) borderRadius = '0.5rem'
   else if (totalItems === 1 && isIndexOfSelectedItem) borderRadius = '0.5rem 0.5rem 0 0'
@@ -66,7 +76,9 @@ const FileUploadDialog = ({
   }
 
   const setForAllResources = (key: string, value: string) => {
-    setFileResources((resources: ResourceCreate[]) => resources.map((res) => ({ ...res, [key]: value })))
+    setFileResources((resources: ResourceCreate[]) =>
+      resources.map((res) => ({ ...res, [key]: value }))
+    )
   }
 
   const isFormValid = (): boolean => {
@@ -118,17 +130,28 @@ const FileUploadDialog = ({
         {fileResources &&
           fileResources.map((resource: ResourceCreate, index: number) => {
             const isIndexOfSelectedItem = index.toString() === openItemIndex
-            const borderRadius = borderRadiusForIndex(index, fileResources.length, isIndexOfSelectedItem)
+            const borderRadius = borderRadiusForIndex(
+              index,
+              fileResources.length,
+              isIndexOfSelectedItem
+            )
 
             return (
               <Item key={index} value={index.toString()}>
                 <Header>
-                  <Trigger type="button" style={{ borderRadius, display: 'float', justifyContent: 'space-between' }}>
+                  <Trigger
+                    type="button"
+                    style={{ borderRadius, display: 'float', justifyContent: 'space-between' }}
+                  >
                     <div>
                       <Caret />
                       <span>{resource.title || resource.file?.name}</span>
                     </div>
-                    <X onClick={() => setFileResources((resources) => resources.filter((_, i) => i !== index))} />
+                    <X
+                      onClick={() =>
+                        setFileResources((resources) => resources.filter((_, i) => i !== index))
+                      }
+                    />
                   </Trigger>
                 </Header>
                 <Content>

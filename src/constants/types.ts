@@ -26,7 +26,7 @@ export class Module {
   code: string
   title: string
   terms: number[]
-  level: number
+  level?: number
 
   @Type(() => ModuleStaff)
   staff: ModuleStaff[]
@@ -36,6 +36,9 @@ export class Exercise {
   number: number
   title: string
   type: string
+
+  @Expose({ name: 'module_code' })
+  moduleCode?: string
 
   @Expose({ name: 'submission_type' })
   submissionType: string

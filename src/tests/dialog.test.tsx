@@ -17,7 +17,11 @@ const DialogFactory = ({
   primaryButtonText?: string
   secondaryButtonText?: string
 }) => {
-  return <Dialog {...{ open, onOpenChange, onPrimaryClick, title, primaryButtonText, secondaryButtonText }} />
+  return (
+    <Dialog
+      {...{ open, onOpenChange, onPrimaryClick, title, primaryButtonText, secondaryButtonText }}
+    />
+  )
 }
 
 describe('Dialog', () => {

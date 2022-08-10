@@ -72,7 +72,9 @@ export const DropdownStyle = {
     padding: '0.9rem',
     cursor: 'pointer',
     color: theme.colors.highContrast.toString(),
-    backgroundColor: state.isSelected ? theme.colors.elementActive.toString() : theme.colors.appBackground.toString(),
+    backgroundColor: state.isSelected
+      ? theme.colors.elementActive.toString()
+      : theme.colors.appBackground.toString(),
     '&:hover': {
       backgroundColor: theme.colors.elementHover.toString(),
     },

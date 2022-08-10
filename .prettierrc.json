@@ -4,9 +4,13 @@
   "singleQuote": true,
   "tabWidth": 2,
   "useTabs": false,
-  "printWidth": 120,
+  "printWidth": 100,
   "importOrder": ["^[./]"],
-  "importOrderParserPlugins" : ["typescript", "jsx", "[\"decorators-legacy\", {\"decoratorsBeforeExport\": true}]"],
+  "importOrderParserPlugins": [
+    "typescript",
+    "jsx",
+    "[\"decorators-legacy\", {\"decoratorsBeforeExport\": true}]"
+  ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true
 }

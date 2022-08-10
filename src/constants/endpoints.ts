@@ -17,8 +17,10 @@ export const endpoints = {
   logout: `${baseURL}/auth/logout`,
   refresh: `${baseURL}/auth/refresh`,
   module: (year: string, moduleCode: string) => `${baseURL}/${year}/modules/${moduleCode}`,
+  exercises: (year: string) => `${baseURL}/${year}/exercises`,
   resources: `${baseURL}/resources`,
   resource: (id: number) => `${baseURL}/resources/${id}`,
   resourceFile: (id: number) => `${baseURL}/resources/${id}/file`,
   resourcesArchive: `${baseURL}/resources/zipped`,
+  periods: (year: string) => `${baseURL}/${year}/periods`,
 }

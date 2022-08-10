@@ -44,7 +44,9 @@ const DeleteDialog = ({
             url: endpoints.resources,
             params: { year: year, course: moduleCode },
           })
-          .then((response: any) => setGroupedMaterials(groupByProperty(response.data, 'category', 'index')))
+          .then((response: any) =>
+            setGroupedMaterials(groupByProperty(response.data, 'category', 'index'))
+          )
           .catch((error: any) => {
             addToast({ variant: 'error', title: 'There was an error fetching resources' })
             console.error(error)

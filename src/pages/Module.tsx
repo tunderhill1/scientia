@@ -41,7 +41,14 @@ const Module = () => {
   return (
     <Container>
       <h1 style={{ margin: 0 }}> {module.title}</h1>
-      <h3 className={css({ color: '$lowContrast', margin: '0.5rem 0rem', marginBottom: '1rem', fontWeight: '400' })()}>
+      <h3
+        className={css({
+          color: '$lowContrast',
+          margin: '0.5rem 0rem',
+          marginBottom: '1rem',
+          fontWeight: '400',
+        })()}
+      >
         {moduleCode}
       </h3>
       {/* TODO: Introduce module leader information or overview here when the data is available */}

@@ -32,8 +32,14 @@ export const Navigation = () => {
           css={{ width: 'auto', '&:hover': { backgroundColor: 'transparent' } }}
         >
           {/* TODO: We might need to store logos separately if they're theme-configurable */}
-          <Logo alt="Scientia logo" src="/assets/logo.svg" style={{ filter: `invert(${theme === 'dark' ? 1 : 0})` }} />
-          <span style={{ marginLeft: '0.5rem', fontSize: 'x-large', fontWeight: 600 }}>Scientia</span>
+          <Logo
+            alt="Scientia logo"
+            src="/assets/logo.svg"
+            style={{ filter: `invert(${theme === 'dark' ? 1 : 0})` }}
+          />
+          <span style={{ marginLeft: '0.5rem', fontSize: 'x-large', fontWeight: 600 }}>
+            Scientia
+          </span>
         </Button>
 
         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -65,7 +71,7 @@ export const Navigation = () => {
               <Button icon>
                 <Avatar
                   size={32}
-                  name={userDetails.login}
+                  name={userDetails?.login}
                   variant="marble"
                   colors={['#264653', '#2A9d8F', '#E9C46A', '#F4A261', '#E76F51']}
                 />

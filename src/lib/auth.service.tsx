@@ -21,7 +21,7 @@ type Credentials = {
 }
 
 export default function useAuth() {
-  const { storeUserDetails, clearUserDetails } = useUser()
+  const { userDetails, storeUserDetails, clearUserDetails } = useUser()
   const navigate = useNavigate()
 
   const loginUser = async (data: Credentials) => {
@@ -40,7 +40,7 @@ export default function useAuth() {
   }
 
   const isLoggedIn = (): boolean => {
-    return localStorage.hasOwnProperty('userDetails') && localStorage.getItem('userDetails') !== ''
+    return userDetails !== undefined
   }
 
   const logoutUser = () => {

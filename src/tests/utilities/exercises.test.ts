@@ -26,10 +26,22 @@ const ExerciseFactory = ({
   return exercise
 }
 
-const reference = ExerciseFactory({ startDate: new Date(2022, 9, 1), endDate: new Date(2022, 9, 10) })
-const overlapping = ExerciseFactory({ startDate: new Date(2022, 9, 5), endDate: new Date(2022, 9, 15) })
-const preceding = ExerciseFactory({ startDate: new Date(2022, 8, 25), endDate: new Date(2022, 8, 30) })
-const following = ExerciseFactory({ startDate: new Date(2022, 9, 11), endDate: new Date(2022, 9, 15) })
+const reference = ExerciseFactory({
+  startDate: new Date(2022, 9, 1),
+  endDate: new Date(2022, 9, 10),
+})
+const overlapping = ExerciseFactory({
+  startDate: new Date(2022, 9, 5),
+  endDate: new Date(2022, 9, 15),
+})
+const preceding = ExerciseFactory({
+  startDate: new Date(2022, 8, 25),
+  endDate: new Date(2022, 8, 30),
+})
+const following = ExerciseFactory({
+  startDate: new Date(2022, 9, 11),
+  endDate: new Date(2022, 9, 15),
+})
 
 test.each([
   [reference, overlapping, true],
@@ -46,56 +58,44 @@ test('computes the right tracks for set of exercise', () => {
   expect(actual).toEqual(expected)
 })
 
-const inputModules = [
-  {
-    code: '50007.1',
-    title: 'Laboratory 2',
-    terms: [1],
-    staff: [],
-    exercises: [
-      {
-        number: 4,
-        title: 'Pintos Task 1 - Scheduling',
-        type: 'CW',
-        startDate: new Date(Date.UTC(2021, 9, 11, 12)),
-        endDate: new Date(Date.UTC(2021, 9, 29, 19)),
-        submissionType: 'group',
-      },
-      {
-        number: 5,
-        title: 'Pintos Task 2 - User Programs',
-        type: 'CW',
-        startDate: new Date(Date.UTC(2021, 10, 1, 12)),
-        endDate: new Date(Date.UTC(2021, 10, 19, 19)),
-        submissionType: 'group',
-      },
-    ],
-  },
-  {
-    code: '50002',
-    title: 'SED',
-    terms: [1],
-    staff: [],
-    exercises: [
-      {
-        number: 1,
-        title: 'TDD',
-        type: 'CW',
-        startDate: new Date(Date.UTC(2021, 9, 11, 12)),
-        endDate: new Date(Date.UTC(2021, 9, 29, 19)),
-        submissionType: 'group',
-      },
-      {
-        number: 2,
-        title: 'Mockery',
-        type: 'CW',
-        startDate: new Date(Date.UTC(2021, 9, 28, 12)),
-        endDate: new Date(Date.UTC(2021, 10, 5, 19)),
-        submissionType: 'group',
-      },
-    ],
-  },
-]
+const inputModules = {
+  '50007.1': [
+    {
+      number: 4,
+      title: 'Pintos Task 1 - Scheduling',
+      type: 'CW',
+      startDate: new Date(Date.UTC(2021, 9, 11, 12)),
+      endDate: new Date(Date.UTC(2021, 9, 29, 19)),
+      submissionType: 'group',
+    },
+    {
+      number: 5,
+      title: 'Pintos Task 2 - User Programs',
+      type: 'CW',
+      startDate: new Date(Date.UTC(2021, 10, 1, 12)),
+      endDate: new Date(Date.UTC(2021, 10, 19, 19)),
+      submissionType: 'group',
+    },
+  ],
+  '50002': [
+    {
+      number: 1,
+      title: 'TDD',
+      type: 'CW',
+      startDate: new Date(Date.UTC(2021, 9, 11, 12)),
+      endDate: new Date(Date.UTC(2021, 9, 29, 19)),
+      submissionType: 'group',
+    },
+    {
+      number: 2,
+      title: 'Mockery',
+      type: 'CW',
+      startDate: new Date(Date.UTC(2021, 9, 28, 12)),
+      endDate: new Date(Date.UTC(2021, 10, 5, 19)),
+      submissionType: 'group',
+    },
+  ],
+}
 
 test('computes the right track map for set of modules', () => {
   const expected: TrackMap = {

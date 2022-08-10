@@ -113,7 +113,8 @@ export const Button = styled('button', {
     /* Press and hold animation */
     animate: {
       true: {
-        transition: 'transform 250ms cubic-bezier(.2, .8, .4, 1), background-color 250ms ease-in-out',
+        transition:
+          'transform 250ms cubic-bezier(.2, .8, .4, 1), background-color 250ms ease-in-out',
         '&:hover': {
           transform: 'scale(1.05)',
         },

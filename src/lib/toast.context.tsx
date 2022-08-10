@@ -10,7 +10,10 @@ interface ToastManager {
   addToast: (toast: ToastProps) => void
 }
 
-export const ToastContext = createContext<ToastManager>({ toasts: [], addToast: (_: ToastProps) => {} })
+export const ToastContext = createContext<ToastManager>({
+  toasts: [],
+  addToast: (_: ToastProps) => {},
+})
 
 /* To call a toast:
     const { addToast } = useToast()

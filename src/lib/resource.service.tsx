@@ -10,7 +10,8 @@ import { useToast } from './toast.context'
 import { groupByProperty } from './utilities.service'
 import { useYear } from './year.context'
 
-export const getUTCDatetime = (date: string, time: string) => zonedTimeToUtc(date + ' ' + time, LONDON_TIMEZONE)
+export const getUTCDatetime = (date: string, time: string) =>
+  zonedTimeToUtc(date + ' ' + time, LONDON_TIMEZONE)
 
 export const useResources = (): any => {
   const axiosInstance = useContext(AxiosContext)
@@ -18,7 +19,10 @@ export const useResources = (): any => {
   const moduleCode = useOutletContext<string | null>()
   const { addToast } = useToast()
 
-  const uploadResource = async ({ file, ...resource }: ResourceCreate, setGroupedMaterials: any) => {
+  const uploadResource = async (
+    { file, ...resource }: ResourceCreate,
+    setGroupedMaterials: any
+  ) => {
     await axiosInstance
       .request({
         method: 'POST',
@@ -40,7 +44,10 @@ export const useResources = (): any => {
               data: formData,
             })
             .catch((error: any) => {
-              addToast({ variant: 'error', title: 'Error uploading file' + file?.name ? `'${file?.name}'.` : '.' })
+              addToast({
+                variant: 'error',
+                title: 'Error uploading file' + file?.name ? `'${file?.name}'.` : '.',
+              })
               console.error(error)
             })
         }

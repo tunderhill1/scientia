@@ -1,12 +1,25 @@
+import { max, min } from 'date-fns'
+
 import { TIMELINE_TRACK_HEIGHT } from '../../constants/global'
-import { Term, TrackMap } from '../../constants/types'
+import { Exercise, Term, TrackMap } from '../../constants/types'
 import { dateToColumn } from '../../pages/Timeline'
 import { WEEKDAYS_WIDTHS, WEEKEND_WIDTH } from '../../styles/timeline/constants.style'
 import { Grid } from '../../styles/timeline/tracks.style'
 import { TrackItem } from './TrackItem'
 
-export const Tracks = ({ term, trackMap, weeks }: { term: Term; trackMap: TrackMap; weeks: number }) => {
+export const Tracks = ({
+  term,
+  trackMap,
+  weeks,
+  setExercise,
+}: {
+  term: Term
+  trackMap: TrackMap
+  weeks: number
+  setExercise: (_: Exercise) => void
+}) => {
   // Ad hoc calculation of grid-template-rows heights to align to the hardcoded padding of the Module tabs
+
   const gridTemplateRows = Object.entries(trackMap)
     .map(([_, tracks]) => {
       return tracks
@@ -29,20 +42,27 @@ export const Tracks = ({ term, trackMap, weeks }: { term: Term; trackMap: TrackM
     >
       {Object.values(trackMap)
         .flat()
-        .map((track, trackIndex) => {
-          return track.map((exercise) => {
-            return (
+        .map((track, trackIndex) =>
+          track
+            .filter(
+              (exercise) =>
+                exercise.startDate >= term.start ||
+                (term.start <= exercise.endDate && exercise.endDate <= term.end)
+            )
+            .map((exercise) => (
               <TrackItem
                 key={`${trackIndex}-${exercise.number}`}
                 exercise={exercise}
-                startColumn={dateToColumn(exercise.startDate, term.start)}
-                endColumn={dateToColumn(exercise.endDate, term.start)}
+                startColumn={dateToColumn(max([exercise.startDate, term.start]), term.start)}
+                endColumn={dateToColumn(min([exercise.endDate, term.end]), term.start) + 1}
                 row={trackIndex + 1}
-                onClick={() => console.log(`Clicked on '${exercise.title}'`)}
+                disabled={exercise.startDate >= new Date()}
+                onClick={() => {
+                  if (exercise.startDate < new Date()) setExercise(exercise)
+                }}
               />
-            )
-          })
-        })}
+            ))
+        )}
     </Grid>
   )
 }

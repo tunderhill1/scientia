@@ -34,7 +34,7 @@ export const Content = styled(DialogContent, {
   zIndex: 10,
   transform: 'translate(-50%, -50%)',
   width: '90vw',
-  maxWidth: '450px',
+  maxWidth: '800px',
   maxHeight: '85vh',
   padding: '2rem',
   '@media (prefers-reduced-motion: no-preference)': {
@@ -48,5 +48,5 @@ export const Title = styled(DialogTitle, {
   marginBottom: '1rem',
   fontWeight: 500,
   color: '$highContrast',
-  fontSize: 17,
+  fontSize: 18,
 })

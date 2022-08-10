@@ -7,7 +7,11 @@ import { Exercise, ModuleWithExercises, Track, TrackMap } from '../constants/typ
  * Groups a given data object by the given 'groupBy' property to form a dictionary of lists. Each list of objects
  * is sorted by the 'orderBy' property.
  */
-export function groupByProperty(data: object[], groupBy: string, orderBy: string): { [key: string]: object[] } {
+export function groupByProperty(
+  data: object[],
+  groupBy: string,
+  orderBy: string
+): { [key: string]: object[] } {
   /* Preliminary check to make sure that the groupBy and orderBy attributes are in the data */
   if (!data.every((d) => groupBy in d && orderBy in d))
     throw Error(`'${groupBy}' and '${orderBy}' need be properties of provided objects`)
@@ -61,7 +65,9 @@ export function exercisesOverlap(e1: Exercise, e2: Exercise): boolean {
 /* Compute the exercise tracks for the exercises of each module */
 export function computeTracks(exercises: Exercise[]): Track[] {
   /* Pre: Ordering input by the start date */
-  const orderedExercises = exercises.sort((e1, e2) => daysSinceEpoch(e1.startDate) - daysSinceEpoch(e2.startDate))
+  const orderedExercises = exercises.sort(
+    (e1, e2) => daysSinceEpoch(e1.startDate) - daysSinceEpoch(e2.startDate)
+  )
   const tracks: Track[] = []
   /* The 'of' is used instead of 'in' to enforce the type of exercise */
   for (const exercise of orderedExercises) {
@@ -81,9 +87,9 @@ export function computeTracks(exercises: Exercise[]): Track[] {
 }
 
 /* Creates a track map given a list of modules with exercises */
-export function generateTrackMap(modules: ModuleWithExercises[]): TrackMap {
-  return modules.reduce((accumulator: TrackMap, module) => {
-    accumulator[module.code] = computeTracks(module.exercises)
+export function generateTrackMap(exercises: { [code: string]: Exercise[] }): TrackMap {
+  return Object.entries(exercises).reduce((accumulator: TrackMap, [code, exercises]) => {
+    accumulator[code] = computeTracks(exercises)
     return accumulator
   }, {})
 }
