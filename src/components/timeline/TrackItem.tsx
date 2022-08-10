@@ -10,18 +10,21 @@ export const TrackItem = ({
   endColumn,
   row,
   onClick,
+  disabled,
 }: {
   exercise: Exercise
   startColumn: number
   endColumn: number
   row: number
   onClick: () => void
+  disabled: boolean
 }) => {
   const isSingleDay = endColumn - startColumn < 2
   return (
     <TrackItemWrapper
       onClick={onClick}
       className={css({
+        cursor: disabled ? 'default' : 'pointer',
         gridColumn: `${startColumn} / ${endColumn}`,
         gridRow: `${row}`,
         justifyContent: isSingleDay ? 'center' : 'space-between',

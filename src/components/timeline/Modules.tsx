@@ -1,16 +1,14 @@
 import { TIMELINE_TRACK_HEIGHT } from '../../constants/global'
-import { ModuleWithExercises } from '../../constants/types'
+import { Module } from '../../constants/types'
 import { Wrapper } from '../../styles/_app.style'
 import { css } from '../../styles/stitches.config'
 import { Tabs } from '../Tabs'
 
 export const Modules = ({
   modules,
-  term,
   rowHeights,
 }: {
-  modules: ModuleWithExercises[]
-  term: string
+  modules: Module[]
   rowHeights: { [code: string]: string }
 }) => {
   const modulesWrapperStyle = {

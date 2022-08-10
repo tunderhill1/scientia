@@ -4,7 +4,13 @@ import { ReactNode } from 'react'
 import { Button } from '../../styles/_app.style'
 import { Content, Overlay, Title } from '../../styles/dialog.style'
 
-const ContentFrame = ({ children, ...props }: { children: ReactNode; props?: { [x: string]: any } }) => (
+const ContentFrame = ({
+  children,
+  ...props
+}: {
+  children: ReactNode
+  props?: { [x: string]: any }
+}) => (
   <DialogPortal>
     <Overlay />
     <Content {...props}>{children}</Content>
@@ -14,7 +20,7 @@ const ContentFrame = ({ children, ...props }: { children: ReactNode; props?: { [
 const Dialog = ({
   open,
   onOpenChange,
-  onPrimaryClick,
+  onPrimaryClick = () => {},
   isFormValid = () => true,
   title,
   primaryButtonText,
@@ -23,16 +29,16 @@ const Dialog = ({
 }: {
   open: boolean
   onOpenChange: (_: boolean) => void
-  onPrimaryClick: () => void
+  onPrimaryClick?: () => void
+  title?: string
+  primaryButtonText?: string
+  secondaryButtonText?: string
   isFormValid?: () => boolean
-  title: string
-  primaryButtonText: string
-  secondaryButtonText: string
   children?: ReactNode
 }) => (
   <DialogRoot open={open} onOpenChange={onOpenChange}>
     <ContentFrame>
-      <Title>{title}</Title>
+      {title && <Title>{title}</Title>}
       <form
         onSubmit={(event) => {
           event.preventDefault()
@@ -47,14 +53,21 @@ const Dialog = ({
       >
         {children}
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <DialogClose asChild>
-            <Button type="button" style={{ display: 'inline-block', width: '6rem' }}>
-              {secondaryButtonText}
+          {secondaryButtonText && (
+            <DialogClose asChild>
+              <Button style={{ display: 'inline-block', width: '6rem' }}>
+                {secondaryButtonText}
+              </Button>
+            </DialogClose>
+          )}
+          {primaryButtonText && (
+            <Button
+              type="submit"
+              style={{ display: 'inline-block', marginLeft: '1rem', width: '6rem' }}
+            >
+              {primaryButtonText}
             </Button>
-          </DialogClose>
-          <Button type="submit" style={{ display: 'inline-block', marginLeft: '1rem', width: '6rem' }}>
-            {primaryButtonText}
-          </Button>
+          )}
         </div>
       </form>
     </ContentFrame>

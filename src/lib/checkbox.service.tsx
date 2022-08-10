@@ -26,7 +26,11 @@ type Nest = { [key: string]: Checklist }
 type Checklist = Flat | Nest
 
 /* TODO: Update functionality to handle deeply nested checklists */
-export default function useChecklist(data: { [key: string]: object[] }, attribute: string, value: boolean = false) {
+export default function useChecklist(
+  data: { [key: string]: object[] },
+  attribute: string,
+  value: boolean = false
+) {
   const [checklist, setChecklist] = useState<Checklist>({})
   const [checkedState, setCheckedState] = useState<CheckedState>(false)
 
@@ -35,7 +39,11 @@ export default function useChecklist(data: { [key: string]: object[] }, attribut
    * title of the collection (e.g. c-1). We then collect all the collection-specific checklists into a nested one (see
    * the type of Checklist). Also, attribute is the identifier of the external element (e.g. title or id)
    */
-  function defaultChecklist(data: { [key: string]: object[] }, attribute: string, value: boolean = false): Checklist {
+  function defaultChecklist(
+    data: { [key: string]: object[] },
+    attribute: string,
+    value: boolean = false
+  ): Checklist {
     return Object.fromEntries(
       Object.entries(data).map(([title, items]: [string, object[]]) => {
         /* Generate a collection-specific flat checklist */
@@ -55,7 +63,9 @@ export default function useChecklist(data: { [key: string]: object[] }, attribut
   function onCollectionCheck(title: string, value: CheckedState) {
     const updatedChecklist: Checklist = {
       ...(checklist as Nest),
-      [title]: Object.fromEntries(Object.keys(checklist[title]).map((attribute) => [attribute, value])),
+      [title]: Object.fromEntries(
+        Object.keys(checklist[title]).map((attribute) => [attribute, value])
+      ),
     }
     setChecklist(updatedChecklist)
   }

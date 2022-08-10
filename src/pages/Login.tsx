@@ -33,7 +33,11 @@ const Login = () => {
   return (
     <Container center expand dotted css={{ paddingTop: '0' }}>
       <Form onSubmit={handleSubmit}>
-        <Logo alt="Scientia logo" src="assets/logo.svg" style={{ filter: `invert(${theme === 'dark' ? 1 : 0})` }} />
+        <Logo
+          alt="Scientia logo"
+          src="assets/logo.svg"
+          style={{ filter: `invert(${theme === 'dark' ? 1 : 0})` }}
+        />
         <Name style={{ margin: 0 }}>Scientia</Name>
         <Tagline style={{ marginBottom: '2rem' }}>A Unified DoC EdTech Platform</Tagline>
 

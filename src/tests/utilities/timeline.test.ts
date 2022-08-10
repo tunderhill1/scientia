@@ -16,5 +16,7 @@ test.each`
 })
 
 test('throws error if referenceDate is not a Monday', () => {
-  expect(() => dateToColumn(new Date(), new Date(2022, 9, 5))).toThrowError('Parameter referenceDate MUST be a monday.')
+  expect(() => dateToColumn(new Date(), new Date(2022, 9, 5))).toThrowError(
+    'Parameter startDate MUST be a monday.'
+  )
 })

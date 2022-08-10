@@ -49,7 +49,9 @@ const ResourceDetailsForm = ({
   useEffect(() => onResourceChange('category', category), [category])
   useEffect(() => onResourceChange('path', path), [path])
   useEffect(() => {
-    visibleDate && visibleTime && onResourceChange('visible_after', getUTCDatetime(visibleDate, visibleTime))
+    visibleDate &&
+      visibleTime &&
+      onResourceChange('visible_after', getUTCDatetime(visibleDate, visibleTime))
   }, [visibleDate, visibleTime])
 
   if (resource === null) return null
@@ -104,7 +106,10 @@ const ResourceDetailsForm = ({
             onClick={() => {
               if (!category) return
               setForAllResources('category', category)
-              addToast({ variant: 'info', title: `Category '${category}' applied to all uploaded files` })
+              addToast({
+                variant: 'info',
+                title: `Category '${category}' applied to all uploaded files`,
+              })
             }}
           >
             Apply to all
@@ -122,7 +127,10 @@ const ResourceDetailsForm = ({
             onCreateOption={(value) => {
               setCategory(value)
               if (value !== null)
-                setCategoryOptions((categoryOptions: any) => [...categoryOptions, { value, label: value }])
+                setCategoryOptions((categoryOptions: any) => [
+                  ...categoryOptions,
+                  { value, label: value },
+                ])
             }}
             classNamePrefix={'edit-select'}
             maxMenuHeight={MAX_OPTIONS_MENU_HEIGHT}
@@ -131,7 +139,10 @@ const ResourceDetailsForm = ({
       </div>
 
       <div style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}>
-        <Label htmlFor="editVisibleAfter" css={{ lineHeight: '2rem', marginRight: '1rem', marginTop: '15rem' }}>
+        <Label
+          htmlFor="editVisibleAfter"
+          css={{ lineHeight: '2rem', marginRight: '1rem', marginTop: '15rem' }}
+        >
           Publish date:
         </Label>
 
@@ -164,7 +175,8 @@ const ResourceDetailsForm = ({
           </NowButton>
           <Visibility
             style={{
-              visibility: getUTCDatetime(visibleDate, visibleTime) <= new Date() ? 'visible' : 'hidden',
+              visibility:
+                getUTCDatetime(visibleDate, visibleTime) <= new Date() ? 'visible' : 'hidden',
             }}
           >
             <InfoCircle style={{ marginRight: '0.25rem' }} />

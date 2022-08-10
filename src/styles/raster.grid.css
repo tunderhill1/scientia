@@ -1060,7 +1060,13 @@ r-grid > r-cell[span='row'] {
 }
 r-grid.debug > * {
   --color: rgba(248, 110, 91, 0.3);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(var(--color)), to(var(--color)));
+  background-image: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    from(var(--color)),
+    to(var(--color))
+  );
   background-image: linear-gradient(180deg, var(--color) 0, var(--color));
 }
 r-grid.debug > :nth-child(6n + 2) {

@@ -1,4 +1,9 @@
-import { ToastIcon, Root as ToastRoot, Title as ToastTitle, ToastVariant } from '../styles/toast.style'
+import {
+  ToastIcon,
+  Root as ToastRoot,
+  Title as ToastTitle,
+  ToastVariant,
+} from '../styles/toast.style'
 
 /*  Toasts display brief, temporary notifications.
     Only be used for:

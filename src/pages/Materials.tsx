@@ -1,6 +1,15 @@
 import { utcToZonedTime } from 'date-fns-tz'
 import { useEffect, useState } from 'react'
-import { Check, Dash, Download, Link45deg, PencilSquare, Trash3Fill, UiChecks, Upload } from 'react-bootstrap-icons'
+import {
+  Check,
+  Dash,
+  Download,
+  Link45deg,
+  PencilSquare,
+  Trash3Fill,
+  UiChecks,
+  Upload,
+} from 'react-bootstrap-icons'
 import { useOutletContext } from 'react-router-dom'
 
 import { CollapsibleList } from '../components/CollapsibleList'
@@ -42,7 +51,7 @@ const Materials = () => {
   })
 
   const noMaterials = () => groupedMaterials && Object.keys(groupedMaterials).length === 0
-  const isStaff = () => userDetails.roleInDepartment === 'staff'
+  const isStaff = () => userDetails?.roleInDepartment === 'staff'
 
   useEffect(() => {
     if (data !== null) setGroupedMaterials(groupByProperty(data, 'category', 'index'))
@@ -118,7 +127,9 @@ const Materials = () => {
               checked={checklistManager.getCheckedState()}
               onCheckedChange={checklistManager.onToggle}
             >
-              <Indicator>{checklistManager.getCheckedState() === 'indeterminate' ? <Dash /> : <Check />}</Indicator>
+              <Indicator>
+                {checklistManager.getCheckedState() === 'indeterminate' ? <Dash /> : <Check />}
+              </Indicator>
             </Checkbox>
           </>
         )}
@@ -147,7 +158,10 @@ const Materials = () => {
             (isStaff() && {
               icon: <PencilSquare size={22} />,
               action: (item: any) => {
-                setResourceToEdit({ ...item, visible_after: utcToZonedTime(item.visible_after, LONDON_TIMEZONE) })
+                setResourceToEdit({
+                  ...item,
+                  visible_after: utcToZonedTime(item.visible_after, LONDON_TIMEZONE),
+                })
                 setEditDialogOpen(true)
               },
             }) ||
@@ -195,8 +209,9 @@ const Materials = () => {
       />
 
       <Footnote muted center css={{ margin: '2rem 0' }}>
-        Please contact the relevant module leader(s) for missing resources or if you'd like materials to be better
-        organised; we recommend using EdStem to help them gauge the peer response.
+        Please contact the relevant module leader(s) for missing resources or if you'd like
+        materials to be better organised; we recommend using EdStem to help them gauge the peer
+        response.
       </Footnote>
     </Wrapper>
   )

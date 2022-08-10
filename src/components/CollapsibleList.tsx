@@ -70,7 +70,11 @@ export const CollapsibleList = ({
   /* Checkbox generators for both the header (collection-level) and content (item-level) */
   const collectionCheckboxGenerator = (collection: string) => (
     <Checkbox
-      checked={checklistManager.isIndeterminate(collection) ? 'indeterminate' : checklistManager.isComplete(collection)}
+      checked={
+        checklistManager.isIndeterminate(collection)
+          ? 'indeterminate'
+          : checklistManager.isComplete(collection)
+      }
       onCheckedChange={(checked) => checklistManager.onCollectionCheck(collection, checked)}
     >
       {/* When only some but not all items in a collection are checked, we use the indeterminate state (dash) */}
@@ -83,7 +87,9 @@ export const CollapsibleList = ({
       {items.map((item: any) => (
         <Checkbox
           checked={checklistManager.getItemState(collection, item[checklistAttribute])}
-          onCheckedChange={(checked) => checklistManager.onItemCheck(collection, item[checklistAttribute], checked)}
+          onCheckedChange={(checked) =>
+            checklistManager.onItemCheck(collection, item[checklistAttribute], checked)
+          }
           key={item[checklistAttribute]}
         >
           <Indicator>

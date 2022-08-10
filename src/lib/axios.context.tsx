@@ -35,7 +35,13 @@ export function getCookie(cookieName: string): string {
 export const AxiosContext = createContext<AxiosInstance>(axios)
 
 /* TODO: Support multiple instances with additional configurations; i.e. create a ref for each instance */
-export const AxiosInstanceProvider = ({ config = {}, children }: { config: any; children: React.ReactNode }) => {
+export const AxiosInstanceProvider = ({
+  config = {},
+  children,
+}: {
+  config: any
+  children: React.ReactNode
+}) => {
   const instanceRef = useRef<AxiosInstance | null>(null)
   const { storeUserDetails } = useUser()
   const { logoutUser } = useAuth()
@@ -72,7 +78,8 @@ export const AxiosInstanceProvider = ({ config = {}, children }: { config: any; 
         const originalRequest = error.config
         if (
           (error.response.status === 401 ||
-            (error.response.status === 422 && error.response.data?.detail === 'Signature has expired')) &&
+            (error.response.status === 422 &&
+              error.response.data?.detail === 'Signature has expired')) &&
           !originalRequest._retry
         ) {
           originalRequest._retry = true

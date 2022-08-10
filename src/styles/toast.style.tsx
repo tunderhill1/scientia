@@ -1,6 +1,11 @@
 import { Root as ToastRoot, ToastTitle, ToastViewport } from '@radix-ui/react-toast'
 import { keyframes } from '@stitches/react'
-import { CheckCircleFill, ExclamationTriangleFill, Icon, InfoCircleFill } from 'react-bootstrap-icons'
+import {
+  CheckCircleFill,
+  ExclamationTriangleFill,
+  Icon,
+  InfoCircleFill,
+} from 'react-bootstrap-icons'
 
 import { styled } from './stitches.config'
 
@@ -30,7 +35,9 @@ const swipeOut = keyframes({
 
 export const Root = styled(ToastRoot, {
   variants: {
-    color: Object.fromEntries(Object.keys(ToastIcons).map((type) => [type, { backgroundColor: `$${type}Background` }])),
+    color: Object.fromEntries(
+      Object.keys(ToastIcons).map((type) => [type, { backgroundColor: `$${type}Background` }])
+    ),
   },
   borderRadius: 8,
   boxShadow: 'hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px',

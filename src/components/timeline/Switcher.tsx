@@ -12,19 +12,25 @@ import { Group, Item } from '../../styles/timeline/switcher.style'
  * breaks (e.g. autumn term or winter break) are specific periods in an academic year.
  */
 const phases = {
-  Term: {
-    Autumn: <CloudDrizzleFill size={22} />,
-    Spring: <TreeFill size={22} />,
-    Summer: <SunFill size={22} />,
+  term: {
+    autumn: <CloudDrizzleFill size={22} />,
+    spring: <TreeFill size={22} />,
+    summer: <SunFill size={22} />,
   },
-  Break: {
-    Winter: <Snow size={22} />,
-    Easter: <EggFill size={22} />,
-    Summer: <Rainbow size={22} />,
+  break: {
+    winter: <Snow size={22} />,
+    spring: <EggFill size={22} />,
+    summer: <Rainbow size={22} />,
   },
 }
 
-export const Switcher = ({ term, onSwitch }: { term: string; onSwitch: (term: string) => void }) => {
+export const Switcher = ({
+  term,
+  onSwitch,
+}: {
+  term: string
+  onSwitch: (term: string) => void
+}) => {
   const switcherGroupStyle = { maxWidth: '8.25rem', flexWrap: 'wrap' }
   const switcherWrapperStyle = {
     gridArea: 'switcher',

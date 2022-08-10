@@ -1,4 +1,11 @@
-import { CameraReelsFill, EnvelopeFill, Git, PeopleFill, StarHalf, UiChecks } from 'react-bootstrap-icons'
+import {
+  CameraReelsFill,
+  EnvelopeFill,
+  Git,
+  PeopleFill,
+  StarHalf,
+  UiChecks,
+} from 'react-bootstrap-icons'
 
 export type Link = {
   title: string
