@@ -113,10 +113,6 @@ const Timeline = () => {
     )
   }, [trackMapForTerm])
 
-  function switchTerm(termName: string) {
-    if (termName) setTerm(terms.find((term: Term) => term.name === termName))
-  }
-
   return term ? (
     <>
       <Area
@@ -127,7 +123,7 @@ const Timeline = () => {
       >
         <Viewport>
           <Container timeline>
-            <Switcher term={term.name} onSwitch={switchTerm} />
+            <Switcher term={term.name} setTerm={setTerm} terms={terms} />
             <Weeks start={term.start} weeks={term.weeks} />
             <Modules modules={modulesForTerm} rowHeights={rowHeights} />
             {/* NOTE: Everything under here will be placed in the background area */}

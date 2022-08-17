@@ -1,5 +1,6 @@
 import { ToggleGroupItem, ToggleGroup as ToggleGroupPrimitive } from '@radix-ui/react-toggle-group'
 
+import { Button, Wrapper } from '../_app.style'
 import { styled } from '../stitches.config'
 import { itemStyles } from '../toolbar.style'
 
@@ -17,4 +18,38 @@ export const Item = styled(ToggleGroupItem, {
   '&[data-state=on]': {
     backgroundColor: '$elementActive',
   },
+})
+
+export const TermSwitchArrow = styled(Button, {
+  width: '2.25rem',
+  height: '2.25rem',
+  display: 'flex',
+  marginTop: 0,
+  justifyContent: 'center',
+  alignItems: 'center',
+  boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1)',
+  backgroundColor: '$appBackground',
+  border: '1px solid $sand7',
+  cursor: 'pointer',
+  variants: {
+    disabled: {
+      true: {
+        visibility: 'hidden',
+      },
+    },
+  },
+})
+
+export const SwitcherWrapper = styled(Wrapper, {
+  gridArea: 'switcher',
+  display: 'flex',
+  justifyContent: 'space-evenly',
+  alignItems: 'center',
+  verticalAlign: 'middle',
+  top: 0,
+  left: 0,
+  position: 'sticky',
+  zIndex: 5,
+  background: '$appBackground',
+  paddingTop: '1rem',
 })
