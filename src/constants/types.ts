@@ -1,8 +1,12 @@
 import { Expose, Type } from 'class-transformer'
+import { Dispatch, SetStateAction } from 'react'
+
+export type SetState<Value> = Dispatch<SetStateAction<Value>>
 
 export class UserDetails {
   login: string
   email: string
+  cohort: string
   firstname: string
   lastname: string
 
@@ -36,9 +40,10 @@ export class Exercise {
   number: number
   title: string
   type: string
+  owner: string
 
-  @Expose({ name: 'module_code' })
-  moduleCode?: string
+  @Expose({ name: 'estimated_work_hours' })
+  estimatedWorkHours: number
 
   @Expose({ name: 'submission_type' })
   submissionType: string
@@ -50,6 +55,16 @@ export class Exercise {
   @Expose({ name: 'end_date' })
   @Type(() => Date)
   endDate: Date
+
+  @Expose({ name: 'module_code' })
+  moduleCode?: string
+
+  @Expose({ name: 'module_name' })
+  moduleName?: string
+
+  @Expose({ name: 'maximum_mark' })
+  maximumMark?: number
+  mark?: number
 }
 
 export class ModuleWithExercises {
@@ -88,4 +103,49 @@ export interface ResourceCreate {
   visible_after: Date
   type: string
   path: string
+}
+
+interface Material {
+  name: string
+  url: string
+}
+
+export interface FileRequirement {
+  name: string
+  max_size: number
+}
+
+export class ExerciseMaterials {
+  spec: Material
+
+  @Expose({ name: 'data_files' })
+  dataFiles: Material[]
+
+  @Expose({ name: 'model_answers' })
+  modelAnswers: Material[]
+
+  @Expose({ name: 'hand_ins' })
+  fileRequirements: FileRequirement[]
+}
+
+export class SubmittedFile {
+  username: string
+  id: number
+  year: string
+  size: number
+
+  @Expose({ name: 'module_code' })
+  moduleCode: string
+
+  @Expose({ name: 'file_size' })
+  fileSize: number
+
+  @Expose({ name: 'exercise_number' })
+  exerciseNumber: number
+
+  @Type(() => Date)
+  timestamp: Date
+
+  @Expose({ name: 'target_submission_file_name' })
+  targetFileName: string
 }

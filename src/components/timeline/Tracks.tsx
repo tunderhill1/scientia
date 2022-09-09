@@ -16,7 +16,7 @@ export const Tracks = ({
   term: Term
   trackMap: TrackMap
   weeks: number
-  setExercise: (_: Exercise) => void
+  setExercise: (_: Exercise | null) => void
 }) => {
   // Ad hoc calculation of grid-template-rows heights to align to the hardcoded padding of the Module tabs
 

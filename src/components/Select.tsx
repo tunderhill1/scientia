@@ -1,4 +1,3 @@
-import React from 'react'
 import { Check, ChevronDown, ChevronUp } from 'react-bootstrap-icons'
 
 import {
@@ -44,16 +43,14 @@ export const SelectBox = ({
         <ChevronUp />
       </SelectScrollUpButton>
       <SelectViewport>
-        {items.map((i: string, index: number) => {
-          return (
-            <SelectItem value={index.toString()}>
-              <SelectItemText>{display(i)}</SelectItemText>
-              <SelectItemIndicator>
-                <Check />
-              </SelectItemIndicator>
-            </SelectItem>
-          )
-        })}
+        {items.map((i: string, index: number) => (
+          <SelectItem key={index} value={index.toString()}>
+            <SelectItemText>{display(i)}</SelectItemText>
+            <SelectItemIndicator>
+              <Check />
+            </SelectItemIndicator>
+          </SelectItem>
+        ))}
       </SelectViewport>
       <SelectScrollDownButton>
         <ChevronDown />

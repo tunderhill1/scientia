@@ -1,5 +1,7 @@
-import { MILLISECONDS_IN_A_DAY } from '../constants/global'
-import { Exercise, ModuleWithExercises, Track, TrackMap } from '../constants/types'
+import { formatInTimeZone } from 'date-fns-tz'
+
+import { LONDON_TIMEZONE, MILLISECONDS_IN_A_DAY } from '../constants/global'
+import { Exercise, Track, TrackMap } from '../constants/types'
 
 /* A file to store miscellaneous utility functions */
 
@@ -107,3 +109,6 @@ export function formatDate(start: Date, end: Date) {
   const endDay = TwoDigitDatePeriod(end, 'day')
   return `${startDay}/${startMonth} - ${endDay}/${endMonth}`
 }
+
+export const displayTimestamp = (date: Date | string, format?: string) =>
+  formatInTimeZone(date, LONDON_TIMEZONE, format || 'HH:mm:ss zzz, EEEE d LLLL yyyy')
