@@ -1,6 +1,7 @@
 import { DialogContent, DialogOverlay, DialogTitle } from '@radix-ui/react-dialog'
 import { keyframes } from '@stitches/react'
 
+import { Button } from './_app.style'
 import { styled } from './stitches.config'
 
 const overlayShow = keyframes({
@@ -15,6 +16,7 @@ const contentShow = keyframes({
 
 export const Overlay = styled(DialogOverlay, {
   backgroundColor: '$overlayBackground',
+  backdropFilter: 'blur(8px)',
   position: 'fixed',
   zIndex: 9,
   inset: 0,
@@ -25,7 +27,7 @@ export const Overlay = styled(DialogOverlay, {
 
 export const Content = styled(DialogContent, {
   overflowY: 'scroll',
-  backgroundColor: '$sand5',
+  backgroundColor: '$appBackground',
   borderRadius: 8,
   boxShadow: 'hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px',
   position: 'fixed',
@@ -49,4 +51,30 @@ export const Title = styled(DialogTitle, {
   fontWeight: 500,
   color: '$highContrast',
   fontSize: 18,
+})
+
+const shadowMd = '0px 2px 4px rgba(0, 0, 0, 0.06), 0px 4px 6px rgba(0, 0, 0, 0.1)'
+
+export const PrimaryButton = styled(Button, {
+  padding: '0.5rem 1rem',
+  border: '2px solid $blue9',
+  background: '$blue9 !important',
+  color: 'white',
+  fontWeight: 600,
+  borderRadius: '8px',
+  cursor: 'pointer',
+  userSelect: 'none',
+  transition: 'all .1s ease-in',
+  boxShadow: shadowMd,
+})
+
+export const SecondaryButton = styled(Button, {
+  border: '2px solid $sand8',
+  color: '$sand12',
+  fontWeight: 600,
+  borderRadius: '8px',
+  cursor: 'pointer',
+  userSelect: 'none',
+  transition: 'all .1s ease-in',
+  boxShadow: shadowMd,
 })

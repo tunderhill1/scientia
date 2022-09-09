@@ -57,6 +57,7 @@ const Timeline = () => {
   const [trackMap, setTrackMap] = useState<TrackMap>({})
   const [trackMapForTerm, setTrackMapForTerm] = useState<TrackMap>({})
   const [rowHeights, setRowHeights] = useState<{ [code: string]: string }>({})
+
   const [exercise, setExercise] = useState<Exercise | null>(null)
 
   useEffect(() => {
@@ -148,14 +149,7 @@ const Timeline = () => {
         </Scrollbar>
         <Corner />
       </Area>
-      {exercise && (
-        <ExerciseDialog
-          open={true}
-          onOpenChange={() => setExercise(null)}
-          exercise={exercise}
-          module={modulesForTerm.find((module) => module.code === exercise.moduleCode) as Module}
-        />
-      )}
+      {exercise && <ExerciseDialog exercise={exercise} setExercise={setExercise} />}
     </>
   ) : (
     <div>Loading...</div>

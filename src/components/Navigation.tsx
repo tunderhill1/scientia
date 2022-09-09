@@ -1,13 +1,21 @@
 import { DropdownMenu, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu'
 import Avatar from 'boring-avatars'
 import { useContext } from 'react'
-import { Command, DoorClosedFill, MoonFill, Search, SunFill } from 'react-bootstrap-icons'
+import {
+  CalendarDate,
+  Command,
+  DoorClosedFill,
+  MoonFill,
+  Search,
+  SunFill,
+} from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router-dom'
 
 import { Link, links } from '../constants/links'
 import useAuth from '../lib/auth.service'
 import { ThemeContext } from '../lib/theme.context'
 import { useUser } from '../lib/user.context'
+import { useYear } from '../lib/year.context'
 import { Button } from '../styles/_app.style'
 import { Content, Header, Item, Logo, Nav, Separator } from '../styles/navigation.style'
 
@@ -18,6 +26,7 @@ import { Content, Header, Item, Logo, Nav, Separator } from '../styles/navigatio
 export const Navigation = () => {
   const { userDetails } = useUser()
   const { logoutUser } = useAuth()
+  const { year } = useYear()
   const { theme, toggleTheme } = useContext(ThemeContext)
   const navigate = useNavigate()
 
@@ -46,6 +55,10 @@ export const Navigation = () => {
           <Button icon css={{ marginRight: '1rem' }}>
             {/* TODO: This button should trigger a command palette */}
             <Search size={22} />
+          </Button>
+
+          <Button icon css={{ marginRight: '1rem' }} onClick={() => navigate(`/${year}/timeline`)}>
+            <CalendarDate size={22} />
           </Button>
 
           {/* Quick Links */}

@@ -8,6 +8,7 @@ const ExerciseFactory = ({
   submissionType = 'individual',
   startDate = new Date(2022, 9, 11, 9),
   endDate = new Date(2022, 9, 29, 19),
+  estimatedWorkHours = 6,
 }: {
   number?: number
   title?: string
@@ -15,6 +16,7 @@ const ExerciseFactory = ({
   submissionType?: string
   startDate?: Date
   endDate?: Date
+  estimatedWorkHours?: number
 }): Exercise => {
   let exercise = new Exercise()
   exercise.number = number
@@ -23,6 +25,7 @@ const ExerciseFactory = ({
   exercise.submissionType = submissionType
   exercise.startDate = startDate
   exercise.endDate = endDate
+  exercise.estimatedWorkHours = estimatedWorkHours
   return exercise
 }
 
@@ -61,38 +64,46 @@ test('computes the right tracks for set of exercise', () => {
 const inputModules = {
   '50007.1': [
     {
+      owner: 'rbc',
       number: 4,
       title: 'Pintos Task 1 - Scheduling',
       type: 'CW',
       startDate: new Date(Date.UTC(2021, 9, 11, 12)),
       endDate: new Date(Date.UTC(2021, 9, 29, 19)),
       submissionType: 'group',
+      estimatedWorkHours: 6,
     },
     {
+      owner: 'rbc',
       number: 5,
       title: 'Pintos Task 2 - User Programs',
       type: 'CW',
       startDate: new Date(Date.UTC(2021, 10, 1, 12)),
       endDate: new Date(Date.UTC(2021, 10, 19, 19)),
       submissionType: 'group',
+      estimatedWorkHours: 6,
     },
   ],
   '50002': [
     {
+      owner: 'rbc',
       number: 1,
       title: 'TDD',
       type: 'CW',
       startDate: new Date(Date.UTC(2021, 9, 11, 12)),
       endDate: new Date(Date.UTC(2021, 9, 29, 19)),
       submissionType: 'group',
+      estimatedWorkHours: 6,
     },
     {
+      owner: 'rbc',
       number: 2,
       title: 'Mockery',
       type: 'CW',
       startDate: new Date(Date.UTC(2021, 9, 28, 12)),
       endDate: new Date(Date.UTC(2021, 10, 5, 19)),
       submissionType: 'group',
+      estimatedWorkHours: 6,
     },
   ],
 }
@@ -102,42 +113,50 @@ test('computes the right track map for set of modules', () => {
     '50007.1': [
       [
         {
+          owner: 'rbc',
           number: 4,
           title: 'Pintos Task 1 - Scheduling',
           type: 'CW',
           startDate: new Date(Date.UTC(2021, 9, 11, 12)),
           endDate: new Date(Date.UTC(2021, 9, 29, 19)),
           submissionType: 'group',
+          estimatedWorkHours: 6,
         },
         {
+          owner: 'rbc',
           number: 5,
           title: 'Pintos Task 2 - User Programs',
           type: 'CW',
           startDate: new Date(Date.UTC(2021, 10, 1, 12)),
           endDate: new Date(Date.UTC(2021, 10, 19, 19)),
           submissionType: 'group',
+          estimatedWorkHours: 6,
         },
       ],
     ],
     '50002': [
       [
         {
+          owner: 'rbc',
           number: 1,
           title: 'TDD',
           type: 'CW',
           startDate: new Date(Date.UTC(2021, 9, 11, 12)),
           endDate: new Date(Date.UTC(2021, 9, 29, 19)),
           submissionType: 'group',
+          estimatedWorkHours: 6,
         },
       ],
       [
         {
+          owner: 'rbc',
           number: 2,
           title: 'Mockery',
           type: 'CW',
           startDate: new Date(Date.UTC(2021, 9, 28, 12)),
           endDate: new Date(Date.UTC(2021, 10, 5, 19)),
           submissionType: 'group',
+          estimatedWorkHours: 6,
         },
       ],
     ],

@@ -18,6 +18,22 @@ export const endpoints = {
   refresh: `${baseURL}/auth/refresh`,
   module: (year: string, moduleCode: string) => `${baseURL}/${year}/modules/${moduleCode}`,
   exercises: (year: string) => `${baseURL}/${year}/exercises`,
+  exerciseMaterials: (year: string, yearGroup: string, exerciseNumber: number) =>
+    `/${year}/${yearGroup}/exercises/${exerciseNumber}/files`,
+  submissions: (year: string, moduleCode: string, exerciseNumber: number) =>
+    `${baseURL}/${year}/${moduleCode}/exercises/${exerciseNumber}/submissions`,
+  submission: (year: string, moduleCode: string, exerciseNumber: number, submissionId: number) =>
+    `${baseURL}/${year}/${moduleCode}/exercises/${exerciseNumber}/submissions/${submissionId}`,
+  submissionFile: (
+    year: string,
+    moduleCode: string,
+    exerciseNumber: number,
+    targetFileName: string,
+    submissionId: number
+  ) =>
+    `${baseURL}/${year}/${moduleCode}/exercises/${exerciseNumber}/submissions/${submissionId}/file`,
+  submissionWorkload: (year: string, moduleCode: string, exerciseNumber: number) =>
+    `${baseURL}/${year}/${moduleCode}/exercises/${exerciseNumber}/workload`,
   resources: `${baseURL}/resources`,
   resource: (id: number) => `${baseURL}/resources/${id}`,
   resourceFile: (id: number) => `${baseURL}/resources/${id}/file`,

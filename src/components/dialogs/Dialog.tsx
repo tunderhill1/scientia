@@ -1,8 +1,7 @@
 import { DialogClose, DialogPortal, Dialog as DialogRoot } from '@radix-ui/react-dialog'
 import { ReactNode } from 'react'
 
-import { Button } from '../../styles/_app.style'
-import { Content, Overlay, Title } from '../../styles/dialog.style'
+import { Content, Overlay, PrimaryButton, SecondaryButton, Title } from '../../styles/dialog.style'
 
 const ContentFrame = ({
   children,
@@ -55,18 +54,19 @@ const Dialog = ({
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           {secondaryButtonText && (
             <DialogClose asChild>
-              <Button style={{ display: 'inline-block', width: '6rem' }}>
+              <SecondaryButton style={{ display: 'inline-block', width: '6rem' }}>
                 {secondaryButtonText}
-              </Button>
+              </SecondaryButton>
             </DialogClose>
           )}
           {primaryButtonText && (
-            <Button
+            <PrimaryButton
               type="submit"
               style={{ display: 'inline-block', marginLeft: '1rem', width: '6rem' }}
+              css={{ backgroundColor: '$blue8' }}
             >
               {primaryButtonText}
-            </Button>
+            </PrimaryButton>
           )}
         </div>
       </form>
