@@ -8,15 +8,15 @@ import { ActionButton } from '../../../styles/dialog.style'
 const DeleteButton = ({
   name,
   deleteFile,
-  style,
+  style = {},
 }: {
   name: string
   deleteFile: () => void
-  style: CSSProperties
+  style?: CSSProperties
 }) => (
   <Popover modal>
     <Trigger asChild>
-      <TrashButton style={style}>
+      <TrashButton style={style} aria-label="delete">
         <Trash3Fill size={24} />
       </TrashButton>
     </Trigger>
