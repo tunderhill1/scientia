@@ -1,7 +1,6 @@
 import { DialogContent, DialogOverlay, DialogTitle } from '@radix-ui/react-dialog'
 import { keyframes } from '@stitches/react'
 
-import { Button } from './_app.style'
 import { styled } from './stitches.config'
 
 const overlayShow = keyframes({
@@ -55,26 +54,47 @@ export const Title = styled(DialogTitle, {
 
 const shadowMd = '0px 2px 4px rgba(0, 0, 0, 0.06), 0px 4px 6px rgba(0, 0, 0, 0.1)'
 
-export const PrimaryButton = styled(Button, {
+export const ActionButton = styled('button', {
   padding: '0.5rem 1rem',
-  border: '2px solid $blue9',
-  background: '$blue9 !important',
-  color: 'white',
-  fontWeight: 600,
-  borderRadius: '8px',
+  fontWeight: 700,
+  fontSize: '14px',
   cursor: 'pointer',
-  userSelect: 'none',
-  transition: 'all .1s ease-in',
-  boxShadow: shadowMd,
-})
-
-export const SecondaryButton = styled(Button, {
-  border: '2px solid $sand8',
-  color: '$sand12',
-  fontWeight: 600,
-  borderRadius: '8px',
-  cursor: 'pointer',
-  userSelect: 'none',
-  transition: 'all .1s ease-in',
-  boxShadow: shadowMd,
+  width: 'fit-content',
+  variants: {
+    primary: {
+      true: {
+        border: '2px solid $blue9',
+        borderRadius: '8px',
+        background: '$blue9',
+        color: 'white',
+        boxShadow: shadowMd,
+        '&:hover': {
+          backgroundColor: '$blue11',
+        },
+      },
+    },
+    color: {
+      destructive: {
+        backgroundColor: '$errorBackground',
+        '&:hover': {
+          backgroundColor: '$red11',
+        },
+        border: '2px solid $errorBackground',
+      },
+    },
+    secondary: {
+      true: {
+        backgroundColor: 'transparent',
+        textDecoration: 'underline',
+        outline: 'none',
+        border: 'none',
+        color: '$sand10',
+        textUnderlineThickness: '2px',
+        textUnderlineOffset: '4px',
+        '&:hover': {
+          color: '$sand12',
+        },
+      },
+    },
+  },
 })

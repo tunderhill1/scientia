@@ -5,9 +5,9 @@ import { CheckLg, Upload } from 'react-bootstrap-icons'
 import { endpoints } from '../../../constants/endpoints'
 import { FileRequirement, SubmittedFile } from '../../../constants/types'
 import { displayTimestamp } from '../../../lib/utilities.service'
-import { Button } from '../../../styles/_app.style'
-import { TrashButton, UploadTrigger } from '../../../styles/exerciseDialog.style'
+import { UploadTrigger } from '../../../styles/exerciseDialog.style'
 import { css } from '../../../styles/stitches.config'
+import DeleteButton from './DeleteButton'
 
 const FileUploadArea = ({
   disabled = false,
@@ -70,15 +70,11 @@ const FileUploadArea = ({
       </UploadTrigger>
 
       {submittedFile && (
-        <Button
-          style={{ marginLeft: '1rem', width: '3.5rem', height: '3rem' }}
-          onClick={(event) => {
-            event.preventDefault()
-            deleteFile(submittedFile)
-          }}
-        >
-          <TrashButton size={24} />
-        </Button>
+        <DeleteButton
+          name={submittedFile.targetFileName}
+          style={{ marginLeft: '1rem' }}
+          deleteFile={() => deleteFile(submittedFile)}
+        />
       )}
       <input
         hidden
