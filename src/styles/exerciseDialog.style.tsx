@@ -1,4 +1,4 @@
-import { BoxArrowUpRight, Envelope, Trash3Fill } from 'react-bootstrap-icons'
+import { BoxArrowUpRight, Envelope } from 'react-bootstrap-icons'
 
 import { styled } from './stitches.config'
 
@@ -39,15 +39,30 @@ export const EmailButton = styled(Envelope, {
   },
 })
 
-export const TrashButton = styled(Trash3Fill, {
+export const TrashButton = styled('button', {
+  width: 'fit-content',
+  alignItems: 'center',
+  padding: '0.5rem',
+  color: '$sand12',
+  fill: '$sand12',
+  fontWeight: 500,
+  fontSize: '16px',
+  borderRadius: '8px',
+  display: 'inline-flex',
   cursor: 'pointer',
-  fontSize: '1rem',
+  transition: 'all .1s ease-in',
+  border: '2px solid $sand8',
+  backgroundColor: 'white',
+  '&:hover': {
+    background: '$sand4',
+  },
 })
 
 export const UploadWrapper = styled('div', {
-  position: 'relative',
   display: 'flex',
   flexDirection: 'column',
+  gap: '1rem',
+  margin: '1rem 0 1rem 0',
 })
 
 export const UploadTrigger = styled('label', {
@@ -56,7 +71,6 @@ export const UploadTrigger = styled('label', {
   justifyContent: 'space-between',
   alignItems: 'center',
   width: '100%',
-  marginTop: '1rem',
   padding: '1rem',
   borderRadius: '12px',
   color: '$highContrast',
