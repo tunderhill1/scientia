@@ -75,7 +75,7 @@ const FileUploadDialog = ({
       )
   }
 
-  const setForAllResources = (key: string, value: string) => {
+  const setForAllResources = (key: string, value: any) => {
     setFileResources((resources: ResourceCreate[]) =>
       resources.map((res) => ({ ...res, [key]: value }))
     )

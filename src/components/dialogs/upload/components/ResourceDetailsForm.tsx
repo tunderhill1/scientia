@@ -9,6 +9,7 @@ import { ResourceCreate } from '../../../../constants/types'
 import { getUTCDatetime } from '../../../../lib/resource.service'
 import { ThemeContext } from '../../../../lib/theme.context'
 import { useToast } from '../../../../lib/toast.context'
+import { displayTimestamp } from '../../../../lib/utilities.service'
 import {
   ApplyToAllButton,
   CalendarInput,
@@ -35,7 +36,7 @@ const ResourceDetailsForm = ({
   onResourceChange: (key: string, value: any) => void
   categoryOptions: { value: string; label: string }[]
   setCategoryOptions: any
-  setForAllResources?: (key: string, value: string) => void
+  setForAllResources?: (key: string, value: any) => void
 }) => {
   const { addToast } = useToast()
   const { theme } = useContext(ThemeContext)
@@ -112,7 +113,7 @@ const ResourceDetailsForm = ({
               })
             }}
           >
-            Apply to all
+            Apply category to all
           </ApplyToAllButton>
         )}
 
@@ -145,6 +146,25 @@ const ResourceDetailsForm = ({
         >
           Publish date:
         </Label>
+        {setForAllResources && (
+          <ApplyToAllButton
+            type="button"
+            onClick={() => {
+              if (!visibleDate || !visibleTime) return
+              const visibleAfter = getUTCDatetime(visibleDate, visibleTime)
+              setForAllResources('visible_after', visibleAfter)
+              addToast({
+                variant: 'info',
+                title: `All uploaded files set to publish at ${displayTimestamp(
+                  visibleAfter,
+                  'HH:mm, d LLL yy'
+                )}`,
+              })
+            }}
+          >
+            Apply date to all
+          </ApplyToAllButton>
+        )}
 
         <div style={{ display: 'flex', colorScheme: theme }}>
           <CalendarInput
