@@ -13,6 +13,21 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+  emarking:
+    image: gitlab.doc.ic.ac.uk:4567/edtech/emarking:rewrite
+    environment:
+      - ENV=production
+      - SECRET_KEY
+      - API_ROLE_USERNAME
+      - API_ROLE_PASSWORD
+      - DB_CONN_STR
+      - DB_EDTECH_CONNECTION_STRING
+      - STORAGE_ROOT=${EMARKING_STORAGE_ROOT}
+    volumes:
+      - /vol/emarking:/vol/emarking
+    deploy:
+      mode: replicated
+      replicas: 1
   materials:
     image: gitlab.doc.ic.ac.uk:4567/edtech/materials:basic-auth
     environment:
@@ -22,7 +37,7 @@ services:
       - API_ROLE_PASSWORD
       - DB_CONN_STR
       - DB_EDTECH_CONNECTION_STRING
-      - STORAGE_ROOT
+      - STORAGE_ROOT=${MATERIALS_STORAGE_ROOT}
     volumes:
       - /vol/materials:/vol/materials
     deploy:
