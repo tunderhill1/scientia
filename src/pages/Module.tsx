@@ -65,7 +65,7 @@ const Module = () => {
           </Button>
         ))}
       </div>
-      <div style={{ display: 'flex', minHeight: '10rem' }}>
+      <div style={{ display: 'flex', minHeight: '10rem', justifyContent: 'center' }}>
         <Outlet context={moduleCode} />
       </div>
     </Container>

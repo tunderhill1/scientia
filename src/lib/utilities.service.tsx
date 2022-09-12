@@ -110,5 +110,16 @@ export function formatDate(start: Date, end: Date) {
   return `${startDay}/${startMonth} - ${endDay}/${endMonth}`
 }
 
-export const displayTimestamp = (date: Date | string, format?: string) =>
-  formatInTimeZone(date, LONDON_TIMEZONE, format || 'HH:mm:ss zzz, EEEE d LLLL yyyy')
+export function displayTimestamp(date: Date | string, format?: string): string {
+  return formatInTimeZone(date, LONDON_TIMEZONE, format || 'HH:mm:ss zzz, EEEE d LLLL yyyy')
+}
+
+export function percentageToLetterGrade(percentageGrade: number): string {
+  if (percentageGrade <= 29) return 'F'
+  if (percentageGrade <= 39) return 'E'
+  if (percentageGrade <= 49) return 'D'
+  if (percentageGrade <= 59) return 'C'
+  if (percentageGrade <= 69) return 'B'
+  if (percentageGrade <= 79) return 'A'
+  return 'A*'
+}

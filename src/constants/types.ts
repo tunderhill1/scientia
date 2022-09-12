@@ -66,7 +66,6 @@ export class Exercise {
   maximumMark?: number
   mark?: number
 }
-
 export class ModuleWithExercises {
   code: string
   title: string
