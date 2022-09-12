@@ -64,6 +64,7 @@ const StyledItem = styled(SelectPrimitive.Item, {
   padding: '0 35px 0 25px',
   position: 'relative',
   userSelect: 'none',
+  cursor: 'pointer',
 
   '&[data-disabled]': {
     color: '$elementBackground',
@@ -71,8 +72,8 @@ const StyledItem = styled(SelectPrimitive.Item, {
   },
 
   '&[data-highlighted]': {
-    backgroundColor: '$subtleBackground',
-    color: '$elementActive',
+    backgroundColor: '$elementActive',
+    color: '$highContrast',
   },
 })
 
