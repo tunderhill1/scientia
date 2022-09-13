@@ -16,7 +16,12 @@ export const useExercise = (exercise: Exercise) => {
 
   const [exerciseMaterials, setExerciseMaterials] = useState<ExerciseMaterials | null>(null)
   const { data: rawExerciseMaterials, error: exerciseMaterialsError } = useAxios({
-    url: endpoints.exerciseMaterials(`${year}`, userDetails!.cohort, exercise.number),
+    url: endpoints.exerciseMaterials(
+      `${year}`,
+      exercise.moduleCode!,
+      exercise.number,
+      userDetails!.cohort
+    ),
     method: 'GET',
   })
   useEffect(() => {
@@ -25,7 +30,6 @@ export const useExercise = (exercise: Exercise) => {
         variant: 'error',
         title: 'Error fetching exercise materials',
       })
-      console.error(exerciseMaterialsError)
     }
     if (rawExerciseMaterials) {
       setExerciseMaterials(plainToInstance(ExerciseMaterials, rawExerciseMaterials))
