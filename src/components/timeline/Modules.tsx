@@ -1,5 +1,8 @@
+import { useNavigate } from 'react-router-dom'
+
 import { TIMELINE_TRACK_HEIGHT } from '../../constants/global'
 import { Module } from '../../constants/types'
+import { useYear } from '../../lib/year.context'
 import { Wrapper } from '../../styles/_app.style'
 import { css } from '../../styles/stitches.config'
 import { Tabs } from '../Tabs'
@@ -25,6 +28,8 @@ export const Modules = ({
     zIndex: '4',
     backgroundColor: '$appBackground',
   }
+  const navigate = useNavigate()
+  const { year } = useYear()
 
   return (
     <Wrapper css={modulesWrapperStyle}>
@@ -40,6 +45,7 @@ export const Modules = ({
               /* TODO: Extract constants */
               width: 'calc(16.875rem - 2rem)',
             }}
+            onClick={() => navigate(`/${year}/modules/${module.code}/materials`)}
           >
             <span className={css({ color: '$lowContrast' })()}>{module.code}</span>
             <span
