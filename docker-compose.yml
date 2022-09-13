@@ -20,7 +20,7 @@ services:
       - SECRET_KEY
       - API_ROLE_USERNAME
       - API_ROLE_PASSWORD
-      - DB_CONN_STR
+      - DB_CONN_STR=${EMARKING_DB_URL}
       - DB_EDTECH_CONNECTION_STRING
       - STORAGE_ROOT=${EMARKING_STORAGE_ROOT}
     volumes:
@@ -35,7 +35,7 @@ services:
       - SECRET_KEY
       - API_ROLE_USERNAME
       - API_ROLE_PASSWORD
-      - DB_CONN_STR
+      - DB_CONN_STR=${MATERIALS_DB_URL}
       - DB_EDTECH_CONNECTION_STRING
       - STORAGE_ROOT=${MATERIALS_STORAGE_ROOT}
     volumes:
