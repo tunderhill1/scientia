@@ -6,6 +6,7 @@ services:
     environment:
       - ENVIRONMENT=production
       - MATERIALS_ENTRYPOINT=http://materials:5001
+      - EMARKING_ENTRYPOINT=http://emarking:5002
       - ABC_ENTRYPOINT=https://abc-api.doc.ic.ac.uk
       - AUTH_JWT_SECRET_KEY
       - API_ROLE_USERNAME
