@@ -34,7 +34,7 @@ export const useExercise = (exercise: Exercise) => {
     if (rawExerciseMaterials) {
       setExerciseMaterials(plainToInstance(ExerciseMaterials, rawExerciseMaterials))
     }
-  }, [addToast, exerciseMaterialsError, rawExerciseMaterials])
+  }, [exerciseMaterialsError, rawExerciseMaterials])
 
   const [submittedFiles, setSubmittedFiles] = useState<SubmittedFile[]>([])
   const { data: rawSubmissions, error: submissionsError } = useAxios({
@@ -54,7 +54,7 @@ export const useExercise = (exercise: Exercise) => {
         rawSubmissions.map((submittedFile: any) => plainToInstance(SubmittedFile, submittedFile))
       )
     }
-  }, [addToast, submissionsError, rawSubmissions])
+  }, [submissionsError, rawSubmissions])
 
   const submitFile = ({ file, targetFileName }: { file: File; targetFileName: string }) => {
     let formData = new FormData()
