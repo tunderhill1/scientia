@@ -28,16 +28,10 @@ export function dateToColumn(date: Date, startDate: Date): number {
 }
 
 function termToNumber({ name }: Term): number {
-  switch (name) {
-    case 'autumn term':
-      return 1
-    case 'spring term':
-      return 2
-    case 'summer term':
-      return 3
-    default:
-      return -1
-  }
+  if (name === 'autumn term') return 1
+  if (name === 'spring term') return 2
+  if (name === 'summer term') return 3
+  return -1
 }
 
 /* Top margin to position the scroll area 1rem right under the navigation bar */

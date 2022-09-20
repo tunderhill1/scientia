@@ -1,40 +1,34 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import { ReactNode, createContext, useContext, useEffect, useState } from 'react'
 
 import { years } from '../constants/years'
 import { currentShortYear } from './utilities.service'
 
-type YearProviderType = { year: number; changeYear: (year: number) => boolean }
+type YearProviderType = { year: string; changeYear: (year: string) => boolean }
 
 const defaultYear = {
   year: currentShortYear(),
-  changeYear: (_: number) => false,
+  changeYear: (_: string) => false,
 }
 
 const YearContext = createContext<YearProviderType>(defaultYear)
 
-export const YearProvider = ({
-  current,
-  children,
-}: {
-  current: number
-  children: React.ReactNode
-}) => {
+export const YearProvider = ({ current, children }: { current: string; children: ReactNode }) => {
   const [year, setYear] = useState(defaultYear.year)
 
   let storedYear = window.localStorage.getItem('year')
   if (storedYear === '') {
-    storedYear = current.toString()
+    storedYear = current
     window.localStorage.setItem('year', storedYear)
   }
 
   useEffect(() => {
-    if (storedYear !== null) setYear(parseInt(storedYear))
+    if (storedYear !== null) setYear(storedYear)
   }, [storedYear])
 
-  const changeYear = (year: number) => {
+  const changeYear = (year: string) => {
     if (!years.includes(year)) return false
     setYear(year)
-    window.localStorage.setItem('year', year.toString())
+    window.localStorage.setItem('year', year)
     return true
   }
 

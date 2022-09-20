@@ -4,6 +4,7 @@ import { endpoints } from '../../constants/endpoints'
 import { ResourceCreate } from '../../constants/types'
 import { AxiosContext } from '../../lib/axios.context'
 import { useToast } from '../../lib/toast.context'
+import { useYear } from '../../lib/year.context'
 import Dialog from './Dialog'
 import ResourceDetailsForm from './upload/components/ResourceDetailsForm'
 
@@ -12,7 +13,6 @@ const EditDialog = ({
   setResourceToEdit,
   onOpenChange,
   categories,
-  year,
   moduleCode,
   setGroupedMaterials,
   groupByProperty,
@@ -21,11 +21,11 @@ const EditDialog = ({
   setResourceToEdit: (_: any) => void
   onOpenChange: (_: boolean) => void
   categories: string[]
-  year: number
   moduleCode: string | null
   setGroupedMaterials: any
   groupByProperty: any
 }) => {
+  const { year } = useYear()
   const axiosInstance = useContext(AxiosContext)
   const { addToast } = useToast()
 

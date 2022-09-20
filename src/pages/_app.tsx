@@ -23,7 +23,7 @@ function App() {
   return (
     <ThemeProvider>
       <UserProvider>
-        <YearProvider current={2122}>
+        <YearProvider current="2122">
           <AxiosInstanceProvider config={{ baseURL }}>
             <Area>
               <ScrollViewport>

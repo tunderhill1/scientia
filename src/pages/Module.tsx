@@ -15,7 +15,7 @@ const Module = () => {
   const { year } = useYear()
   const [module, setModule] = useState<ModuleType | undefined>(undefined)
   const { data, error } = useAxios({
-    url: endpoints.module(`${year}`, moduleCode as string),
+    url: endpoints.module(year, moduleCode as string),
     method: 'GET',
   })
   const navigate = useNavigate()

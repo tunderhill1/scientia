@@ -3,13 +3,13 @@ import { useContext } from 'react'
 import { endpoints } from '../../constants/endpoints'
 import { AxiosContext } from '../../lib/axios.context'
 import { useToast } from '../../lib/toast.context'
+import { useYear } from '../../lib/year.context'
 import { css } from '../../styles/stitches.config'
 import Dialog from './Dialog'
 
 const DeleteDialog = ({
   onOpenChange,
   selectedIDs,
-  year,
   moduleCode,
   groupedMaterials,
   setGroupedMaterials,
@@ -17,12 +17,12 @@ const DeleteDialog = ({
 }: {
   onOpenChange: (_: boolean) => void
   selectedIDs: number[]
-  year: number
   moduleCode: string | null
   groupedMaterials: any
   setGroupedMaterials: any
   groupByProperty: any
 }) => {
+  const { year } = useYear()
   const { addToast } = useToast()
   const axiosInstance = useContext(AxiosContext)
   const onDelete = async () => {
@@ -31,7 +31,7 @@ const DeleteDialog = ({
         method: 'DELETE',
         url: endpoints.resources,
         params: {
-          year: year,
+          year,
           course: moduleCode,
           id: selectedIDs,
         },
@@ -42,7 +42,7 @@ const DeleteDialog = ({
           .request({
             method: 'GET',
             url: endpoints.resources,
-            params: { year: year, course: moduleCode },
+            params: { year, course: moduleCode },
           })
           .then((response: any) =>
             setGroupedMaterials(groupByProperty(response.data, 'category', 'index'))

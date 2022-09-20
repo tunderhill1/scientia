@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Exercise } from '../../constants/types'
 import { css } from '../../styles/stitches.config'
 import { TrackItemTitle, TrackItemWrapper } from '../../styles/timeline/track-item.style'
@@ -30,7 +28,7 @@ export const TrackItem = ({
         justifyContent: isSingleDay ? 'center' : 'space-between',
         padding: isSingleDay ? '0.25rem' : '0.5rem',
         textAlign: isSingleDay ? 'center' : 'left',
-        backgroundColor: `cyan`,
+        backgroundColor: '$blue5',
         // color: `...`,
       })()}
     >

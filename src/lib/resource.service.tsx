@@ -29,7 +29,7 @@ export const useResources = (): any => {
         url: endpoints.resources,
         data: {
           ...resource,
-          year: year.toString(),
+          year,
           course: moduleCode,
         },
       })

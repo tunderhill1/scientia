@@ -1,4 +1,4 @@
-import { add } from 'date-fns'
+import { addWeeks } from 'date-fns'
 
 import { Wrapper } from '../../styles/_app.style'
 import { Week } from './Week'
@@ -27,12 +27,7 @@ export const Weeks = ({ start, weeks }: { start: Date; weeks: number }) => {
   return (
     <Wrapper css={weeksWrapperStyle}>
       {[...Array(weeks)].map((_, week) => (
-        <Week
-          key={week}
-          start={add(start, { weeks: week })}
-          end={add(start, { weeks: week, days: 4 })}
-          week={week}
-        />
+        <Week key={week} start={addWeeks(start, week)} week={week} />
       ))}
     </Wrapper>
   )

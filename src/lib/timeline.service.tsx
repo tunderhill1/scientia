@@ -8,11 +8,11 @@ import { useAxios } from './axios.context'
 import { useUser } from './user.context'
 import { groupByProperty } from './utilities.service'
 
-export const useTimeline = (year: number): any => {
+export const useTimeline = (year: string): any => {
   const { userDetails } = useUser()
   const [terms, setTerms] = useState<Term[]>([])
   const { data: rawTerms } = useAxios({
-    url: endpoints.periods(`${year}`),
+    url: endpoints.periods(year),
     method: 'GET',
   })
   useEffect(() => {
@@ -29,7 +29,7 @@ export const useTimeline = (year: number): any => {
 
   const [exercises, setExercises] = useState<{ [code: string]: Exercise[] }>({})
   const { data: rawExercises } = useAxios({
-    url: endpoints.exercises(`${year}`),
+    url: endpoints.exercises(year),
     method: 'GET',
     params: { module_code: userDetails?.modules.map((m) => m.code) },
   })
