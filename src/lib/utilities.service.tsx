@@ -1,6 +1,7 @@
-import { formatInTimeZone } from 'date-fns-tz'
+import { addYears, areIntervalsOverlapping, format, isSameMonth } from 'date-fns'
+import { formatInTimeZone, utcToZonedTime } from 'date-fns-tz'
 
-import { LONDON_TIMEZONE, MILLISECONDS_IN_A_DAY } from '../constants/global'
+import { LONDON_TIMEZONE } from '../constants/global'
 import { Exercise, Track, TrackMap } from '../constants/types'
 
 /* A file to store miscellaneous utility functions */
@@ -31,45 +32,29 @@ export function groupByProperty(
 }
 
 /**
- * Compute the current short year (i.e. 2021, 2122, 2223, etc.)
- * A short year is formed by combining the last two digits of each year in the academic year.
- * That is, for the academic year 2021-2022, the short year is 2122
- * NOTE: If we're in 2021, the complement year is 22, and if we're in 2022, then it's 21 instead.
+ * Compute the current short year (i.e. 2021, 2122, 2223 etc.).
+ * It combines the last two digits of each year in the academic year.
+ * eg: for the academic year 2021-2022, the short year is 2122
  */
-export function currentShortYear(): number {
-  /* NOTE: If these constants are needed elsewhere, please move them out to constants/year.ts */
-  const MILLENNIUM = 2000
-  const SHORT_YEAR_SHIFT = 100 /* To combine 21 and 22 into 2122, 21 * 100 + 22 */
+export const currentShortYear = (): string => {
   const OCTOBER = 9
-
-  let currentDate = new Date()
-  let currentYear = currentDate.getFullYear() - MILLENNIUM
-  let complementYear = currentYear + (currentDate.getMonth() >= OCTOBER ? 1 : -1)
-
-  return currentYear < complementYear
-    ? currentYear * SHORT_YEAR_SHIFT + complementYear
-    : complementYear * SHORT_YEAR_SHIFT + currentYear
-}
-
-/* Compute the number of days practically since the first second of January 2nd 1970 for a given date */
-export function daysSinceEpoch(date: Date): number {
-  return Math.floor(date.getTime() / MILLISECONDS_IN_A_DAY)
+  const now = utcToZonedTime(new Date(), LONDON_TIMEZONE)
+  const currentYear = format(now, 'yy')
+  const complementYear = format(addYears(now, now.getMonth() < OCTOBER ? -1 : 1), 'yy')
+  return now.getMonth() < OCTOBER ? complementYear + currentYear : currentYear + complementYear
 }
 
 /* Returns whether the given two exercises overlap */
-export function exercisesOverlap(e1: Exercise, e2: Exercise): boolean {
-  return (
-    daysSinceEpoch(e1.startDate) <= daysSinceEpoch(e2.endDate) &&
-    daysSinceEpoch(e1.endDate) >= daysSinceEpoch(e2.startDate)
+export const exercisesOverlap = (e1: Exercise, e2: Exercise): boolean =>
+  areIntervalsOverlapping(
+    { start: e1.startDate, end: e1.endDate },
+    { start: e2.startDate, end: e2.endDate }
   )
-}
 
 /* Compute the exercise tracks for the exercises of each module */
 export function computeTracks(exercises: Exercise[]): Track[] {
   /* Pre: Ordering input by the start date */
-  const orderedExercises = exercises.sort(
-    (e1, e2) => daysSinceEpoch(e1.startDate) - daysSinceEpoch(e2.startDate)
-  )
+  const orderedExercises = exercises.sort((e1, e2) => Number(e1.startDate) - Number(e2.startDate))
   const tracks: Track[] = []
   /* The 'of' is used instead of 'in' to enforce the type of exercise */
   for (const exercise of orderedExercises) {
@@ -96,19 +81,9 @@ export function generateTrackMap(exercises: { [code: string]: Exercise[] }): Tra
   }, {})
 }
 
-/* Produces a string with the input start and end dates as "DD/MM - DD/MM" */
-export function formatDate(start: Date, end: Date) {
-  const TwoDigitDatePeriod = (date: Date, period: string): string => {
-    return new Intl.DateTimeFormat('en', {
-      [period]: '2-digit',
-    }).format(date)
-  }
-  const startMonth = TwoDigitDatePeriod(start, 'month')
-  const startDay = TwoDigitDatePeriod(start, 'day')
-  const endMonth = TwoDigitDatePeriod(end, 'month')
-  const endDay = TwoDigitDatePeriod(end, 'day')
-  return `${startDay}/${startMonth} - ${endDay}/${endMonth}`
-}
+/* Formats a date range as "D-D MMM or D MMM-D MMM" */
+export const formatDateRange = (start: Date, end: Date): string =>
+  format(start, 'd' + (isSameMonth(start, end) ? '' : ' MMM')) + format(end, '-d MMM')
 
 export function displayTimestamp(date: Date | string, format?: string): string {
   return formatInTimeZone(date, LONDON_TIMEZONE, format || 'HH:mm:ss zzz, EEEE d LLLL yyyy')

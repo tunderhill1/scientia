@@ -25,7 +25,7 @@ const Exercises = () => {
   const moduleCode = useOutletContext<string | null>()!
   const [exercises, setExercises] = useState<Exercise[]>([])
   const { data: rawExercises } = useAxios({
-    url: endpoints.exercises(`${year}`),
+    url: endpoints.exercises(year),
     method: 'GET',
     params: { module_code: moduleCode },
   })

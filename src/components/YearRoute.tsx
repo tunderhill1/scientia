@@ -17,8 +17,7 @@ export const YearRoute = () => {
     /* NOTE: Please don't simplify this to just compute setRedirect(condition) to maintain readability */
     if (requestedYear === undefined) setRedirect(true)
     else {
-      const requestedYearInt = parseInt(requestedYear)
-      setRedirect(requestedYearInt !== year && !changeYear(requestedYearInt))
+      setRedirect(requestedYear !== year && !changeYear(requestedYear))
     }
   }, [changeYear, requestedYear, year])
 

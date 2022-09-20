@@ -48,7 +48,7 @@ const Materials = () => {
   const { data, loaded } = useAxios({
     url: endpoints.resources,
     method: 'GET',
-    params: { year: year, course: moduleCode },
+    params: { year, course: moduleCode },
   })
 
   const noMaterials = () => groupedMaterials && Object.keys(groupedMaterials).length === 0
@@ -182,7 +182,6 @@ const Materials = () => {
         <DeleteDialog
           onOpenChange={setDeleteDialogOpen}
           selectedIDs={checklistManager.getCheckedItems()}
-          year={year}
           moduleCode={moduleCode}
           groupedMaterials={groupedMaterials}
           setGroupedMaterials={setGroupedMaterials}
@@ -196,7 +195,6 @@ const Materials = () => {
           categories={Object.keys(groupedMaterials)}
           setResourceToEdit={setResourceToEdit}
           resourceToEdit={resourceToEdit}
-          year={year}
           moduleCode={moduleCode}
           setGroupedMaterials={setGroupedMaterials}
           groupByProperty={groupByProperty}
