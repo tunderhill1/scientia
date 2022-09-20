@@ -123,7 +123,7 @@ export const CollapsibleList = ({
               <Trigger>{headerGenerator(collection, items)}</Trigger>
               {checklistMode && collectionCheckboxGenerator(collection)}
             </Header>
-            <Content css={{ maxHeight: `calc(${items?.length} * 2.75rem + 1rem)` }}>
+            <Content>
               <Wrapper css={itemsWrapperStyle}>{contentGenerator(collection, items)}</Wrapper>
               {checklistMode && itemCheckboxesGenerator(collection, items)}
               {!checklistMode && mainItemAction && mainItemActionGenerator(collection, items)}
