@@ -1,6 +1,6 @@
 import { Root as PortalRoot } from '@radix-ui/react-portal'
 import { ToastProvider as ToastProviderPrimitive } from '@radix-ui/react-toast'
-import { ReactNode, createContext, useContext, useState } from 'react'
+import { ReactNode, createContext, useCallback, useContext, useState } from 'react'
 
 import { Toast, ToastProps } from '../components/Toast'
 import { Viewport as ToastViewport } from '../styles/toast.style'
@@ -20,7 +20,7 @@ export const ToastContext = createContext<ToastManager>({
     addToast({ variant: 'info', title: 'File successfully deleted' }) */
 export const ToastProvider = ({ children }: { children: ReactNode }) => {
   const [toasts, setToasts] = useState<ToastProps[]>([])
-  const addToast = (toast: ToastProps) => setToasts([...toasts, toast])
+  const addToast = useCallback((toast: ToastProps) => setToasts((toasts) => [...toasts, toast]), [])
 
   return (
     <ToastContext.Provider value={{ toasts, addToast }}>

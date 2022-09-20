@@ -53,7 +53,7 @@ const ResourceDetailsForm = ({
     visibleDate &&
       visibleTime &&
       onResourceChange('visible_after', getUTCDatetime(visibleDate, visibleTime))
-  }, [visibleDate, visibleTime])
+  }, [addToast, visibleDate, visibleTime])
 
   if (resource === null) return null
   return (

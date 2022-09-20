@@ -16,6 +16,7 @@ const Toaster = (toasts: ToastProps[] = [{ title: 'Toast title', variant: 'info'
   )
 }
 
+/* Radix renders 2 elements with role "status" for each toast */
 const TOAST_ROLE = 'status'
 
 describe('Toast', () => {
@@ -37,7 +38,7 @@ describe('Toast', () => {
   ])(`can be rendered (%s)`, (_, data) => {
     render(Toaster(data))
     fireEvent.click(screen.getByTestId('add-toasts'))
-    expect(screen.queryAllByRole(TOAST_ROLE)).toHaveLength(data.length)
+    expect(screen.queryAllByRole(TOAST_ROLE)).toHaveLength(data.length * 2)
   })
 
   it('disappears after 5 seconds', () => {
