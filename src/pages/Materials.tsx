@@ -28,6 +28,7 @@ import { groupByProperty } from '../lib/utilities.service'
 import { useYear } from '../lib/year.context'
 import { Button, Checkbox, Footnote, Indicator, Wrapper } from '../styles/_app.style'
 import { Caret } from '../styles/collapsible-list.style'
+import { Material, Tag, Tags } from '../styles/materials.style'
 import { ToggleGroup, ToggleItem } from '../styles/toolbar.style'
 
 const Materials = () => {
@@ -74,8 +75,16 @@ const Materials = () => {
   const contentGenerator = (_: string, items: object[]) => (
     <Tabs
       data={items}
-      /* TODO: Add the file tags to the generator; this would require layout (height) styling fixes elsewhere */
-      generator={(tab: any) => <span>{tab.title}</span>}
+      generator={(tab: any) => (
+        <Material>
+          <span>{tab.title}</span>
+          <Tags>
+            {tab.tags.map((tag: string) => (
+              <Tag key={`${tab.id}${tag}`}>#{tag}</Tag>
+            ))}
+          </Tags>
+        </Material>
+      )}
       onClick={(tab: any) => {
         const link = tab.type === 'link' ? tab.path : endpoints.resourceFile(tab.id)
         window.open(link)
