@@ -6,7 +6,7 @@ export const TabsWrapper = styled('div', {
 })
 
 /* TODO: Implement user specified overrides */
-export const Tab = styled('button', {
+export const Tab = styled('div', {
   all: 'unset',
   padding: '0.75rem',
   color: '$highContrast',
@@ -18,10 +18,10 @@ export const Tab = styled('button', {
 })
 
 export const TabsHighlight = styled('div', {
-  background: '$elementHover',
+  background: '$sand3',
   position: 'absolute',
   borderRadius: '0.5rem',
   height: '2.75rem',
   transition: '0.15s ease',
-  transitionProperty: 'width, transform, opacity',
+  transitionProperty: 'width, transform',
 })

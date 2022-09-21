@@ -3,6 +3,7 @@ import { useContext } from 'react'
 import { endpoints } from '../../constants/endpoints'
 import { AxiosContext } from '../../lib/axios.context'
 import { useToast } from '../../lib/toast.context'
+import { groupByProperty } from '../../lib/utilities.service'
 import { useYear } from '../../lib/year.context'
 import { css } from '../../styles/stitches.config'
 import Dialog from './Dialog'
@@ -13,14 +14,12 @@ const DeleteDialog = ({
   moduleCode,
   groupedMaterials,
   setGroupedMaterials,
-  groupByProperty,
 }: {
   onOpenChange: (_: boolean) => void
   selectedIDs: number[]
   moduleCode: string | null
   groupedMaterials: any
   setGroupedMaterials: any
-  groupByProperty: any
 }) => {
   const { year } = useYear()
   const { addToast } = useToast()
@@ -45,7 +44,7 @@ const DeleteDialog = ({
             params: { year, course: moduleCode },
           })
           .then((response: any) =>
-            setGroupedMaterials(groupByProperty(response.data, 'category', 'index'))
+            setGroupedMaterials(groupByProperty(response.data, 'category', 'index', true))
           )
           .catch((error: any) => {
             addToast({ variant: 'error', title: 'There was an error fetching resources' })

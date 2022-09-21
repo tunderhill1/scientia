@@ -27,6 +27,23 @@ test('groups by category and sorts by index', () => {
   expect(groupByProperty(dataToGroup, 'category', 'index')).toEqual(expected)
 })
 
+test('can sort object keys alphabetically', () => {
+  const values = [
+    { category: 'week 4', index: 21 },
+    { category: 'Cat 10', index: 14 },
+    { category: 'misc stuff', index: 22 },
+    { category: 'Lecture Notes', index: 1 },
+    { category: '1st week', index: 17 },
+  ]
+  expect(groupByProperty(values, 'category', 'index', true)).toEqual({
+    '1st week': [{ category: '1st week', index: 17 }],
+    'Cat 10': [{ category: 'Cat 10', index: 14 }],
+    'Lecture Notes': [{ category: 'Lecture Notes', index: 1 }],
+    'misc stuff': [{ category: 'misc stuff', index: 22 }],
+    'week 4': [{ category: 'week 4', index: 21 }],
+  })
+})
+
 test.each([
   ['title', 'index'],
   ['category', 'id'],
