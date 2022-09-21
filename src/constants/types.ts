@@ -55,20 +55,18 @@ export class Exercise {
   @Type(() => Date)
   @Expose({ name: 'start_date' })
   startDate: Date
-
-  @Expose({ name: 'end_date' })
   @Type(() => Date)
+  @Expose({ name: 'end_date' })
   endDate: Date
 
   @Expose({ name: 'module_code' })
-  moduleCode?: string
-
+  moduleCode: string
   @Expose({ name: 'module_name' })
-  moduleName?: string
+  moduleName: string
 
   @Expose({ name: 'maximum_mark' })
-  maximumMark?: number
-  mark?: number
+  maximumMark: number
+  mark: number | null
 }
 export class ModuleWithExercises {
   code: string
@@ -135,20 +133,16 @@ export class SubmittedFile {
   username: string
   id: number
   year: string
-  size: number
-
-  @Expose({ name: 'module_code' })
-  moduleCode: string
-
-  @Expose({ name: 'file_size' })
-  fileSize: number
-
-  @Expose({ name: 'exercise_number' })
-  exerciseNumber: number
 
   @Type(() => Date)
   timestamp: Date
-
   @Expose({ name: 'target_submission_file_name' })
   targetFileName: string
+  @Expose({ name: 'file_size' })
+  fileSize: number
+
+  @Expose({ name: 'module_code' })
+  moduleCode: string
+  @Expose({ name: 'exercise_number' })
+  exerciseNumber: number
 }

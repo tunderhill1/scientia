@@ -25,18 +25,17 @@ export const Overlay = styled(DialogOverlay, {
 })
 
 export const Content = styled(DialogContent, {
-  overflowY: 'scroll',
+  overflow: 'scroll',
   backgroundColor: '$appBackground',
   borderRadius: 8,
   boxShadow: 'hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px',
   position: 'fixed',
   top: '50%',
   left: '50%',
+  // transform: 'translate(-50%, -50%)',
   zIndex: 10,
-  transform: 'translate(-50%, -50%)',
-  width: '90vw',
-  maxWidth: '800px',
-  maxHeight: '85vh',
+  minWidth: 'fit-content',
+  maxHeight: '90vh',
   padding: '2rem',
   '@media (prefers-reduced-motion: no-preference)': {
     animation: `${contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1) forwards`,
@@ -44,6 +43,20 @@ export const Content = styled(DialogContent, {
   '&:focus': { outline: 'none' },
 })
 
+export const CloseButton = styled('button', {
+  borderRadius: '50%',
+  width: 'fit-content',
+  cursor: 'pointer',
+  color: '$sand11',
+  fontSize: '$xxl',
+  display: 'inline-flex',
+  position: 'absolute',
+  top: 10,
+  right: 10,
+  backgroundColor: '$sand1',
+  border: 'none',
+  '&:hover': { backgroundColor: '$sand4' },
+})
 export const Title = styled(DialogTitle, {
   margin: 0,
   marginBottom: '1rem',

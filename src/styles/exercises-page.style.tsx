@@ -1,14 +1,13 @@
-import { Search } from 'react-bootstrap-icons'
-
 import { css, styled } from './stitches.config'
 
 export const Header = styled('th', {
   textAlign: 'left',
+  fontWeight: 600,
 })
 
 export const Pill = styled('p', {
-  background: '$blue3',
-  fontSize: '14px',
+  background: '$blue4',
+  fontSize: '$sm',
   borderRadius: '16px',
   padding: '4px 12px',
   display: 'inline-block',
@@ -17,58 +16,59 @@ export const Pill = styled('p', {
   textAlign: 'center',
 })
 
-export const SubText = styled('div', { color: '$sand10', fontSize: '14px' })
+export const SubText = styled('div', {
+  color: '$sand10',
+  fontSize: '$sm',
+  marginTop: '2px',
+})
 
-const ButtonStyling = {
-  width: 'fit-content',
-  alignItems: 'center',
-  padding: '0.5rem',
-  color: '$sand12',
-  fill: '$sand12',
-  fontWeight: 500,
-  fontSize: '16px',
+const shadowSm = '0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.06)'
+
+export const Table = styled('table', {
+  margin: '0 auto',
+  alignSelf: 'center',
+  borderSpacing: '2rem 1.5rem',
+  '@media (max-width: 35rem)': { borderSpacing: '1rem' },
+})
+
+export const HorizontalRow = ({ colSpan }: { colSpan: number }) => (
+  <tr>
+    <td className={css({ borderBottom: '1px solid $sand7' })()} colSpan={colSpan}></td>
+  </tr>
+)
+
+export const ViewExerciseButton = styled('button', {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'start',
+  minWidth: 'min(fit-content,1px)',
+  // maxWidth: 'max-content',
+  padding: '0.75rem',
+
   borderRadius: '8px',
-  display: 'inline-flex',
+  border: '1px solid $sand7',
+  boxShadow: shadowSm,
+
+  color: '$sand12',
+  fontWeight: 500,
+  fontSize: '$md',
+
   cursor: 'pointer',
-  transition: 'all .1s ease-in',
-  border: '2px solid $sand8',
-  backgroundColor: 'white',
+  transition: 'backgroundColor .1s ease-in',
+  backgroundColor: '$sand1',
   '&:hover': {
-    background: '$sand4',
+    backgroundColor: '$sand4',
   },
   variants: {
     disabled: {
       true: {
         cursor: 'not-allowed',
+        pointerEvents: 'none',
         opacity: '40%',
         '&:hover': {
-          background: 'white',
+          backgroundColor: 'white',
         },
       },
     },
   },
-}
-
-export const FeedbackLink = styled('a', ButtonStyling, {
-  padding: '0.5rem',
 })
-
-export const Table = styled('table', {
-  margin: '0 auto',
-  alignSelf: 'center',
-  borderSpacing: '3rem 2rem',
-})
-
-export const HorizontalRow = ({ colSpan }: { colSpan: number }) => (
-  <tr>
-    <td className={css({ borderBottom: '1px solid $lowContrast' })()} colSpan={colSpan}></td>
-  </tr>
-)
-
-export const ViewExerciseIcon = styled(Search, {
-  fill: 'inherit',
-  float: 'left',
-  fontWeight: 500,
-})
-
-export const ViewExerciseButton = styled('button', ButtonStyling)

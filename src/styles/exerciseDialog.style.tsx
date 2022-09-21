@@ -1,41 +1,26 @@
-import { BoxArrowUpRight, Envelope } from 'react-bootstrap-icons'
+import { Progress, ProgressIndicator } from '@radix-ui/react-progress'
+import { BoxArrowUpRight } from 'react-bootstrap-icons'
 
 import { styled } from './stitches.config'
 
 export const NotFound = styled('p', {
   textAlign: 'center',
-  marginTop: '2rem',
-  fontWeight: 'bold',
+  fontWeight: '600',
 })
 
-export const SpecLink = styled('a', {
+export const Link = styled('a', {
+  fontSize: '$lg',
+  cursor: 'pointer',
   width: 'fit-content',
-  alignItems: 'center',
-  padding: '0.5rem 1rem',
-  border: '2px solid $sand8',
+  whiteSpace: 'nowrap',
   color: '$sand12',
   fill: '$sand12',
-  fontWeight: 500,
-  fontSize: '16px',
-  borderRadius: '8px',
-  textDecoration: 'none',
-  display: 'inline-flex',
-  cursor: 'pointer',
-  userSelect: 'none',
-  transition: 'all .1s ease-in',
+  textDecoration: 'underline',
+  textUnderlineThickness: '1px',
+  textUnderlineOffset: '4px',
+  textDecorationColor: '$sand8 !important',
   '&:hover': {
-    background: '$blue9',
-    border: '2px solid $blue10',
-    color: 'white',
-    fill: 'white',
-  },
-})
-
-export const EmailButton = styled(Envelope, {
-  cursor: 'pointer',
-  fontSize: '1rem',
-  '&:hover': {
-    fill: '$lowContrast',
+    textDecorationColor: '$sand12 !important',
   },
 })
 
@@ -46,24 +31,34 @@ export const TrashButton = styled('button', {
   color: '$sand12',
   fill: '$sand12',
   fontWeight: 500,
-  fontSize: '16px',
+  fontSize: '$md',
   borderRadius: '8px',
   display: 'inline-flex',
   cursor: 'pointer',
-  transition: 'all .1s ease-in',
+  transition: 'backgroundColor .1s ease-in',
   border: '2px solid $sand8',
-  backgroundColor: 'white',
+  backgroundColor: 'sand1',
   '&:hover': {
-    background: '$sand4',
+    backgroundColor: '$sand5',
   },
+})
+
+export const Hr = styled('hr', {
+  backgroundColor: '$sand7',
+  border: 'none',
+  height: 1,
+  width: 'auto',
 })
 
 export const UploadWrapper = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   gap: '1rem',
-  margin: '1rem 0 1rem 0',
+  minWidth: '60%',
+  maxWidth: '100%',
 })
+
+const shadowSM = '0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.06)'
 
 export const UploadTrigger = styled('label', {
   all: 'unset',
@@ -72,76 +67,117 @@ export const UploadTrigger = styled('label', {
   alignItems: 'center',
   width: '100%',
   padding: '1rem',
-  borderRadius: '12px',
+  borderRadius: '4px',
   color: '$highContrast',
   cursor: 'pointer',
   verticalAlign: 'middle',
-  filter: 'drop-shadow(0 1px 2px rgba(0,0,0,.06)) drop-shadow(0 1px 3px rgba(0,0,0,.1))',
+  border: '1px dashed $sand8',
   backgroundColor: '$sand1',
-  '&:hover': {
-    backgroundColor: '$sand2',
+  '&:hover': { backgroundColor: '$sand2' },
+  variants: {
+    submitted: {
+      true: {
+        border: '1px solid $sand6',
+        borderLeft: '4px solid $green9',
+        boxShadow: shadowSM,
+      },
+    },
   },
 })
 
 export const ModulePill = styled('p', {
   background: '$blue5',
-  fontSize: '14px',
-  borderRadius: '16px',
-  padding: '8px 12px',
+  fontSize: '$sm',
+  borderRadius: '999px',
+  padding: '4px 12px',
   display: 'inline-flex',
 
   alignItems: 'center',
   width: 'fit-content',
+  whiteSpace: 'nowrap',
   height: 'fit-content',
   margin: 0,
   textAlign: 'center',
 })
 
 export const ResourcesWrapper = styled('div', {
-  display: 'grid',
-  justifyItems: 'center',
-  width: '100%',
-  gridTemplateColumns: 'repeat(3, 1fr)',
-  gap: '2rem',
-  gridGap: '2rem',
-  marginTop: '1rem',
+  display: 'flex',
+  justifyContent: 'space-between',
+  flexWrap: 'wrap',
+  flexDirection: 'column',
+  gap: '0.75rem',
 })
 
 export const LinkIcon = styled(BoxArrowUpRight, {
   marginRight: '0.5rem',
   fill: 'inherit',
-  float: 'left',
-  fontWeight: 500,
 })
 
 export const TitleWrapper = styled('div', {
   display: 'flex',
+  flexWrap: 'wrap',
   justifyContent: 'space-between',
   alignItems: 'center',
+  marginBottom: '2rem',
+  gap: '1rem',
 })
 
 export const ExerciseTitle = styled('h3', {
-  fontWeight: 400,
-  fontSize: '2rem',
+  fontWeight: 300,
+  fontSize: '$xxl',
   width: 'fit-content',
+  margin: 0,
 })
 
-export const EmailAddress = styled('address', {
+export const Deadline = styled('p', {
+  fontSize: '$md',
+  fontWeight: '600',
+  color: '$highContrast',
+})
+
+export const PlagiarismDisclaimer = styled('p', {
+  fontSize: '$sm',
+  color: '$sand11',
+  marginTop: '1rem',
+  textAlign: 'center',
+})
+
+const StyledProgress = styled(Progress, {
+  position: 'relative',
+  overflow: 'hidden',
+  background: '$sand4',
+  borderRadius: '32px',
+  width: '100%',
+  height: '1rem',
+  // Fix overflow clipping in Safari
+  // https://gist.github.com/domske/b66047671c780a238b51c51ffde8d3a0
+  transform: 'translateZ(0)',
   display: 'flex',
   alignItems: 'center',
 })
 
-export const Deadline = styled('p', {
-  fontSize: '14px',
-  color: '$highContrast',
+const StyledProgressIndicator = styled(ProgressIndicator, {
+  backgroundColor: '$green9',
+  height: '100%',
+  transition: 'width 660ms cubic-bezier(0.65, 0, 0.35, 1)',
+  padding: '8px',
+  borderTopLeftRadius: '16px',
+  borderBottomLeftRadius: '16px',
+  justifyContent: 'end',
+  display: 'flex',
+  alignItems: 'center',
 })
 
-export const SubmissionWrapper = styled('div', {
-  marginTop: '1rem',
-})
-
-export const PlagiarismDisclaimer = styled('p', {
-  fontSize: '0.9rem',
-  marginTop: '1rem',
-  textAlign: 'center',
-})
+export const ProgressBar = ({ value, max }: { value: number; max: number }) => (
+  <StyledProgress value={value} max={max}>
+    <StyledProgressIndicator asChild>
+      <div
+        style={{
+          width: `${Math.round((100 * value) / max)}%`,
+          textAlign: 'center',
+          ...(value === max && { borderRadius: '32px' }),
+        }}
+      ></div>
+    </StyledProgressIndicator>
+  </StyledProgress>
+)

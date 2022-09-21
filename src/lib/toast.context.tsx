@@ -27,9 +27,9 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
       <ToastProviderPrimitive>
         {children}
         {toasts.map((toast: ToastProps, key: number) => (
-          <Toast {...{ ...toast, key }} />
+          <Toast {...toast} key={key} />
         ))}
-        <PortalRoot style={{ zIndex: 10 }}>
+        <PortalRoot style={{ zIndex: 11 }}>
           <ToastViewport />
         </PortalRoot>
       </ToastProviderPrimitive>

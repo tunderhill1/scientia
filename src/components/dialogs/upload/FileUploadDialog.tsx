@@ -98,9 +98,9 @@ const FileUploadDialog = ({
 
   return (
     <Dialog
-      title={'Upload resources'}
-      primaryButtonText={'Upload'}
-      secondaryButtonText={'Cancel'}
+      title="Upload resources"
+      primaryButtonText={fileResources.length ? 'Upload' : ''}
+      secondaryButtonText="Cancel"
       onPrimaryClick={() => {
         fileResources.map((res) => uploadResource(res, setRawMaterials))
         setFileResources([])
@@ -109,7 +109,7 @@ const FileUploadDialog = ({
       open={open}
       onOpenChange={onOpenChange}
     >
-      <DropzoneContainer style={{ cursor: 'pointer', borderStyle: 'dashed', borderWidth: '2px' }}>
+      <DropzoneContainer>
         <Dropzone onDrop={onDrop}>
           {({ getRootProps, getInputProps }) => (
             <section>

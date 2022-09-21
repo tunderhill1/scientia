@@ -1,23 +1,20 @@
 import { plainToInstance } from 'class-transformer'
 import { Fragment, useEffect, useState } from 'react'
-import { ChatLeftText } from 'react-bootstrap-icons'
 import { useOutletContext } from 'react-router-dom'
 
 import ExerciseDialog from '../components/dialogs/ExerciseDialog'
 import { endpoints } from '../constants/endpoints'
 import { Exercise } from '../constants/types'
 import { useAxios } from '../lib/axios.context'
-import { displayTimestamp, percentageToLetterGrade } from '../lib/utilities.service'
+import { calculateGrade, displayTimestamp } from '../lib/utilities.service'
 import { useYear } from '../lib/year.context'
+import { Link, LinkIcon } from '../styles/exerciseDialog.style'
 import {
-  FeedbackLink,
   Header,
   HorizontalRow,
-  Pill,
   SubText,
   Table,
   ViewExerciseButton,
-  ViewExerciseIcon,
 } from '../styles/exercises-page.style'
 
 const Exercises = () => {
@@ -55,69 +52,59 @@ const Exercises = () => {
       <Table>
         <thead style={{ textAlign: 'left' }}>
           <tr>
-            <Header colSpan={2}>Exercise</Header>
-            <Header>View</Header>
-            <Header colSpan={2}>Mark</Header>
-            <Header>Feedback</Header>
+            <Header>Exercise</Header>
+            <Header colSpan={3}>Mark</Header>
           </tr>
         </thead>
         <tbody>
-          {exercises.map((e: Exercise) => {
-            let percentageGrade = Math.round((100 * (e.mark || 0)) / e.maximumMark!)
-            return (
-              <Fragment key={e.number}>
-                <HorizontalRow colSpan={6} />
-                <tr>
-                  <td style={{ whiteSpace: 'nowrap' }}>
-                    <b>{e.number}.</b> {e.title}
-                    <br />
-                    <SubText>Due: {displayTimestamp(e.endDate, 'EEEE d LLLL, HH:mm zzz')}</SubText>
-                  </td>
+          {exercises.map((e: Exercise) => (
+            <Fragment key={e.number}>
+              <HorizontalRow colSpan={4} />
+              <tr>
+                <td>
+                  <ViewExerciseButton
+                    onClick={() => setExerciseForDialog(e)}
+                    title="View exercise details"
+                  >
+                    <p>
+                      {e.type}: {e.title}
+                    </p>
+                    <SubText>{displayTimestamp(e.endDate)}</SubText>
+                  </ViewExerciseButton>
+                </td>
 
+                <td>{e.mark ? <b>{calculateGrade(e.mark, e.maximumMark)}</b> : <p>n/a</p>}</td>
+
+                <td style={{ whiteSpace: 'nowrap' }}>
+                  {e.mark && (
+                    <>
+                      {Math.round((100 * e.mark) / e.maximumMark)}%
+                      <br />
+                      <SubText>{`${e.mark} / ${e.maximumMark}`}</SubText>
+                    </>
+                  )}
+                </td>
+
+                {e.mark && (
                   <td>
-                    <Pill>{e.type}</Pill>
-                  </td>
-
-                  <td>
-                    <ViewExerciseButton onClick={() => setExerciseForDialog(e)}>
-                      <ViewExerciseIcon size={20} />
-                    </ViewExerciseButton>
-                  </td>
-
-                  <td>{e.mark ? <b>{percentageToLetterGrade(percentageGrade)}</b> : <p>N/A</p>}</td>
-
-                  <td style={{ whiteSpace: 'nowrap' }}>
-                    {e.mark && (
-                      <>
-                        {`${percentageGrade}%`}
-                        <br />
-                        <SubText>{`${e.mark} / ${e.maximumMark}`}</SubText>
-                      </>
-                    )}
-                  </td>
-
-                  <td>
-                    <FeedbackLink
-                      href="https://example.com/"
+                    <Link
+                      css={{ fontSize: '$md' }}
                       target="_blank"
-                      rel="noreferrer"
+                      href={e.mark ? 'https://example.com/' : '#'}
                       title={e.mark ? `Feedback for ${e.title}` : 'Not yet published'}
-                      disabled={!e.mark}
                     >
-                      <ChatLeftText size={20} />
-                    </FeedbackLink>
+                      <LinkIcon />
+                      Feedback
+                    </Link>
                   </td>
-                </tr>
-              </Fragment>
-            )
-          })}
+                )}
+              </tr>
+            </Fragment>
+          ))}
         </tbody>
       </Table>
       {exerciseForDialog && (
-        <ExerciseDialog
-          exercise={exerciseForDialog}
-          setExercise={() => setExerciseForDialog(null)}
-        />
+        <ExerciseDialog exercise={exerciseForDialog} setExercise={setExerciseForDialog} />
       )}
     </>
   )

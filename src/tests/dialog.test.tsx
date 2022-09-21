@@ -25,12 +25,12 @@ const DialogFactory = ({
 }
 
 describe('Dialog', () => {
-  it(`renders dialog with 2 buttons when open`, () => {
+  it(`renders dialog with 3 buttons when open`, () => {
     render(DialogFactory({ open: true }))
     const dialog = screen.queryByRole('dialog')
     expect(dialog).toBeInTheDocument()
     const buttons = within(screen.getByRole('dialog')).queryAllByRole('button')
-    expect(buttons).toHaveLength(2)
+    expect(buttons).toHaveLength(3)
   })
 
   it(`does not render dialog when closed`, () => {

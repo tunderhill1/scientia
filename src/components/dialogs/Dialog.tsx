@@ -1,7 +1,8 @@
 import { DialogClose, DialogPortal, Dialog as DialogRoot } from '@radix-ui/react-dialog'
 import { ReactNode } from 'react'
+import { X } from 'react-bootstrap-icons'
 
-import { ActionButton, Content, Overlay, Title } from '../../styles/dialog.style'
+import { ActionButton, CloseButton, Content, Overlay, Title } from '../../styles/dialog.style'
 
 const ContentFrame = ({
   children,
@@ -41,35 +42,39 @@ const Dialog = ({
       <form
         onSubmit={(event) => {
           event.preventDefault()
-          if (!isFormValid()) {
-            return false
-          } else {
-            onPrimaryClick()
-            onOpenChange(false)
-            return true
-          }
+          if (!isFormValid()) return false
+          onPrimaryClick()
+          onOpenChange(false)
+          return true
         }}
       >
         {children}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '2rem' }}>
-          {secondaryButtonText && (
-            <DialogClose asChild>
-              <ActionButton secondary style={{ display: 'inline-block' }}>
-                {secondaryButtonText}
+        {primaryButtonText && (
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '2rem' }}>
+            {secondaryButtonText && (
+              <DialogClose asChild>
+                <ActionButton secondary style={{ display: 'inline-block' }}>
+                  {secondaryButtonText}
+                </ActionButton>
+              </DialogClose>
+            )}
+            {primaryButtonText && (
+              <ActionButton
+                primary
+                type="submit"
+                style={{ display: 'inline-block', marginLeft: '1rem' }}
+              >
+                {primaryButtonText}
               </ActionButton>
-            </DialogClose>
-          )}
-          {primaryButtonText && (
-            <ActionButton
-              primary
-              type="submit"
-              style={{ display: 'inline-block', marginLeft: '1rem' }}
-            >
-              {primaryButtonText}
-            </ActionButton>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </form>
+      <DialogClose asChild>
+        <CloseButton aria-label="Close">
+          <X />
+        </CloseButton>
+      </DialogClose>
     </ContentFrame>
   </DialogRoot>
 )

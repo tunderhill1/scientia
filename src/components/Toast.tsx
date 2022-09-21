@@ -1,12 +1,12 @@
 import {
-  ToastIcon,
+  ToastIcons,
   Root as ToastRoot,
   Title as ToastTitle,
   ToastVariant,
 } from '../styles/toast.style'
 
 /*  Toasts display brief, temporary notifications.
-    Only be used for:
+    Only used for:
       - confirmations
       - simple notifications
       - low-priority alerts
@@ -19,9 +19,10 @@ export interface ToastProps {
 }
 
 export const Toast = ({ variant, title }: ToastProps) => {
+  const ToastIcon = ToastIcons[variant]
   return (
-    <ToastRoot color={variant.toString()}>
-      <ToastIcon variant={variant} />
+    <ToastRoot color={variant}>
+      <ToastIcon size={24} />
       <ToastTitle>{title}</ToastTitle>
     </ToastRoot>
   )
