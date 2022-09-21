@@ -64,14 +64,14 @@ const Timeline = () => {
   useEffect(() => {
     if (!term) return
 
+    const moduleCodesForExercisesInTerm = (Object.values(exercises) as Exercise[])
+      .flat()
+      .filter((e) => e.endDate > term.start && e.startDate < term.end)
+      .map((e) => e.moduleCode)
+
     // For given term, show only modules
     // (a) taught in that term or
     // (b) whose exercises fall within the term's start and end dates.
-    const moduleCodesForExercisesInTerm = (Object.values(exercises) as Exercise[])
-      .flat()
-      .filter((e) => e.endDate > term.start)
-      .map((e) => e.moduleCode)
-
     const modulesToShow = userModules
       .filter(
         (module) =>
@@ -91,10 +91,11 @@ const Timeline = () => {
   }, [term, exercises, userModules, trackMap])
 
   useEffect(() => {
+    if (!term) return
     if (userModules.length > 0) {
-      setTrackMap(generateTrackMap(exercises))
+      setTrackMap(generateTrackMap(exercises, term))
     }
-  }, [exercises, userModules])
+  }, [term, exercises, userModules])
 
   useEffect(() => {
     setRowHeights(

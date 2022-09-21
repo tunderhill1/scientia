@@ -2,7 +2,7 @@ import { addYears, areIntervalsOverlapping, format, isSameMonth } from 'date-fns
 import { formatInTimeZone, utcToZonedTime } from 'date-fns-tz'
 
 import { LONDON_TIMEZONE } from '../constants/global'
-import { Exercise, Track, TrackMap } from '../constants/types'
+import { Exercise, Term, Track, TrackMap } from '../constants/types'
 
 /* A file to store miscellaneous utility functions */
 
@@ -66,9 +66,11 @@ export const exercisesOverlap = (e1: Exercise, e2: Exercise): boolean =>
   )
 
 /* Compute the exercise tracks for the exercises of each module */
-export function computeTracks(exercises: Exercise[]): Track[] {
+export function computeTracks(exercises: Exercise[], term: Term): Track[] {
   /* Pre: Ordering input by the start date */
-  const orderedExercises = exercises.sort((e1, e2) => Number(e1.startDate) - Number(e2.startDate))
+  const orderedExercises = exercises
+    .filter((e) => e.endDate > term.start && e.startDate < term.end)
+    .sort((e1, e2) => Number(e1.startDate) - Number(e2.startDate))
   const tracks: Track[] = []
   /* The 'of' is used instead of 'in' to enforce the type of exercise */
   for (const exercise of orderedExercises) {
@@ -88,11 +90,13 @@ export function computeTracks(exercises: Exercise[]): Track[] {
 }
 
 /* Creates a track map given a list of modules with exercises */
-export function generateTrackMap(exercises: { [code: string]: Exercise[] }): TrackMap {
-  return Object.entries(exercises).reduce((accumulator: TrackMap, [code, exercises]) => {
-    accumulator[code] = computeTracks(exercises)
-    return accumulator
-  }, {})
+export function generateTrackMap(exercises: { [code: string]: Exercise[] }, term: Term): TrackMap {
+  return sortObjectByKey(
+    Object.entries(exercises).reduce((accumulator: TrackMap, [code, exercises]) => {
+      accumulator[code] = computeTracks(exercises, term)
+      return accumulator
+    }, {})
+  )
 }
 
 /* Formats a date range as "D-D MMM or D MMM-D MMM" */

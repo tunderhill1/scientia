@@ -29,6 +29,13 @@ const ExerciseFactory = ({
   return exercise
 }
 
+const TERM = {
+  start: new Date(2022, 8, 29),
+  end: new Date(2022, 11, 25),
+  name: 'autumn term',
+  weeks: 11,
+}
+
 const reference = ExerciseFactory({
   startDate: new Date(2022, 9, 1),
   endDate: new Date(2022, 9, 10),
@@ -57,7 +64,7 @@ test.each([
 
 test('computes the right tracks for set of exercise', () => {
   const expected: Track[] = [[preceding, reference, following], [overlapping]]
-  let actual = computeTracks([preceding, overlapping, reference, following])
+  let actual = computeTracks([preceding, overlapping, reference, following], TERM)
   expect(actual).toEqual(expected)
 })
 
@@ -161,6 +168,25 @@ test('computes the right track map for set of modules', () => {
       ],
     ],
   }
-  let actual = generateTrackMap(inputModules)
+  let actual = generateTrackMap(inputModules, TERM)
+  expect(actual).toEqual(expected)
+})
+
+const insideTerm = ExerciseFactory({
+  startDate: new Date(2022, 9, 10),
+  endDate: new Date(2022, 9, 15),
+})
+const acrossTerm = ExerciseFactory({
+  startDate: new Date(2022, 11, 20),
+  endDate: new Date(2023, 0, 5),
+})
+const outsideTerm = ExerciseFactory({
+  startDate: new Date(2023, 1, 25),
+  endDate: new Date(2023, 1, 30),
+})
+
+test('excludes exercises outside of term', () => {
+  const expected: Track[] = [[insideTerm, acrossTerm]]
+  const actual = computeTracks([insideTerm, outsideTerm, acrossTerm], TERM)
   expect(actual).toEqual(expected)
 })
