@@ -1,10 +1,25 @@
 import {
+  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from '@radix-ui/react-dropdown-menu'
 
 import { styled } from './stitches.config'
+
+const itemStyle = {
+  borderRadius: '0.5rem',
+  padding: '0.25rem',
+  height: '2.75rem',
+  display: 'flex',
+  alignItems: 'center',
+  cursor: 'pointer',
+  transition: 'all 250ms ease-in-out 0s',
+  '&:focus': {
+    backgroundColor: '$elementHover',
+    outline: 'none',
+  },
+}
 
 export const Header = styled('div', {
   height: '4rem',
@@ -51,19 +66,9 @@ export const Content = styled(DropdownMenuContent, {
   border: '0.0625rem solid $separator',
 })
 
-export const Item = styled(DropdownMenuItem, {
-  borderRadius: '0.5rem',
-  padding: '0.25rem',
-  height: '2.75rem',
-  display: 'flex',
-  alignItems: 'center',
-  cursor: 'pointer',
-  transition: 'all 250ms ease-in-out 0s',
-  '&:focus': {
-    backgroundColor: '$elementHover',
-    outline: 'none',
-  },
-})
+export const Item = styled(DropdownMenuItem, itemStyle)
+
+export const CheckboxItem = styled(DropdownMenuCheckboxItem, itemStyle)
 
 export const Separator = styled(DropdownMenuSeparator, {
   height: '0.0625rem',

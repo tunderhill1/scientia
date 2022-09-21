@@ -1,9 +1,10 @@
 import { utcToZonedTime } from 'date-fns-tz'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { DragDropContext } from 'react-beautiful-dnd'
 import {
   ArrowDownUp,
   Check,
+  Check2Circle,
   Dash,
   Download,
   Link45deg,
@@ -21,23 +22,24 @@ import DeleteDialog from '../components/dialogs/DeleteDialog'
 import EditDialog from '../components/dialogs/EditDialog'
 import FileUploadDialog from '../components/dialogs/upload/FileUploadDialog'
 import LinkUploadDialog from '../components/dialogs/upload/LinkUploadDialog'
+import { LevelToggles } from '../components/game/LevelToggles'
 import { endpoints } from '../constants/endpoints'
 import { LONDON_TIMEZONE } from '../constants/global'
-import { useAxios } from '../lib/axios.context'
 import useChecklist from '../lib/checkbox.service'
 import { useReordering } from '../lib/dragDrop.service'
+import { useGame } from '../lib/game/game.context'
+import { LevelsManager } from '../lib/game/levels.service'
+import { useMaterials } from '../lib/materials.service'
 import { useUser } from '../lib/user.context'
-import { groupByProperty } from '../lib/utilities.service'
 import { useYear } from '../lib/year.context'
 import { Button, Checkbox, Footnote, Indicator, Wrapper } from '../styles/_app.style'
 import { Caret } from '../styles/collapsible-list.style'
 import { ToggleDragDropButton } from '../styles/dragDrop.style'
 import { Material, Tag, Tags } from '../styles/materials.style'
-import { ToggleGroup, ToggleItem } from '../styles/toolbar.style'
+import { Toggle } from '../styles/toolbar.style'
 
 const Materials = () => {
   const [checklistMode, setSelectionMode] = useState(false)
-  const [groupedMaterials, setGroupedMaterials] = useState<{ [_: string]: any }>({})
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [editDialogOpen, setEditDialogOpen] = useState(false)
@@ -45,25 +47,32 @@ const Materials = () => {
   const [resourceToEdit, setResourceToEdit] = useState(null)
   const [dragEnabled, setDragEnabled] = useState(false)
 
-  const moduleCode = useOutletContext<string | null>()
-  const checklistManager = useChecklist(groupedMaterials, 'id', false)
-  const { onDragEnd } = useReordering(setGroupedMaterials)
-
+  const { includeLevels } = useGame()
+  const { moduleCode, levelsManager } = useOutletContext<{
+    moduleCode: string | null
+    levelsManager: LevelsManager
+  }>()
   const { userDetails } = useUser()
   const { year } = useYear()
-  const { data: rawMaterials, loaded } = useAxios({
-    url: endpoints.resources,
-    method: 'GET',
-    params: { year, course: moduleCode },
-  })
+  const {
+    groupedMaterials,
+    setRawMaterials,
+    isLoaded,
+    noMaterials,
+    addCompleteResources,
+    isComplete,
+  } = useMaterials(levelsManager)
+  const checklistManager = useChecklist(groupedMaterials, 'id', false)
+  const { onDragEnd } = useReordering(setRawMaterials)
 
-  const noMaterials = () => groupedMaterials && Object.keys(groupedMaterials).length === 0
-  const isStaff = () => userDetails?.roleInDepartment === 'staff'
-
-  useEffect(() => {
-    if (rawMaterials !== null)
-      setGroupedMaterials(groupByProperty(rawMaterials, 'category', 'index', true))
-  }, [rawMaterials])
+  const onComplete = () => {
+    addCompleteResources(
+      checklistManager
+        .getCheckedItems()
+        .map((resourceId) => parseInt(resourceId))
+        .filter((resourceId) => !isComplete(resourceId))
+    )
+  }
 
   /* Toolbar button callbacks */
   const onDownload = () => {
@@ -84,7 +93,10 @@ const Materials = () => {
       data={items}
       generator={(tab: any) => (
         <Material>
-          <span>{tab.title}</span>
+          <Wrapper inline>
+            <span>{tab.title}</span>
+            {includeLevels && isComplete(tab.id) && <Check2Circle size={19} />}
+          </Wrapper>
           <Tags>
             {tab.tags.map((tag: string) => (
               <Tag key={`${tab.id}${tag}`}>#{tag}</Tag>
@@ -105,13 +117,11 @@ const Materials = () => {
 
   const toolbar = (
     <Toolbar style={{ marginBottom: '1rem' }}>
-      <ToggleGroup type="single">
-        <ToggleItem value="select" onClick={(event) => setSelectionMode(!checklistMode)}>
-          <UiChecks size={22} />
-        </ToggleItem>
-      </ToggleGroup>
+      <Toggle defaultPressed={checklistMode} onClick={(event) => setSelectionMode(!checklistMode)}>
+        <UiChecks size={22} />
+      </Toggle>
       <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-        {!checklistMode && isStaff() && (
+        {!checklistMode && userDetails?.isStaff() && (
           <>
             <Button icon onClick={() => setUploadDialogOpen(true)} title="Upload file resources">
               <Upload size={22} />
@@ -136,7 +146,7 @@ const Materials = () => {
         )}
         {checklistMode && (
           <>
-            {isStaff() && (
+            {userDetails?.isStaff() && (
               <Button
                 icon
                 css={{ marginRight: '0.75rem' }}
@@ -144,6 +154,18 @@ const Materials = () => {
                 disabled={checklistManager.getCheckedItems().length === 0}
               >
                 <Trash3Fill size={22} />
+              </Button>
+            )}
+            {includeLevels && (
+              <Button
+                icon
+                css={{ marginRight: '0.75rem' }}
+                onClick={onComplete}
+                disabled={checklistManager
+                  .getCheckedItems()
+                  .every((resourceId) => isComplete(parseInt(resourceId)))}
+              >
+                <Check2Circle size={22} />
               </Button>
             )}
             <Button
@@ -169,46 +191,54 @@ const Materials = () => {
     </Toolbar>
   )
 
-  if (noMaterials())
+  if (!isLoaded()) {
+    return (
+      <Wrapper center>
+        <span>Loading materials.</span>
+      </Wrapper>
+    )
+  }
+
+  if (noMaterials()) {
     return (
       <Wrapper center>
         <span>No materials for this module.</span>
       </Wrapper>
     )
+  }
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Wrapper>
+        {includeLevels && levelsManager.hasMinLevels && <LevelToggles {...levelsManager} />}
         {toolbar}
-        {loaded && (
-          <CollapsibleList
-            data={groupedMaterials}
-            checklistMode={checklistMode}
-            checklistManager={checklistManager}
-            headerGenerator={headerGenerator}
-            contentGenerator={contentGenerator}
-            mainItemAction={
-              (isStaff() && {
-                icon: <PencilSquare size={22} />,
-                action: (item: any) => {
-                  setResourceToEdit({
-                    ...item,
-                    visible_after: utcToZonedTime(item.visible_after, LONDON_TIMEZONE),
-                  })
-                  setEditDialogOpen(true)
-                },
-              }) ||
-              undefined
-            }
-          />
-        )}
+        <CollapsibleList
+          data={groupedMaterials}
+          checklistMode={checklistMode}
+          checklistManager={checklistManager}
+          headerGenerator={headerGenerator}
+          contentGenerator={contentGenerator}
+          mainItemAction={
+            (userDetails?.isStaff() && {
+              icon: <PencilSquare size={22} />,
+              action: (item: any) => {
+                setResourceToEdit({
+                  ...item,
+                  visible_after: utcToZonedTime(item.visible_after, LONDON_TIMEZONE),
+                })
+                setEditDialogOpen(true)
+              },
+            }) ||
+            undefined
+          }
+        />
         {deleteDialogOpen && (
           <DeleteDialog
             onOpenChange={setDeleteDialogOpen}
             selectedIDs={checklistManager.getCheckedItems()}
             moduleCode={moduleCode}
             groupedMaterials={groupedMaterials}
-            setGroupedMaterials={setGroupedMaterials}
+            setRawMaterials={setRawMaterials}
           />
         )}
 
@@ -219,7 +249,7 @@ const Materials = () => {
             setResourceToEdit={setResourceToEdit}
             resourceToEdit={resourceToEdit}
             moduleCode={moduleCode}
-            setGroupedMaterials={setGroupedMaterials}
+            setRawMaterials={setRawMaterials}
           />
         )}
 
@@ -227,14 +257,14 @@ const Materials = () => {
           open={uploadDialogOpen}
           onOpenChange={setUploadDialogOpen}
           categories={Object.keys(groupedMaterials)}
-          setGroupedMaterials={setGroupedMaterials}
+          setRawMaterials={setRawMaterials}
         />
 
         <LinkUploadDialog
           open={linkUploadDialogOpen}
           onOpenChange={setLinkUploadDialogOpen}
           categories={Object.keys(groupedMaterials)}
-          setGroupedMaterials={setGroupedMaterials}
+          setRawMaterials={setRawMaterials}
         />
 
         <Footnote muted center css={{ margin: '2rem 0' }}>

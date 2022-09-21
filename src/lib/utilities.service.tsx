@@ -112,3 +112,27 @@ export function percentageToLetterGrade(percentageGrade: number): string {
   if (percentageGrade <= 79) return 'A'
   return 'A*'
 }
+
+/* Concatenate grouped arrays */
+export function concatGrouped<T>(
+  a: { [key: string]: T[] },
+  b: { [key: string]: T[] }
+): { [key: string]: T[] } {
+  return Object.entries(a).reduce(
+    (acc, [group, values]) => {
+      if (acc[group]) {
+        acc[group] = acc[group].concat(values)
+      } else {
+        acc[group] = values
+      }
+      return acc
+    },
+    /* A shallow copy is sufficient as we do not mutate the arrays */
+    { ...b }
+  )
+}
+
+/* inclusive lower, exclusive upper */
+export function range(lower: number, upper: number): number[] {
+  return Array.from({ length: upper - lower }, (_, i) => lower + i)
+}

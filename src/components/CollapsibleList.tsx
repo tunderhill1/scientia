@@ -118,7 +118,7 @@ export const CollapsibleList = ({
     <Accordion type="multiple" defaultValue={collapsed ? Object.keys(data) : []}>
       {data &&
         Object.entries(data).map(([collection, items]) => (
-          <Item value={collection} key={collection}>
+          <Item value={collection} key={`${collection}${items.length}`}>
             <Header>
               <Trigger>{headerGenerator(collection, items)}</Trigger>
               {checklistMode && collectionCheckboxGenerator(collection)}

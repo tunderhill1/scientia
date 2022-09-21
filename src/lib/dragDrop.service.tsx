@@ -3,11 +3,10 @@ import { Draggable, DropResult, Droppable } from 'react-beautiful-dnd'
 import { useOutletContext } from 'react-router-dom'
 
 import { endpoints } from '../constants/endpoints'
-import { SetState } from '../constants/types'
 import { getItemStyle, getListStyle } from '../styles/dragDrop.style'
 import { AxiosContext } from './axios.context'
+import { Resource } from './materials.service'
 import { useToast } from './toast.context'
-import { groupByProperty } from './utilities.service'
 import { useYear } from './year.context'
 
 export type DragDropOptions = { dragEnabled: boolean; droppableId: string }
@@ -47,10 +46,10 @@ export const addDroppable = (
   </Droppable>
 )
 
-export const useReordering = (setGroupedMaterials: SetState<{ [_: string]: any }>) => {
+export const useReordering = (setRawMaterials: (_: Resource[]) => void) => {
   const { year } = useYear()
   const axiosInstance = useContext(AxiosContext)
-  const moduleCode = useOutletContext<string | null>()
+  const { moduleCode } = useOutletContext<{ moduleCode: string | null }>()
   const { addToast } = useToast()
 
   const onDragEnd = ({ source, destination, draggableId }: DropResult) => {
@@ -80,9 +79,7 @@ export const useReordering = (setGroupedMaterials: SetState<{ [_: string]: any }
             url: endpoints.resources,
             params: { year, course: moduleCode! },
           })
-          .then(({ data }: any) =>
-            setGroupedMaterials(groupByProperty(data, 'category', 'index', true))
-          )
+          .then(({ data }: any) => setRawMaterials(data))
           .catch((error: any) => {
             console.error(error)
           })

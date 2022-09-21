@@ -6,6 +6,7 @@ import Dropzone from 'react-dropzone'
 
 import { LONDON_TIMEZONE } from '../../../constants/global'
 import { ResourceCreate } from '../../../constants/types'
+import { Resource } from '../../../lib/materials.service'
 import { useResources } from '../../../lib/resource.service'
 import { useToast } from '../../../lib/toast.context'
 import {
@@ -35,12 +36,12 @@ const FileUploadDialog = ({
   open,
   onOpenChange,
   categories,
-  setGroupedMaterials,
+  setRawMaterials,
 }: {
   open: boolean
   onOpenChange: (_: boolean) => void
   categories: string[]
-  setGroupedMaterials: any
+  setRawMaterials: (_: Resource[]) => void
 }) => {
   const { addToast } = useToast()
   const { uploadResource } = useResources()
@@ -101,7 +102,7 @@ const FileUploadDialog = ({
       primaryButtonText={'Upload'}
       secondaryButtonText={'Cancel'}
       onPrimaryClick={() => {
-        fileResources.map((res) => uploadResource(res, setGroupedMaterials))
+        fileResources.map((res) => uploadResource(res, setRawMaterials))
         setFileResources([])
       }}
       isFormValid={isFormValid}

@@ -36,6 +36,7 @@ export const endpoints = {
     `${baseURL}/${year}/${moduleCode}/exercises/${exerciseNumber}/workload`,
   resources: `${baseURL}/resources`,
   resource: (id: number) => `${baseURL}/resources/${id}`,
+  resourcesComplete: `${baseURL}/resources/complete`,
   resourceFile: (id: number) => `${baseURL}/resources/${id}/file`,
   resourcesArchive: `${baseURL}/resources/zipped`,
   periods: (year: string) => `${baseURL}/${year}/periods`,

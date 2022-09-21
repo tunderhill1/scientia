@@ -12,7 +12,8 @@ export const Tags = styled('div', {
 })
 
 export const Material = styled('div', {
-  minHeight: '2.25rem',
+  minHeight: '2.5rem',
+  gap: '0.1rem',
   display: 'flex',
   justifyContent: 'center',
   flexDirection: 'column',
