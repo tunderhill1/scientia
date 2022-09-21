@@ -20,12 +20,11 @@ export const { styled, css, globalCss, theme } = createStitches({
   theme: {
     fontSizes: {
       fontSize: '16px' /* Root element's font size */,
-      footnote: '0.875rem',
-      /* The following follows the "major second" scale */
-      h1Size: '1.8rem',
-      h2Size: '1.6rem',
-      h3Size: '1.4rem',
-      h4Size: '1.2rem',
+      sm: '0.875rem', // 14px
+      md: '1rem', // 16px (body size)
+      lg: '1.125rem', // 18px
+      xl: '1.5rem', // 24px
+      xxl: '2rem', // 32px
     },
     lineHeights: {
       lineHeight: 'calc($fontSize * 1.5)',
@@ -179,7 +178,7 @@ export const globalStyles = globalCss({
   },
   '.h1, h, h1': {
     fontWeight: 640,
-    fontSize: '$h1Size',
+    fontSize: '$xxl',
     lineHeight: 'calc($lineHeight * 2)',
     letterSpacing: '-.025rem',
     margin: '2rem 0 1rem 0',
@@ -187,20 +186,20 @@ export const globalStyles = globalCss({
   },
   '.h2, h2': {
     fontWeight: 600,
-    fontSize: '$h2Size',
+    fontSize: '$xl',
     lineHeight: 'calc($lineHeight * 1.5)',
     margin: '1.5rem 0 0.75rem 0',
   },
   '.h3, .h4, h3, h4': {
     fontWeight: 540,
-    fontSize: '$h3Size',
+    fontSize: '$xl',
     letterSpacing: '-.01rem',
     margin: '1rem 0 0.5rem 0',
   },
   '.h4, h4': {
     fontWeight: 580,
     letterSpacing: '-.02rem',
-    fontSize: '$h4Size',
+    fontSize: '$lg',
   },
   '.h5, .h6, h5, h6': {
     fontWeight: 500,

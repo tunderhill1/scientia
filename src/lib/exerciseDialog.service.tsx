@@ -10,36 +10,35 @@ import { useYear } from './year.context'
 
 export const useExercise = (exercise: Exercise) => {
   const axiosInstance = useContext(AxiosContext)
-  const { year } = useYear()
   const { addToast } = useToast()
   const { userDetails } = useUser()
+  const { year } = useYear()
 
   const [exerciseMaterials, setExerciseMaterials] = useState<ExerciseMaterials | null>(null)
   const { data: rawExerciseMaterials, error: exerciseMaterialsError } = useAxios({
+    method: 'GET',
     url: endpoints.exerciseMaterials(
-      `${year}`,
-      exercise.moduleCode!,
+      year,
+      exercise.moduleCode,
       exercise.number,
       userDetails!.cohort
     ),
-    method: 'GET',
   })
   useEffect(() => {
     if (exerciseMaterialsError) {
       addToast({
         variant: 'error',
-        title: 'Error fetching exercise materials',
+        title: 'Unable to get exercise details',
       })
-    }
-    if (rawExerciseMaterials) {
+    } else if (rawExerciseMaterials) {
       setExerciseMaterials(plainToInstance(ExerciseMaterials, rawExerciseMaterials))
     }
   }, [addToast, exerciseMaterialsError, rawExerciseMaterials])
 
   const [submittedFiles, setSubmittedFiles] = useState<SubmittedFile[]>([])
   const { data: rawSubmissions, error: submissionsError } = useAxios({
-    url: endpoints.submissions(`${year}`, exercise.moduleCode!, exercise.number),
     method: 'GET',
+    url: endpoints.submissions(year, exercise.moduleCode, exercise.number),
   })
   useEffect(() => {
     if (submissionsError) {
@@ -47,36 +46,38 @@ export const useExercise = (exercise: Exercise) => {
         variant: 'error',
         title: 'Error fetching submitted files',
       })
-      console.error(submissionsError)
-    }
-    if (rawSubmissions) {
+    } else if (rawSubmissions) {
       setSubmittedFiles(
         rawSubmissions.map((submittedFile: any) => plainToInstance(SubmittedFile, submittedFile))
       )
     }
   }, [addToast, submissionsError, rawSubmissions])
 
-  const submitFile = ({ file, targetFileName }: { file: File; targetFileName: string }) => {
+  const submitFile = (file: File, targetFileName: string) => {
     let formData = new FormData()
     formData.append('file', new File([file], targetFileName))
     axiosInstance
       .request({
         method: 'POST',
-        url: endpoints.submissions(year.toString(), exercise.moduleCode!, exercise.number),
+        url: endpoints.submissions(year, exercise.moduleCode, exercise.number),
         data: formData,
       })
-      .then(({ data }: { data: SubmittedFile }) =>
-        setSubmittedFiles((submittedFiles) => [
-          ...submittedFiles,
-          plainToInstance(SubmittedFile, data),
+      .then(({ data }: { data: SubmittedFile }) => {
+        const submittedFile = plainToInstance(SubmittedFile, data)
+        addToast({
+          variant: 'success',
+          title: `${targetFileName} submitted successfully.`,
+        })
+        setSubmittedFiles((prevFiles) => [
+          ...prevFiles.filter((file) => file.targetFileName !== targetFileName),
+          submittedFile,
         ])
-      )
+      })
       .catch((error: any) => {
         addToast({
           variant: 'error',
-          title: "Can't fetch submitted files",
+          title: 'Error submitting file.',
         })
-        console.error(error)
       })
   }
 
@@ -84,19 +85,16 @@ export const useExercise = (exercise: Exercise) => {
     axiosInstance
       .request({
         method: 'DELETE',
-        url: endpoints.submission(year.toString(), file.moduleCode, file.exerciseNumber, file.id),
+        url: endpoints.submission(year, file.moduleCode, file.exerciseNumber, file.id),
       })
       .then(() => {
+        addToast({ variant: 'info', title: `File deleted successfully.` })
         setSubmittedFiles((submittedFiles) =>
           submittedFiles.filter((submission) => submission.targetFileName !== file.targetFileName)
         )
       })
       .catch((error: any) => {
-        addToast({
-          variant: 'error',
-          title: "Can't delete submitted file",
-        })
-        console.error(error)
+        addToast({ variant: 'error', title: "Can't delete submitted file" })
       })
   }
 
@@ -104,7 +102,7 @@ export const useExercise = (exercise: Exercise) => {
     if (workload === '') return
     axiosInstance.request({
       method: 'POST',
-      url: endpoints.submissionWorkload(`${year}`, exercise.moduleCode!, exercise.number),
+      url: endpoints.submissionWorkload(year, exercise.moduleCode, exercise.number),
       params: { workload },
     })
   }

@@ -5,8 +5,15 @@ import { CaretRightFill } from 'react-bootstrap-icons'
 import { styled } from './stitches.config'
 
 export const DropzoneContainer = styled('div', {
-  backgroundColor: '$sand7',
+  backgroundColor: '$sand2',
   marginBottom: '1rem',
+  display: 'flex',
+  padding: '5rem',
+  cursor: 'pointer',
+  border: '2px dashed $sand9',
+  '&:hover': {
+    backgroundColor: '$sand4',
+  },
 })
 
 export const Header = styled(AccordionHeader, {
@@ -36,7 +43,7 @@ export const Trigger = styled(AccordionTrigger, {
 
   zIndex: 1,
   position: 'sticky',
-  backgroundColor: '$sand7',
+  backgroundColor: '$sand4',
   top: '4rem' /* Height of navigation bar */,
 
   transition: 'all 250ms ease-in-out',
@@ -77,7 +84,7 @@ export const Content = styled(AccordionContent, {
   padding: '1rem',
   border: 'solid $sand7',
   borderWidth: '0 1px 1px 1px',
-  backgroundColor: '$sand4',
+  backgroundColor: '$sand2',
 
   /* NOTE: Timing curve sourced from Radix UI's accordion example */
   '&[data-state="open"]': {

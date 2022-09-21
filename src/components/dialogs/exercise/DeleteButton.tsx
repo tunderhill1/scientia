@@ -2,7 +2,11 @@ import { Close, Popover, Portal, Trigger } from '@radix-ui/react-popover'
 import { CSSProperties } from 'react'
 import { Trash3Fill } from 'react-bootstrap-icons'
 
-import { PopoverArrow, PopoverContent, TrashButton } from '../../../styles/deleteButton.style'
+import {
+  PopoverArrow,
+  PopoverContent,
+  DeleteButton as TrashButton,
+} from '../../../styles/deleteButton.style'
 import { ActionButton } from '../../../styles/dialog.style'
 
 const DeleteButton = ({
@@ -16,8 +20,8 @@ const DeleteButton = ({
 }) => (
   <Popover modal>
     <Trigger asChild>
-      <TrashButton style={style} aria-label="delete">
-        <Trash3Fill size={24} />
+      <TrashButton style={style} aria-label="delete" title={`Delete submission for ${name}`}>
+        <Trash3Fill size={20} />
       </TrashButton>
     </Trigger>
     <Portal>
@@ -29,7 +33,7 @@ const DeleteButton = ({
               Cancel
             </ActionButton>
           </Close>
-          <ActionButton primary color={'destructive'} type="button" onClick={deleteFile}>
+          <ActionButton primary color="destructive" type="button" onClick={deleteFile}>
             Delete
           </ActionButton>
         </div>

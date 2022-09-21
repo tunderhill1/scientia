@@ -1,4 +1,4 @@
-import { addYears, areIntervalsOverlapping, format, isSameMonth } from 'date-fns'
+import { addYears, areIntervalsOverlapping, format, getMinutes, isSameMonth } from 'date-fns'
 import { formatInTimeZone, utcToZonedTime } from 'date-fns-tz'
 
 import { LONDON_TIMEZONE } from '../constants/global'
@@ -103,17 +103,21 @@ export function generateTrackMap(exercises: { [code: string]: Exercise[] }, term
 export const formatDateRange = (start: Date, end: Date): string =>
   format(start, 'd' + (isSameMonth(start, end) ? '' : ' MMM')) + format(end, '-d MMM')
 
-export function displayTimestamp(date: Date | string, format?: string): string {
-  return formatInTimeZone(date, LONDON_TIMEZONE, format || 'HH:mm:ss zzz, EEEE d LLLL yyyy')
-}
+export const displayTimestamp = (date: Date, format?: string): string =>
+  formatInTimeZone(
+    date,
+    LONDON_TIMEZONE,
+    format || "EEEE, d LLL 'by' " + (getMinutes(date) ? 'h:mmaaa' : 'h aaa')
+  )
 
-export function percentageToLetterGrade(percentageGrade: number): string {
-  if (percentageGrade <= 29) return 'F'
-  if (percentageGrade <= 39) return 'E'
-  if (percentageGrade <= 49) return 'D'
-  if (percentageGrade <= 59) return 'C'
-  if (percentageGrade <= 69) return 'B'
-  if (percentageGrade <= 79) return 'A'
+export const calculateGrade = (mark: number, maximumMark: number): string => {
+  const percentageGrade = (100 * mark) / maximumMark
+  if (percentageGrade < 30) return 'F'
+  if (percentageGrade < 40) return 'E'
+  if (percentageGrade < 50) return 'D'
+  if (percentageGrade < 60) return 'C'
+  if (percentageGrade < 70) return 'B'
+  if (percentageGrade < 80) return 'A'
   return 'A*'
 }
 

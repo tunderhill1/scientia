@@ -1,18 +1,20 @@
+import confetti from 'canvas-confetti'
+import { useEffect } from 'react'
+
 import { Exercise, SetState } from '../../constants/types'
 import { useExercise } from '../../lib/exerciseDialog.service'
 import { displayTimestamp } from '../../lib/utilities.service'
 import {
   Deadline,
-  EmailAddress,
-  EmailButton,
   ExerciseTitle,
+  Hr,
+  Link,
   LinkIcon,
   ModulePill,
   NotFound,
   PlagiarismDisclaimer,
+  ProgressBar,
   ResourcesWrapper,
-  SpecLink,
-  SubmissionWrapper,
   TitleWrapper,
   UploadWrapper,
 } from '../../styles/exerciseDialog.style'
@@ -35,68 +37,96 @@ const ExerciseDialog = ({
     return process.env.NODE_ENV === 'development' || exercise.endDate > new Date()
   }
 
+  useEffect(() => {
+    if (fileRequirements && fileRequirements.length === submittedFiles.length)
+      setTimeout(confetti, 330)
+    // only show confetti once - when submitted files renders
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [submittedFiles])
+
+  const tempDate = new Date(2022, 8, 30, 19)
+
   return (
     exercise && (
       <Dialog open={true} onOpenChange={() => setExercise(null)}>
         <TitleWrapper>
-          <ExerciseTitle>
-            {exercise.type}: {exercise.title}
-          </ExerciseTitle>
-          <EmailAddress>
-            <a title={`Email the exercise owner`} href={`mailto:${exercise.owner}@ic.ac.uk`}>
-              <EmailButton size={24} />
-            </a>
-          </EmailAddress>
+          <ExerciseTitle>{exercise.title}</ExerciseTitle>
+          <div style={{ gap: '0.5rem', display: 'flex' }}>
+            <ModulePill>{exercise.type}</ModulePill>
+            <ModulePill>{exercise.moduleName}</ModulePill>
+          </div>
         </TitleWrapper>
-        <ModulePill>
-          {exercise.moduleCode}: {exercise.moduleName}
-        </ModulePill>
-        {!exerciseMaterials && <NotFound>No materials found for this exercise.</NotFound>}
 
-        <ResourcesWrapper>
-          {spec && (
-            <SpecLink target="_blank" href={spec.url}>
-              <LinkIcon size={18} />
-              Specification
-            </SpecLink>
-          )}
-          {dataFiles && dataFiles.length > 0 && (
-            <SpecLink target="_blank" href={dataFiles[0].url}>
-              <LinkIcon size={18} />
-              Data Files
-            </SpecLink>
-          )}
-          {modelAnswers && modelAnswers.length > 0 && (
-            <SpecLink target="_blank" href={modelAnswers[0].url}>
-              <LinkIcon size={18} />
-              Model Answers
-            </SpecLink>
-          )}
-        </ResourcesWrapper>
-
-        {fileRequirements && fileRequirements.length > 0 && (
-          <SubmissionWrapper>
-            <h4>
-              Submission ({submittedFiles?.length || 0}/{fileRequirements.length})
-              {submittedFiles?.length === fileRequirements.length && ': you are all done! 🎉'}
-            </h4>
-            <Deadline>Deadline: {displayTimestamp(exercise.endDate)}</Deadline>
-            <UploadWrapper>
-              {fileRequirements.map((fileRequirement, index: number) => (
-                <FileUploadArea
-                  key={index}
-                  disabled={!isUploadEnabled()}
-                  fileRequirement={fileRequirement}
-                  submittedFiles={submittedFiles}
-                  submitFile={submitFile}
-                  deleteFile={deleteFile}
-                />
-              ))}
-            </UploadWrapper>
-            <PlagiarismDisclaimer>
-              By uploading, you agree that this is your own, unaided work.
-            </PlagiarismDisclaimer>
-          </SubmissionWrapper>
+        {exerciseMaterials ? (
+          <>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-around',
+                flexWrap: 'wrap',
+                gap: '2rem',
+              }}
+            >
+              <ResourcesWrapper>
+                {spec && (
+                  <Link target="_blank" href={spec.url}>
+                    <LinkIcon />
+                    Specification
+                  </Link>
+                )}
+                {dataFiles?.length && (
+                  <Link target="_blank" href={dataFiles[0].url}>
+                    <LinkIcon />
+                    Data Files
+                  </Link>
+                )}
+                {modelAnswers?.length && (
+                  <Link target="_blank" href={modelAnswers[0].url}>
+                    <LinkIcon />
+                    Model Answers
+                  </Link>
+                )}
+              </ResourcesWrapper>
+              <Hr />
+              {fileRequirements?.length && (
+                <UploadWrapper>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'flex-end',
+                      flexWrap: 'wrap-reverse',
+                      gap: '0.5rem',
+                    }}
+                  >
+                    <Deadline css={{ color: '$green11' }}>
+                      {submittedFiles.length} out of {fileRequirements.length} submitted
+                    </Deadline>
+                    <Deadline>Due {displayTimestamp(tempDate)}</Deadline>
+                  </div>
+                  <ProgressBar value={submittedFiles.length} max={fileRequirements.length} />
+                  {fileRequirements.map((fileRequirement, index) => (
+                    <FileUploadArea
+                      key={index}
+                      disabled={!isUploadEnabled()}
+                      fileRequirement={fileRequirement}
+                      submittedFiles={submittedFiles}
+                      submitFile={submitFile}
+                      deleteFile={deleteFile}
+                    />
+                  ))}
+                </UploadWrapper>
+              )}
+            </div>
+            {fileRequirements?.length && (
+              <PlagiarismDisclaimer>
+                By submitting, you agree that this is your own, unaided work.
+              </PlagiarismDisclaimer>
+            )}
+          </>
+        ) : (
+          <NotFound>No materials found for this exercise.</NotFound>
         )}
       </Dialog>
     )

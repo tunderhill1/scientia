@@ -10,7 +10,7 @@ import {
 import { styled } from './stitches.config'
 
 export type ToastVariant = 'info' | 'success' | 'error'
-const ToastIcons: {
+export const ToastIcons: {
   [key in ToastVariant as string]: Icon
 } = {
   info: InfoCircleFill,
@@ -35,14 +35,23 @@ const swipeOut = keyframes({
 
 export const Root = styled(ToastRoot, {
   variants: {
-    color: Object.fromEntries(
-      Object.keys(ToastIcons).map((type) => [type, { backgroundColor: `$${type}Background` }])
-    ),
+    color: {
+      info: { backgroundColor: '$infoBackground' },
+      success: { backgroundColor: '$successBackground' },
+      error: { backgroundColor: '$errorBackground' },
+    },
   },
   borderRadius: 8,
   boxShadow: 'hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px',
   padding: '1rem',
   display: 'flex',
+  flexWrap: 'nowrap',
+  gap: '1rem',
+  // https://www.radix-ui.com/docs/colors/tests/contrast#aa-large-text
+  svg: { fill: 'white' },
+
+  justifyContent: 'space-between',
+  alignItems: 'center',
 
   '@media (prefers-reduced-motion: no-preference)': {
     '&[data-state="open"]': {
@@ -64,31 +73,21 @@ export const Root = styled(ToastRoot, {
   },
 })
 
-// https://www.radix-ui.com/docs/colors/tests/contrast#aa-large-text
-export const ToastIcon = ({ variant }: { variant: ToastVariant }) => {
-  const ToastIcon = styled(ToastIcons[variant], {
-    fill: 'white',
-  })
-  return <ToastIcon size={24} />
-}
-
 export const Title = styled(ToastTitle, {
-  marginLeft: '1rem',
   color: 'white',
+  fontSize: '$md',
   fontWeight: 600,
-  fontSize: 14,
+  width: 'fit-content',
 })
 
 export const Viewport = styled(ToastViewport, {
   margin: 0,
   position: 'fixed',
-  bottom: '1rem',
-  right: '1rem',
+  bottom: '2rem',
+  right: '2rem',
   listStyle: 'none',
   display: 'flex',
   flexDirection: 'column',
-  padding: '1rem',
-  paddingLeft: '2rem',
   width: '15rem',
   'li::before': {
     display: 'none',

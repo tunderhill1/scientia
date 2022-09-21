@@ -16,21 +16,18 @@ export const PopoverArrow = styled(Arrow, {
   fill: '$sand11',
 })
 
-export const TrashButton = styled('button', {
+export const DeleteButton = styled('button', {
   width: 'fit-content',
   alignItems: 'center',
-  padding: '0.5rem',
-  color: '$highContrast',
-  fill: '$highContrast',
-  fontWeight: 500,
-  fontSize: '16px',
-  borderRadius: '8px',
+  padding: '0.25rem',
+  svg: { fill: '$sand9' },
+  borderRadius: '4px',
   display: 'inline-flex',
   cursor: 'pointer',
-  transition: 'all .1s ease-in',
-  border: '2px solid $sand8',
-  backgroundColor: 'white',
+  border: 'none',
+  backgroundColor: '$sand1',
   '&:hover': {
-    background: '$sand4',
+    backgroundColor: '$sand2',
+    svg: { fill: '$sand12' },
   },
 })
