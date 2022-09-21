@@ -1,3 +1,4 @@
+import { instanceToPlain, plainToInstance } from 'class-transformer'
 import React, { createContext, useContext, useState } from 'react'
 
 import { UserDetails } from '../constants/types'
@@ -18,7 +19,7 @@ const UserContext = createContext<UserProviderType>(defaultUser)
 
 function getUserDetailsOrUndefined(): UserDetails | undefined {
   const storedUserDetails = localStorage.getItem('userDetails')
-  if (storedUserDetails) return JSON.parse(storedUserDetails)
+  if (storedUserDetails) return plainToInstance(UserDetails, JSON.parse(storedUserDetails))
 }
 
 /* The username can be retrieved and set from anywhere in the app. */
@@ -29,7 +30,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   const storeUserDetails = (userDetails: UserDetails) => {
     setUserDetails(userDetails)
-    localStorage.setItem('userDetails', JSON.stringify(userDetails))
+    localStorage.setItem('userDetails', JSON.stringify(instanceToPlain(userDetails)))
   }
 
   const clearUserDetails = () => {

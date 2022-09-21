@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import { ResourceCreate } from '../../../constants/types'
+import { Resource } from '../../../lib/materials.service'
 import { useResources } from '../../../lib/resource.service'
 import { useToast } from '../../../lib/toast.context'
 import Dialog from '../Dialog'
@@ -18,12 +19,12 @@ const LinkUploadDialog = ({
   open,
   onOpenChange,
   categories,
-  setGroupedMaterials,
+  setRawMaterials,
 }: {
   open: boolean
   onOpenChange: (_: boolean) => void
   categories: string[]
-  setGroupedMaterials: any
+  setRawMaterials: (_: Resource[]) => void
 }) => {
   const { uploadResource } = useResources()
   const { addToast } = useToast()
@@ -50,7 +51,7 @@ const LinkUploadDialog = ({
       primaryButtonText={'Upload'}
       secondaryButtonText={'Cancel'}
       onPrimaryClick={() => {
-        uploadResource(linkResource, setGroupedMaterials)
+        uploadResource(linkResource, setRawMaterials)
         setLinkResource(defaultLinkResource)
       }}
       isFormValid={isFormValid}

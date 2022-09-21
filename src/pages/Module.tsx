@@ -2,15 +2,20 @@ import { plainToInstance } from 'class-transformer'
 import React, { useEffect, useState } from 'react'
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
 
+import { LevelProgressBar } from '../components/game/LevelProgressBar'
 import { endpoints } from '../constants/endpoints'
 import { Module as ModuleType } from '../constants/types'
 import { useAxios } from '../lib/axios.context'
+import { useGame } from '../lib/game/game.context'
+import { useLevels } from '../lib/game/levels.service'
 import { useYear } from '../lib/year.context'
-import { Button, Container } from '../styles/_app.style'
+import { Button, Container, Wrapper } from '../styles/_app.style'
 import { css } from '../styles/stitches.config'
 
 const Module = () => {
+  const { includeLevels } = useGame()
   const { moduleCode } = useParams()
+  const levelsManager = useLevels()
   const { pathname } = useLocation()
   const { year } = useYear()
   const [module, setModule] = useState<ModuleType | undefined>(undefined)
@@ -40,7 +45,12 @@ const Module = () => {
 
   return (
     <Container>
-      <h1 style={{ margin: 0 }}> {module.title}</h1>
+      <Wrapper inline>
+        <h1 style={{ width: '100%', margin: 0 }}> {module.title}</h1>
+        {includeLevels && RegExp('.*/materials').test(pathname) && levelsManager.loaded && (
+          <LevelProgressBar level={levelsManager.level} progress={levelsManager.progress} />
+        )}
+      </Wrapper>
       <h3
         className={css({
           color: '$lowContrast',
@@ -66,7 +76,7 @@ const Module = () => {
         ))}
       </div>
       <div style={{ display: 'flex', minHeight: '10rem', justifyContent: 'center' }}>
-        <Outlet context={moduleCode} />
+        <Outlet context={{ moduleCode, levelsManager }} />
       </div>
     </Container>
   )

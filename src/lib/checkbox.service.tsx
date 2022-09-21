@@ -89,6 +89,7 @@ export default function useChecklist(
   /* NOTE: Callbacks are used so that the function's only redefined when checklist changes */
   const isIndeterminate = useCallback(
     (title: string) => {
+      if (!Object.keys(checklist).includes(title)) return false
       const values = Object.values(checklist[title])
       return values.some(Boolean) && !values.every(Boolean)
     },
@@ -97,12 +98,14 @@ export default function useChecklist(
 
   const isComplete = useCallback(
     (title: string) => {
+      if (!Object.keys(checklist).includes(title)) return false
       return Object.values(checklist[title]).every(Boolean)
     },
     [checklist]
   )
 
   function getItemState(title: string, attribute: string): CheckedState {
+    if (!Object.keys(checklist).includes(title)) return false
     return (checklist[title] as Flat)[attribute]
   }
 

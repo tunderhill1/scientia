@@ -101,11 +101,8 @@ export const Button = styled('button', {
     },
     active: {
       true: {
-        backgroundColor: '$elementBackground',
+        backgroundColor: '$elementActive',
         '&:hover': { backgroundColor: '$elementHover' },
-      },
-      false: {
-        backgroundColor: '$appBackground',
       },
     },
     /* Press and hold animation */
@@ -150,6 +147,13 @@ export const Wrapper = styled('div', {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+      },
+    },
+    inline: {
+      true: {
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '0.5rem',
       },
     },
   },

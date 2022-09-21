@@ -6,8 +6,8 @@ import { endpoints } from '../constants/endpoints'
 import { LONDON_TIMEZONE } from '../constants/global'
 import { ResourceCreate } from '../constants/types'
 import { AxiosContext } from './axios.context'
+import { Resource } from './materials.service'
 import { useToast } from './toast.context'
-import { groupByProperty } from './utilities.service'
 import { useYear } from './year.context'
 
 export const getUTCDatetime = (date: string, time: string) =>
@@ -16,12 +16,12 @@ export const getUTCDatetime = (date: string, time: string) =>
 export const useResources = (): any => {
   const axiosInstance = useContext(AxiosContext)
   const { year } = useYear()
-  const moduleCode = useOutletContext<string | null>()
+  const { moduleCode } = useOutletContext<{ moduleCode: string | null }>()
   const { addToast } = useToast()
 
   const uploadResource = async (
     { file, ...resource }: ResourceCreate,
-    setGroupedMaterials: any
+    setRawMaterials: (_: Resource[]) => void
   ) => {
     await axiosInstance
       .request({
@@ -59,9 +59,7 @@ export const useResources = (): any => {
             url: endpoints.resources,
             params: { year, course: moduleCode },
           })
-          .then(({ data }: any) =>
-            setGroupedMaterials(groupByProperty(data, 'category', 'index', true))
-          )
+          .then(({ data }: any) => setRawMaterials(data))
           .catch((error: any) => {
             // TODO: When would this fail, what errors would catch here?
             // do we want to extract this callback somewhere else?

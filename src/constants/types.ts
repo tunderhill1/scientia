@@ -15,6 +15,10 @@ export class UserDetails {
 
   @Type(() => Module)
   modules: Module[]
+
+  isStaff() {
+    return this.roleInDepartment === 'staff'
+  }
 }
 
 export class ModuleStaff {

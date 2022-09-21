@@ -1,9 +1,11 @@
-import { DropdownMenu, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu'
+import { DropdownMenu, DropdownMenuTrigger, ItemIndicator } from '@radix-ui/react-dropdown-menu'
 import Avatar from 'boring-avatars'
 import { useContext } from 'react'
 import {
   CalendarDate,
+  Check,
   Command,
+  Dice5Fill,
   DoorClosedFill,
   MoonFill,
   Search,
@@ -13,11 +15,21 @@ import { useNavigate } from 'react-router-dom'
 
 import { Link, links } from '../constants/links'
 import useAuth from '../lib/auth.service'
+import { useGame } from '../lib/game/game.context'
+import { gameEnabled } from '../lib/game/levels.service'
 import { ThemeContext } from '../lib/theme.context'
 import { useUser } from '../lib/user.context'
 import { useYear } from '../lib/year.context'
 import { Button } from '../styles/_app.style'
-import { Content, Header, Item, Logo, Nav, Separator } from '../styles/navigation.style'
+import {
+  CheckboxItem,
+  Content,
+  Header,
+  Item,
+  Logo,
+  Nav,
+  Separator,
+} from '../styles/navigation.style'
 
 /**
  * TODO: Extract the colours as a constant and implement functionality for the buttons!
@@ -28,6 +40,7 @@ export const Navigation = () => {
   const { logoutUser } = useAuth()
   const { year } = useYear()
   const { theme, toggleTheme } = useContext(ThemeContext)
+  const { includeLevels, toggleIncludeLevels } = useGame()
   const navigate = useNavigate()
 
   return (
@@ -100,6 +113,15 @@ export const Navigation = () => {
                 )}
                 Toggle Theme
               </Item>
+              {gameEnabled && !userDetails?.isStaff() && (
+                <CheckboxItem checked={includeLevels} onCheckedChange={toggleIncludeLevels}>
+                  <Dice5Fill size={20} style={{ margin: '0 0.5rem 0 0.5rem' }} />
+                  <span style={{ flexGrow: 1 }}>Game Levels</span>
+                  <ItemIndicator>
+                    <Check size={30} />
+                  </ItemIndicator>
+                </CheckboxItem>
+              )}
               <Separator />
               <Item onSelect={logoutUser}>
                 <DoorClosedFill size={20} style={{ margin: '0 0.5rem 0 0.5rem' }} />

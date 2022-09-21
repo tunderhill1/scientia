@@ -22,7 +22,7 @@ import {
 
 const Exercises = () => {
   const { year } = useYear()
-  const moduleCode = useOutletContext<string | null>()!
+  const { moduleCode } = useOutletContext<{ moduleCode: string | null }>()!
   const [exercises, setExercises] = useState<Exercise[]>([])
   const { data: rawExercises } = useAxios({
     url: endpoints.exercises(year),
