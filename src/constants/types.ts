@@ -1,6 +1,8 @@
 import { Expose, Type } from 'class-transformer'
 import { Dispatch, SetStateAction } from 'react'
 
+import { endpoints } from './endpoints'
+
 export type SetState<Value> = Dispatch<SetStateAction<Value>>
 
 export class UserDetails {
@@ -145,4 +147,8 @@ export class SubmittedFile {
   moduleCode: string
   @Expose({ name: 'exercise_number' })
   exerciseNumber: number
+
+  get url(): string {
+    return endpoints.submissionFile(this.year, this.moduleCode, this.exerciseNumber, this.id)
+  }
 }

@@ -1,8 +1,8 @@
 import prettyBytes from 'pretty-bytes'
+import { ReactNode } from 'react'
 import { Check2, Trash3Fill, Upload } from 'react-bootstrap-icons'
 import { format as formatTimeAgo } from 'timeago.js'
 
-import { endpoints } from '../../../constants/endpoints'
 import { FileRequirement, SubmittedFile } from '../../../constants/types'
 import { DeleteButton } from '../../../styles/deleteButton.style'
 import { UploadTrigger } from '../../../styles/exerciseDialog.style'
@@ -25,115 +25,133 @@ const FileUploadArea = ({
   const submittedFile =
     submittedFiles.find((file) => file.targetFileName === fileRequirement.name) ?? null
 
-  function openSubmissionFile(event: any) {
+  function onClick(event: any) {
     if (!submittedFile) return
     if (
       event.target.classList.contains('delete-button') ||
       (['svg', 'path'].includes(event.target.nodeName) &&
         event.target.parentElement.classList.contains('delete-button'))
     ) {
+      event.preventDefault()
       return
     }
-    event.preventDefault()
+    window.open(submittedFile.url, '_blank')
+  }
 
-    window.open(
-      endpoints.submissionFile(
-        submittedFile.year,
-        submittedFile.moduleCode,
-        submittedFile.exerciseNumber,
-        submittedFile.targetFileName,
-        submittedFile.id
-      ),
-      '_blank'
+  const AnchorWrapper = ({ children }: { children: ReactNode }) => {
+    return submittedFile ? (
+      <a
+        href={submittedFile.url}
+        title={submittedFile.targetFileName}
+        target="_blank"
+        rel="noreferrer"
+        onClick={onClick}
+        style={{
+          margin: 0,
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        {children}
+      </a>
+    ) : (
+      <>{children}</>
     )
   }
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', width: 'auto' }}>
-      <UploadTrigger
-        htmlFor={`exercise-upload-${fileName + fileType}`}
-        onClick={openSubmissionFile}
-        submitted={!!submittedFile}
-      >
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
+      <AnchorWrapper>
+        <UploadTrigger
+          htmlFor={`exercise-upload-${fileName + fileType}`}
+          submitted={!!submittedFile}
+          onClick={(event) => {
+            if (!submittedFile) return
+            event.preventDefault()
           }}
         >
-          {submittedFile ? (
-            <Check2 className={css({ fill: '$green9', minWidth: '1.5rem' })()} size={24} />
-          ) : (
-            <Upload size={24} style={{}} />
-          )}
-          <div
-            style={{
-              marginLeft: '1rem',
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
-            <p>{fileName[0].toUpperCase() + fileName.substring(1).replace(/[-_]/g, ' ')}</p>
-            <p
-              className={css({
-                fontSize: '$md',
-                color: '$sand9',
-                marginTop: '0.125rem',
-              })()}
-            >
-              {fileType}
-            </p>
-          </div>
-        </div>
-
-        {submittedFile && (
           <div
             style={{
               display: 'flex',
+              justifyContent: 'center',
               alignItems: 'center',
             }}
           >
+            {submittedFile ? (
+              <Check2 className={css({ fill: '$green9', minWidth: '1.5rem' })()} size={24} />
+            ) : (
+              <Upload size={24} style={{}} />
+            )}
+            <div
+              style={{
+                marginLeft: '1rem',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              <p>{fileName[0].toUpperCase() + fileName.substring(1).replace(/[-_]/g, ' ')}</p>
+              <p
+                className={css({
+                  fontSize: '$md',
+                  color: '$sand9',
+                  marginTop: '0.125rem',
+                })()}
+              >
+                {fileType}
+              </p>
+            </div>
+          </div>
+
+          {submittedFile && (
             <div
               style={{
                 display: 'flex',
-                flexDirection: 'column',
-                textAlign: 'right',
-                marginRight: '1rem',
-                marginLeft: '3rem',
-                alignItems: 'end',
-                width: 'fit-content',
+                alignItems: 'center',
               }}
             >
-              <i
-                className={css({
-                  fontSize: '$sm',
-                  color: '$sand10',
-                  marginBottom: '0.125rem',
-                })()}
-              >
-                Submitted {formatTimeAgo(submittedFile.timestamp)}
-              </i>
-              <p className={css({ fontSize: '$sm', color: '$sand9' })()}>
-                {prettyBytes(submittedFile.fileSize)}
-              </p>
-            </div>
-            {!disabled && (
-              <DeleteButton
-                type="button"
-                aria-label="delete"
-                className="delete-button"
-                title={`Delete submission for ${submittedFile.targetFileName}`}
-                onClick={(event) => {
-                  deleteFile(submittedFile)
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  textAlign: 'right',
+                  marginRight: '1rem',
+                  marginLeft: '3rem',
+                  alignItems: 'end',
+                  width: 'fit-content',
                 }}
               >
-                <Trash3Fill className="delete-button" size={20} />
-              </DeleteButton>
-            )}
-          </div>
-        )}
-      </UploadTrigger>
+                <i
+                  className={css({
+                    fontSize: '$sm',
+                    color: '$sand10',
+                    marginBottom: '0.125rem',
+                  })()}
+                >
+                  Submitted {formatTimeAgo(submittedFile.timestamp)}
+                </i>
+                <p className={css({ fontSize: '$sm', color: '$sand9' })()}>
+                  {prettyBytes(submittedFile.fileSize)}
+                </p>
+              </div>
+              {!disabled && (
+                <DeleteButton
+                  type="button"
+                  aria-label="delete"
+                  className="delete-button"
+                  title={`Delete submission for ${submittedFile.targetFileName}`}
+                  onClick={(event) => {
+                    deleteFile(submittedFile)
+                  }}
+                >
+                  <Trash3Fill className="delete-button" size={20} />
+                </DeleteButton>
+              )}
+            </div>
+          )}
+        </UploadTrigger>
+      </AnchorWrapper>
 
       <input
         hidden

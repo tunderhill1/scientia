@@ -44,8 +44,6 @@ const ExerciseDialog = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [submittedFiles])
 
-  const tempDate = new Date(2022, 8, 30, 19)
-
   return (
     exercise && (
       <Dialog open={true} onOpenChange={() => setExercise(null)}>
@@ -75,13 +73,13 @@ const ExerciseDialog = ({
                     Specification
                   </Link>
                 )}
-                {dataFiles?.length && (
+                {!!dataFiles?.length && (
                   <Link target="_blank" href={dataFiles[0].url}>
                     <LinkIcon />
                     Data Files
                   </Link>
                 )}
-                {modelAnswers?.length && (
+                {!!modelAnswers?.length && (
                   <Link target="_blank" href={modelAnswers[0].url}>
                     <LinkIcon />
                     Model Answers
@@ -103,7 +101,7 @@ const ExerciseDialog = ({
                     <Deadline css={{ color: '$green11' }}>
                       {submittedFiles.length} out of {fileRequirements.length} submitted
                     </Deadline>
-                    <Deadline>Due {displayTimestamp(tempDate)}</Deadline>
+                    <Deadline>Due {displayTimestamp(exercise.endDate)}</Deadline>
                   </div>
                   <ProgressBar value={submittedFiles.length} max={fileRequirements.length} />
                   {fileRequirements.map((fileRequirement, index) => (
