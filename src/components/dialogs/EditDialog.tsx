@@ -4,6 +4,7 @@ import { endpoints } from '../../constants/endpoints'
 import { ResourceCreate } from '../../constants/types'
 import { AxiosContext } from '../../lib/axios.context'
 import { useToast } from '../../lib/toast.context'
+import { groupByProperty } from '../../lib/utilities.service'
 import { useYear } from '../../lib/year.context'
 import Dialog from './Dialog'
 import ResourceDetailsForm from './upload/components/ResourceDetailsForm'
@@ -15,7 +16,6 @@ const EditDialog = ({
   categories,
   moduleCode,
   setGroupedMaterials,
-  groupByProperty,
 }: {
   resourceToEdit: any
   setResourceToEdit: (_: any) => void
@@ -23,7 +23,6 @@ const EditDialog = ({
   categories: string[]
   moduleCode: string | null
   setGroupedMaterials: any
-  groupByProperty: any
 }) => {
   const { year } = useYear()
   const axiosInstance = useContext(AxiosContext)
@@ -52,7 +51,9 @@ const EditDialog = ({
             url: endpoints.resources,
             params: { year, course: moduleCode },
           })
-          .then(({ data }: any) => setGroupedMaterials(groupByProperty(data, 'category', 'index')))
+          .then(({ data }: any) =>
+            setGroupedMaterials(groupByProperty(data, 'category', 'index', true))
+          )
           .catch((error: any) => {
             addToast({ variant: 'error', title: 'There was an error fetching resources' })
             console.error(error)

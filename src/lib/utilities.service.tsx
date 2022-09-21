@@ -7,28 +7,42 @@ import { Exercise, Track, TrackMap } from '../constants/types'
 /* A file to store miscellaneous utility functions */
 
 /**
+ * Sorts an object alphabetically by key
+ */
+export const sortObjectByKey = (object: { [_: string]: any }) =>
+  Object.keys(object)
+    .sort((a, b) => (a.toLowerCase() > b.toLowerCase() ? 1 : -1))
+    .reduce((obj: any, key) => {
+      obj[key] = object[key]
+      return obj
+    }, {})
+
+/**
  * Groups a given data object by the given 'groupBy' property to form a dictionary of lists. Each list of objects
  * is sorted by the 'orderBy' property.
  */
 export function groupByProperty(
   data: object[],
   groupBy: string,
-  orderBy: string
+  orderBy: string,
+  sortByKey?: boolean
 ): { [key: string]: object[] } {
   /* Preliminary check to make sure that the groupBy and orderBy attributes are in the data */
   if (!data.every((d) => groupBy in d && orderBy in d))
     throw Error(`'${groupBy}' and '${orderBy}' need be properties of provided objects`)
-  return data === null
-    ? {}
-    : data
-        .sort((a: any, b: any) => (a[orderBy] > b[orderBy] ? 1 : -1))
-        .reduce(
-          (groups: any, item: any) => ({
-            ...groups,
-            [item[groupBy]]: [...(groups[item[groupBy]] || []), item],
-          }),
-          {}
-        )
+  const newObject =
+    data === null
+      ? {}
+      : data
+          .sort((a: any, b: any) => (a[orderBy] > b[orderBy] ? 1 : -1))
+          .reduce(
+            (groups: any, item: any) => ({
+              ...groups,
+              [item[groupBy]]: [...(groups[item[groupBy]] || []), item],
+            }),
+            {}
+          )
+  return sortByKey ? sortObjectByKey(newObject) : newObject
 }
 
 /**

@@ -59,7 +59,9 @@ export const useResources = (): any => {
             url: endpoints.resources,
             params: { year, course: moduleCode },
           })
-          .then(({ data }: any) => setGroupedMaterials(groupByProperty(data, 'category', 'index')))
+          .then(({ data }: any) =>
+            setGroupedMaterials(groupByProperty(data, 'category', 'index', true))
+          )
           .catch((error: any) => {
             // TODO: When would this fail, what errors would catch here?
             // do we want to extract this callback somewhere else?

@@ -72,7 +72,6 @@ export const Button = styled('button', {
   fontSize: 'medium',
   userSelect: 'none',
   cursor: 'pointer',
-  transition: 'all 250ms ease-in-out 0s',
 
   '&:hover': {
     backgroundColor: '$elementHover',
@@ -87,7 +86,6 @@ export const Button = styled('button', {
   '&:focus-visible': {
     outline: '0.25rem solid $elementBorder',
     /* NOTE: Transition "all" would cause a weird visual artefact as you're transitioning the outline width */
-    transition: 'outline-color 250ms ease-in-out 0s',
   },
 
   variants: {
