@@ -6,7 +6,7 @@ import ExerciseDialog from '../components/dialogs/ExerciseDialog'
 import { endpoints } from '../constants/endpoints'
 import { Exercise } from '../constants/types'
 import { useAxios } from '../lib/axios.context'
-import { calculateGrade, displayTimestamp } from '../lib/utilities.service'
+import { calculateGrade, displayTimestamp, percentage } from '../lib/utilities.service'
 import { useYear } from '../lib/year.context'
 import { Link, LinkIcon } from '../styles/exerciseDialog.style'
 import {
@@ -38,14 +38,8 @@ const Exercises = () => {
 
   const [exerciseForDialog, setExerciseForDialog] = useState<Exercise | null>(null)
 
-  if (!exercises)
-    return (
-      <div
-        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}
-      >
-        <p>No exercises available for this module yet.</p>
-      </div>
-    )
+  if (!exercises?.length)
+    return <p style={{ marginTop: '5rem' }}>No exercises available for this module yet.</p>
 
   return (
     <>
@@ -78,9 +72,11 @@ const Exercises = () => {
                 <td style={{ whiteSpace: 'nowrap' }}>
                   {e.mark && (
                     <>
-                      {Math.round((100 * e.mark) / e.maximumMark)}%
+                      {percentage(e.mark, e.maximumMark)}
                       <br />
-                      <SubText>{`${e.mark} / ${e.maximumMark}`}</SubText>
+                      <SubText>
+                        {e.mark} / {e.maximumMark}
+                      </SubText>
                     </>
                   )}
                 </td>

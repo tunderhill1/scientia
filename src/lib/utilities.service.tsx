@@ -111,6 +111,7 @@ export const displayTimestamp = (date: Date, format?: string): string =>
   )
 
 export const calculateGrade = (mark: number, maximumMark: number): string => {
+  if (isNaN(mark) || isNaN(maximumMark)) return ''
   const percentageGrade = (100 * mark) / maximumMark
   if (percentageGrade < 30) return 'F'
   if (percentageGrade < 40) return 'E'
@@ -119,6 +120,11 @@ export const calculateGrade = (mark: number, maximumMark: number): string => {
   if (percentageGrade < 70) return 'B'
   if (percentageGrade < 80) return 'A'
   return 'A*'
+}
+
+export const percentage = (mark: number, maximumMark: number): string => {
+  if (isNaN(mark) || isNaN(maximumMark)) return ''
+  return `${(100 * mark) / maximumMark}%`
 }
 
 /* Concatenate grouped arrays */
