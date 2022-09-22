@@ -101,7 +101,7 @@ const Timeline = () => {
     setRowHeights(
       Object.entries(trackMapForTerm).reduce(
         (accumulator: { [code: string]: string }, [code, tracks]): { [code: string]: string } => {
-          accumulator[code] = `calc(${TIMELINE_TRACK_HEIGHT} * ${tracks.length})`
+          accumulator[code] = `calc(${TIMELINE_TRACK_HEIGHT} * ${tracks.length || 1})`
           return accumulator
         },
         {}
