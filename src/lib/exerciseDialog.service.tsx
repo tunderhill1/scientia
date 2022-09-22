@@ -1,3 +1,4 @@
+import confetti from 'canvas-confetti'
 import { plainToInstance } from 'class-transformer'
 import { useContext, useEffect, useState } from 'react'
 
@@ -68,6 +69,11 @@ export const useExercise = (exercise: Exercise) => {
           variant: 'success',
           title: `${targetFileName} submitted successfully.`,
         })
+        if (
+          exerciseMaterials?.fileRequirements?.length &&
+          exerciseMaterials?.fileRequirements.length === submittedFiles.length + 1
+        )
+          setTimeout(confetti, 330)
         setSubmittedFiles((prevFiles) => [
           ...prevFiles.filter((file) => file.targetFileName !== targetFileName),
           submittedFile,

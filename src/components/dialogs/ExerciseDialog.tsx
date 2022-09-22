@@ -1,8 +1,6 @@
-import confetti from 'canvas-confetti'
-import { useEffect } from 'react'
-
 import { Exercise, SetState } from '../../constants/types'
 import { useExercise } from '../../lib/exerciseDialog.service'
+import { useUser } from '../../lib/user.context'
 import { displayTimestamp } from '../../lib/utilities.service'
 import {
   Deadline,
@@ -30,19 +28,14 @@ const ExerciseDialog = ({
 }) => {
   const { exerciseMaterials, submittedFiles, submitFile, deleteFile } = useExercise(exercise)
   const { spec, dataFiles, modelAnswers, fileRequirements } = exerciseMaterials || {}
+  const { userDetails } = useUser()
+  const moduleName = userDetails?.modules.find((m) => m.code === exercise.moduleCode)?.title
 
   function isUploadEnabled(): boolean {
     // This is admittedly a hack, but gets easily around the pure date comparison
     // limitations (which would make dev interactions cumbersome)
     return process.env.NODE_ENV === 'development' || exercise.endDate > new Date()
   }
-
-  useEffect(() => {
-    if (fileRequirements && fileRequirements.length === submittedFiles.length)
-      setTimeout(confetti, 330)
-    // only show confetti once - when submitted files renders
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [submittedFiles])
 
   return (
     exercise && (
@@ -51,11 +44,13 @@ const ExerciseDialog = ({
           <ExerciseTitle>{exercise.title}</ExerciseTitle>
           <div style={{ gap: '0.5rem', display: 'flex' }}>
             <ModulePill>{exercise.type}</ModulePill>
-            <ModulePill>{exercise.moduleName}</ModulePill>
+            {moduleName && <ModulePill>{moduleName}</ModulePill>}
           </div>
         </TitleWrapper>
 
-        {exerciseMaterials ? (
+        {!spec && !dataFiles?.length && !modelAnswers?.length && !fileRequirements?.length ? (
+          <NotFound>No materials found for this exercise.</NotFound>
+        ) : (
           <>
             <div
               style={{
@@ -87,26 +82,32 @@ const ExerciseDialog = ({
                 )}
               </ResourcesWrapper>
               <Hr />
-              {fileRequirements?.length && (
+              {!!fileRequirements?.length && (
                 <UploadWrapper>
                   <div
                     style={{
                       display: 'flex',
                       justifyContent: 'space-between',
-                      alignItems: 'flex-end',
+                      alignItems: 'center',
                       flexWrap: 'wrap-reverse',
-                      gap: '0.5rem',
+                      gap: '0.5rem 2rem',
                     }}
                   >
                     <Deadline css={{ color: '$green11' }}>
                       {submittedFiles.length} out of {fileRequirements.length} submitted
+                      {submittedFiles.length === fileRequirements.length && (
+                        <>, and you are all done! 🎉</>
+                      )}
                     </Deadline>
-                    <Deadline>Due {displayTimestamp(exercise.endDate)}</Deadline>
+                    <Deadline completed={submittedFiles.length === fileRequirements.length}>
+                      Due {displayTimestamp(exercise.endDate)}
+                    </Deadline>
                   </div>
                   <ProgressBar value={submittedFiles.length} max={fileRequirements.length} />
                   {fileRequirements.map((fileRequirement, index) => (
                     <FileUploadArea
                       key={index}
+                      exercise={exercise}
                       disabled={!isUploadEnabled()}
                       fileRequirement={fileRequirement}
                       submittedFiles={submittedFiles}
@@ -117,14 +118,12 @@ const ExerciseDialog = ({
                 </UploadWrapper>
               )}
             </div>
-            {fileRequirements?.length && (
+            {!!fileRequirements?.length && (
               <PlagiarismDisclaimer>
                 By submitting, you agree that this is your own, unaided work.
               </PlagiarismDisclaimer>
             )}
           </>
-        ) : (
-          <NotFound>No materials found for this exercise.</NotFound>
         )}
       </Dialog>
     )

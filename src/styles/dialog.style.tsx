@@ -32,7 +32,6 @@ export const Content = styled(DialogContent, {
   position: 'fixed',
   top: '50%',
   left: '50%',
-  // transform: 'translate(-50%, -50%)',
   zIndex: 10,
   minWidth: 'fit-content',
   maxHeight: '90vh',

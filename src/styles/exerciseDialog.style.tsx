@@ -131,8 +131,15 @@ export const ExerciseTitle = styled('h3', {
 
 export const Deadline = styled('p', {
   fontSize: '$md',
-  fontWeight: '600',
+  fontWeight: 600,
   color: '$highContrast',
+  variants: {
+    completed: {
+      true: {
+        fontWeight: 'normal',
+      },
+    },
+  },
 })
 
 export const PlagiarismDisclaimer = styled('p', {

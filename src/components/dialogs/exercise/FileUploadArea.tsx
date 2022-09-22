@@ -3,18 +3,20 @@ import { ReactNode } from 'react'
 import { Check2, Trash3Fill, Upload } from 'react-bootstrap-icons'
 import { format as formatTimeAgo } from 'timeago.js'
 
-import { FileRequirement, SubmittedFile } from '../../../constants/types'
+import { Exercise, FileRequirement, SubmittedFile } from '../../../constants/types'
 import { DeleteButton } from '../../../styles/deleteButton.style'
 import { UploadTrigger } from '../../../styles/exerciseDialog.style'
 import { css } from '../../../styles/stitches.config'
 
 const FileUploadArea = ({
+  exercise,
   disabled = false,
   fileRequirement,
   submittedFiles,
   submitFile,
   deleteFile,
 }: {
+  exercise: Exercise
   disabled?: boolean
   fileRequirement: FileRequirement
   submittedFiles: SubmittedFile[]
@@ -69,7 +71,6 @@ const FileUploadArea = ({
           submitted={!!submittedFile}
           onClick={(event) => {
             if (!submittedFile) return
-            event.preventDefault()
           }}
         >
           <div
@@ -129,7 +130,8 @@ const FileUploadArea = ({
                     marginBottom: '0.125rem',
                   })()}
                 >
-                  Submitted {formatTimeAgo(submittedFile.timestamp)}
+                  Submitted {submittedFile.timestamp > exercise.endDate && 'late'}{' '}
+                  {formatTimeAgo(submittedFile.timestamp)}
                 </i>
                 <p className={css({ fontSize: '$sm', color: '$sand9' })()}>
                   {prettyBytes(submittedFile.fileSize)}
