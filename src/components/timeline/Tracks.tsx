@@ -20,8 +20,10 @@ export const Tracks = ({
 }) => {
   // Ad hoc calculation of grid-template-rows heights to align to the hardcoded padding of the Module tabs
 
-  const gridTemplateRows = Object.entries(trackMap)
-    .map(([_, tracks]) => {
+  const gridTemplateRows = Object.keys(trackMap)
+    .sort()
+    .map((code) => {
+      const tracks = trackMap[code]
       return tracks
         .map((_, i) => {
           if (tracks.length === 1) return `calc(${TIMELINE_TRACK_HEIGHT} + 0.75rem * 2)`
@@ -40,7 +42,9 @@ export const Tracks = ({
         gridTemplateRows: gridTemplateRows,
       }}
     >
-      {Object.values(trackMap)
+      {Object.keys(trackMap)
+        .sort()
+        .map((code) => trackMap[code])
         .flat()
         .map((track, trackIndex) =>
           track
