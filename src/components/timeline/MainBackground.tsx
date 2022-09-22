@@ -12,22 +12,25 @@ export const MainBackground = ({
     <Grid css={{ gridTemplateColumns: `repeat(${cols}, 15rem)` }}>
       {[...Array(cols)].map((_, id) => (
         <div key={id} style={{ height: `100%`, borderRadius: '0.5rem', paddingTop: '0.5rem' }}>
-          {Object.values(rowHeights).map((height, index) => {
-            /* NOTE: the computed height of each of the rows is:
-             *    [given height (i.e. adjusted to accommodate all the required tracks)] +
-             *    [2x padding of tabs (HARDCODED)]
-             * This is so that the heights of rows and Modules tabs align.
-             */
-            return (
-              <div
-                key={index}
-                className={css({
-                  height: `calc(${height} + 0.75rem * 2)`,
-                  backgroundColor: index % 2 === 0 ? '$subtleBackground' : '$appBackground',
-                })()}
-              />
-            )
-          })}
+          {Object.keys(rowHeights)
+            .sort()
+            .map((code, index) => {
+              const height = rowHeights[code]
+              /* NOTE: the computed height of each of the rows is:
+               *    [given height (i.e. adjusted to accommodate all the required tracks)] +
+               *    [2x padding of tabs (HARDCODED)]
+               * This is so that the heights of rows and Modules tabs align.
+               */
+              return (
+                <div
+                  key={index}
+                  className={css({
+                    height: `calc(${height} + 0.75rem * 2)`,
+                    backgroundColor: index % 2 === 0 ? '$subtleBackground' : '$appBackground',
+                  })()}
+                />
+              )
+            })}
         </div>
       ))}
     </Grid>
