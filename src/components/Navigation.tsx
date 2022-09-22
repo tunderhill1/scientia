@@ -113,7 +113,7 @@ export const Navigation = () => {
                 )}
                 Toggle Theme
               </Item>
-              {gameEnabled && !userDetails?.isStaff() && (
+              {gameEnabled && !userDetails?.isStaff && (
                 <CheckboxItem checked={includeLevels} onCheckedChange={toggleIncludeLevels}>
                   <Dice5Fill size={20} style={{ margin: '0 0.5rem 0 0.5rem' }} />
                   <span style={{ flexGrow: 1 }}>Game Levels</span>

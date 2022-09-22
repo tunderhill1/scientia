@@ -72,6 +72,7 @@ const FileUploadArea = ({
           onClick={(event) => {
             if (!submittedFile) return
           }}
+          disabled={disabled}
         >
           <div
             style={{

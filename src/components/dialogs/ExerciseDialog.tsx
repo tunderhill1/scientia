@@ -34,7 +34,10 @@ const ExerciseDialog = ({
   function isUploadEnabled(): boolean {
     // This is admittedly a hack, but gets easily around the pure date comparison
     // limitations (which would make dev interactions cumbersome)
-    return process.env.NODE_ENV === 'development' || exercise.endDate > new Date()
+    return (
+      (process.env.NODE_ENV === 'development' || new Date() < exercise.endDate) &&
+      !userDetails?.isStaff
+    )
   }
 
   return (
@@ -93,12 +96,14 @@ const ExerciseDialog = ({
                       gap: '0.5rem 2rem',
                     }}
                   >
-                    <Deadline css={{ color: '$green11' }}>
-                      {submittedFiles.length} out of {fileRequirements.length} submitted
-                      {submittedFiles.length === fileRequirements.length && (
-                        <>, and you are all done! 🎉</>
-                      )}
-                    </Deadline>
+                    {!userDetails?.isStaff && (
+                      <Deadline css={{ color: '$green11' }}>
+                        {submittedFiles.length} out of {fileRequirements.length} submitted
+                        {submittedFiles.length === fileRequirements.length && (
+                          <>, and you are all done! 🎉</>
+                        )}
+                      </Deadline>
+                    )}
                     <Deadline completed={submittedFiles.length === fileRequirements.length}>
                       Due {displayTimestamp(exercise.endDate)}
                     </Deadline>
@@ -118,7 +123,7 @@ const ExerciseDialog = ({
                 </UploadWrapper>
               )}
             </div>
-            {!!fileRequirements?.length && (
+            {!!fileRequirements?.length && !userDetails?.isStaff && (
               <PlagiarismDisclaimer>
                 By submitting, you agree that this is your own, unaided work.
               </PlagiarismDisclaimer>

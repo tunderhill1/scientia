@@ -27,7 +27,7 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
   }, [])
 
   const toggleIncludeLevels = () => {
-    if (userDetails?.isStaff()) throw new Error('Staff should NOT toggle game levels')
+    if (userDetails?.isStaff) throw new Error('Staff should NOT toggle game levels')
     setIncludeLevels(!includeLevels)
     localStorage.setItem('includeLevels', (!includeLevels).toString())
   }
@@ -36,7 +36,7 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <GameContext.Provider
       value={{
-        includeLevels: gameEnabled && !userDetails?.isStaff() && includeLevels,
+        includeLevels: gameEnabled && !userDetails?.isStaff && includeLevels,
         toggleIncludeLevels,
       }}
     >

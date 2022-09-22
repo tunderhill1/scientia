@@ -121,7 +121,7 @@ const Materials = () => {
         <UiChecks size={22} />
       </Toggle>
       <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-        {!checklistMode && userDetails?.isStaff() && (
+        {!checklistMode && userDetails?.isStaff && (
           <>
             <Button icon onClick={() => setUploadDialogOpen(true)} title="Upload file resources">
               <Upload size={22} />
@@ -146,7 +146,7 @@ const Materials = () => {
         )}
         {checklistMode && (
           <>
-            {userDetails?.isStaff() && (
+            {userDetails?.isStaff && (
               <Button
                 icon
                 css={{ marginRight: '0.75rem' }}
@@ -219,7 +219,7 @@ const Materials = () => {
           headerGenerator={headerGenerator}
           contentGenerator={contentGenerator}
           mainItemAction={
-            (userDetails?.isStaff() && {
+            (userDetails?.isStaff && {
               icon: <PencilSquare size={22} />,
               action: (item: any) => {
                 setResourceToEdit({

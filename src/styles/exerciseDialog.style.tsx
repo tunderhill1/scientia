@@ -82,6 +82,12 @@ export const UploadTrigger = styled('label', {
         boxShadow: shadowSM,
       },
     },
+    disabled: {
+      true: {
+        cursor: 'not-allowed',
+        '&:hover': { backgroundColor: '$sand1' },
+      },
+    },
   },
 })
 
