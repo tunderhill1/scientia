@@ -15,7 +15,7 @@ services:
       mode: replicated
       replicas: 1
   emarking:
-    image: gitlab.doc.ic.ac.uk:4567/edtech/emarking:rewrite
+    image: gitlab.doc.ic.ac.uk:4567/edtech/emarking:master
     environment:
       - ENV=production
       - SECRET_KEY
@@ -30,7 +30,7 @@ services:
       mode: replicated
       replicas: 1
   materials:
-    image: gitlab.doc.ic.ac.uk:4567/edtech/materials:basic-auth
+    image: gitlab.doc.ic.ac.uk:4567/edtech/materials:master
     environment:
       - ENV=production
       - SECRET_KEY
