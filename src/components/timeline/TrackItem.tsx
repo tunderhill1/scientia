@@ -24,7 +24,7 @@ export const TrackItem = ({
       className={css({
         cursor: disabled ? 'default' : 'pointer',
         gridColumn: `${startColumn} / ${endColumn}`,
-        gridRow: `${row}`,
+        gridRow: `${row + 1}`, // Grid is 1-indexed
         justifyContent: isSingleDay ? 'center' : 'space-between',
         padding: isSingleDay ? '0.25rem' : '0.5rem',
         textAlign: isSingleDay ? 'center' : 'left',
