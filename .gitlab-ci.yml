@@ -63,7 +63,7 @@ build frontend image:
     changes:
       - "**/README.md"
   only:
-    - rewrite
+    - master
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
     GIT_SUBMODULE_STRATEGY: recursive
@@ -92,7 +92,7 @@ build nginx image:
     changes:
       - "**/README.md"
   only:
-    - rewrite
+    - master
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
     GIT_SUBMODULE_STRATEGY: recursive
@@ -130,7 +130,7 @@ deploy prod:
     changes:
       - README.md
   only:
-    - rewrite
+    - master
   when: manual
   before_script: []
   script:
@@ -140,7 +140,7 @@ deploy prod:
     - deploy_swarm
   environment:
     name: production-swarm
-    url: https://scientia.doc.ic.ac.uk
+    url: https://nova-scientia.doc.ic.ac.uk
 
 
 
