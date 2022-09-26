@@ -1,4 +1,11 @@
-import { addYears, areIntervalsOverlapping, format, getMinutes, isSameMonth } from 'date-fns'
+import {
+  addYears,
+  areIntervalsOverlapping,
+  format,
+  getMinutes,
+  isSameMonth,
+  subYears,
+} from 'date-fns'
 import { formatInTimeZone, utcToZonedTime } from 'date-fns-tz'
 
 import { LONDON_TIMEZONE } from '../constants/global'
@@ -45,17 +52,40 @@ export function groupByProperty(
   return sortByKey ? sortObjectByKey(newObject) : newObject
 }
 
+const OCTOBER = 9
 /**
  * Compute the current short year (i.e. 2021, 2122, 2223 etc.).
  * It combines the last two digits of each year in the academic year.
  * eg: for the academic year 2021-2022, the short year is 2122
  */
-export const currentShortYear = (): string => {
-  const OCTOBER = 9
-  const now = utcToZonedTime(new Date(), LONDON_TIMEZONE)
+export const currentShortYear = (referenceDate?: Date): string => {
+  const now = referenceDate || utcToZonedTime(new Date(), LONDON_TIMEZONE)
   const currentYear = format(now, 'yy')
   const complementYear = format(addYears(now, now.getMonth() < OCTOBER ? -1 : 1), 'yy')
   return now.getMonth() < OCTOBER ? complementYear + currentYear : currentYear + complementYear
+}
+
+/**
+ * Get the enabled academic years
+ * NOTE: Materials from before 21-22 have been wiped, so we don't offer them.
+ */
+const BASE_YEAR = 2021
+export const validShortYears = (): string[] => {
+  let years = []
+  let date = utcToZonedTime(new Date(), LONDON_TIMEZONE)
+
+  while (date >= new Date(BASE_YEAR, OCTOBER, 1)) {
+    years.unshift(currentShortYear(date))
+    date = subYears(date, 1)
+  }
+  if (process.env.NODE_ENV === 'development' && !years.includes('2223')) years.push('2223')
+
+  return years
+}
+
+export const formatShortYear = (year: string = currentShortYear()): string => {
+  if (year?.length !== 4) return ''
+  return `20${year.slice(0, 2)} - ${year.slice(2, 4)}`
 }
 
 /* Returns whether the given two exercises overlap */
@@ -111,7 +141,7 @@ export const displayTimestamp = (date: Date, format?: string): string =>
   )
 
 export const calculateGrade = (mark: number, maximumMark: number): string => {
-  if (isNaN(mark) || isNaN(maximumMark)) return ''
+  if (isNaN(mark) || isNaN(maximumMark) || maximumMark === 0) return ''
   const percentageGrade = (100 * mark) / maximumMark
   if (percentageGrade < 30) return 'F'
   if (percentageGrade < 40) return 'E'
@@ -122,10 +152,14 @@ export const calculateGrade = (mark: number, maximumMark: number): string => {
   return 'A*'
 }
 
+// rounds percentage down to nearest 1 %
 export const percentage = (mark: number, maximumMark: number): string => {
-  if (isNaN(mark) || isNaN(maximumMark)) return ''
-  return `${(100 * mark) / maximumMark}%`
+  if (isNaN(mark) || isNaN(maximumMark) || maximumMark === 0) return ''
+  return `${Math.floor((100 * mark) / maximumMark)}%`
 }
+
+export const capitaliseFirstLetter = (str: string): string =>
+  str ? str[0].toUpperCase() + str.slice(1) : ''
 
 /* Concatenate grouped arrays */
 export function concatGrouped<T>(

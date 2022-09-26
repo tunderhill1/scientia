@@ -1,14 +1,14 @@
 import { plainToInstance } from 'class-transformer'
-import React, { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import { LevelProgressBar } from '../components/game/LevelProgressBar'
 import { endpoints } from '../constants/endpoints'
 import { Module as ModuleType } from '../constants/types'
-import { useAxios } from '../lib/axios.context'
+import { AxiosContext } from '../lib/axios.context'
 import { useGame } from '../lib/game/game.context'
 import { useLevels } from '../lib/game/levels.service'
-import { useYear } from '../lib/year.context'
+import { useToast } from '../lib/toast.context'
 import { Button, Container, Wrapper } from '../styles/_app.style'
 import { css } from '../styles/stitches.config'
 
@@ -17,17 +17,27 @@ const Module = () => {
   const { moduleCode } = useParams()
   const levelsManager = useLevels()
   const { pathname } = useLocation()
-  const { year } = useYear()
-  const [module, setModule] = useState<ModuleType | undefined>(undefined)
-  const { data, error } = useAxios({
-    url: endpoints.module(year, moduleCode as string),
-    method: 'GET',
-  })
+  const { requestedYear: year } = useParams()
+  const axiosInstance = useContext(AxiosContext)
   const navigate = useNavigate()
+  const { addToast } = useToast()
 
+  const [module, setModule] = useState<ModuleType | undefined>(undefined)
   useEffect(() => {
-    if (data !== null) setModule(plainToInstance(ModuleType, data))
-  }, [data])
+    axiosInstance
+      .request({
+        url: endpoints.module(year!, moduleCode as string),
+        method: 'GET',
+      })
+      .then(({ data }: { data: any }) => {
+        if (!data) setModule(undefined)
+        setModule(plainToInstance(ModuleType, data))
+      })
+      .catch((error) => {
+        addToast({ variant: 'error', title: 'Error fetching module' })
+        console.error(error)
+      })
+  }, [year])
 
   const tabs = [
     { title: 'Materials', to: 'materials' },
@@ -38,7 +48,6 @@ const Module = () => {
     return (
       <Container>
         <h1 style={{ margin: 0 }}> {moduleCode}</h1>
-        <p style={{ marginBottom: '0.5rem' }}>{error}</p>
       </Container>
     )
   }
@@ -54,7 +63,7 @@ const Module = () => {
       <h3
         className={css({
           color: '$lowContrast',
-          margin: '0.5rem 0rem',
+          margin: '0.5rem 0',
           marginBottom: '1rem',
           fontWeight: '400',
         })()}

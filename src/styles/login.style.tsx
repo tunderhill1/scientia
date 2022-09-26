@@ -58,13 +58,19 @@ export const Input = styled('input', {
   all: 'unset',
   boxSizing: 'border-box',
   width: '100%',
+  border: '1px solid $elementBorder',
   borderRadius: '0.5rem',
   padding: '0.75rem',
   height: '2.75rem',
-  backgroundColor: '$elementBackground',
+  backgroundColor: '$appBackground',
   transition: 'background-color 0.3s ease-in-out',
+  '&::placeholder': {
+    color: '$sand8',
+  },
+  '&:hover': {
+    borderColor: '$elementHoverBorder',
+  },
   '&:focus': {
-    backgroundColor: '$appBackground',
-    border: '0.0625rem solid $elementBorder',
+    borderColor: '$solidBackground',
   },
 })

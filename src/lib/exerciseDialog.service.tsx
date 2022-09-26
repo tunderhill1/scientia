@@ -1,58 +1,49 @@
 import confetti from 'canvas-confetti'
 import { plainToInstance } from 'class-transformer'
 import { useContext, useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 
 import { endpoints } from '../constants/endpoints'
 import { Exercise, ExerciseMaterials, SubmittedFile } from '../constants/types'
-import { AxiosContext, useAxios } from './axios.context'
+import { AxiosContext } from './axios.context'
 import { useToast } from './toast.context'
 import { useUser } from './user.context'
-import { useYear } from './year.context'
 
-export const useExercise = (exercise: Exercise) => {
+export const useExercise = ({ moduleCode, number: exerciseNumber }: Exercise) => {
   const axiosInstance = useContext(AxiosContext)
+  const { requestedYear: year } = useParams()
   const { addToast } = useToast()
   const { userDetails } = useUser()
-  const { year } = useYear()
 
   const [exerciseMaterials, setExerciseMaterials] = useState<ExerciseMaterials | null>(null)
-  const { data: rawExerciseMaterials, error: exerciseMaterialsError } = useAxios({
-    method: 'GET',
-    url: endpoints.exerciseMaterials(
-      year,
-      exercise.moduleCode,
-      exercise.number,
-      userDetails!.cohort
-    ),
-  })
   useEffect(() => {
-    if (exerciseMaterialsError) {
-      addToast({
-        variant: 'error',
-        title: 'Unable to get exercise details',
+    axiosInstance
+      .request({
+        method: 'GET',
+        url: endpoints.exerciseMaterials(year!, moduleCode, exerciseNumber, userDetails!.cohort),
       })
-    } else if (rawExerciseMaterials) {
-      setExerciseMaterials(plainToInstance(ExerciseMaterials, rawExerciseMaterials))
-    }
-  }, [addToast, exerciseMaterialsError, rawExerciseMaterials])
+      .then(({ data }: { data: any }) => {
+        setExerciseMaterials(plainToInstance(ExerciseMaterials, data))
+      })
+      .catch(() => addToast({ variant: 'error', title: 'Unable to get exercise details' }))
+  }, [year])
 
   const [submittedFiles, setSubmittedFiles] = useState<SubmittedFile[]>([])
-  const { data: rawSubmissions, error: submissionsError } = useAxios({
-    method: 'GET',
-    url: endpoints.submissions(year, exercise.moduleCode, exercise.number),
-  })
   useEffect(() => {
-    if (submissionsError) {
-      addToast({
-        variant: 'error',
-        title: 'Error fetching submitted files',
+    axiosInstance
+      .request({
+        method: 'GET',
+        url: endpoints.submissions(year!, moduleCode, exerciseNumber),
       })
-    } else if (rawSubmissions) {
-      setSubmittedFiles(
-        rawSubmissions.map((submittedFile: any) => plainToInstance(SubmittedFile, submittedFile))
-      )
-    }
-  }, [addToast, submissionsError, rawSubmissions])
+      .then(({ data }: { data: any }) => {
+        setSubmittedFiles(
+          data.map((submittedFile: any) => plainToInstance(SubmittedFile, submittedFile))
+        )
+      })
+      .catch(() => {
+        addToast({ variant: 'error', title: 'Error fetching submitted files' })
+      })
+  }, [year])
 
   const submitFile = (file: File, targetFileName: string) => {
     let formData = new FormData()
@@ -60,7 +51,7 @@ export const useExercise = (exercise: Exercise) => {
     axiosInstance
       .request({
         method: 'POST',
-        url: endpoints.submissions(year, exercise.moduleCode, exercise.number),
+        url: endpoints.submissions(year!, moduleCode, exerciseNumber),
         data: formData,
       })
       .then(({ data }: { data: SubmittedFile }) => {
@@ -91,7 +82,7 @@ export const useExercise = (exercise: Exercise) => {
     axiosInstance
       .request({
         method: 'DELETE',
-        url: endpoints.submission(year, file.moduleCode, file.exerciseNumber, file.id),
+        url: endpoints.submission(year!, file.moduleCode, file.exerciseNumber, file.id),
       })
       .then(() => {
         addToast({ variant: 'info', title: `File deleted successfully.` })
@@ -108,7 +99,7 @@ export const useExercise = (exercise: Exercise) => {
     if (workload === '') return
     axiosInstance.request({
       method: 'POST',
-      url: endpoints.submissionWorkload(year, exercise.moduleCode, exercise.number),
+      url: endpoints.submissionWorkload(year!, moduleCode, exerciseNumber),
       params: { workload },
     })
   }

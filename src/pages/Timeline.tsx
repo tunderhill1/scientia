@@ -13,13 +13,12 @@ import { Exercise, Module, Term, TrackMap } from '../constants/types'
 import { useTimeline } from '../lib/timeline.service'
 import { useUser } from '../lib/user.context'
 import { generateTrackMap } from '../lib/utilities.service'
-import { useYear } from '../lib/year.context'
 import { Area, Container, Corner, Scrollbar, Thumb, Viewport } from '../styles/_app.style'
 
 // differenceInCalendarWeeks returns number of weekends in between the 2 dates
 export function dateToColumn(date: Date, startDate: Date): number {
   if (!isMonday(startDate)) throw new Error('Parameter startDate MUST be a monday.')
-  if (date < startDate) throw new Error('Parameter date MUST be after startDate.')
+  if (date < startDate) return -1
   return (
     INDEXING_OFFSET +
     differenceInBusinessDays(date, startDate) +
@@ -41,9 +40,8 @@ const TOP_MARGIN = `(${NAVIGATION_HEIGHT})`
  * components: events, indicator and rows; note that the layers are ordered based on their relative heights.
  */
 const Timeline = () => {
-  const { year } = useYear()
   const { userDetails } = useUser()
-  const { terms, exercises } = useTimeline(year)
+  const { terms, exercises } = useTimeline()
   const [term, setTerm] = useState<Term>()
   const userModules: Module[] = userDetails?.modules as Module[]
   const [modulesForTerm, setModulesForTerm] = useState<Module[]>([])

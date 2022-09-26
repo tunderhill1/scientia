@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight } from 'react-bootstrap-icons'
 import { Term } from '../../constants/types'
 import { groupByProperty } from '../../lib/utilities.service'
 import { SwitcherWrapper, TermSwitchArrow } from '../../styles/timeline/switcher.style'
-import SelectBox from '../Select'
+import { SelectBox } from '../Select'
 
 export const Switcher = ({
   term,
@@ -20,7 +20,7 @@ export const Switcher = ({
 
   useEffect(() => {
     setTerm(terms.find((term) => term.name === periods[periodIndex]) || terms[0])
-  }, [periodIndex])
+  }, [periodIndex, periods, setTerm, terms])
 
   return (
     <SwitcherWrapper>

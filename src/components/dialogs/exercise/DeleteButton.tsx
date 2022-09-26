@@ -29,13 +29,13 @@ const DeleteButton = ({
         Are you sure you want to delete <b>{name}</b>?
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
           <Close asChild>
-            <ActionButton secondary type="button" style={{ marginRight: '1rem' }}>
+            <ActionButton.Tertiary type="button" style={{ marginRight: '1rem' }}>
               Cancel
-            </ActionButton>
+            </ActionButton.Tertiary>
           </Close>
-          <ActionButton primary color="destructive" type="button" onClick={deleteFile}>
+          <ActionButton.Primary color="destructive" type="button" onClick={deleteFile}>
             Delete
-          </ActionButton>
+          </ActionButton.Primary>
         </div>
         <PopoverArrow />
       </PopoverContent>

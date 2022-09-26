@@ -1,13 +1,12 @@
 import { useContext } from 'react'
 import { Draggable, DropResult, Droppable } from 'react-beautiful-dnd'
-import { useOutletContext } from 'react-router-dom'
+import { useOutletContext, useParams } from 'react-router-dom'
 
 import { endpoints } from '../constants/endpoints'
 import { getItemStyle, getListStyle } from '../styles/dragDrop.style'
 import { AxiosContext } from './axios.context'
 import { Resource } from './materials.service'
 import { useToast } from './toast.context'
-import { useYear } from './year.context'
 
 export type DragDropOptions = { dragEnabled: boolean; droppableId: string }
 
@@ -47,7 +46,7 @@ export const addDroppable = (
 )
 
 export const useReordering = (setRawMaterials: (_: Resource[]) => void) => {
-  const { year } = useYear()
+  const { requestedYear: year } = useParams()
   const axiosInstance = useContext(AxiosContext)
   const { moduleCode } = useOutletContext<{ moduleCode: string | null }>()
   const { addToast } = useToast()

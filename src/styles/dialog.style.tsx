@@ -65,49 +65,62 @@ export const Title = styled(DialogTitle, {
   fontSize: 18,
 })
 
-const shadowMd = '0px 2px 4px rgba(0, 0, 0, 0.06), 0px 4px 6px rgba(0, 0, 0, 0.1)'
-
-export const ActionButton = styled('button', {
-  padding: '0.5rem 1rem',
-  fontWeight: 700,
-  fontSize: '14px',
+const shadowSm = '0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.06)'
+const ButtonTemplate = styled('button', {
+  padding: '0.75rem 1.5rem',
+  fontWeight: 600,
+  fontSize: '1rem',
   cursor: 'pointer',
   width: 'fit-content',
-  variants: {
-    primary: {
-      true: {
-        border: '2px solid $blue9',
-        borderRadius: '8px',
-        background: '$blue9',
-        color: 'white',
-        boxShadow: shadowMd,
-        '&:hover': {
-          backgroundColor: '$blue11',
-        },
-      },
-    },
-    color: {
-      destructive: {
-        backgroundColor: '$errorBackground',
-        '&:hover': {
-          backgroundColor: '$red11',
-        },
-        border: '2px solid $errorBackground',
-      },
-    },
-    secondary: {
-      true: {
-        backgroundColor: 'transparent',
-        textDecoration: 'underline',
-        outline: 'none',
-        border: 'none',
-        color: '$sand10',
-        textUnderlineThickness: '2px',
-        textUnderlineOffset: '4px',
-        '&:hover': {
-          color: '$sand12',
-        },
-      },
-    },
-  },
+  borderRadius: '8px',
 })
+
+export const ActionButton = {
+  Primary: styled(ButtonTemplate, {
+    border: '2px solid $primary9',
+    background: '$primary9',
+    color: 'white',
+    boxShadow: shadowSm,
+    '&:hover': {
+      backgroundColor: '$primary10',
+      borderColor: '$primary10',
+    },
+    '&:focus': {
+      borderColor: '$primary12',
+      outline: '2px dotted transparent',
+      outlineOffset: '2px',
+    },
+    variants: {
+      color: {
+        destructive: {
+          backgroundColor: '$errorBackground',
+          '&:hover': {
+            backgroundColor: '$red11',
+          },
+          border: '2px solid $errorBackground',
+        },
+      },
+    },
+  }),
+  Secondary: styled(ButtonTemplate, {
+    border: '2px solid $primary8',
+    color: '$primary11',
+    boxShadow: shadowSm,
+    backgroundColor: 'transparent',
+    '&:hover': {
+      backgroundColor: '$primary4',
+    },
+  }),
+  Tertiary: styled(ButtonTemplate, {
+    backgroundColor: 'transparent',
+    textDecoration: 'underline',
+    outline: 'none',
+    border: 'none',
+    color: '$sand10',
+    textUnderlineThickness: '2px',
+    textUnderlineOffset: '4px',
+    '&:hover': {
+      color: '$sand12',
+    },
+  }),
+}
