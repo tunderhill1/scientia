@@ -18,7 +18,7 @@ import { useGame } from '../lib/game/game.context'
 import { gameEnabled } from '../lib/game/levels.service'
 import { ThemeContext } from '../lib/theme.context'
 import { useUser } from '../lib/user.context'
-import { capitaliseFirstLetter, currentShortYear, formatShortYear } from '../lib/utilities.service'
+import { capitaliseFirstLetter, formatShortYear, shortYear } from '../lib/utilities.service'
 import { Button } from '../styles/_app.style'
 import { ActionButton } from '../styles/dialog.style'
 import {
@@ -43,7 +43,7 @@ export const Navigation = () => {
   const { userDetails } = useUser()
   const { logoutUser } = useAuth()
   const { requestedYear: year } = useParams()
-  const currentYear = currentShortYear()
+  const currentYear = shortYear()
   const { theme, toggleTheme } = useContext(ThemeContext)
   const { includeLevels, toggleIncludeLevels } = useGame()
   const navigate = useNavigate()

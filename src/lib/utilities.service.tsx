@@ -1,4 +1,5 @@
 import {
+  addMonths,
   addYears,
   areIntervalsOverlapping,
   format,
@@ -10,6 +11,9 @@ import { formatInTimeZone, utcToZonedTime } from 'date-fns-tz'
 
 import { LONDON_TIMEZONE } from '../constants/global'
 import { Exercise, Term, Track, TrackMap } from '../constants/types'
+
+const SEPTEMBER = 8
+const OCTOBER = 9
 
 /* A file to store miscellaneous utility functions */
 
@@ -52,13 +56,14 @@ export function groupByProperty(
   return sortByKey ? sortObjectByKey(newObject) : newObject
 }
 
-const OCTOBER = 9
 /**
- * Compute the current short year (i.e. 2021, 2122, 2223 etc.).
+ * Compute the short year (i.e. 2021, 2122, 2223 etc.) for 'referenceDate'.
+ * Defaults to today's date if no argument is given.
+ *
  * It combines the last two digits of each year in the academic year.
  * eg: for the academic year 2021-2022, the short year is 2122
  */
-export const currentShortYear = (referenceDate?: Date): string => {
+export const shortYear = (referenceDate?: Date): string => {
   const now = referenceDate || utcToZonedTime(new Date(), LONDON_TIMEZONE)
   const currentYear = format(now, 'yy')
   const complementYear = format(addYears(now, now.getMonth() < OCTOBER ? -1 : 1), 'yy')
@@ -74,16 +79,20 @@ export const validShortYears = (): string[] => {
   let years = []
   let date = utcToZonedTime(new Date(), LONDON_TIMEZONE)
 
+  // Add look-ahead in September
+  if (date.getMonth() === SEPTEMBER) years.unshift(shortYear(addMonths(date, 1)))
+
   while (date >= new Date(BASE_YEAR, OCTOBER, 1)) {
-    years.unshift(currentShortYear(date))
+    years.unshift(shortYear(date))
     date = subYears(date, 1)
   }
+
   if (process.env.NODE_ENV === 'development' && !years.includes('2223')) years.push('2223')
 
   return years
 }
 
-export const formatShortYear = (year: string = currentShortYear()): string => {
+export const formatShortYear = (year: string = shortYear()): string => {
   if (year?.length !== 4) return ''
   return `20${year.slice(0, 2)} - ${year.slice(2, 4)}`
 }

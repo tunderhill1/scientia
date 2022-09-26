@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import useAuth from '../lib/auth.service'
 import { ThemeContext } from '../lib/theme.context'
-import { currentShortYear } from '../lib/utilities.service'
+import { shortYear } from '../lib/utilities.service'
 import { Button, Container } from '../styles/_app.style'
 import { ActionButton } from '../styles/dialog.style'
 import { Fieldset, Form, Input, Label, Logo, Name, Tagline } from '../styles/login.style'
@@ -21,13 +21,13 @@ const Login = () => {
     e.preventDefault()
     /* Login and if successful, redirect to the modules page */
     await loginUser({ username: username.toLowerCase(), password }).then(() => {
-      if (isLoggedIn()) navigate(`/${currentShortYear()}/modules`, { replace: true })
+      if (isLoggedIn()) navigate(`/${shortYear()}/modules`, { replace: true })
     })
   }
 
   useEffect(() => {
     /* Navigate to /modules if the user's already logged in */
-    if (isLoggedIn()) navigate(`/${currentShortYear()}/modules`, { replace: true })
+    if (isLoggedIn()) navigate(`/${shortYear()}/modules`, { replace: true })
   }, [isLoggedIn, navigate])
 
   return (

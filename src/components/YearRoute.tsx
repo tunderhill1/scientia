@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Navigate, Outlet, useParams } from 'react-router-dom'
 
-import { currentShortYear, validShortYears } from '../lib/utilities.service'
+import { shortYear, validShortYears } from '../lib/utilities.service'
 
 /**
  * A year route takes care of switching the academic year for resources (in a global context)
@@ -19,7 +19,7 @@ export const YearRoute = () => {
       setRedirect(true)
     } else {
       // if user typed a year that ISNT the current year AND is not in valid years list (2122, 2223)
-      setRedirect(requestedYear !== currentShortYear() && !years.includes(requestedYear))
+      setRedirect(requestedYear !== shortYear() && !years.includes(requestedYear))
     }
   }, [requestedYear])
 

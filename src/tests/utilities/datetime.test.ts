@@ -1,7 +1,7 @@
 import {
-  currentShortYear,
   formatDateRange,
   formatShortYear,
+  shortYear,
   validShortYears,
 } from '../../lib/utilities.service'
 
@@ -14,19 +14,31 @@ afterAll(() => {
 
 test.each`
   month | year    | expected
-  ${9}  | ${2020} | ${'1920'}
-  ${10} | ${2020} | ${'2021'}
-  ${1}  | ${2100} | ${'9900'}
-  ${12} | ${2100} | ${'0001'}
+  ${8}  | ${2020} | ${'1920'}
+  ${9}  | ${2020} | ${'2021'}
+  ${0}  | ${2100} | ${'9900'}
+  ${11} | ${2100} | ${'0001'}
 `("short year for 1-$month-$year is '$expected'", ({ year, month, expected }) => {
-  jest.setSystemTime(new Date(year, month - 1, 1))
-  expect(currentShortYear()).toBe(expected)
+  expect(shortYear(new Date(year, month, 1))).toBe(expected)
 })
 
-test('calculates valid short years available', () => {
-  jest.setSystemTime(new Date(2025, 2, 1))
-  expect(validShortYears()).toEqual(['2122', '2223', '2324', '2425'])
+test('shortYear defaults to current date if no arg is given', () => {
+  jest.setSystemTime(new Date(2022, 8, 27))
+  expect(shortYear()).toBe('2122')
 })
+
+test.each`
+  day   | month | year    | expected
+  ${1}  | ${2}  | ${2025} | ${['2122', '2223', '2324', '2425']}
+  ${26} | ${8}  | ${2022} | ${['2122', '2223']}
+  ${26} | ${7}  | ${2022} | ${['2122']}
+`(
+  'calculates valid short years available on $day-$month-$year',
+  ({ day, month, year, expected }) => {
+    jest.setSystemTime(new Date(year, month, day))
+    expect(validShortYears()).toEqual(expected)
+  }
+)
 
 test('format an academic year into a range', () => {
   expect(formatShortYear('2930')).toBe('2029 - 30')
