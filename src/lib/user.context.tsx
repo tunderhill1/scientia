@@ -1,5 +1,5 @@
 import { instanceToPlain, plainToInstance } from 'class-transformer'
-import React, { createContext, useContext, useState } from 'react'
+import { ReactNode, createContext, useContext, useState } from 'react'
 
 import { UserDetails } from '../constants/types'
 
@@ -23,7 +23,7 @@ function getUserDetailsOrUndefined(): UserDetails | undefined {
 }
 
 /* The username can be retrieved and set from anywhere in the app. */
-export const UserProvider = ({ children }: { children: React.ReactNode }) => {
+export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [userDetails, setUserDetails] = useState<UserDetails | undefined>(
     getUserDetailsOrUndefined()
   )

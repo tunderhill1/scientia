@@ -1,8 +1,7 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { TIMELINE_TRACK_HEIGHT } from '../../constants/global'
 import { Module } from '../../constants/types'
-import { useYear } from '../../lib/year.context'
 import { Wrapper } from '../../styles/_app.style'
 import { css } from '../../styles/stitches.config'
 import { Tabs } from '../Tabs'
@@ -29,7 +28,7 @@ export const Modules = ({
     backgroundColor: '$appBackground',
   }
   const navigate = useNavigate()
-  const { year } = useYear()
+  const { requestedYear: year } = useParams()
 
   return (
     <Wrapper css={modulesWrapperStyle}>

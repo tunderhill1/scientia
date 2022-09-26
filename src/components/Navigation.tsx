@@ -1,35 +1,39 @@
 import { DropdownMenu, DropdownMenuTrigger, ItemIndicator } from '@radix-ui/react-dropdown-menu'
-import Avatar from 'boring-avatars'
 import { useContext } from 'react'
 import {
   CalendarDate,
   Check,
-  Command,
   Dice5Fill,
   DoorClosedFill,
+  GearWideConnected,
+  Justify,
   MoonFill,
-  Search,
   SunFill,
 } from 'react-bootstrap-icons'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
-import { Link, links } from '../constants/links'
+import { LINKS } from '../constants/links'
 import useAuth from '../lib/auth.service'
 import { useGame } from '../lib/game/game.context'
 import { gameEnabled } from '../lib/game/levels.service'
 import { ThemeContext } from '../lib/theme.context'
 import { useUser } from '../lib/user.context'
-import { useYear } from '../lib/year.context'
+import { capitaliseFirstLetter, currentShortYear, formatShortYear } from '../lib/utilities.service'
 import { Button } from '../styles/_app.style'
+import { ActionButton } from '../styles/dialog.style'
 import {
   CheckboxItem,
   Content,
+  DropdownIcon,
   Header,
   Item,
   Logo,
   Nav,
   Separator,
+  VerticalRule,
+  WebsiteTitle,
 } from '../styles/navigation.style'
+import { YearSwitcher } from './YearSwitcher'
 
 /**
  * TODO: Extract the colours as a constant and implement functionality for the buttons!
@@ -38,95 +42,107 @@ import {
 export const Navigation = () => {
   const { userDetails } = useUser()
   const { logoutUser } = useAuth()
-  const { year } = useYear()
+  const { requestedYear: year } = useParams()
+  const currentYear = currentShortYear()
   const { theme, toggleTheme } = useContext(ThemeContext)
   const { includeLevels, toggleIncludeLevels } = useGame()
   const navigate = useNavigate()
+  const { isLoggedIn } = useAuth()
 
   return (
     <Header>
       <Nav>
         {/* TODO: Is it a good idea to use an modified icon button here instead of a custom variant? */}
-        <Button
-          icon
-          onClick={() => navigate('/')}
-          role="link"
-          css={{ width: 'auto', '&:hover': { backgroundColor: 'transparent' } }}
-        >
-          {/* TODO: We might need to store logos separately if they're theme-configurable */}
-          <Logo
-            alt="Scientia logo"
-            src="/assets/logo.svg"
-            style={{ filter: `invert(${theme === 'dark' ? 1 : 0})` }}
-          />
-          <span style={{ marginLeft: '0.5rem', fontSize: 'x-large', fontWeight: 600 }}>
-            Scientia
-          </span>
-        </Button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <a href={isLoggedIn() ? `/${year}/modules` : '/'} title="View modules">
+            <Button
+              icon
+              role="link"
+              css={{ width: 'auto', '&:hover': { backgroundColor: 'transparent' } }}
+            >
+              {/* TODO: We might need to store logos separately if they're theme-configurable */}
+              <Logo
+                alt="Scientia logo"
+                src="/assets/logo.svg"
+                style={{ filter: `invert(${theme === 'dark' ? 1 : 0})` }}
+              />
+              <WebsiteTitle>Scientia</WebsiteTitle>
+            </Button>
+          </a>
+          <VerticalRule />
+          <a href={`/${year}/timeline`} title="View timeline">
+            <Button icon>
+              <CalendarDate size={22} />
+            </Button>
+          </a>
+        </div>
 
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Button icon css={{ marginRight: '1rem' }}>
-            {/* TODO: This button should trigger a command palette */}
-            <Search size={22} />
-          </Button>
+        {year !== currentYear && (
+          <ActionButton.Primary
+            style={{ padding: '0.5rem 1rem' }}
+            onClick={() => navigate('/' + currentYear + window.location.pathname.slice(5))}
+          >
+            Go to {formatShortYear()}
+          </ActionButton.Primary>
+        )}
 
-          <Button icon css={{ marginRight: '1rem' }} onClick={() => navigate(`/${year}/timeline`)}>
-            <CalendarDate size={22} />
-          </Button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          {/* User Preferences */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button icon title="User preferences">
+                <GearWideConnected size={22} />
+              </Button>
+            </DropdownMenuTrigger>
+            <Content align="start">
+              <Item
+                onSelect={toggleTheme}
+                title={`Use a ${theme === 'light' ? 'dark' : 'light'} appearance`}
+              >
+                <DropdownIcon>{theme === 'light' ? <MoonFill /> : <SunFill />}</DropdownIcon>
+                <span>{capitaliseFirstLetter(theme === 'light' ? 'dark' : 'light') + ' mode'}</span>
+              </Item>
+              <Separator />
+              <YearSwitcher />
+              <Separator />
+
+              {gameEnabled && !userDetails?.isStaff && (
+                <>
+                  <CheckboxItem checked={includeLevels} onCheckedChange={toggleIncludeLevels}>
+                    <Dice5Fill size={20} style={{ margin: '0 0.5rem' }} />
+                    <span style={{ flexGrow: 1 }}>Game Levels</span>
+                    <ItemIndicator>
+                      <Check size={30} />
+                    </ItemIndicator>
+                  </CheckboxItem>
+                  <Separator />
+                </>
+              )}
+              <Item onSelect={logoutUser}>
+                <DropdownIcon>
+                  <DoorClosedFill size={20} />
+                </DropdownIcon>
+                Logout
+              </Item>
+            </Content>
+          </DropdownMenu>
 
           {/* Quick Links */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button icon css={{ marginRight: '1rem' }}>
-                <Command size={22} />
+              <Button icon title="Useful websites">
+                <Justify size={22} />
               </Button>
             </DropdownMenuTrigger>
-            <Content>
-              {links.map((link: Link) => (
-                <Item key={link.title} onSelect={() => window.open(link.url, '_blank')}>
-                  {link.icon}
-                  {link.title}
-                </Item>
+            <Content align="start">
+              {LINKS.map((link) => (
+                <a href={link.url} target="_blank" rel="noreferrer" title={link.description}>
+                  <Item link key={link.title} style={{ padding: '0.5rem' }}>
+                    <link.icon size={16}></link.icon>
+                    {link.title}
+                  </Item>
+                </a>
               ))}
-            </Content>
-          </DropdownMenu>
-
-          {/* User Preferences */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button icon>
-                <Avatar
-                  size={32}
-                  name={userDetails?.login}
-                  variant="marble"
-                  colors={['#264653', '#2A9d8F', '#E9C46A', '#F4A261', '#E76F51']}
-                />
-              </Button>
-            </DropdownMenuTrigger>
-            <Content>
-              {/* TODO: Refactor the margins to avoid repetition */}
-              <Item onSelect={toggleTheme}>
-                {theme === 'light' ? (
-                  <SunFill size={20} style={{ margin: '0 0.5rem 0 0.5rem' }} />
-                ) : (
-                  <MoonFill size={20} style={{ margin: '0 0.5rem 0 0.5rem' }} />
-                )}
-                Toggle Theme
-              </Item>
-              {gameEnabled && !userDetails?.isStaff && (
-                <CheckboxItem checked={includeLevels} onCheckedChange={toggleIncludeLevels}>
-                  <Dice5Fill size={20} style={{ margin: '0 0.5rem 0 0.5rem' }} />
-                  <span style={{ flexGrow: 1 }}>Game Levels</span>
-                  <ItemIndicator>
-                    <Check size={30} />
-                  </ItemIndicator>
-                </CheckboxItem>
-              )}
-              <Separator />
-              <Item onSelect={logoutUser}>
-                <DoorClosedFill size={20} style={{ margin: '0 0.5rem 0 0.5rem' }} />
-                Logout
-              </Item>
             </Content>
           </DropdownMenu>
         </div>

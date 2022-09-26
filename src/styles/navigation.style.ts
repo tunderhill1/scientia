@@ -9,17 +9,40 @@ import { styled } from './stitches.config'
 
 const itemStyle = {
   borderRadius: '0.5rem',
-  padding: '0.25rem',
   height: '2.75rem',
   display: 'flex',
   alignItems: 'center',
+  justifyContent: 'flex-start',
+  gap: '0.5rem',
   cursor: 'pointer',
-  transition: 'all 250ms ease-in-out 0s',
-  '&:focus': {
-    backgroundColor: '$elementHover',
-    outline: 'none',
+  '&:hover': {
+    backgroundColor: '$sand3',
+    color: '$sand12',
+  },
+  variants: {
+    link: {
+      true: {
+        color: '$sand11',
+        backgroundColor: 'transparent',
+        textUnderlineThickness: '2px',
+        textUnderlineOffset: '4px',
+        '&:hover': {
+          backgroundColor: 'transparent',
+          textDecoration: 'underline',
+        },
+        '&:focus-visible': {
+          backgroundColor: 'transparent',
+          outline: 'none',
+        },
+      },
+    },
   },
 }
+
+export const DropdownIcon = styled('div', {
+  padding: '0.75rem',
+  svg: { display: 'block', size: 20 },
+})
 
 export const Header = styled('div', {
   height: '4rem',
@@ -58,8 +81,14 @@ export const Logo = styled('img', {
   height: '2rem',
 })
 
+export const WebsiteTitle = styled('span', {
+  margin: '0 0.5rem',
+  fontSize: '$xl',
+  fontWeight: 600,
+})
+
 export const Content = styled(DropdownMenuContent, {
-  minWidth: '14rem',
+  width: 'fit-content',
   backgroundColor: '$appBackground',
   borderRadius: '0.75rem',
   padding: '0.5rem',
@@ -74,4 +103,40 @@ export const Separator = styled(DropdownMenuSeparator, {
   height: '0.0625rem',
   margin: '0.25rem',
   backgroundColor: '$separator',
+})
+
+export const VerticalRule = styled('div', {
+  borderLeft: '1px solid $sand7',
+  height: '100%',
+  margin: '0 0.5rem',
+})
+
+export const YearSwitcherWrapper = styled('div', {
+  display: 'flex',
+  justifyContent: 'center',
+  gap: '0.5rem',
+  fontSize: '$md',
+  alignItems: 'center',
+  verticalAlign: 'middle',
+})
+
+export const YearArrow = styled('button', {
+  display: 'flex',
+  width: 'fit-content',
+  padding: '0.75rem',
+  background: 'transparent',
+  border: 'none',
+  borderRadius: 8,
+  cursor: 'pointer',
+  '&:hover': {
+    boxShadow: '$sm',
+    backgroundColor: '$sand4',
+  },
+  variants: {
+    disabled: {
+      true: {
+        visibility: 'hidden',
+      },
+    },
+  },
 })

@@ -1,15 +1,15 @@
 import Immutable from 'immutable'
 import { useContext, useEffect, useMemo, useState } from 'react'
 import { useOutletContext } from 'react-router'
+import { useParams } from 'react-router-dom'
 
 import { endpoints } from '../constants/endpoints'
-import { AxiosContext, useAxios } from './axios.context'
+import { AxiosContext } from './axios.context'
 import { useGame } from './game/game.context'
 import { LevelsManager, groupByLevel } from './game/levels.service'
 import { useToast } from './toast.context'
 import { concatGrouped } from './utilities.service'
 import { groupByProperty } from './utilities.service'
-import { useYear } from './year.context'
 
 /* TODO: Is there any reason that we do not have a complete Resource/Material type */
 export type Resource = { tags: string[]; id: number; category: string }
@@ -25,13 +25,14 @@ type MaterialsManager = {
   isComplete: (resourceId: number) => boolean
 }
 
-export function useMaterials({
+export const useMaterials = ({
   loaded: levelsLoaded,
   selectedLevel,
   hasMinLevels,
   setTotalLevels,
   updateLevel,
-}: LevelsManager): MaterialsManager {
+}: LevelsManager): MaterialsManager => {
+  const { requestedYear: year } = useParams()
   const [rawMaterials, setRawMaterials] = useState<Resource[]>([])
 
   /* Store materials grouped by level to minimise how often we group materials into levels */
@@ -45,13 +46,8 @@ export function useMaterials({
   const { addToast } = useToast()
   const { includeLevels } = useGame()
   const { moduleCode } = useOutletContext<{ moduleCode: string | null }>()
-  const { year } = useYear()
-  const { data, loaded: materialsLoaded } = useAxios({
-    url: endpoints.resources,
-    method: 'GET',
-    params: { year, course: moduleCode },
-  })
 
+  const [materialsLoaded, setMaterialsLoaded] = useState(false)
   const groupedMaterials = useMemo(
     () =>
       includeLevels && hasMinLevels
@@ -59,6 +55,24 @@ export function useMaterials({
         : (groupByProperty(rawMaterials, 'category', 'index', true) as GroupedMaterials),
     [includeLevels, rawMaterials, leveledMaterials, unleveledMaterials, selectedLevel, hasMinLevels]
   )
+  useEffect(() => {
+    setMaterialsLoaded(false)
+    axiosInstance
+      .request({
+        url: endpoints.resources,
+        method: 'GET',
+        params: { year, course: moduleCode },
+      })
+      .then(({ data }: { data: any }) => {
+        /* Group data by category */
+        setRawMaterials(data)
+        setMaterialsLoaded(true)
+      })
+      .catch((error) => {
+        addToast({ variant: 'error', title: 'Problem fetching resources' })
+        console.error(error)
+      })
+  }, [year])
 
   function isLoaded(): boolean {
     return materialsLoaded && (!includeLevels || levelsLoaded)
@@ -85,11 +99,6 @@ export function useMaterials({
         console.error(error)
       })
   }
-
-  /* Group data by category */
-  useEffect(() => {
-    if (data !== null) setRawMaterials(data)
-  }, [data])
 
   /* Group materials by category */
   useEffect(() => {

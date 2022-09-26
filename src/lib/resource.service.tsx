@@ -1,6 +1,6 @@
 import { zonedTimeToUtc } from 'date-fns-tz'
 import { useContext } from 'react'
-import { useOutletContext } from 'react-router-dom'
+import { useOutletContext, useParams } from 'react-router-dom'
 
 import { endpoints } from '../constants/endpoints'
 import { LONDON_TIMEZONE } from '../constants/global'
@@ -8,14 +8,13 @@ import { ResourceCreate } from '../constants/types'
 import { AxiosContext } from './axios.context'
 import { Resource } from './materials.service'
 import { useToast } from './toast.context'
-import { useYear } from './year.context'
 
 export const getUTCDatetime = (date: string, time: string) =>
   zonedTimeToUtc(date + ' ' + time, LONDON_TIMEZONE)
 
 export const useResources = (): any => {
   const axiosInstance = useContext(AxiosContext)
-  const { year } = useYear()
+  const { requestedYear: year } = useParams()
   const { moduleCode } = useOutletContext<{ moduleCode: string | null }>()
   const { addToast } = useToast()
 

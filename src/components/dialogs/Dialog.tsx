@@ -53,19 +53,18 @@ const Dialog = ({
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '2rem' }}>
             {secondaryButtonText && (
               <DialogClose asChild>
-                <ActionButton secondary style={{ display: 'inline-block' }}>
+                <ActionButton.Tertiary style={{ display: 'inline-block' }}>
                   {secondaryButtonText}
-                </ActionButton>
+                </ActionButton.Tertiary>
               </DialogClose>
             )}
             {primaryButtonText && (
-              <ActionButton
-                primary
+              <ActionButton.Primary
                 type="submit"
                 style={{ display: 'inline-block', marginLeft: '1rem' }}
               >
                 {primaryButtonText}
-              </ActionButton>
+              </ActionButton.Primary>
             )}
           </div>
         )}

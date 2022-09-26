@@ -26,7 +26,7 @@ Spearheaded by the [DoC EdTech Lab](https://edtech.pages.doc.ic.ac.uk/), Scienti
 
 # Running the app in dev
 
-> Make sure that the project folder sits next to the [Materials](https://gitlab.doc.ic.ac.uk/edtech/materials) and [ScientiaAPI](https://gitlab.doc.ic.ac.uk/edtech/scientia-api) project folders. Also, note that we are currently using **the basic-auth branch of Materials**.
+> Make sure that the project folder sits next to the [Materials](https://gitlab.doc.ic.ac.uk/edtech/materials), [Emarking](https://gitlab.doc.ic.ac.uk/edtech/emarking) and [ScientiaAPI](https://gitlab.doc.ic.ac.uk/edtech/scientia-api) project folders. 
 
 To make sure that cookies are sent correctly from the backend and stored correctly in the client, we use a docker-compose
 stack with an Nginx reverse proxy (pretty much what we use in production -just with simpler configs).
@@ -35,6 +35,8 @@ stack with an Nginx reverse proxy (pretty much what we use in production -just w
 docker-compose -f dev.docker-compose.yml up [--build]
 docker exec $(docker ps -qf "name=materials" | head -n1) flask create_all
 docker exec $(docker ps -qf "name=materials" | head -n1) flask setup_clean_dev_env
+docker exec $(docker ps -qf "name=emarking" | head -n1) flask create_all
+docker exec $(docker ps -qf "name=emarking" | head -n1) flask setup_clean_dev_env
 ```
 
 The stack so-composed (pardon the pun) should allow for hot-reload in both Scientia and Materials (as the respective services' source codes are attached as volumes).

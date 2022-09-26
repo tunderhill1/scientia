@@ -7,13 +7,13 @@ import {
   Check2Circle,
   Dash,
   Download,
-  Link45deg,
+  Link,
   PencilSquare,
   Trash3Fill,
   UiChecks,
   Upload,
 } from 'react-bootstrap-icons'
-import { useOutletContext } from 'react-router-dom'
+import { useOutletContext, useParams } from 'react-router-dom'
 
 import { CollapsibleList } from '../components/CollapsibleList'
 import { Tabs } from '../components/Tabs'
@@ -31,7 +31,6 @@ import { useGame } from '../lib/game/game.context'
 import { LevelsManager } from '../lib/game/levels.service'
 import { useMaterials } from '../lib/materials.service'
 import { useUser } from '../lib/user.context'
-import { useYear } from '../lib/year.context'
 import { Button, Checkbox, Footnote, Indicator, Wrapper } from '../styles/_app.style'
 import { Caret } from '../styles/collapsible-list.style'
 import { ToggleDragDropButton } from '../styles/dragDrop.style'
@@ -53,7 +52,7 @@ const Materials = () => {
     levelsManager: LevelsManager
   }>()
   const { userDetails } = useUser()
-  const { year } = useYear()
+  const { requestedYear: year } = useParams()
   const {
     groupedMaterials,
     setRawMaterials,
@@ -78,7 +77,9 @@ const Materials = () => {
   const onDownload = () => {
     const idsToDownload = checklistManager.getCheckedItems()
     const queryParameter = idsToDownload.map((id) => `id=${id}`).join('&')
-    window.open(`${endpoints.resourcesArchive}?year=${year}&course=${moduleCode}&${queryParameter}`)
+    window.open(
+      `${endpoints.resourcesArchive}?year=${year!}&course=${moduleCode}&${queryParameter}`
+    )
   }
 
   const headerGenerator = (collection: string, _: object[]) => (
@@ -132,7 +133,7 @@ const Materials = () => {
               onClick={() => setLinkUploadDialogOpen(true)}
               title="Upload a link resource"
             >
-              <Link45deg size={22} />
+              <Link size={22} />
             </Button>
             <ToggleDragDropButton
               icon

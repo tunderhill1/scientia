@@ -1,10 +1,10 @@
 import { useContext } from 'react'
+import { useParams } from 'react-router-dom'
 
 import { endpoints } from '../../constants/endpoints'
 import { AxiosContext } from '../../lib/axios.context'
 import { Resource } from '../../lib/materials.service'
 import { useToast } from '../../lib/toast.context'
-import { useYear } from '../../lib/year.context'
 import { css } from '../../styles/stitches.config'
 import Dialog from './Dialog'
 
@@ -21,7 +21,7 @@ const DeleteDialog = ({
   groupedMaterials: any
   setRawMaterials: (_: Resource[]) => void
 }) => {
-  const { year } = useYear()
+  const { requestedYear: year } = useParams()
   const { addToast } = useToast()
   const axiosInstance = useContext(AxiosContext)
   const onDelete = async () => {
@@ -45,12 +45,12 @@ const DeleteDialog = ({
           })
           .then((response: any) => setRawMaterials(response.data))
           .catch((error: any) => {
-            addToast({ variant: 'error', title: 'There was an error fetching resources' })
+            addToast({ variant: 'error', title: 'Error fetching resources' })
             console.error(error)
           })
       })
       .catch((error: any) => {
-        addToast({ variant: 'error', title: 'There was an error deleting the selected resources.' })
+        addToast({ variant: 'error', title: 'Error deleting the selected resources.' })
         console.error(error)
       })
   }

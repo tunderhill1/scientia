@@ -17,7 +17,7 @@ import {
 export const SelectBox = ({
   title,
   items,
-  display,
+  display = (s) => s,
   defaultValue,
   placeholder,
   onSelect,
@@ -25,7 +25,7 @@ export const SelectBox = ({
 }: {
   title: string
   items: string[]
-  display: (_: string) => string
+  display?: (_: string) => string
   defaultValue: string
   placeholder?: string
   onSelect: (_: any) => void
@@ -43,9 +43,9 @@ export const SelectBox = ({
         <ChevronUp />
       </SelectScrollUpButton>
       <SelectViewport>
-        {items.map((i: string, index: number) => (
-          <SelectItem key={index} value={index.toString()}>
-            <SelectItemText>{display(i)}</SelectItemText>
+        {items.map((item: string, index: number) => (
+          <SelectItem key={index} value={`${index}`}>
+            <SelectItemText>{display(item)}</SelectItemText>
             <SelectItemIndicator>
               <Check />
             </SelectItemIndicator>
@@ -58,5 +58,3 @@ export const SelectBox = ({
     </SelectContent>
   </Select>
 )
-
-export default SelectBox

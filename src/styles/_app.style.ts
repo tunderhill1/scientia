@@ -79,6 +79,9 @@ export const Button = styled('button', {
   '&:active': {
     backgroundColor: '$elementActive',
   },
+  "&[data-state='open']": {
+    backgroundColor: '$elementActive',
+  },
 
   '&:focus': {
     outline: 'none',

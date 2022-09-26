@@ -1,11 +1,11 @@
 import { useContext, useState } from 'react'
+import { useParams } from 'react-router-dom'
 
 import { endpoints } from '../../constants/endpoints'
 import { ResourceCreate } from '../../constants/types'
 import { AxiosContext } from '../../lib/axios.context'
 import { Resource } from '../../lib/materials.service'
 import { useToast } from '../../lib/toast.context'
-import { useYear } from '../../lib/year.context'
 import Dialog from './Dialog'
 import ResourceDetailsForm from './upload/components/ResourceDetailsForm'
 
@@ -24,7 +24,7 @@ const EditDialog = ({
   moduleCode: string | null
   setRawMaterials: (_: Resource[]) => void
 }) => {
-  const { year } = useYear()
+  const { requestedYear: year } = useParams()
   const axiosInstance = useContext(AxiosContext)
   const { addToast } = useToast()
 

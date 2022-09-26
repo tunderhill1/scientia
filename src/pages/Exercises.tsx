@@ -1,13 +1,13 @@
 import { plainToInstance } from 'class-transformer'
-import { Fragment, useEffect, useState } from 'react'
-import { useOutletContext } from 'react-router-dom'
+import { Fragment, useContext, useEffect, useState } from 'react'
+import { useOutletContext, useParams } from 'react-router-dom'
 
 import ExerciseDialog from '../components/dialogs/ExerciseDialog'
 import { endpoints } from '../constants/endpoints'
 import { Exercise } from '../constants/types'
-import { useAxios } from '../lib/axios.context'
+import { AxiosContext } from '../lib/axios.context'
+import { useToast } from '../lib/toast.context'
 import { calculateGrade, displayTimestamp, percentage } from '../lib/utilities.service'
-import { useYear } from '../lib/year.context'
 import { Link, LinkIcon } from '../styles/exerciseDialog.style'
 import {
   Header,
@@ -18,28 +18,38 @@ import {
 } from '../styles/exercises-page.style'
 
 const Exercises = () => {
-  const { year } = useYear()
+  const axiosInstance = useContext(AxiosContext)
+  const { requestedYear: year } = useParams()
+  const { addToast } = useToast()
   const { moduleCode } = useOutletContext<{ moduleCode: string | null }>()!
+
   const [exercises, setExercises] = useState<Exercise[]>([])
-  const { data: rawExercises } = useAxios({
-    url: endpoints.exercises(year),
-    method: 'GET',
-    params: { module_code: moduleCode },
-  })
+
   useEffect(() => {
-    if (rawExercises !== null) {
-      setExercises(
-        rawExercises
-          .map((exercise: any) => plainToInstance(Exercise, exercise))
-          .sort((ex1: Exercise, ex2: Exercise) => Number(ex1.endDate) - Number(ex2.endDate))
-      )
-    }
-  }, [rawExercises])
+    axiosInstance
+      .request({
+        url: endpoints.exercises(year!),
+        method: 'GET',
+        params: { module_code: moduleCode },
+      })
+      .then(({ data }: { data: any }) => {
+        if (data === null) setExercises([])
+        setExercises(
+          data
+            .map((exercise: any) => plainToInstance(Exercise, exercise))
+            .sort((ex1: Exercise, ex2: Exercise) => ex1.endDate.getTime() - ex2.endDate.getTime())
+        )
+      })
+      .catch((error) => {
+        addToast({ variant: 'error', title: 'Error fetching exercises' })
+        console.error(error)
+      })
+  }, [year])
 
   const [exerciseForDialog, setExerciseForDialog] = useState<Exercise | null>(null)
 
   if (!exercises?.length)
-    return <p style={{ marginTop: '5rem' }}>No exercises available for this module yet.</p>
+    return <p style={{ marginTop: '5rem' }}>No exercises available for this module.</p>
 
   return (
     <>
