@@ -70,15 +70,6 @@ export class Exercise {
   maximumMark: number
   mark: number | null
 }
-export class ModuleWithExercises {
-  code: string
-  title: string
-  terms: number[]
-  staff: string[]
-
-  @Type(() => Exercise)
-  exercises: Exercise[]
-}
 
 /* A track is a list of non-overlapping exercises */
 export type Track = Exercise[]
