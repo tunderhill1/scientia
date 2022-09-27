@@ -136,8 +136,14 @@ export const Navigation = () => {
             </DropdownMenuTrigger>
             <Content align="start">
               {LINKS.map((link) => (
-                <a href={link.url} target="_blank" rel="noreferrer" title={link.description}>
-                  <Item link key={link.title} style={{ padding: '0.5rem' }}>
+                <a
+                  href={link.url}
+                  key={link.title}
+                  target="_blank"
+                  rel="noreferrer"
+                  title={link.description}
+                >
+                  <Item link style={{ padding: '0.5rem' }}>
                     <link.icon size={16}></link.icon>
                     {link.title}
                   </Item>
