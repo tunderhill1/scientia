@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction } from 'react'
 import { endpoints } from './endpoints'
 
 export type SetState<Value> = Dispatch<SetStateAction<Value>>
+export type LocationState = { next: string }
 
 export class UserDetails {
   login: string

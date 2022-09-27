@@ -1,10 +1,11 @@
 import { useContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
+import { LocationState } from '../constants/types'
 import useAuth from '../lib/auth.service'
 import { ThemeContext } from '../lib/theme.context'
 import { shortYear } from '../lib/utilities.service'
-import { Button, Container } from '../styles/_app.style'
+import { Container } from '../styles/_app.style'
 import { ActionButton } from '../styles/dialog.style'
 import { Fieldset, Form, Input, Label, Logo, Name, Tagline } from '../styles/login.style'
 
@@ -15,19 +16,19 @@ const Login = () => {
 
   const { loginUser, isLoggedIn } = useAuth()
   const navigate = useNavigate()
+  const { state } = useLocation()
   const { theme } = useContext(ThemeContext)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    /* Login and if successful, redirect to the modules page */
-    await loginUser({ username: username.toLowerCase(), password }).then(() => {
-      if (isLoggedIn()) navigate(`/${shortYear()}/modules`, { replace: true })
-    })
+
+    // loginUser changes the value of isLoggedIn
+    await loginUser({ username: username.toLowerCase(), password })
   }
 
   useEffect(() => {
-    /* Navigate to /modules if the user's already logged in */
-    if (isLoggedIn()) navigate(`/${shortYear()}/modules`, { replace: true })
+    const { next } = (state as LocationState) || { next: undefined }
+    if (isLoggedIn()) navigate(next || `/${shortYear()}/modules`, { replace: true })
   }, [isLoggedIn, navigate])
 
   return (

@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
 
 import useAuth from '../lib/auth.service'
 import { Navigation } from './Navigation'
@@ -12,6 +12,7 @@ import { Navigation } from './Navigation'
  */
 export const ProtectedRoute = ({ redirectPath = '/' }) => {
   const { isLoggedIn } = useAuth()
+  const location = useLocation()
 
   return isLoggedIn() ? (
     <>
@@ -20,6 +21,6 @@ export const ProtectedRoute = ({ redirectPath = '/' }) => {
       {/* TODO: Create a footer component */}
     </>
   ) : (
-    <Navigate to={redirectPath} replace />
+    <Navigate to={redirectPath} state={{ next: location.pathname }} replace />
   )
 }
