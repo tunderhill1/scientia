@@ -57,14 +57,14 @@ export const Tracks = ({
               .filter(
                 (exercise: Exercise) =>
                   exercise.startDate >= term.start ||
-                  (term.start <= exercise.endDate && exercise.endDate <= term.end)
+                  (term.start <= exercise.deadline && exercise.deadline <= term.end)
               )
               .map((exercise: Exercise) => (
                 <TrackItem
                   key={`${rowIndex}-${exercise.number}`}
                   exercise={exercise}
                   startColumn={dateToColumn(max([exercise.startDate, term.start]), term.start)}
-                  endColumn={dateToColumn(min([exercise.endDate, term.end]), term.start) + 1}
+                  endColumn={dateToColumn(min([exercise.deadline, term.end]), term.start) + 1}
                   row={rowIndex}
                   disabled={exercise.startDate >= new Date()}
                   onClick={() => {

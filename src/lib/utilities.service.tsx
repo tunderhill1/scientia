@@ -100,15 +100,15 @@ export const formatShortYear = (year: string = shortYear()): string => {
 /* Returns whether the given two exercises overlap */
 export const exercisesOverlap = (e1: Exercise, e2: Exercise): boolean =>
   areIntervalsOverlapping(
-    { start: e1.startDate, end: e1.endDate },
-    { start: e2.startDate, end: e2.endDate }
+    { start: e1.startDate, end: e1.deadline },
+    { start: e2.startDate, end: e2.deadline }
   )
 
 /* Compute the exercise tracks for the exercises of each module */
 export function computeTracks(exercises: Exercise[], term: Term): Track[] {
   /* Pre: Ordering input by the start date */
   const orderedExercises = exercises
-    .filter((e) => e.endDate > term.start && e.startDate < term.end)
+    .filter((e) => e.deadline > term.start && e.startDate < term.end)
     .sort((e1, e2) => Number(e1.startDate) - Number(e2.startDate))
   const tracks: Track[] = []
   /* The 'of' is used instead of 'in' to enforce the type of exercise */

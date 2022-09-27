@@ -18,7 +18,7 @@ export class UserDetails {
   @Type(() => Module)
   modules: Module[]
 
-  get isStaff() {
+  get isStaff(): boolean {
     return this.roleInDepartment === 'staff'
   }
 }
@@ -61,6 +61,10 @@ export class Exercise {
   @Expose({ name: 'end_date' })
   endDate: Date
 
+  @Type(() => Date)
+  @Expose({ name: 'extended_end_date' })
+  extendedEndDate: Date | null
+
   @Expose({ name: 'module_code' })
   moduleCode: string
   @Expose({ name: 'module_name' })
@@ -69,6 +73,10 @@ export class Exercise {
   @Expose({ name: 'maximum_mark' })
   maximumMark: number
   mark: number | null
+
+  get deadline(): Date {
+    return this.extendedEndDate || this.endDate
+  }
 }
 
 /* A track is a list of non-overlapping exercises */

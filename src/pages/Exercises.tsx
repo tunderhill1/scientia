@@ -37,7 +37,7 @@ const Exercises = () => {
         setExercises(
           data
             .map((exercise: any) => plainToInstance(Exercise, exercise))
-            .sort((ex1: Exercise, ex2: Exercise) => ex1.endDate.getTime() - ex2.endDate.getTime())
+            .sort((ex1: Exercise, ex2: Exercise) => ex1.deadline.getTime() - ex2.deadline.getTime())
         )
       })
       .catch((error) => {
@@ -73,7 +73,7 @@ const Exercises = () => {
                     <p>
                       {e.type}: {e.title}
                     </p>
-                    <SubText>{displayTimestamp(e.endDate)}</SubText>
+                    <SubText>{displayTimestamp(e.deadline)}</SubText>
                   </ViewExerciseButton>
                 </td>
 

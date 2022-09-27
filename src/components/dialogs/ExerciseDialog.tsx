@@ -35,7 +35,7 @@ const ExerciseDialog = ({
     // This is admittedly a hack, but gets easily around the pure date comparison
     // limitations (which would make dev interactions cumbersome)
     return (
-      (process.env.NODE_ENV === 'development' || new Date() < exercise.endDate) &&
+      (process.env.NODE_ENV === 'development' || new Date() < exercise.deadline) &&
       !userDetails?.isStaff
     )
   }
@@ -105,7 +105,7 @@ const ExerciseDialog = ({
                       </Deadline>
                     )}
                     <Deadline completed={submittedFiles.length === fileRequirements.length}>
-                      Due {displayTimestamp(exercise.endDate)}
+                      Due {displayTimestamp(exercise.deadline)}
                     </Deadline>
                   </div>
                   <ProgressBar value={submittedFiles.length} max={fileRequirements.length} />

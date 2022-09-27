@@ -131,7 +131,7 @@ const FileUploadArea = ({
                     marginBottom: '0.125rem',
                   })()}
                 >
-                  Submitted {submittedFile.timestamp > exercise.endDate && 'late'}{' '}
+                  Submitted {submittedFile.timestamp > exercise.deadline && 'late'}{' '}
                   {formatTimeAgo(submittedFile.timestamp)}
                 </i>
                 <p className={css({ fontSize: '$sm', color: '$sand9' })()}>

@@ -1,19 +1,22 @@
+import { plainToInstance } from 'class-transformer'
+
 import { Exercise, Term, Track, TrackMap } from '../../constants/types'
 import { computeTracks, exercisesOverlap, generateTrackMap } from '../../lib/utilities.service'
 
-const EXERCISE_TEMPLATE: Exercise = {
+const EXERCISE_TEMPLATE = {
   number: 1,
   title: 'Task 1',
   type: 'CW',
   owner: 'rbc',
-  estimatedWorkHours: 6,
-  submissionType: 'individual',
-  startDate: new Date(2022, 9, 11, 9),
-  endDate: new Date(2022, 9, 29, 19),
-  moduleCode: '40001',
-  moduleName: 'Lab 2',
+  estimated_work_hours: 6,
+  submission_type: 'individual',
+  start_date: new Date(2022, 9, 11, 9),
+  end_date: new Date(2022, 9, 29, 19),
+  module_code: '40001',
+  module_name: 'Lab 2',
   mark: null,
-  maximumMark: 100,
+  extended_end_date: null,
+  maximum_mark: 100,
 }
 
 const TERM: Term = {
@@ -23,26 +26,26 @@ const TERM: Term = {
   weeks: 11,
 }
 
-const reference = {
+const reference = plainToInstance(Exercise, {
   ...EXERCISE_TEMPLATE,
-  startDate: new Date(2022, 9, 1),
-  endDate: new Date(2022, 9, 10),
-}
-const overlapping = {
+  start_date: new Date(2022, 9, 1),
+  end_date: new Date(2022, 9, 10),
+})
+const overlapping = plainToInstance(Exercise, {
   ...EXERCISE_TEMPLATE,
-  startDate: new Date(2022, 9, 5),
-  endDate: new Date(2022, 9, 15),
-}
-const preceding = {
+  start_date: new Date(2022, 9, 5),
+  end_date: new Date(2022, 9, 15),
+})
+const preceding = plainToInstance(Exercise, {
   ...EXERCISE_TEMPLATE,
-  startDate: new Date(2022, 8, 25),
-  endDate: new Date(2022, 8, 30),
-}
-const following = {
+  start_date: new Date(2022, 8, 25),
+  end_date: new Date(2022, 8, 30),
+})
+const following = plainToInstance(Exercise, {
   ...EXERCISE_TEMPLATE,
-  startDate: new Date(2022, 9, 11),
-  endDate: new Date(2022, 9, 15),
-}
+  start_date: new Date(2022, 9, 11),
+  end_date: new Date(2022, 9, 15),
+})
 
 test.each([
   [reference, overlapping, true],
@@ -63,30 +66,30 @@ const inputModules: { [code: string]: Exercise[] } = {
     {
       ...EXERCISE_TEMPLATE,
       title: 'Pintos Task 1',
-      startDate: new Date(Date.UTC(2022, 9, 11, 12)),
-      endDate: new Date(Date.UTC(2022, 9, 29, 19)),
+      start_date: new Date(Date.UTC(2022, 9, 11, 12)),
+      end_date: new Date(Date.UTC(2022, 9, 29, 19)),
     },
     {
       ...EXERCISE_TEMPLATE,
       title: 'Pintos Task 2',
-      startDate: new Date(Date.UTC(2022, 10, 1, 12)),
-      endDate: new Date(Date.UTC(2022, 10, 19, 19)),
+      start_date: new Date(Date.UTC(2022, 10, 1, 12)),
+      end_date: new Date(Date.UTC(2022, 10, 19, 19)),
     },
-  ],
+  ].map((e) => plainToInstance(Exercise, e)),
   '50002': [
     {
       ...EXERCISE_TEMPLATE,
       title: 'TDD',
-      startDate: new Date(Date.UTC(2022, 9, 11, 12)),
-      endDate: new Date(Date.UTC(2022, 9, 29, 19)),
+      start_date: new Date(Date.UTC(2022, 9, 11, 12)),
+      end_date: new Date(Date.UTC(2022, 9, 29, 19)),
     },
     {
       ...EXERCISE_TEMPLATE,
       title: 'Mockery',
-      startDate: new Date(Date.UTC(2022, 9, 28, 12)),
-      endDate: new Date(Date.UTC(2022, 10, 5, 19)),
+      start_date: new Date(Date.UTC(2022, 9, 28, 12)),
+      end_date: new Date(Date.UTC(2022, 10, 5, 19)),
     },
-  ],
+  ].map((e) => plainToInstance(Exercise, e)),
 }
 
 test('computes the right track map for set of modules', () => {
@@ -96,58 +99,72 @@ test('computes the right track map for set of modules', () => {
         {
           ...EXERCISE_TEMPLATE,
           title: 'Pintos Task 1',
-          startDate: new Date(Date.UTC(2022, 9, 11, 12)),
-          endDate: new Date(Date.UTC(2022, 9, 29, 19)),
+          start_date: new Date(Date.UTC(2022, 9, 11, 12)),
+          end_date: new Date(Date.UTC(2022, 9, 29, 19)),
         },
         {
           ...EXERCISE_TEMPLATE,
           title: 'Pintos Task 2',
-          startDate: new Date(Date.UTC(2022, 10, 1, 12)),
-          endDate: new Date(Date.UTC(2022, 10, 19, 19)),
+          start_date: new Date(Date.UTC(2022, 10, 1, 12)),
+          end_date: new Date(Date.UTC(2022, 10, 19, 19)),
         },
-      ],
+      ].map((e) => plainToInstance(Exercise, e)),
     ],
     '50002': [
       [
         {
           ...EXERCISE_TEMPLATE,
           title: 'TDD',
-          startDate: new Date(Date.UTC(2022, 9, 11, 12)),
-          endDate: new Date(Date.UTC(2022, 9, 29, 19)),
+          start_date: new Date(Date.UTC(2022, 9, 11, 12)),
+          end_date: new Date(Date.UTC(2022, 9, 29, 19)),
         },
-      ],
+      ].map((e) => plainToInstance(Exercise, e)),
       [
         {
           ...EXERCISE_TEMPLATE,
           title: 'Mockery',
-          startDate: new Date(Date.UTC(2022, 9, 28, 12)),
-          endDate: new Date(Date.UTC(2022, 10, 5, 19)),
+          start_date: new Date(Date.UTC(2022, 9, 28, 12)),
+          end_date: new Date(Date.UTC(2022, 10, 5, 19)),
         },
-      ],
+      ].map((e) => plainToInstance(Exercise, e)),
     ],
   }
   let actual = generateTrackMap(inputModules, TERM)
   expect(actual).toEqual(expected)
 })
 
-const insideTerm = {
+const insideTerm = plainToInstance(Exercise, {
   ...EXERCISE_TEMPLATE,
-  startDate: new Date(2022, 9, 10),
-  endDate: new Date(2022, 9, 15),
-}
-const acrossTerm = {
+  start_date: new Date(2022, 9, 10),
+  end_date: new Date(2022, 9, 15),
+})
+const acrossTerm = plainToInstance(Exercise, {
   ...EXERCISE_TEMPLATE,
-  startDate: new Date(2022, 11, 20),
-  endDate: new Date(2023, 0, 5),
-}
-const outsideTerm = {
+  start_date: new Date(2022, 11, 20),
+  end_date: new Date(2023, 0, 5),
+})
+const outsideTerm = plainToInstance(Exercise, {
   ...EXERCISE_TEMPLATE,
-  startDate: new Date(2023, 1, 25),
-  endDate: new Date(2023, 1, 30),
-}
+  start_date: new Date(2023, 1, 25),
+  end_date: new Date(2023, 1, 30),
+})
 
 test('excludes exercises outside of term', () => {
   const expected: Track[] = [[insideTerm, acrossTerm]]
   const actual = computeTracks([insideTerm, outsideTerm, acrossTerm], TERM)
   expect(actual).toEqual(expected)
+})
+
+const exerciseWithoutExtension = plainToInstance(Exercise, EXERCISE_TEMPLATE)
+const exerciseWithExtension = plainToInstance(Exercise, {
+  ...EXERCISE_TEMPLATE,
+  extended_end_date: new Date(2023, 9, 10),
+})
+
+test.each`
+  nameSuffix                                    | exercise                    | expectedDeadline
+  ${'existing extended end-date'}               | ${exerciseWithExtension}    | ${exerciseWithExtension.extendedEndDate}
+  ${'end-date because no extension is present'} | ${exerciseWithoutExtension} | ${exerciseWithExtension.endDate}
+`('deadline property matches $nameSuffix', ({ _, exercise, expectedDeadline }) => {
+  expect(exercise.deadline).toEqual(expectedDeadline)
 })

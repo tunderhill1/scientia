@@ -64,7 +64,7 @@ const Timeline = () => {
 
     const moduleCodesForExercisesInTerm = (Object.values(exercises) as Exercise[])
       .flat()
-      .filter((e) => e.endDate > term.start && e.startDate < term.end)
+      .filter((e) => e.deadline > term.start && e.startDate < term.end)
       .map((e) => e.moduleCode)
 
     // For given term, show only modules
