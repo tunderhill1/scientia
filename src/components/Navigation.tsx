@@ -33,6 +33,7 @@ import {
   VerticalRule,
   WebsiteTitle,
 } from '../styles/navigation.style'
+import TimelineGuideButton from './TimelineGuide'
 import { YearSwitcher } from './YearSwitcher'
 
 /**
@@ -87,6 +88,7 @@ export const Navigation = () => {
         )}
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <TimelineGuideButton />
           {/* User Preferences */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

@@ -8,6 +8,10 @@ import {
   cyanDark,
   green,
   greenDark,
+  orange,
+  orangeDark,
+  plum,
+  plumDark,
   purple,
   red,
   redDark,
@@ -15,6 +19,12 @@ import {
   sandDark,
 } from '@radix-ui/colors'
 import { createStitches, createTheme } from '@stitches/react'
+
+const colorFamily = (family: string, shades: Record<string, string>): Record<string, string> => {
+  return Object.fromEntries(
+    Object.values(shades).map((shade, index) => [`${family}${index + 1}`, shade])
+  )
+}
 
 export const { styled, css, globalCss, theme } = createStitches({
   theme: {
@@ -37,37 +47,29 @@ export const { styled, css, globalCss, theme } = createStitches({
     },
     colors: {
       ...sand,
+      ...colorFamily('neutral', sand),
       ...blue,
+      ...colorFamily('primary', blue),
       ...red,
       ...green,
       ...cyan,
       ...blackA,
       ...amber,
       ...purple,
-      primary1: '$blue1',
-      primary2: '$blue2',
-      primary3: '$blue3',
-      primary4: '$blue4',
-      primary5: '$blue5',
-      primary6: '$blue6',
-      primary7: '$blue7',
-      primary8: '$blue8',
-      primary9: '$blue9',
-      primary10: '$blue10',
-      primary11: '$blue11',
-      primary12: '$blue12',
-      appBackground: '$sand1',
-      subtleBackground: '$sand2',
-      elementBackground: '$sand3',
-      elementHover: '$sand4',
-      elementActive: '$sand5',
-      separator: '$sand6',
-      elementBorder: '$sand7',
-      elementHoverBorder: '$sand8',
-      solidBackground: '$sand9',
-      solidHover: '$sand10',
-      lowContrast: '$sand11',
-      highContrast: '$sand12',
+      ...plum,
+      ...orange,
+      appBackground: '$neutral1',
+      subtleBackground: '$neutral2',
+      elementBackground: '$neutral3',
+      elementHover: '$neutral4',
+      elementActive: '$neutral5',
+      separator: '$neutral6',
+      elementBorder: '$neutral7',
+      elementHoverBorder: '$neutral8',
+      solidBackground: '$neutral9',
+      solidHover: '$neutral10',
+      lowContrast: '$neutral11',
+      highContrast: '$neutral12',
       overlayBackground: '$blackA9',
       errorBackground: '$red9',
       successBackground: '$green9',
@@ -79,11 +81,15 @@ export const { styled, css, globalCss, theme } = createStitches({
 export const darkTheme = createTheme({
   colors: {
     ...sandDark,
+    ...colorFamily('neutral', sandDark),
     ...blueDark,
+    ...colorFamily('primary', blueDark),
     ...amberDark,
     ...redDark,
     ...greenDark,
     ...cyanDark,
+    ...plumDark,
+    ...orangeDark,
   },
 })
 

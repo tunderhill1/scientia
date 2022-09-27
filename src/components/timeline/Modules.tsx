@@ -13,30 +13,29 @@ export const Modules = ({
   modules: Module[]
   rowHeights: { [code: string]: string }
 }) => {
-  const modulesWrapperStyle = {
-    gridArea: 'modules',
-
-    display: 'grid',
-    gridGap: '0.5rem',
-
-    padding: '0.5rem',
-    paddingBottom: '1rem',
-    position: 'sticky',
-    left: '0',
-
-    zIndex: '4',
-    backgroundColor: '$appBackground',
-  }
   const navigate = useNavigate()
   const { requestedYear: year } = useParams()
 
   return (
-    <Wrapper css={modulesWrapperStyle}>
+    <Wrapper
+      css={{
+        gridArea: 'modules',
+        display: 'grid',
+        gridGap: '0.5rem',
+        padding: '0.5rem',
+        paddingBottom: '1rem',
+        position: 'sticky',
+        left: '0',
+        zIndex: '4',
+        backgroundColor: '$appBackground',
+        borderRight: modules.length > 0 ? '1px solid $elementBorder' : '',
+      }}
+    >
       <Tabs
         data={modules}
-        generator={(module: any) => (
-          <Wrapper
-            css={{
+        generator={(module: Module) => (
+          <div
+            style={{
               display: 'flex',
               flexDirection: 'column',
               gap: '0.5rem',
@@ -46,7 +45,6 @@ export const Modules = ({
             }}
             onClick={() => navigate(`/${year}/modules/${module.code}/materials`)}
           >
-            <span className={css({ color: '$lowContrast' })()}>{module.code}</span>
             <span
               /* TODO: Extract styling */
               className={css({
@@ -54,13 +52,14 @@ export const Modules = ({
                 textOverflow: 'ellipsis',
                 minWidth: '0',
                 overflow: 'hidden',
-                marginRight: '0.5rem',
               })()}
             >
               {module.title}
             </span>
-          </Wrapper>
+            <span className={css({ color: '$lowContrast' })()}>{module.code}</span>
+          </div>
         )}
+        dividers={modules.length > 1}
       />
     </Wrapper>
   )

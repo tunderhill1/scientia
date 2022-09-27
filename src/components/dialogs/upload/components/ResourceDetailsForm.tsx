@@ -9,7 +9,7 @@ import { ResourceCreate } from '../../../../constants/types'
 import { getUTCDatetime } from '../../../../lib/resource.service'
 import { ThemeContext } from '../../../../lib/theme.context'
 import { useToast } from '../../../../lib/toast.context'
-import { displayTimestamp } from '../../../../lib/utilities.service'
+import { displayTimestamp, now } from '../../../../lib/utilities.service'
 import {
   ApplyToAllButton,
   CalendarInput,
@@ -186,9 +186,8 @@ const ResourceDetailsForm = ({
           <NowButton
             type="button"
             onClick={() => {
-              const now = utcToZonedTime(new Date(), LONDON_TIMEZONE)
-              setVisibleDate(format(now, 'yyyy-MM-dd'))
-              setVisibleTime(format(now, 'HH:mm'))
+              setVisibleDate(format(now(), 'yyyy-MM-dd'))
+              setVisibleTime(format(now(), 'HH:mm'))
             }}
           >
             Publish now

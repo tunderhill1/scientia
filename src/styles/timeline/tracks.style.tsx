@@ -1,4 +1,10 @@
-import { styled } from '../stitches.config'
+import { isWeekend } from 'date-fns'
+import { useEffect, useRef } from 'react'
+
+import { Term } from '../../constants/types'
+import { now } from '../../lib/utilities.service'
+import { dateToColumn } from '../../pages/Timeline'
+import { css, styled } from '../stitches.config'
 
 export const Grid = styled('div', {
   display: 'grid',
@@ -7,3 +13,25 @@ export const Grid = styled('div', {
   gridArea: 'background',
   zIndex: 3,
 })
+
+export const VerticalDayLine = ({ term }: { term: Term }) => {
+  const fieldRef = useRef<null | HTMLDivElement>(null)
+  useEffect(() => {
+    fieldRef.current?.scrollIntoView({ inline: 'center' })
+  }, [])
+
+  return term.start <= now() && now() <= term.end ? (
+    <div
+      ref={fieldRef}
+      className={css({
+        zIndex: 1000,
+        borderLeft: '2px solid $primary9',
+        marginLeft: `calc(${isWeekend(now()) ? '0.25rem' : '1.5rem'} - 2px)`,
+        display: 'flex',
+        width: 2,
+        gridColumn: dateToColumn(now(), term.start),
+        gridRow: `1 / -1`,
+      })()}
+    ></div>
+  ) : null
+}

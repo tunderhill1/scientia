@@ -54,6 +54,8 @@ export class Exercise {
 
   @Expose({ name: 'submission_type' })
   submissionType: string
+  @Expose({ name: 'is_assessed' })
+  isAssessed?: boolean
 
   @Type(() => Date)
   @Expose({ name: 'start_date' })
@@ -61,7 +63,6 @@ export class Exercise {
   @Type(() => Date)
   @Expose({ name: 'end_date' })
   endDate: Date
-
   @Type(() => Date)
   @Expose({ name: 'extended_end_date' })
   extendedEndDate: Date | null
@@ -76,7 +77,7 @@ export class Exercise {
   mark: number | null
 
   get deadline(): Date {
-    return this.extendedEndDate || this.endDate
+    return this.extendedEndDate ?? this.endDate
   }
 }
 

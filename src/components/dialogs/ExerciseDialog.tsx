@@ -1,7 +1,7 @@
 import { Exercise, SetState } from '../../constants/types'
 import { useExercise } from '../../lib/exerciseDialog.service'
 import { useUser } from '../../lib/user.context'
-import { displayTimestamp } from '../../lib/utilities.service'
+import { displayTimestamp, now } from '../../lib/utilities.service'
 import {
   Deadline,
   ExerciseTitle,
@@ -35,8 +35,7 @@ const ExerciseDialog = ({
     // This is admittedly a hack, but gets easily around the pure date comparison
     // limitations (which would make dev interactions cumbersome)
     return (
-      (process.env.NODE_ENV === 'development' || new Date() < exercise.deadline) &&
-      !userDetails?.isStaff
+      (process.env.NODE_ENV === 'development' || now() < exercise.deadline) && !userDetails?.isStaff
     )
   }
 

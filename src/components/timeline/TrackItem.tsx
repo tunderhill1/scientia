@@ -1,6 +1,12 @@
+import { format as formatTimeAgo } from 'timeago.js'
+
 import { Exercise } from '../../constants/types'
 import { css } from '../../styles/stitches.config'
-import { TrackItemTitle, TrackItemWrapper } from '../../styles/timeline/track-item.style'
+import {
+  TrackItemTitle,
+  TrackItemWrapper,
+  trackItemStyles,
+} from '../../styles/timeline/track-item.style'
 
 export const TrackItem = ({
   exercise,
@@ -20,6 +26,7 @@ export const TrackItem = ({
   const isSingleDay = endColumn - startColumn < 2
   return (
     <TrackItemWrapper
+      title={`${exercise.type}: ${exercise.title} - due ${formatTimeAgo(exercise.deadline)}`}
       onClick={onClick}
       className={css({
         cursor: disabled ? 'default' : 'pointer',
@@ -28,8 +35,7 @@ export const TrackItem = ({
         justifyContent: isSingleDay ? 'center' : 'space-between',
         padding: isSingleDay ? '0.25rem' : '0.5rem',
         textAlign: isSingleDay ? 'center' : 'left',
-        backgroundColor: '$blue5',
-        // color: `...`,
+        ...trackItemStyles(exercise),
       })()}
     >
       {!isSingleDay && (
