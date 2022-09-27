@@ -2,9 +2,10 @@ import { max, min } from 'date-fns'
 
 import { TIMELINE_TRACK_HEIGHT } from '../../constants/global'
 import { Exercise, SetState, Term, Track, TrackMap } from '../../constants/types'
+import { now } from '../../lib/utilities.service'
 import { dateToColumn } from '../../pages/Timeline'
 import { WEEKDAYS_WIDTHS, WEEKEND_WIDTH } from '../../styles/timeline/constants.style'
-import { Grid } from '../../styles/timeline/tracks.style'
+import { Grid, VerticalDayLine } from '../../styles/timeline/tracks.style'
 import { TrackItem } from './TrackItem'
 
 export const Tracks = ({
@@ -41,8 +42,10 @@ export const Tracks = ({
       css={{
         gridTemplateColumns: `repeat(${weeks}, ${WEEKDAYS_WIDTHS} ${WEEKEND_WIDTH})`,
         gridTemplateRows: gridTemplateRows,
+        alignItems: 'stretch',
       }}
     >
+      <VerticalDayLine term={term} />
       {Object.keys(trackMap)
         .sort()
         // Using [null] as a placeholder to keep the positioning
@@ -66,9 +69,9 @@ export const Tracks = ({
                   startColumn={dateToColumn(max([exercise.startDate, term.start]), term.start)}
                   endColumn={dateToColumn(min([exercise.deadline, term.end]), term.start) + 1}
                   row={rowIndex}
-                  disabled={exercise.startDate >= new Date()}
+                  disabled={exercise.startDate >= now()}
                   onClick={() => {
-                    if (exercise.startDate < new Date()) setExercise(exercise)
+                    if (exercise.startDate <= now()) setExercise(exercise)
                   }}
                 />
               ))

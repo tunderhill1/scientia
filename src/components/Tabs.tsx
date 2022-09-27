@@ -1,6 +1,7 @@
-import { ReactNode, useRef, useState } from 'react'
+import { Fragment, ReactNode, useRef, useState } from 'react'
 
 import { DragDropOptions, addDroppable } from '../lib/dragDrop.service'
+import { Hr } from '../styles/exerciseDialog.style'
 import { Tab, TabsHighlight, TabsWrapper } from '../styles/tabs.style'
 
 /**
@@ -27,6 +28,7 @@ export const Tabs = ({
   animate = false,
   onClick = () => {},
   dragDropOptions = null,
+  dividers = false,
 }: {
   data: any
   generator: (_: any) => ReactNode
@@ -35,6 +37,7 @@ export const Tabs = ({
   animate?: boolean
   onClick?: (_: any) => void
   dragDropOptions?: DragDropOptions | null
+  dividers?: boolean
 }) => {
   const [tabBoundingBox, setTabBoundingBox] = useState<any>(null)
   const [wrapperBoundingBox, setWrapperBoundingBox] = useState<any>(null)
@@ -118,27 +121,30 @@ export const Tabs = ({
       tabBoundingBox.top - wrapperBoundingBox.top
     }px)`
   }
+  if (dividers) highlightStyles.borderRadius = 0
 
   const renderTab = (tab: any, index: number, props: { [_: string]: any } = {}) => (
-    <Tab
-      {...props}
-      key={tab[attribute]}
-      /* NOTE: Unique identifier to find the element */
-      id={prefixRef.current.toString() + index.toString()}
-      onMouseOver={(event: any) => repositionHighlight(event, tab)}
-      onFocus={(event: any) => {
-        /* NOTE: Repositions the highlight on a focus event (e.g. tab key press) */
-        repositionHighlight(event, tab)
-      }}
-      onKeyPress={(event: any) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.currentTarget.click()
-        }
-      }}
-      onClick={() => !dragDropOptions?.dragEnabled && onClick(tab)}
-    >
-      {generator(tab)}
-    </Tab>
+    <Fragment key={tab[attribute]}>
+      {dividers && index > 0 && <Hr />}
+      <Tab
+        {...props}
+        /* NOTE: Unique identifier to find the element */
+        id={prefixRef.current.toString() + index.toString()}
+        onMouseOver={(event: any) => repositionHighlight(event, tab)}
+        onFocus={(event: any) => {
+          /* NOTE: Repositions the highlight on a focus event (e.g. tab key press) */
+          repositionHighlight(event, tab)
+        }}
+        onKeyPress={(event: any) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.currentTarget.click()
+          }
+        }}
+        onClick={() => !dragDropOptions?.dragEnabled && onClick(tab)}
+      >
+        {generator(tab)}
+      </Tab>
+    </Fragment>
   )
 
   return (

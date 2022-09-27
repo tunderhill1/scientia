@@ -2,7 +2,6 @@ import { differenceInBusinessDays, differenceInCalendarWeeks, isMonday } from 'd
 import { useEffect, useState } from 'react'
 
 import ExerciseDialog from '../components/dialogs/ExerciseDialog'
-import { DayIndicator } from '../components/timeline/DayIndicator'
 import { MainBackground } from '../components/timeline/MainBackground'
 import { Modules } from '../components/timeline/Modules'
 import { Switcher } from '../components/timeline/Switcher'
@@ -12,7 +11,7 @@ import { INDEXING_OFFSET, NAVIGATION_HEIGHT, TIMELINE_TRACK_HEIGHT } from '../co
 import { Exercise, Module, Term, TrackMap } from '../constants/types'
 import { useTimeline } from '../lib/timeline.service'
 import { useUser } from '../lib/user.context'
-import { generateTrackMap } from '../lib/utilities.service'
+import { generateTrackMap, now } from '../lib/utilities.service'
 import { Area, Container, Corner, Scrollbar, Thumb, Viewport } from '../styles/_app.style'
 
 // differenceInCalendarWeeks returns number of weekends in between the 2 dates
@@ -53,9 +52,8 @@ const Timeline = () => {
   const [exercise, setExercise] = useState<Exercise | null>(null)
 
   useEffect(() => {
-    const now = new Date()
     if (terms.length > 0) {
-      setTerm(terms.find((term: Term) => term.start < now && term.end > now) || terms[0])
+      setTerm(terms.find((term: Term) => term.start < now() && term.end > now()) || terms[0])
     }
   }, [terms])
 
@@ -126,10 +124,6 @@ const Timeline = () => {
               weeks={term.weeks}
               trackMap={trackMapForTerm}
               setExercise={setExercise}
-            />
-            <DayIndicator
-              weeks={term.weeks}
-              currentDayColumn={dateToColumn(new Date(), term.start)}
             />
             <MainBackground cols={term.weeks} rowHeights={rowHeights} />
           </Container>

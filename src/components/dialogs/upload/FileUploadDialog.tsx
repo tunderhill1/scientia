@@ -9,6 +9,7 @@ import { ResourceCreate } from '../../../constants/types'
 import { Resource } from '../../../lib/materials.service'
 import { useResources } from '../../../lib/resource.service'
 import { useToast } from '../../../lib/toast.context'
+import { now } from '../../../lib/utilities.service'
 import {
   Caret,
   Content,
@@ -60,7 +61,7 @@ const FileUploadDialog = ({
         return {
           title: file.name,
           category: null,
-          visible_after: utcToZonedTime(new Date(), LONDON_TIMEZONE),
+          visible_after: now(),
           file,
           type: 'file',
           path: '',

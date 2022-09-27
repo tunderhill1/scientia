@@ -1,31 +1,38 @@
-import { differenceInDays, nextFriday } from 'date-fns'
+import { eachDayOfInterval, format, isToday, nextFriday, nextSaturday } from 'date-fns'
 
-import { formatDateRange } from '../../lib/utilities.service'
-import { Wrapper } from '../../styles/_app.style'
+import { formatDateRange, now } from '../../lib/utilities.service'
 import { css } from '../../styles/stitches.config'
-import { Content, Day, Header } from '../../styles/timeline/week.style'
+import { Day, Header } from '../../styles/timeline/week.style'
 
-const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']
+export const Week = ({ start, week }: { start: Date; week: number }) => {
+  const weekdays = eachDayOfInterval({ start, end: nextFriday(start) })
 
-export const Week = ({ start, week }: { start: Date; week: number }) => (
-  <Wrapper
-    css={{
-      width: '15rem',
-      height: '4.25rem',
-    }}
-  >
-    <Header>
-      <span>Week {week + 1}</span>
-      <span className={css({ color: '$lowContrast' })()}>
-        {formatDateRange(start, nextFriday(start))}
-      </span>
-    </Header>
-    <Content>
-      {WEEKDAYS.map((day, i) => (
-        <Day key={day} active={differenceInDays(start, new Date()) === i}>
-          {day}
-        </Day>
-      ))}
-    </Content>
-  </Wrapper>
-)
+  return (
+    <div style={{ width: '15rem', gap: '0.5rem', display: 'flex', flexDirection: 'column' }}>
+      <Header active={start <= now() && now() < nextSaturday(start)}>
+        <span>Week {week + 1}</span>
+        <span className={css({ color: '$lowContrast' })()}>
+          {formatDateRange(start, nextFriday(start))}
+        </span>
+      </Header>
+      <div style={{ display: 'flex' }}>
+        {weekdays.map((day, i) => (
+          <Day key={i} active={isToday(day)}>
+            {format(day, 'ccc')}
+          </Day>
+        ))}
+      </div>
+      <div style={{ display: 'flex' }}>
+        {weekdays.map((day, i) => (
+          <Day
+            key={i}
+            active={isToday(day)}
+            className={css({ color: '$neutral8', fontSize: '$sm' })()}
+          >
+            {day.getDate()}
+          </Day>
+        ))}
+      </div>
+    </div>
+  )
+}

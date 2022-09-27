@@ -4,13 +4,14 @@ import { ResourceCreate } from '../../../constants/types'
 import { Resource } from '../../../lib/materials.service'
 import { useResources } from '../../../lib/resource.service'
 import { useToast } from '../../../lib/toast.context'
+import { now } from '../../../lib/utilities.service'
 import Dialog from '../Dialog'
 import ResourceDetailsForm from './components/ResourceDetailsForm'
 
 const defaultLinkResource: ResourceCreate = {
   title: '',
   category: null,
-  visible_after: new Date(),
+  visible_after: now(),
   type: 'link',
   path: '',
 }

@@ -56,6 +56,9 @@ export function groupByProperty(
   return sortByKey ? sortObjectByKey(newObject) : newObject
 }
 
+/** @returns the current datetime in London */
+export const now = (): Date => utcToZonedTime(new Date(), LONDON_TIMEZONE)
+
 /**
  * Compute the short year (i.e. 2021, 2122, 2223 etc.) for 'referenceDate'.
  * Defaults to today's date if no argument is given.
@@ -64,10 +67,10 @@ export function groupByProperty(
  * eg: for the academic year 2021-2022, the short year is 2122
  */
 export const shortYear = (referenceDate?: Date): string => {
-  const now = referenceDate || utcToZonedTime(new Date(), LONDON_TIMEZONE)
-  const currentYear = format(now, 'yy')
-  const complementYear = format(addYears(now, now.getMonth() < OCTOBER ? -1 : 1), 'yy')
-  return now.getMonth() < OCTOBER ? complementYear + currentYear : currentYear + complementYear
+  const date = referenceDate ?? now()
+  const currentYear = format(date, 'yy')
+  const complementYear = format(addYears(date, date.getMonth() < OCTOBER ? -1 : 1), 'yy')
+  return date.getMonth() < OCTOBER ? complementYear + currentYear : currentYear + complementYear
 }
 
 /**
@@ -77,7 +80,7 @@ export const shortYear = (referenceDate?: Date): string => {
 const BASE_YEAR = 2021
 export const validShortYears = (): string[] => {
   let years = []
-  let date = utcToZonedTime(new Date(), LONDON_TIMEZONE)
+  let date = now()
 
   // Add look-ahead in September
   if (date.getMonth() === SEPTEMBER) years.unshift(shortYear(addMonths(date, 1)))

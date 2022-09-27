@@ -27,6 +27,10 @@ test('shortYear defaults to current date if no arg is given', () => {
   expect(shortYear()).toBe('2122')
 })
 
+test('format an academic year into a range', () => {
+  expect(formatShortYear('2930')).toBe('2029 - 30')
+})
+
 test.each`
   day   | month | year    | expected
   ${1}  | ${2}  | ${2025} | ${['2122', '2223', '2324', '2425']}
@@ -39,10 +43,6 @@ test.each`
     expect(validShortYears()).toEqual(expected)
   }
 )
-
-test('format an academic year into a range', () => {
-  expect(formatShortYear('2930')).toBe('2029 - 30')
-})
 
 test.each`
   start                     | end                     | expected

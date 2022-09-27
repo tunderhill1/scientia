@@ -29,7 +29,7 @@ export const TermSwitchArrow = styled(Button, {
   alignItems: 'center',
   boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1)',
   backgroundColor: '$appBackground',
-  border: '1px solid $sand7',
+  border: '1px solid $elementBorder',
   cursor: 'pointer',
   variants: {
     disabled: {
@@ -52,4 +52,5 @@ export const SwitcherWrapper = styled(Wrapper, {
   zIndex: 5,
   background: '$appBackground',
   paddingTop: '1rem',
+  borderRight: '1px solid $elementBorder',
 })

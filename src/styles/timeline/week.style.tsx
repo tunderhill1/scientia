@@ -5,22 +5,17 @@ export const Header = styled('div', {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: '0.5rem',
+  padding: '0.75rem',
   borderRadius: '0.5rem',
-  height: '2.75rem',
 
   backgroundColor: '$elementBackground',
-})
-
-/* The content contains the days of the weeks */
-export const Content = styled('div', {
-  display: 'flex',
-  alignItems: 'center',
-  height: '2.75rem',
-  justifyContent: 'space-evenly',
-  // gridTemplateColumns: 'repeat(5, 3rem)',
-  // gridTemplateRows: 'auto',
-  // placeItems: 'center center',
+  variants: {
+    active: {
+      true: {
+        fontWeight: 600,
+      },
+    },
+  },
 })
 
 export const Day = styled('div', {
@@ -31,8 +26,8 @@ export const Day = styled('div', {
   variants: {
     active: {
       true: {
-        backgroundColor: '$solidBackground',
-        borderRadius: '0.5rem',
+        color: '$primary11',
+        fontWeight: 600,
       },
     },
   },
