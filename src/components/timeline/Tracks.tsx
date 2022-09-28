@@ -1,6 +1,6 @@
 import { max, min } from 'date-fns'
 
-import { TIMELINE_TRACK_HEIGHT } from '../../constants/global'
+import { DIVIDER_HEIGHT, TIMELINE_TRACK_HEIGHT } from '../../constants/global'
 import { Exercise, SetState, Term, Track, TrackMap } from '../../constants/types'
 import { now } from '../../lib/utilities.service'
 import { dateToColumn } from '../../pages/Timeline'
@@ -28,13 +28,15 @@ export const Tracks = ({
       return tracks.length > 0
         ? tracks
             .map((_, i) => {
-              if (tracks.length === 1) return `calc(${TIMELINE_TRACK_HEIGHT} + 0.75rem * 2)`
+              if (tracks.length === 1)
+                return `calc(${TIMELINE_TRACK_HEIGHT} + 0.75rem * 2 + ${DIVIDER_HEIGHT})`
               if (i === 0) return `calc(${TIMELINE_TRACK_HEIGHT} + 0.75rem)`
-              if (tracks.length === i + 1) return `calc(${TIMELINE_TRACK_HEIGHT} + 0.75rem)`
+              if (tracks.length === i + 1)
+                return `calc(${TIMELINE_TRACK_HEIGHT} + 0.75rem + ${DIVIDER_HEIGHT})`
               return `calc(${TIMELINE_TRACK_HEIGHT})`
             })
             .join(' ')
-        : `calc(${TIMELINE_TRACK_HEIGHT} + 0.75rem * 2)`
+        : `calc(${TIMELINE_TRACK_HEIGHT} + 0.75rem * 2 + ${DIVIDER_HEIGHT})`
     })
     .join(' ')
 

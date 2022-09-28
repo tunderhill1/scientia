@@ -7,7 +7,12 @@ import { Modules } from '../components/timeline/Modules'
 import { Switcher } from '../components/timeline/Switcher'
 import { Tracks } from '../components/timeline/Tracks'
 import { Weeks } from '../components/timeline/Weeks'
-import { INDEXING_OFFSET, NAVIGATION_HEIGHT, TIMELINE_TRACK_HEIGHT } from '../constants/global'
+import {
+  DIVIDER_HEIGHT,
+  INDEXING_OFFSET,
+  NAVIGATION_HEIGHT,
+  TIMELINE_TRACK_HEIGHT,
+} from '../constants/global'
 import { Exercise, Module, Term, TrackMap } from '../constants/types'
 import { useTimeline } from '../lib/timeline.service'
 import { useUser } from '../lib/user.context'
@@ -49,11 +54,8 @@ const Timeline = () => {
   const [term, setTerm] = useState<Term>()
   const userModules: Module[] = userDetails?.modules as Module[]
   const [modulesForTerm, setModulesForTerm] = useState<Module[]>([])
-
-  const [trackMap, setTrackMap] = useState<TrackMap>({})
   const [trackMapForTerm, setTrackMapForTerm] = useState<TrackMap>({})
   const [rowHeights, setRowHeights] = useState<{ [code: string]: string }>({})
-
   const [exercise, setExercise] = useState<Exercise | null>(null)
 
   useEffect(() => {
@@ -80,26 +82,17 @@ const Timeline = () => {
           moduleCodesForExercisesInTerm.includes(module.code)
       )
       .sort((m1, m2) => (m1.code < m2.code ? -1 : 1))
-
     setModulesForTerm(modulesToShow)
+
+    const moduleCodesForTerm = modulesToShow.map((m) => m.code)
+    const trackMap: TrackMap = sortObjectByKey(
+      padForModulesWithNoExercises(moduleCodesForTerm, generateTrackMap(exercises, term))
+    )
     setTrackMapForTerm(
       Object.fromEntries(
-        Object.entries(trackMap).filter(([code, _]) =>
-          modulesToShow.map(({ code }) => code).includes(code)
-        )
+        Object.entries(trackMap).filter(([code, _]) => moduleCodesForTerm.includes(code))
       )
     )
-  }, [term, exercises, userModules, trackMap])
-
-  useEffect(() => {
-    if (!term) return
-    if (userModules.length > 0) {
-      const moduleCodesForTerm = modulesForTerm.map((m) => m.code)
-      const trackMap = sortObjectByKey(
-        padForModulesWithNoExercises(moduleCodesForTerm, generateTrackMap(exercises, term))
-      )
-      setTrackMap(trackMap)
-    }
   }, [term, exercises, userModules])
 
   useEffect(() => {

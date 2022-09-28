@@ -1,6 +1,7 @@
 import { Progress, ProgressIndicator } from '@radix-ui/react-progress'
 import { BoxArrowUpRight } from 'react-bootstrap-icons'
 
+import { DIVIDER_HEIGHT } from '../constants/global'
 import { styled } from './stitches.config'
 
 export const NotFound = styled('p', {
@@ -46,7 +47,7 @@ export const TrashButton = styled('button', {
 export const Hr = styled('hr', {
   backgroundColor: '$sand7',
   border: 'none',
-  height: 1,
+  height: DIVIDER_HEIGHT,
   width: 'auto',
 })
 

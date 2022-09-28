@@ -15,7 +15,6 @@ export const Modules = ({
 }) => {
   const navigate = useNavigate()
   const { requestedYear: year } = useParams()
-
   return (
     <Wrapper
       css={{
@@ -33,6 +32,7 @@ export const Modules = ({
     >
       <Tabs
         data={modules}
+        dividers={modules.length > 1}
         generator={(module: Module) => (
           <div
             style={{
@@ -59,7 +59,6 @@ export const Modules = ({
             <span className={css({ color: '$lowContrast' })()}>{module.code}</span>
           </div>
         )}
-        dividers={modules.length > 1}
       />
     </Wrapper>
   )
