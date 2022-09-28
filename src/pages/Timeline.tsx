@@ -11,7 +11,12 @@ import { INDEXING_OFFSET, NAVIGATION_HEIGHT, TIMELINE_TRACK_HEIGHT } from '../co
 import { Exercise, Module, Term, TrackMap } from '../constants/types'
 import { useTimeline } from '../lib/timeline.service'
 import { useUser } from '../lib/user.context'
-import { generateTrackMap, now } from '../lib/utilities.service'
+import {
+  generateTrackMap,
+  now,
+  padForModulesWithNoExercises,
+  sortObjectByKey,
+} from '../lib/utilities.service'
 import { Area, Container, Corner, Scrollbar, Thumb, Viewport } from '../styles/_app.style'
 
 // differenceInCalendarWeeks returns number of weekends in between the 2 dates
@@ -89,7 +94,11 @@ const Timeline = () => {
   useEffect(() => {
     if (!term) return
     if (userModules.length > 0) {
-      setTrackMap(generateTrackMap(exercises, term))
+      const moduleCodesForTerm = modulesForTerm.map((m) => m.code)
+      const trackMap = sortObjectByKey(
+        padForModulesWithNoExercises(moduleCodesForTerm, generateTrackMap(exercises, term))
+      )
+      setTrackMap(trackMap)
     }
   }, [term, exercises, userModules])
 
@@ -118,7 +127,6 @@ const Timeline = () => {
             <Switcher term={term.name} setTerm={setTerm} terms={terms} />
             <Weeks start={term.start} weeks={term.weeks} />
             <Modules modules={modulesForTerm} rowHeights={rowHeights} />
-            {/* NOTE: Everything under here will be placed in the background area */}
             <Tracks
               term={term}
               weeks={term.weeks}

@@ -1,7 +1,12 @@
 import { plainToInstance } from 'class-transformer'
 
 import { Exercise, Term, Track, TrackMap } from '../../constants/types'
-import { computeTracks, exercisesOverlap, generateTrackMap } from '../../lib/utilities.service'
+import {
+  computeTracks,
+  exercisesOverlap,
+  generateTrackMap,
+  padForModulesWithNoExercises,
+} from '../../lib/utilities.service'
 
 const EXERCISE_TEMPLATE = {
   number: 1,
@@ -167,4 +172,13 @@ test.each`
   ${'end-date because no extension is present'} | ${exerciseWithoutExtension} | ${exerciseWithExtension.endDate}
 `('deadline property matches $nameSuffix', ({ _, exercise, expectedDeadline }) => {
   expect(exercise.deadline).toEqual(expectedDeadline)
+})
+
+test('padForModulesWithNoExercises adds empty tracks for modules without exercises in track map', () => {
+  const modulesForTerm = ['40001', '40002']
+  const trackMap = { '40002': [[plainToInstance(Exercise, EXERCISE_TEMPLATE)]] }
+  expect(padForModulesWithNoExercises(modulesForTerm, trackMap)).toEqual({
+    '40001': [],
+    '40002': [[plainToInstance(Exercise, EXERCISE_TEMPLATE)]],
+  })
 })

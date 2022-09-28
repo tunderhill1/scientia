@@ -131,14 +131,22 @@ export function computeTracks(exercises: Exercise[], term: Term): Track[] {
   return tracks
 }
 
+export function padForModulesWithNoExercises(moduleCodes: string[], trackMap: TrackMap): TrackMap {
+  const uniqueModuleCodes = moduleCodes
+    .concat(Object.keys(trackMap))
+    .filter((v, i, a) => a.indexOf(v) === i)
+  return uniqueModuleCodes.reduce((accumulator: TrackMap, code: string) => {
+    accumulator[code] = trackMap?.[code] ?? []
+    return accumulator
+  }, {})
+}
+
 /* Creates a track map given a list of modules with exercises */
 export function generateTrackMap(exercises: { [code: string]: Exercise[] }, term: Term): TrackMap {
-  return sortObjectByKey(
-    Object.entries(exercises).reduce((accumulator: TrackMap, [code, exercises]) => {
-      accumulator[code] = computeTracks(exercises, term)
-      return accumulator
-    }, {})
-  )
+  return Object.entries(exercises).reduce((accumulator: TrackMap, [code, exercises]) => {
+    accumulator[code] = computeTracks(exercises, term)
+    return accumulator
+  }, {})
 }
 
 /* Formats a date range as "D-D MMM or D MMM-D MMM" */

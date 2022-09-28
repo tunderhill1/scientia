@@ -25,14 +25,16 @@ export const Tracks = ({
     .sort()
     .map((code) => {
       const tracks = trackMap[code]
-      return tracks
-        .map((_, i) => {
-          if (tracks.length === 1) return `calc(${TIMELINE_TRACK_HEIGHT} + 0.75rem * 2)`
-          if (i === 0) return `calc(${TIMELINE_TRACK_HEIGHT} + 0.75rem)`
-          if (tracks.length === i + 1) return `calc(${TIMELINE_TRACK_HEIGHT} + 0.75rem)`
-          return `calc(${TIMELINE_TRACK_HEIGHT})`
-        })
-        .join(' ')
+      return tracks.length > 0
+        ? tracks
+            .map((_, i) => {
+              if (tracks.length === 1) return `calc(${TIMELINE_TRACK_HEIGHT} + 0.75rem * 2)`
+              if (i === 0) return `calc(${TIMELINE_TRACK_HEIGHT} + 0.75rem)`
+              if (tracks.length === i + 1) return `calc(${TIMELINE_TRACK_HEIGHT} + 0.75rem)`
+              return `calc(${TIMELINE_TRACK_HEIGHT})`
+            })
+            .join(' ')
+        : `calc(${TIMELINE_TRACK_HEIGHT} + 0.75rem * 2)`
     })
     .join(' ')
 
