@@ -54,7 +54,7 @@ export const TrackItem = ({
                 color: '$lowContrast',
               })()}
             >
-              Estimated: {exercise.estimatedWorkHours}hs
+              Estimate: {exercise.estimatedWorkHours}h
             </div>
           )}
         </TrackItemTitle>
