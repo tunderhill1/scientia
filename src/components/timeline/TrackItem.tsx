@@ -40,7 +40,9 @@ export const TrackItem = ({
     >
       {!isSingleDay && (
         <TrackItemTitle>
-          <span style={{ fontWeight: 500 }}>{exercise.type}</span>
+          <span style={{ fontWeight: 500 }}>
+            {exercise.type} {exercise.number}:
+          </span>
           &nbsp;{exercise.title}
           {exercise.estimatedWorkHours && (
             <div
