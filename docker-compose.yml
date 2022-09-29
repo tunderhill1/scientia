@@ -48,7 +48,7 @@ services:
     image: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}
     deploy:
       mode: replicated
-      replicas: 1
+      replicas: 2
   reverse_proxy:
     image: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}-nginx
     ports:
