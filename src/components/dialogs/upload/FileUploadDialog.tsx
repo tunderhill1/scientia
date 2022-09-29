@@ -110,24 +110,14 @@ const FileUploadDialog = ({
       open={open}
       onOpenChange={onOpenChange}
     >
-      <DropzoneContainer>
-        <Dropzone onDrop={onDrop}>
-          {({ getRootProps, getInputProps }) => (
-            <section>
-              <div {...getRootProps()} style={{ textAlign: 'center', padding: '1rem' }}>
-                <input {...getInputProps()} />
-                <p>
-                  Drag files here
-                  <br />
-                  or
-                  <br />
-                  click to select files
-                </p>
-              </div>
-            </section>
-          )}
-        </Dropzone>
-      </DropzoneContainer>
+      <Dropzone onDrop={onDrop}>
+        {({ getRootProps, getInputProps }) => (
+          <DropzoneContainer {...getRootProps({ className: 'dropzone' })}>
+            <input {...getInputProps()} />
+            <p>Drag files here or click to select files</p>
+          </DropzoneContainer>
+        )}
+      </Dropzone>
       <Accordion type="single" collapsible value={openItemIndex} onValueChange={setOpenItemIndex}>
         {fileResources &&
           fileResources.map((resource: ResourceCreate, index: number) => {

@@ -8,6 +8,8 @@ export const DropzoneContainer = styled('div', {
   backgroundColor: '$sand2',
   marginBottom: '1rem',
   display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
   padding: '5rem',
   cursor: 'pointer',
   border: '2px dashed $sand9',
