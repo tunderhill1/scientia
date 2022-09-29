@@ -13,7 +13,7 @@ export const TrackItemWrapper = styled('div', {
   margin: 'auto 0',
 })
 
-export const TrackItemTitle = styled('span', {
+export const TrackItemTitle = styled('div', {
   fontSize: '1rem',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',

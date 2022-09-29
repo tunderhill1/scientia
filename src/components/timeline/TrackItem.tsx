@@ -42,6 +42,19 @@ export const TrackItem = ({
         <TrackItemTitle>
           <span style={{ fontWeight: 500 }}>{exercise.type}</span>
           &nbsp;{exercise.title}
+          {exercise.estimatedWorkHours && (
+            <div
+              className={css({
+                display: 'flex',
+                flexWrap: 'wrap',
+                columnGap: '0.5rem',
+                fontSize: '0.9rem',
+                color: '$lowContrast',
+              })()}
+            >
+              Estimated: {exercise.estimatedWorkHours}hs
+            </div>
+          )}
         </TrackItemTitle>
       )}
     </TrackItemWrapper>
