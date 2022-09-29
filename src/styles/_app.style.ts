@@ -64,14 +64,16 @@ export const Container = styled('div', {
 export const Button = styled('button', {
   backgroundColor: '$elementBackground',
   color: '$highContrast',
-  width: '100%',
   height: '2.75rem',
   border: 'none',
   borderRadius: '0.5rem',
-  marginTop: '1rem',
   fontSize: 'medium',
   userSelect: 'none',
   cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: 'auto',
 
   '&:hover': {
     backgroundColor: '$elementHover',
@@ -92,14 +94,15 @@ export const Button = styled('button', {
   },
 
   variants: {
+    block: {
+      true: {
+        width: '100%',
+      },
+    },
     icon: {
       true: {
-        marginTop: 0,
         width: '2.75rem',
         background: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
       },
     },
     active: {
@@ -146,6 +149,8 @@ export const Wrapper = styled('div', {
   variants: {
     center: {
       true: {
+        backgroundColor: '$subtleBackground',
+        minHeight: '10rem',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',

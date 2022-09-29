@@ -116,6 +116,27 @@ const Materials = () => {
     />
   )
 
+  const initialToolbar = (
+    <Toolbar style={{ marginBottom: '1rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+        {userDetails?.isStaff && (
+          <>
+            <Button icon onClick={() => setUploadDialogOpen(true)} title="Upload a file resources">
+              <Upload size={22} />
+            </Button>
+            <Button
+              icon
+              onClick={() => setLinkUploadDialogOpen(true)}
+              title="Upload a link resource"
+            >
+              <Link size={22} />
+            </Button>
+          </>
+        )}
+      </div>
+    </Toolbar>
+  )
+
   const toolbar = (
     <Toolbar style={{ marginBottom: '1rem' }}>
       <Toggle defaultPressed={checklistMode} onClick={(event) => setSelectionMode(!checklistMode)}>
@@ -124,7 +145,7 @@ const Materials = () => {
       <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
         {!checklistMode && userDetails?.isStaff && (
           <>
-            <Button icon onClick={() => setUploadDialogOpen(true)} title="Upload file resources">
+            <Button icon onClick={() => setUploadDialogOpen(true)} title="Upload a file resources">
               <Upload size={22} />
             </Button>
 
@@ -192,88 +213,81 @@ const Materials = () => {
     </Toolbar>
   )
 
-  if (!isLoaded()) {
-    return (
-      <Wrapper center>
-        <span>Loading materials.</span>
-      </Wrapper>
-    )
-  }
-
-  if (noMaterials()) {
-    return (
-      <Wrapper center>
-        <span>No materials for this module.</span>
-      </Wrapper>
-    )
-  }
-
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Wrapper>
-        {includeLevels && levelsManager.hasMinLevels && <LevelToggles {...levelsManager} />}
-        {toolbar}
-        <CollapsibleList
-          data={groupedMaterials}
-          checklistMode={checklistMode}
-          checklistManager={checklistManager}
-          headerGenerator={headerGenerator}
-          contentGenerator={contentGenerator}
-          mainItemAction={
-            (userDetails?.isStaff && {
-              icon: <PencilSquare size={22} />,
-              action: (item: any) => {
-                setResourceToEdit({
-                  ...item,
-                  visible_after: utcToZonedTime(item.visible_after, LONDON_TIMEZONE),
-                })
-                setEditDialogOpen(true)
-              },
-            }) ||
-            undefined
-          }
-        />
-        {deleteDialogOpen && (
-          <DeleteDialog
-            onOpenChange={setDeleteDialogOpen}
-            selectedIDs={checklistManager.getCheckedItems()}
-            moduleCode={moduleCode}
-            groupedMaterials={groupedMaterials}
-            setRawMaterials={setRawMaterials}
-          />
+        {noMaterials() ? (
+          <>
+            {initialToolbar}
+            <Wrapper center>
+              <span>{!isLoaded() ? 'Loading materials...' : 'No materials for this module.'}</span>
+            </Wrapper>
+          </>
+        ) : (
+          <>
+            {includeLevels && levelsManager.hasMinLevels && <LevelToggles {...levelsManager} />}
+            {toolbar}
+            <CollapsibleList
+              data={groupedMaterials}
+              checklistMode={checklistMode}
+              checklistManager={checklistManager}
+              headerGenerator={headerGenerator}
+              contentGenerator={contentGenerator}
+              mainItemAction={
+                (userDetails?.isStaff && {
+                  icon: <PencilSquare size={22} />,
+                  action: (item: any) => {
+                    setResourceToEdit({
+                      ...item,
+                      visible_after: utcToZonedTime(item.visible_after, LONDON_TIMEZONE),
+                    })
+                    setEditDialogOpen(true)
+                  },
+                }) ||
+                undefined
+              }
+            />
+            <Footnote muted center css={{ margin: '2rem 0' }}>
+              Please contact the relevant module leader(s) for missing resources or if you'd like
+              materials to be better organised; we recommend using EdStem to help them gauge the
+              peer response.
+            </Footnote>
+          </>
         )}
-
-        {editDialogOpen && resourceToEdit !== null && (
-          <EditDialog
-            onOpenChange={setEditDialogOpen}
-            categories={Object.keys(groupedMaterials)}
-            setResourceToEdit={setResourceToEdit}
-            resourceToEdit={resourceToEdit}
-            moduleCode={moduleCode}
-            setRawMaterials={setRawMaterials}
-          />
-        )}
-
-        <FileUploadDialog
-          open={uploadDialogOpen}
-          onOpenChange={setUploadDialogOpen}
-          categories={Object.keys(groupedMaterials)}
-          setRawMaterials={setRawMaterials}
-        />
-
-        <LinkUploadDialog
-          open={linkUploadDialogOpen}
-          onOpenChange={setLinkUploadDialogOpen}
-          categories={Object.keys(groupedMaterials)}
-          setRawMaterials={setRawMaterials}
-        />
-
-        <Footnote muted center css={{ margin: '2rem 0' }}>
-          Please contact the relevant module leader(s) for missing resources or if you'd like
-          materials to be better organised; we recommend using EdStem to help them gauge the peer
-          response.
-        </Footnote>
       </Wrapper>
+      {deleteDialogOpen && (
+        <DeleteDialog
+          onOpenChange={setDeleteDialogOpen}
+          selectedIDs={checklistManager.getCheckedItems()}
+          moduleCode={moduleCode}
+          groupedMaterials={groupedMaterials}
+          setRawMaterials={setRawMaterials}
+        />
+      )}
+      {editDialogOpen && resourceToEdit !== null && (
+        <EditDialog
+          onOpenChange={setEditDialogOpen}
+          categories={Object.keys(groupedMaterials)}
+          setResourceToEdit={setResourceToEdit}
+          resourceToEdit={resourceToEdit}
+          moduleCode={moduleCode}
+          setRawMaterials={setRawMaterials}
+        />
+      )}
+
+      <FileUploadDialog
+        open={uploadDialogOpen}
+        onOpenChange={setUploadDialogOpen}
+        categories={Object.keys(groupedMaterials)}
+        setRawMaterials={setRawMaterials}
+      />
+
+      <LinkUploadDialog
+        open={linkUploadDialogOpen}
+        onOpenChange={setLinkUploadDialogOpen}
+        categories={Object.keys(groupedMaterials)}
+        setRawMaterials={setRawMaterials}
+      />
     </DragDropContext>
   )
 }
