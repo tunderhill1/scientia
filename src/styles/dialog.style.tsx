@@ -34,7 +34,7 @@ export const Content = styled(DialogContent, {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   zIndex: 10,
-  minWidth: 'fit-content',
+  minWidth: '40rem',
   maxHeight: '90vh',
   padding: '2rem',
   '@media (prefers-reduced-motion: no-preference)': {
