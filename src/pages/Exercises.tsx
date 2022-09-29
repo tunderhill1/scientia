@@ -7,7 +7,9 @@ import { endpoints } from '../constants/endpoints'
 import { Exercise } from '../constants/types'
 import { AxiosContext } from '../lib/axios.context'
 import { useToast } from '../lib/toast.context'
+import { useUser } from '../lib/user.context'
 import { calculateGrade, displayTimestamp, percentage } from '../lib/utilities.service'
+import { Wrapper } from '../styles/_app.style'
 import { Link, LinkIcon } from '../styles/exerciseDialog.style'
 import {
   Header,
@@ -22,6 +24,7 @@ const Exercises = () => {
   const { requestedYear: year } = useParams()
   const { addToast } = useToast()
   const { moduleCode } = useOutletContext<{ moduleCode: string | null }>()!
+  const { userDetails } = useUser()
 
   const [exercises, setExercises] = useState<Exercise[]>([])
 
@@ -48,8 +51,14 @@ const Exercises = () => {
 
   const [exerciseForDialog, setExerciseForDialog] = useState<Exercise | null>(null)
 
-  if (!exercises?.length)
-    return <p style={{ marginTop: '5rem' }}>No exercises available for this module.</p>
+  if (!exercises?.length || userDetails?.isStaff)
+    return (
+      <Wrapper center>
+        {userDetails?.isStaff
+          ? '🚧 Staff area under construction.'
+          : 'No exercises available for this module.'}
+      </Wrapper>
+    )
 
   return (
     <>

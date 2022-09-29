@@ -155,6 +155,7 @@ export const Wrapper = styled('div', {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        padding: '1rem',
       },
     },
     inline: {
