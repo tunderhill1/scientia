@@ -22,6 +22,7 @@ type-checks:
       - schedules
     changes:
       - "**/README.md"
+      - "nginx/*"
   script:
     - yarn tsc
 
@@ -33,6 +34,7 @@ style-checks:
       - schedules
     changes:
       - "**/README.md"
+      - "nginx/*"
   script:
     - yarn prettier -c src/**/*
 
@@ -44,6 +46,7 @@ unit-tests:
       - schedules
     changes:
       - "**/README.md"
+      - "nginx/*"
   script:
     - yarn test:ci
   artifacts:
@@ -62,6 +65,7 @@ build frontend image:
   except:
     changes:
       - "**/README.md"
+      - "nginx/*"
   only:
     - master
   variables:
@@ -128,7 +132,7 @@ deploy prod:
   stage: deploying
   except:
     changes:
-      - README.md
+      - "**/README.md"
   only:
     - master
   when: manual
