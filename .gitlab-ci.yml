@@ -81,7 +81,7 @@ build frontend image:
     - >
       docker build
       --tag $CI_REGISTRY_IMAGE:latest
-      --build-arg api_entrypoint=https://nova-scientia.doc.ic.ac.uk/api
+      --build-arg api_entrypoint=https://scientia.doc.ic.ac.uk/api
       --cache-from $CI_REGISTRY_IMAGE:latest
       .
     - docker tag $CI_REGISTRY_IMAGE:latest $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
@@ -144,7 +144,7 @@ deploy prod:
     - deploy_swarm
   environment:
     name: production-swarm
-    url: https://nova-scientia.doc.ic.ac.uk
+    url: https://scientia.doc.ic.ac.uk
 
 
 
