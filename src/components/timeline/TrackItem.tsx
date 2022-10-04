@@ -38,27 +38,33 @@ export const TrackItem = ({
         ...trackItemStyles(exercise),
       })()}
     >
-      {!isSingleDay && (
-        <TrackItemTitle>
-          <span style={{ fontWeight: 500 }}>
-            {exercise.type} {exercise.number}:
-          </span>
-          &nbsp;{exercise.title}
-          {exercise.estimatedWorkHours && (
-            <div
-              className={css({
-                display: 'flex',
-                flexWrap: 'wrap',
-                columnGap: '0.5rem',
-                fontSize: '0.9rem',
-                color: '$lowContrast',
-              })()}
-            >
-              Estimate: {exercise.estimatedWorkHours}h
-            </div>
-          )}
-        </TrackItemTitle>
-      )}
+      <TrackItemTitle>
+        {isSingleDay ? (
+          <>
+            <span style={{ fontWeight: 500 }}>{exercise.number}</span>
+          </>
+        ) : (
+          <>
+            <span style={{ fontWeight: 500 }}>
+              {exercise.type} {exercise.number}:
+            </span>
+            &nbsp;{exercise.title}
+            {exercise.estimatedWorkHours && (
+              <div
+                className={css({
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  columnGap: '0.5rem',
+                  fontSize: '0.9rem',
+                  color: '$lowContrast',
+                })()}
+              >
+                Estimate: {exercise.estimatedWorkHours}h
+              </div>
+            )}
+          </>
+        )}
+      </TrackItemTitle>
     </TrackItemWrapper>
   )
 }
