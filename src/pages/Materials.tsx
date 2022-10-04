@@ -249,8 +249,7 @@ const Materials = () => {
             />
             <Footnote muted center css={{ margin: '2rem 0' }}>
               Please contact the relevant module leader(s) for missing resources or if you'd like
-              materials to be better organised; we recommend using EdStem to help them gauge the
-              peer response.
+              materials to be better organised. We recommend communicating via the EdStem forum.
             </Footnote>
           </>
         )}
