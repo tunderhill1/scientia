@@ -1,6 +1,7 @@
 import {
   CameraReelsFill,
   EnvelopeFill,
+  ExplicitFill,
   Git,
   Icon,
   PeopleFill,
@@ -51,5 +52,11 @@ export const LINKS: Link[] = [
     description: 'Group project feedback',
     url: 'https://peer-assessment.doc.ic.ac.uk',
     icon: StarHalf,
+  },
+  {
+    title: 'eMarking',
+    description: 'Assessment feedback',
+    url: 'http://emarking.doc.ic.ac.uk/',
+    icon: ExplicitFill,
   },
 ]
