@@ -35,7 +35,9 @@ const ExerciseDialog = ({
     // This is admittedly a hack, but gets easily around the pure date comparison
     // limitations (which would make dev interactions cumbersome)
     return (
-      (process.env.NODE_ENV === 'development' || now() < exercise.deadline) && !userDetails?.isStaff
+      (process.env.NODE_ENV === 'development' ||
+        (now() < exercise.deadline && now() > exercise.startDate)) &&
+      !userDetails?.isStaff
     )
   }
 
