@@ -4,11 +4,16 @@ import { useOutletContext, useParams } from 'react-router-dom'
 
 import ExerciseDialog from '../components/dialogs/ExerciseDialog'
 import { endpoints } from '../constants/endpoints'
-import { Exercise } from '../constants/types'
+import { Exercise, Feedback } from '../constants/types'
 import { AxiosContext } from '../lib/axios.context'
 import { useToast } from '../lib/toast.context'
 import { useUser } from '../lib/user.context'
-import { calculateGrade, displayTimestamp, percentage } from '../lib/utilities.service'
+import {
+  calculateGrade,
+  displayTimestamp,
+  groupByProperty,
+  percentage,
+} from '../lib/utilities.service'
 import { Wrapper } from '../styles/_app.style'
 import { Link, LinkIcon } from '../styles/exerciseDialog.style'
 import {
@@ -27,6 +32,7 @@ const Exercises = () => {
   const { userDetails } = useUser()
 
   const [exercises, setExercises] = useState<Exercise[]>([])
+  const [feedbackLookup, setFeedbackLookup] = useState<{ [exercise: number]: Feedback }>({})
 
   useEffect(() => {
     axiosInstance
@@ -48,6 +54,33 @@ const Exercises = () => {
         console.error(error)
       })
   }, [year])
+
+  useEffect(() => {
+    axiosInstance
+      .request({
+        url: endpoints.feedback(year!),
+        method: 'GET',
+        params: { module_code: moduleCode },
+      })
+      .then(({ data }: { data: any }) => {
+        if (data === null) setFeedbackLookup([])
+        setFeedbackLookup(
+          data
+            .map((feedback: any) => plainToInstance(Feedback, feedback))
+            .reduce(
+              (exerciseToFeedback: { [exercise: number]: Feedback }, feedback: Feedback) => ({
+                ...exerciseToFeedback,
+                [feedback['exerciseNumber']]: feedback,
+              }),
+              {}
+            )
+        )
+      })
+      .catch((error) => {
+        addToast({ variant: 'error', title: 'Error fetching feedback' })
+        console.error(error)
+      })
+  }, [exercises])
 
   const [exerciseForDialog, setExerciseForDialog] = useState<Exercise | null>(null)
 
@@ -100,13 +133,13 @@ const Exercises = () => {
                   )}
                 </td>
 
-                {e.mark && (
+                {e.mark && e.number in feedbackLookup && (
                   <td>
                     <Link
                       css={{ fontSize: '$md' }}
                       target="_blank"
-                      href={e.mark ? 'https://example.com/' : '#'}
-                      title={e.mark ? `Feedback for ${e.title}` : 'Not yet published'}
+                      href={endpoints.feedbackFile(feedbackLookup[e.number].id)}
+                      title={`Feedback for ${e.title}`}
                     >
                       <LinkIcon />
                       Feedback

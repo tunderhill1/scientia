@@ -41,4 +41,6 @@ export const endpoints = {
   resourceFile: (id: number) => `${baseURL}/resources/${id}/file`,
   resourcesArchive: `${baseURL}/resources/zipped`,
   periods: (year: string) => `${baseURL}/${year}/periods`,
+  feedback: (year: string) => `${baseURL}/me/${year}/feedback`,
+  feedbackFile: (feedbackId: number) => `${baseURL}/feedback/${feedbackId}/file`,
 }

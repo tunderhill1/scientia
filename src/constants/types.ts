@@ -153,3 +153,17 @@ export class SubmittedFile {
     return endpoints.submissionFile(this.year, this.moduleCode, this.exerciseNumber, this.id)
   }
 }
+
+export class Feedback {
+  id: number
+  year: string
+
+  @Expose({ name: 'module_code' })
+  moduleCode: string
+
+  @Expose({ name: 'exercise_number' })
+  exerciseNumber: number
+
+  @Expose({ name: 'timestamp' })
+  timestamp: Date | null
+}
