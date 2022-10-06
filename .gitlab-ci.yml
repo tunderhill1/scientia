@@ -136,7 +136,6 @@ deploy prod:
   only:
     - master
   when: manual
-  allow_failure: false
   before_script: []
   script:
     - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
@@ -155,7 +154,7 @@ run db migrations:
   only:
     - master
   before_script: []
-  when: on_success
+  when: manual
   script:
     - docker exec $(docker ps -qf "name=emarking" | head -n1) flask db upgrade
     - docker exec $(docker ps -qf "name=materials" | head -n1) flask db upgrade
