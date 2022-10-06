@@ -136,17 +136,31 @@ deploy prod:
   only:
     - master
   when: manual
+  allow_failure: false
   before_script: []
   script:
     - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
     - docker stack deploy -c docker-compose.yml scientia --with-registry-auth
-    - docker exec $(docker ps -qf "name=emarking" | head -n1) flask db upgrade
-    - docker exec $(docker ps -qf "name=materials" | head -n1) flask db upgrade
   tags:
     - deploy_swarm
   environment:
     name: production-swarm
     url: https://scientia.doc.ic.ac.uk
+
+run db migrations:
+  stage: deploying
+  except:
+    changes:
+      - "**/README.md"
+  only:
+    - master
+  before_script: []
+  when: on_success
+  script:
+    - docker exec $(docker ps -qf "name=emarking" | head -n1) flask db upgrade
+    - docker exec $(docker ps -qf "name=materials" | head -n1) flask db upgrade
+  tags:
+    - deploy_swarm
 
 
 
