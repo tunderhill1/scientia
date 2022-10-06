@@ -12,6 +12,7 @@ import {
   calculateGrade,
   displayTimestamp,
   groupByProperty,
+  now,
   percentage,
 } from '../lib/utilities.service'
 import { Wrapper } from '../styles/_app.style'
@@ -109,7 +110,9 @@ const Exercises = () => {
               <tr>
                 <td>
                   <ViewExerciseButton
-                    onClick={() => setExerciseForDialog(e)}
+                    onClick={() => {
+                      if (e.startDate <= now()) setExerciseForDialog(e)
+                    }}
                     title="View exercise details"
                   >
                     <p>
