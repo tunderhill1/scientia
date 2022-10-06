@@ -8,6 +8,7 @@ export type LocationState = { next: string }
 
 export class UserDetails {
   login: string
+  year: string
   email: string
   cohort: string
   firstname: string

@@ -89,6 +89,32 @@ export const Navigation = () => {
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <TimelineGuideButton />
+
+          {/* Quick Links */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button icon title="Useful websites">
+                <Justify size={22} />
+              </Button>
+            </DropdownMenuTrigger>
+            <Content align="start">
+              {LINKS.map((link) => (
+                <a
+                  href={link.url}
+                  key={link.title}
+                  target="_blank"
+                  rel="noreferrer"
+                  title={link.description}
+                >
+                  <Item link style={{ padding: '0.5rem' }}>
+                    <link.icon size={16}></link.icon>
+                    {link.title}
+                  </Item>
+                </a>
+              ))}
+            </Content>
+          </DropdownMenu>
+
           {/* User Preferences */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -126,31 +152,6 @@ export const Navigation = () => {
                 </DropdownIcon>
                 Logout
               </Item>
-            </Content>
-          </DropdownMenu>
-
-          {/* Quick Links */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button icon title="Useful websites">
-                <Justify size={22} />
-              </Button>
-            </DropdownMenuTrigger>
-            <Content align="start">
-              {LINKS.map((link) => (
-                <a
-                  href={link.url}
-                  key={link.title}
-                  target="_blank"
-                  rel="noreferrer"
-                  title={link.description}
-                >
-                  <Item link style={{ padding: '0.5rem' }}>
-                    <link.icon size={16}></link.icon>
-                    {link.title}
-                  </Item>
-                </a>
-              ))}
             </Content>
           </DropdownMenu>
         </div>
