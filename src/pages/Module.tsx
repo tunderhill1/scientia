@@ -23,6 +23,7 @@ const Module = () => {
   const { addToast } = useToast()
 
   const [module, setModule] = useState<ModuleType | undefined>(undefined)
+  const [moduleIsLoaded, setModuleIsLoaded] = useState<boolean>(false)
   useEffect(() => {
     axiosInstance
       .request({
@@ -37,6 +38,7 @@ const Module = () => {
         addToast({ variant: 'error', title: 'Error fetching module' })
         console.error(error)
       })
+      .finally(() => setModuleIsLoaded(true))
   }, [year])
 
   const tabs = [
@@ -48,9 +50,11 @@ const Module = () => {
     return (
       <Container>
         <h1> {moduleCode}</h1>
-        <Wrapper center>
-          <span>Troubles loading data for this module. Please try refreshing.</span>
-        </Wrapper>
+        {moduleIsLoaded && (
+          <Wrapper center>
+            <span>Troubles loading data for this module. Please try refreshing.</span>
+          </Wrapper>
+        )}
       </Container>
     )
   }
