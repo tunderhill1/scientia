@@ -47,7 +47,10 @@ const Module = () => {
   if (module === undefined) {
     return (
       <Container>
-        <h1 style={{ margin: 0 }}> {moduleCode}</h1>
+        <h1> {moduleCode}</h1>
+        <Wrapper center>
+          <span>Troubles loading data for this module. Please try refreshing.</span>
+        </Wrapper>
       </Container>
     )
   }
