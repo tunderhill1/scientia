@@ -1,8 +1,9 @@
 import prettyBytes from 'pretty-bytes'
 import { ReactNode } from 'react'
-import { Check2, Trash3Fill, Upload } from 'react-bootstrap-icons'
+import { Check2, Git, Trash3Fill, Upload } from 'react-bootstrap-icons'
 import { format as formatTimeAgo } from 'timeago.js'
 
+import { GITLAB_HASH } from '../../../constants/global'
 import { Exercise, FileRequirement, SubmittedFile } from '../../../constants/types'
 import { DeleteButton } from '../../../styles/deleteButton.style'
 import { UploadTrigger } from '../../../styles/exerciseDialog.style'
@@ -26,6 +27,7 @@ const FileUploadArea = ({
   const [fileName, fileType] = fileRequirement.name.split('.')
   const submittedFile =
     submittedFiles.find((file) => file.targetFileName === fileRequirement.name) ?? null
+  const isLabTSHandIn = fileType === GITLAB_HASH
 
   function onClick(event: any) {
     if (!submittedFile) return
@@ -72,7 +74,7 @@ const FileUploadArea = ({
           onClick={(event) => {
             if (!submittedFile) return
           }}
-          disabled={disabled}
+          disabled={disabled || isLabTSHandIn}
         >
           <div
             style={{
@@ -83,8 +85,10 @@ const FileUploadArea = ({
           >
             {submittedFile ? (
               <Check2 className={css({ fill: '$green9', minWidth: '1.5rem' })()} size={24} />
+            ) : isLabTSHandIn ? (
+              <Git size={24} />
             ) : (
-              <Upload size={24} style={{}} />
+              <Upload size={24} />
             )}
             <div
               style={{
@@ -93,7 +97,11 @@ const FileUploadArea = ({
                 flexDirection: 'column',
               }}
             >
-              <p>{fileName[0].toUpperCase() + fileName.substring(1).replace(/[-_]/g, ' ')}</p>
+              <p>
+                {isLabTSHandIn
+                  ? 'GitLab Hash (via LabTS)'
+                  : fileName[0].toUpperCase() + fileName.substring(1).replace(/[-_]/g, ' ')}
+              </p>
               <p
                 className={css({
                   fontSize: '$md',
@@ -138,7 +146,7 @@ const FileUploadArea = ({
                   {prettyBytes(submittedFile.fileSize)}
                 </p>
               </div>
-              {!disabled && (
+              {!disabled && !isLabTSHandIn && (
                 <DeleteButton
                   type="button"
                   aria-label="delete"
@@ -159,7 +167,7 @@ const FileUploadArea = ({
       <input
         hidden
         type="file"
-        disabled={disabled || !!submittedFile}
+        disabled={disabled || !!submittedFile || isLabTSHandIn}
         id={`exercise-upload-${fileName + fileType}`}
         accept={fileType ? '.' + fileType : ''}
         onChange={(event) => {
