@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { ResourceCreate } from '../../../constants/types'
 import { Resource } from '../../../lib/materials.service'
@@ -30,9 +30,11 @@ const LinkUploadDialog = ({
   const { uploadResource } = useResources()
   const { addToast } = useToast()
   const [linkResource, setLinkResource] = useState<ResourceCreate>(defaultLinkResource)
-  const [categoryOptions, setCategoryOptions] = useState<{ value: string; label: string }[]>(
-    categories.map((category) => ({ value: category, label: category }))
-  )
+  const [categoryOptions, setCategoryOptions] = useState<{ value: string; label: string }[]>([])
+
+  useEffect(() => {
+    setCategoryOptions(categories.map((category) => ({ value: category, label: category })))
+  }, [categories])
 
   function onLinkResourceChange(key: string, value: string) {
     setLinkResource((linkResource: ResourceCreate) => ({ ...linkResource, [key]: value }))
