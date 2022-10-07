@@ -64,7 +64,7 @@ export const Navigation = () => {
               {/* TODO: We might need to store logos separately if they're theme-configurable */}
               <Logo
                 alt="Scientia logo"
-                src="/assets/logo.svg"
+                src="/assets/logo-light.svg"
                 style={{ filter: `invert(${theme === 'dark' ? 1 : 0})` }}
               />
               <WebsiteTitle>Scientia</WebsiteTitle>

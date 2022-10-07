@@ -41,7 +41,7 @@ const Login = () => {
       <Form onSubmit={handleSubmit}>
         <Logo
           alt="Scientia logo"
-          src="assets/logo.svg"
+          src="assets/logo-light.svg"
           style={{ filter: `invert(${theme === 'dark' ? 1 : 0})` }}
         />
         <Name>Scientia</Name>
