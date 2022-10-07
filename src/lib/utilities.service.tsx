@@ -178,7 +178,7 @@ export const percentage = (mark: number, maximumMark: number): string => {
   return `${Math.floor((100 * mark) / maximumMark)}%`
 }
 
-export const capitaliseFirstLetter = (str: string): string =>
+export const capitaliseFirstLetter = (str?: string): string =>
   str ? str[0].toUpperCase() + str.slice(1) : ''
 
 /* Concatenate grouped arrays */

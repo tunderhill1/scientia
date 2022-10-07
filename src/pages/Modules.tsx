@@ -1,6 +1,8 @@
-import { useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { Tabs } from '../components/Tabs'
+import titles from '../constants/titles'
 import { useUser } from '../lib/user.context'
 import { Container } from '../styles/_app.style'
 import { css } from '../styles/stitches.config'
@@ -8,9 +10,13 @@ import { css } from '../styles/stitches.config'
 const Modules = () => {
   const { userDetails } = useUser()
   const navigate = useNavigate()
+  const { requestedYear: year } = useParams()
 
   return (
     <Container>
+      <Helmet>
+        <title>{titles.modules(year, userDetails?.cohortName)}</title>
+      </Helmet>
       <section style={{ marginBottom: '2rem' }}>
         <h1>Modules</h1>
         <p>

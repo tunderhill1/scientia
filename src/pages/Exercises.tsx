@@ -1,20 +1,16 @@
 import { plainToInstance } from 'class-transformer'
 import { Fragment, useContext, useEffect, useState } from 'react'
-import { useOutletContext, useParams } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
+import { useParams } from 'react-router-dom'
 
 import ExerciseDialog from '../components/dialogs/ExerciseDialog'
 import { endpoints } from '../constants/endpoints'
+import titles from '../constants/titles'
 import { Exercise, Feedback } from '../constants/types'
 import { AxiosContext } from '../lib/axios.context'
 import { useToast } from '../lib/toast.context'
 import { useUser } from '../lib/user.context'
-import {
-  calculateGrade,
-  displayTimestamp,
-  groupByProperty,
-  now,
-  percentage,
-} from '../lib/utilities.service'
+import { calculateGrade, displayTimestamp, now, percentage } from '../lib/utilities.service'
 import { Wrapper } from '../styles/_app.style'
 import { Link, LinkIcon } from '../styles/exerciseDialog.style'
 import {
@@ -29,8 +25,9 @@ const Exercises = () => {
   const axiosInstance = useContext(AxiosContext)
   const { requestedYear: year } = useParams()
   const { addToast } = useToast()
-  const { moduleCode } = useOutletContext<{ moduleCode: string | null }>()!
   const { userDetails } = useUser()
+  const { moduleCode } = useParams()
+  const moduleTitle = userDetails?.modules.find((m) => m.code === moduleCode)?.title
 
   const [exercises, setExercises] = useState<Exercise[]>([])
   const [feedbackLookup, setFeedbackLookup] = useState<{ [exercise: number]: Feedback }>({})
@@ -96,6 +93,9 @@ const Exercises = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{titles.exercises(year, moduleCode, moduleTitle)}</title>
+      </Helmet>
       <Table>
         <thead style={{ textAlign: 'left' }}>
           <tr>

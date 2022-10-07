@@ -1,5 +1,7 @@
 import { differenceInBusinessDays, differenceInCalendarWeeks, isMonday } from 'date-fns'
 import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet-async'
+import { useParams } from 'react-router-dom'
 
 import ExerciseDialog from '../components/dialogs/ExerciseDialog'
 import { MainBackground } from '../components/timeline/MainBackground'
@@ -7,12 +9,8 @@ import { Modules } from '../components/timeline/Modules'
 import { Switcher } from '../components/timeline/Switcher'
 import { Tracks } from '../components/timeline/Tracks'
 import { Weeks } from '../components/timeline/Weeks'
-import {
-  DIVIDER_HEIGHT,
-  INDEXING_OFFSET,
-  NAVIGATION_HEIGHT,
-  TIMELINE_TRACK_HEIGHT,
-} from '../constants/global'
+import { INDEXING_OFFSET, NAVIGATION_HEIGHT, TIMELINE_TRACK_HEIGHT } from '../constants/global'
+import titles from '../constants/titles'
 import { Exercise, Module, Term, TrackMap } from '../constants/types'
 import { useTimeline } from '../lib/timeline.service'
 import { useUser } from '../lib/user.context'
@@ -51,6 +49,8 @@ const TOP_MARGIN = `(${NAVIGATION_HEIGHT})`
 const Timeline = () => {
   const { userDetails } = useUser()
   const { terms, exercises } = useTimeline()
+  const { requestedYear: year } = useParams()
+
   const [term, setTerm] = useState<Term>()
   const userModules: Module[] = userDetails?.modules as Module[]
   const [modulesForTerm, setModulesForTerm] = useState<Module[]>([])
@@ -107,40 +107,47 @@ const Timeline = () => {
     )
   }, [trackMapForTerm])
 
-  return term ? (
+  return (
     <>
-      <Area
-        css={{
-          height: `calc(100vh - ${TOP_MARGIN})`,
-          marginTop: `calc${TOP_MARGIN}`,
-        }}
-      >
-        <Viewport>
-          <Container timeline>
-            <Switcher term={term.name} setTerm={setTerm} terms={terms} />
-            <Weeks start={term.start} weeks={term.weeks} />
-            <Modules modules={modulesForTerm} rowHeights={rowHeights} />
-            <Tracks
-              term={term}
-              weeks={term.weeks}
-              trackMap={trackMapForTerm}
-              setExercise={setExercise}
-            />
-            <MainBackground cols={term.weeks} rowHeights={rowHeights} />
-          </Container>
-        </Viewport>
-        <Scrollbar orientation="vertical">
-          <Thumb />
-        </Scrollbar>
-        <Scrollbar orientation="horizontal">
-          <Thumb />
-        </Scrollbar>
-        <Corner />
-      </Area>
-      {exercise && <ExerciseDialog exercise={exercise} setExercise={setExercise} />}
+      <Helmet>
+        <title>{titles.timeline(year, term?.name, userDetails?.cohortName)}</title>
+      </Helmet>
+      {term ? (
+        <>
+          <Area
+            css={{
+              height: `calc(100vh - ${TOP_MARGIN})`,
+              marginTop: `calc${TOP_MARGIN}`,
+            }}
+          >
+            <Viewport>
+              <Container timeline>
+                <Switcher term={term.name} setTerm={setTerm} terms={terms} />
+                <Weeks start={term.start} weeks={term.weeks} />
+                <Modules modules={modulesForTerm} rowHeights={rowHeights} />
+                <Tracks
+                  term={term}
+                  weeks={term.weeks}
+                  trackMap={trackMapForTerm}
+                  setExercise={setExercise}
+                />
+                <MainBackground cols={term.weeks} rowHeights={rowHeights} />
+              </Container>
+            </Viewport>
+            <Scrollbar orientation="vertical">
+              <Thumb />
+            </Scrollbar>
+            <Scrollbar orientation="horizontal">
+              <Thumb />
+            </Scrollbar>
+            <Corner />
+          </Area>
+          {exercise && <ExerciseDialog exercise={exercise} setExercise={setExercise} />}
+        </>
+      ) : (
+        <div>Loading...</div>
+      )}
     </>
-  ) : (
-    <div>Loading...</div>
   )
 }
 

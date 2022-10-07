@@ -1,6 +1,7 @@
 import { Expose, Type } from 'class-transformer'
 import { Dispatch, SetStateAction } from 'react'
 
+import cohorts from './cohorts'
 import { endpoints } from './endpoints'
 
 export type SetState<Value> = Dispatch<SetStateAction<Value>>
@@ -22,6 +23,10 @@ export class UserDetails {
 
   get isStaff(): boolean {
     return this.roleInDepartment === 'staff'
+  }
+
+  get cohortName(): string | undefined {
+    return cohorts?.[this.cohort]
   }
 }
 

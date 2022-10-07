@@ -1,6 +1,7 @@
 import { calculateGrade, capitaliseFirstLetter, percentage } from '../../lib/utilities.service'
 
 test.each([
+  [undefined, ''],
   ['', ''],
   ['l', 'L'],
   ['lorem', 'Lorem'],

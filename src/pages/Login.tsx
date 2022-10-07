@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { useLocation, useNavigate } from 'react-router-dom'
 
+import titles from '../constants/titles'
 import { LocationState } from '../constants/types'
 import useAuth from '../lib/auth.service'
 import { ThemeContext } from '../lib/theme.context'
@@ -33,6 +35,9 @@ const Login = () => {
 
   return (
     <Container center expand dotted css={{ paddingTop: 0 }}>
+      <Helmet>
+        <title>{titles.login}</title>
+      </Helmet>
       <Form onSubmit={handleSubmit}>
         <Logo
           alt="Scientia logo"

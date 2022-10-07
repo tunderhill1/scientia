@@ -1,3 +1,4 @@
+import { HelmetProvider } from 'react-helmet-async'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { ProtectedRoute } from '../components/ProtectedRoute'
@@ -20,44 +21,46 @@ import Timeline from './Timeline'
 function App() {
   globalStyles()
   return (
-    <ThemeProvider>
-      <ToastProvider>
-        <UserProvider>
-          <GameProvider>
-            <AxiosInstanceProvider config={{ baseURL }}>
-              <Area>
-                <ScrollViewport>
-                  {/* TODO: Add a no-match route (i.e. 404 Not Found) */}
-                  <Routes>
-                    <Route index element={<Login />} />
-                    <Route element={<ProtectedRoute />}>
-                      <Route path=":requestedYear" element={<YearRoute />}>
-                        <Route path="timeline" element={<Timeline />} />
-                        <Route path="modules">
-                          <Route index element={<Modules />} />
-                          <Route path=":moduleCode" element={<Module />}>
-                            {/* TODO: Replace with the overview page afer Scientia backend is up and ready */}
-                            <Route index element={<Navigate to="materials" />} />
-                            {/*This is for UI design purposes only. The *materials pages will need to be merged*/}
-                            {/*once logic to distinguish between staff and student is sorted out*/}
-                            {/*<Route path="staff-materials" element={<StaffMaterials />} />*/}
-                            <Route path="materials" element={<Materials />} />
-                            <Route path="exercises" element={<Exercises />} />
+    <HelmetProvider>
+      <ThemeProvider>
+        <ToastProvider>
+          <UserProvider>
+            <GameProvider>
+              <AxiosInstanceProvider config={{ baseURL }}>
+                <Area>
+                  <ScrollViewport>
+                    {/* TODO: Add a no-match route (i.e. 404 Not Found) */}
+                    <Routes>
+                      <Route index element={<Login />} />
+                      <Route element={<ProtectedRoute />}>
+                        <Route path=":requestedYear" element={<YearRoute />}>
+                          <Route path="timeline" element={<Timeline />} />
+                          <Route path="modules">
+                            <Route index element={<Modules />} />
+                            <Route path=":moduleCode" element={<Module />}>
+                              {/* TODO: Replace with the overview page afer Scientia backend is up and ready */}
+                              <Route index element={<Navigate to="materials" />} />
+                              {/*This is for UI design purposes only. The *materials pages will need to be merged*/}
+                              {/*once logic to distinguish between staff and student is sorted out*/}
+                              {/*<Route path="staff-materials" element={<StaffMaterials />} />*/}
+                              <Route path="materials" element={<Materials />} />
+                              <Route path="exercises" element={<Exercises />} />
+                            </Route>
                           </Route>
                         </Route>
                       </Route>
-                    </Route>
-                  </Routes>
-                </ScrollViewport>
-                <Scrollbar orientation="vertical">
-                  <Thumb />
-                </Scrollbar>
-              </Area>
-            </AxiosInstanceProvider>
-          </GameProvider>
-        </UserProvider>
-      </ToastProvider>
-    </ThemeProvider>
+                    </Routes>
+                  </ScrollViewport>
+                  <Scrollbar orientation="vertical">
+                    <Thumb />
+                  </Scrollbar>
+                </Area>
+              </AxiosInstanceProvider>
+            </GameProvider>
+          </UserProvider>
+        </ToastProvider>
+      </ThemeProvider>
+    </HelmetProvider>
   )
 }
 

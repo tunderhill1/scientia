@@ -13,6 +13,7 @@ import {
   UiChecks,
   Upload,
 } from 'react-bootstrap-icons'
+import { Helmet } from 'react-helmet-async'
 import { useOutletContext, useParams } from 'react-router-dom'
 
 import { CollapsibleList } from '../components/CollapsibleList'
@@ -25,6 +26,7 @@ import LinkUploadDialog from '../components/dialogs/upload/LinkUploadDialog'
 import { LevelToggles } from '../components/game/LevelToggles'
 import { endpoints } from '../constants/endpoints'
 import { LONDON_TIMEZONE } from '../constants/global'
+import titles from '../constants/titles'
 import useChecklist from '../lib/checkbox.service'
 import { useReordering } from '../lib/dragDrop.service'
 import { useGame } from '../lib/game/game.context'
@@ -46,12 +48,13 @@ const Materials = () => {
   const [resourceToEdit, setResourceToEdit] = useState(null)
   const [dragEnabled, setDragEnabled] = useState(false)
 
+  const { userDetails } = useUser()
   const { includeLevels } = useGame()
   const { moduleCode, levelsManager } = useOutletContext<{
     moduleCode: string | null
     levelsManager: LevelsManager
   }>()
-  const { userDetails } = useUser()
+  const moduleTitle = userDetails?.modules.find((m) => m.code === moduleCode)?.title
   const { requestedYear: year } = useParams()
   const {
     groupedMaterials,
@@ -215,6 +218,9 @@ const Materials = () => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
+      <Helmet>
+        <title>{titles.module(year, moduleCode, moduleTitle)}</title>
+      </Helmet>
       <Wrapper>
         {noMaterials() ? (
           <>
