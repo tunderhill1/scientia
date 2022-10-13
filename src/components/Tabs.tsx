@@ -26,7 +26,8 @@ export const Tabs = ({
   alignment = Alignment.Vertical,
   attribute = 'title',
   animate = false,
-  onClick = () => {},
+  href = (_: any) => '#',
+  target = '_self',
   dragDropOptions = null,
   dividers = false,
 }: {
@@ -35,7 +36,8 @@ export const Tabs = ({
   alignment?: Alignment
   attribute?: string
   animate?: boolean
-  onClick?: (_: any) => void
+  href?: (tab: any) => string
+  target?: string
   dragDropOptions?: DragDropOptions | null
   dividers?: boolean
 }) => {
@@ -128,6 +130,8 @@ export const Tabs = ({
       {dividers && index > 0 && <Hr />}
       <Tab
         {...props}
+        href={href(tab)}
+        target={target}
         /* NOTE: Unique identifier to find the element */
         id={prefixRef.current.toString() + index.toString()}
         onMouseOver={(event: any) => repositionHighlight(event, tab)}
@@ -140,7 +144,6 @@ export const Tabs = ({
             event.currentTarget.click()
           }
         }}
-        onClick={() => !dragDropOptions?.dragEnabled && onClick(tab)}
       >
         {generator(tab)}
       </Tab>

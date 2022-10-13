@@ -43,7 +43,7 @@ const FileUploadArea = ({
   }
 
   const AnchorWrapper = ({ children }: { children: ReactNode }) => {
-    return submittedFile ? (
+    return submittedFile && !isLabTSHandIn ? (
       <a
         href={submittedFile.url}
         title={submittedFile.targetFileName}
@@ -76,13 +76,7 @@ const FileUploadArea = ({
           }}
           disabled={disabled || isLabTSHandIn}
         >
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             {submittedFile ? (
               <Check2 className={css({ fill: '$green9', minWidth: '1.5rem' })()} size={24} />
             ) : isLabTSHandIn ? (
@@ -90,25 +84,13 @@ const FileUploadArea = ({
             ) : (
               <Upload size={24} />
             )}
-            <div
-              style={{
-                marginLeft: '1rem',
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
+            <div style={{ marginLeft: '1rem', display: 'flex', flexDirection: 'column' }}>
               <p>
                 {isLabTSHandIn
                   ? 'GitLab Hash (via LabTS)'
                   : fileName[0].toUpperCase() + fileName.substring(1).replace(/[-_]/g, ' ')}
               </p>
-              <p
-                className={css({
-                  fontSize: '$md',
-                  color: '$sand9',
-                  marginTop: '0.125rem',
-                })()}
-              >
+              <p className={css({ fontSize: '$md', color: '$sand9', marginTop: '0.125rem' })()}>
                 {fileType}
               </p>
             </div>
@@ -133,11 +115,7 @@ const FileUploadArea = ({
                 }}
               >
                 <i
-                  className={css({
-                    fontSize: '$sm',
-                    color: '$sand10',
-                    marginBottom: '0.125rem',
-                  })()}
+                  className={css({ fontSize: '$sm', color: '$sand10', marginBottom: '0.125rem' })()}
                 >
                   Submitted {submittedFile.timestamp > exercise.deadline && 'late'}{' '}
                   {formatTimeAgo(submittedFile.timestamp)}

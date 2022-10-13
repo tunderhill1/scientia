@@ -24,7 +24,6 @@ export const VerticalDayLine = ({ term }: { term: Term }) => {
     <div
       ref={fieldRef}
       className={css({
-        zIndex: 1000,
         borderLeft: '2px solid $primary9',
         marginLeft: `calc(${isWeekend(now()) ? '0.25rem' : '1.5rem'} - 2px)`,
         display: 'flex',

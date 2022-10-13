@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import { Tabs } from '../components/Tabs'
 import titles from '../constants/titles'
@@ -9,7 +9,6 @@ import { css } from '../styles/stitches.config'
 
 const Modules = () => {
   const { userDetails } = useUser()
-  const navigate = useNavigate()
   const { requestedYear: year } = useParams()
 
   return (
@@ -39,7 +38,7 @@ const Modules = () => {
             <span className={css({ color: '$lowContrast' })()}>{tab.code}</span>
           </>
         )}
-        onClick={(tab: any) => navigate(`${tab.code}`)}
+        href={(tab) => `modules/${tab.code}/materials`}
       />
     </Container>
   )

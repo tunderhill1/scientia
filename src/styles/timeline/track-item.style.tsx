@@ -5,7 +5,6 @@ import { now } from '../../lib/utilities.service'
 import { styled } from '../stitches.config'
 
 export const TrackItemWrapper = styled('div', {
-  cursor: 'pointer',
   borderRadius: '0.5rem',
   display: 'flex',
   alignItems: 'center',
@@ -31,15 +30,15 @@ export const trackItemStyles = ({
   if (isAssessed) {
     if (submissionType === 'individual') {
       // assessed and individual exercise
-      style.borderColor = '$green5'
-      style.backgroundColor = '$green3'
-      style['&:hover'] = { backgroundColor: '$green4' }
+      style.borderColor = '$green7'
+      style.backgroundColor = '$green4'
+      style['&:hover'] = { backgroundColor: '$green5' }
     }
     if (submissionType === 'group') {
       // assessed and group exercise
-      style.borderColor = '$plum5'
-      style.backgroundColor = '$plum3'
-      style['&:hover'] = { backgroundColor: '$plum4' }
+      style.borderColor = '$plum7'
+      style.backgroundColor = '$plum4'
+      style['&:hover'] = { backgroundColor: '$plum5' }
     }
   } else {
     if (submissionType === 'no submission required') {
@@ -49,14 +48,14 @@ export const trackItemStyles = ({
       style['&:hover'] = { backgroundColor: '$neutral3' }
     } else {
       // unassessed and requires a submission
-      style.borderColor = '$orange5'
-      style.backgroundColor = '$orange3'
-      style['&:hover'] = { backgroundColor: '$orange4' }
+      style.borderColor = '$orange7'
+      style.backgroundColor = '$orange4'
+      style['&:hover'] = { backgroundColor: '$orange5' }
     }
   }
 
   // user can interact with exercise and hasn't submitted required files
-  if (startDate <= now() && now() <= deadline) {
+  if (startDate <= now() && now() < deadline && submissionType !== 'no submission required') {
     style.borderWidth = 2
     style.borderColor = '$red8'
     style.fontWeight = 600

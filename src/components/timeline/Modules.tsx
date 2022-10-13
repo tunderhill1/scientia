@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import { TIMELINE_TRACK_HEIGHT } from '../../constants/global'
 import { Module } from '../../constants/types'
@@ -13,7 +13,6 @@ export const Modules = ({
   modules: Module[]
   rowHeights: { [code: string]: string }
 }) => {
-  const navigate = useNavigate()
   const { requestedYear: year } = useParams()
   return (
     <Wrapper
@@ -33,6 +32,7 @@ export const Modules = ({
       <Tabs
         data={modules}
         dividers={modules.length > 1}
+        href={(module) => `/${year}/modules/${module.code}/materials`}
         generator={(module: Module) => (
           <div
             style={{
@@ -43,7 +43,6 @@ export const Modules = ({
               /* TODO: Extract constants */
               width: 'calc(16.875rem - 2rem)',
             }}
-            onClick={() => navigate(`/${year}/modules/${module.code}/materials`)}
           >
             <span
               /* TODO: Extract styling */

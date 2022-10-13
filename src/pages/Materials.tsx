@@ -108,10 +108,8 @@ const Materials = () => {
           </Tags>
         </Material>
       )}
-      onClick={(tab: any) => {
-        const link = tab.type === 'link' ? tab.path : endpoints.resourceFile(tab.id)
-        window.open(link)
-      }}
+      href={(tab) => (tab.type === 'link' ? tab.path : endpoints.resourceFile(tab.id))}
+      target="_blank"
       dragDropOptions={{
         dragEnabled,
         droppableId: items[0]?.category ?? 'empty',
