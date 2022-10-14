@@ -24,7 +24,7 @@ const EditDialog = ({
   moduleCode: string | null
   setRawMaterials: (_: Resource[]) => void
 }) => {
-  const { requestedYear: year } = useParams()
+  const { year } = useParams()
   const axiosInstance = useContext(AxiosContext)
   const { addToast } = useToast()
 

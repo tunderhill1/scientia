@@ -9,7 +9,7 @@ import { css } from '../styles/stitches.config'
 
 const Modules = () => {
   const { userDetails } = useUser()
-  const { requestedYear: year } = useParams()
+  const { year } = useParams()
 
   return (
     <Container>

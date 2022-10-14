@@ -55,7 +55,7 @@ const Materials = () => {
     levelsManager: LevelsManager
   }>()
   const moduleTitle = userDetails?.modules.find((m) => m.code === moduleCode)?.title
-  const { requestedYear: year } = useParams()
+  const { year } = useParams()
   const {
     groupedMaterials,
     setRawMaterials,

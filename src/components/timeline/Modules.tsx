@@ -13,7 +13,7 @@ export const Modules = ({
   modules: Module[]
   rowHeights: { [code: string]: string }
 }) => {
-  const { requestedYear: year } = useParams()
+  const { year } = useParams()
   return (
     <Wrapper
       css={{

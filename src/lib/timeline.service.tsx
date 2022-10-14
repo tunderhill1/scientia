@@ -12,7 +12,7 @@ import { groupByProperty } from './utilities.service'
 
 export const useTimeline = (): any => {
   const { userDetails } = useUser()
-  const { requestedYear: year } = useParams()
+  const { year } = useParams()
   const axiosInstance = useContext(AxiosContext)
   const { addToast } = useToast()
 

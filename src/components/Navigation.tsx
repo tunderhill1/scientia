@@ -43,7 +43,7 @@ import { YearSwitcher } from './YearSwitcher'
 export const Navigation = () => {
   const { userDetails } = useUser()
   const { logoutUser } = useAuth()
-  const { requestedYear: year } = useParams()
+  const { year } = useParams()
   const currentYear = shortYear()
   const { theme, toggleTheme } = useContext(ThemeContext)
   const { includeLevels, toggleIncludeLevels } = useGame()

@@ -32,7 +32,7 @@ export const useMaterials = ({
   setTotalLevels,
   updateLevel,
 }: LevelsManager): MaterialsManager => {
-  const { requestedYear: year } = useParams()
+  const { year } = useParams()
   const [rawMaterials, setRawMaterials] = useState<Resource[]>([])
 
   /* Store materials grouped by level to minimise how often we group materials into levels */

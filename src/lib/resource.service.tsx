@@ -14,7 +14,7 @@ export const getUTCDatetime = (date: string, time: string) =>
 
 export const useResources = (): any => {
   const axiosInstance = useContext(AxiosContext)
-  const { requestedYear: year } = useParams()
+  const { year } = useParams()
   const { moduleCode } = useOutletContext<{ moduleCode: string | null }>()
   const { addToast } = useToast()
 

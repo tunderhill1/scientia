@@ -6,7 +6,7 @@ import { formatShortYear, validShortYears } from '../lib/utilities.service'
 import { YearArrow, YearSwitcherWrapper } from '../styles/navigation.style'
 
 export const YearSwitcher = () => {
-  const { requestedYear: year } = useParams()
+  const { year } = useParams()
   const navigate = useNavigate()
 
   const years = validShortYears()

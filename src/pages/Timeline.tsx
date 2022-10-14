@@ -49,7 +49,7 @@ const TOP_MARGIN = `(${NAVIGATION_HEIGHT})`
 const Timeline = () => {
   const { userDetails } = useUser()
   const { terms, exercises } = useTimeline()
-  const { requestedYear: year } = useParams()
+  const { year } = useParams()
 
   const [term, setTerm] = useState<Term>()
   const userModules: Module[] = userDetails?.modules as Module[]

@@ -46,7 +46,7 @@ export const addDroppable = (
 )
 
 export const useReordering = (setRawMaterials: (_: Resource[]) => void) => {
-  const { requestedYear: year } = useParams()
+  const { year } = useParams()
   const axiosInstance = useContext(AxiosContext)
   const { moduleCode } = useOutletContext<{ moduleCode: string | null }>()
   const { addToast } = useToast()

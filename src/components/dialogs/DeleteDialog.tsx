@@ -21,7 +21,7 @@ const DeleteDialog = ({
   groupedMaterials: any
   setRawMaterials: (_: Resource[]) => void
 }) => {
-  const { requestedYear: year } = useParams()
+  const { year } = useParams()
   const { addToast } = useToast()
   const axiosInstance = useContext(AxiosContext)
   const onDelete = async () => {
@@ -29,11 +29,7 @@ const DeleteDialog = ({
       .request({
         method: 'DELETE',
         url: endpoints.resources,
-        params: {
-          year,
-          course: moduleCode,
-          id: selectedIDs,
-        },
+        params: { year, course: moduleCode, id: selectedIDs },
       })
       .then(() => {
         addToast({ variant: 'success', title: 'Resource(s) successfully deleted' })

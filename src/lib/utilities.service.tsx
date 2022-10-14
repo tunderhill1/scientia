@@ -97,7 +97,7 @@ export const validShortYears = (): string[] => {
 
 export const formatShortYear = (year: string = shortYear()): string => {
   if (year?.length !== 4) return ''
-  return `20${year.slice(0, 2)} - ${year.slice(2, 4)}`
+  return `20${year.slice(0, 2)}-${year.slice(2, 4)}`
 }
 
 /* Returns whether the given two exercises overlap */

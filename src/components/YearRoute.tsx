@@ -10,7 +10,7 @@ import { shortYear, validShortYears } from '../lib/utilities.service'
 export const YearRoute = () => {
   const [redirect, setRedirect] = useState(false)
 
-  const { requestedYear } = useParams()
+  const { year: requestedYear } = useParams()
 
   useEffect(() => {
     const years = validShortYears()

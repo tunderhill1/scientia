@@ -17,7 +17,7 @@ const Module = () => {
   const { moduleCode } = useParams()
   const levelsManager = useLevels()
   const { pathname } = useLocation()
-  const { requestedYear: year } = useParams()
+  const { year } = useParams()
   const axiosInstance = useContext(AxiosContext)
   const navigate = useNavigate()
   const { addToast } = useToast()

@@ -33,7 +33,7 @@ function App() {
                     <Routes>
                       <Route index element={<Login />} />
                       <Route element={<ProtectedRoute />}>
-                        <Route path=":requestedYear" element={<YearRoute />}>
+                        <Route path=":year" element={<YearRoute />}>
                           <Route path="timeline" element={<Timeline />} />
                           <Route path="modules">
                             <Route index element={<Modules />} />

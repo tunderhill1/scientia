@@ -23,7 +23,7 @@ import {
 
 const Exercises = () => {
   const axiosInstance = useContext(AxiosContext)
-  const { requestedYear: year } = useParams()
+  const { year } = useParams()
   const { addToast } = useToast()
   const { userDetails } = useUser()
   const { moduleCode } = useParams()
