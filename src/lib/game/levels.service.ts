@@ -3,8 +3,6 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { GroupedMaterials, LeveledMaterials, Resource } from '../materials.service'
 
-export const gameEnabled = process.env.REACT_APP_GAME_LEVELS === 'on'
-
 export type LevelsManager = {
   loaded: boolean
   totalLevels: number

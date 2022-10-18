@@ -49,7 +49,7 @@ const Materials = () => {
   const [dragEnabled, setDragEnabled] = useState(false)
 
   const { userDetails } = useUser()
-  const { includeLevels } = useGame()
+  const { gameSettingOn } = useGame()
   const { moduleCode, levelsManager } = useOutletContext<{
     moduleCode: string | null
     levelsManager: LevelsManager
@@ -99,7 +99,7 @@ const Materials = () => {
         <Material>
           <Wrapper inline>
             <span>{tab.title}</span>
-            {includeLevels && isComplete(tab.id) && <Check2Circle size={19} />}
+            {gameSettingOn && isComplete(tab.id) && <Check2Circle size={19} />}
           </Wrapper>
           <Tags>
             {tab.tags.map((tag: string) => (
@@ -179,7 +179,7 @@ const Materials = () => {
                 <Trash3Fill size={22} />
               </Button>
             )}
-            {includeLevels && (
+            {gameSettingOn && (
               <Button
                 icon
                 css={{ marginRight: '0.75rem' }}
@@ -229,7 +229,7 @@ const Materials = () => {
           </>
         ) : (
           <>
-            {includeLevels && levelsManager.hasMinLevels && <LevelToggles {...levelsManager} />}
+            {gameSettingOn && levelsManager.hasMinLevels && <LevelToggles {...levelsManager} />}
             {toolbar}
             <CollapsibleList
               data={groupedMaterials}

@@ -31,7 +31,7 @@ export const LevelToggles = ({
 
     return (
       <Toggle disabled={isLocked} key={toggleLevel} value={toggleLevel.toString()}>
-        <Wrapper center css={{ flexDirection: 'row', gap: '1rem' }}>
+        <Wrapper css={{ justifyContent: 'center' }} inline>
           <span>Level {toggleLevel}</span>
           {isLocked && <Lock size={16} />}
           {isComplete && <Check size={22} />}

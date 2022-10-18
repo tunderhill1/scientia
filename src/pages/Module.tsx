@@ -13,7 +13,7 @@ import { Button, Container, Wrapper } from '../styles/_app.style'
 import { css } from '../styles/stitches.config'
 
 const Module = () => {
-  const { includeLevels } = useGame()
+  const { gameSettingOn } = useGame()
   const { moduleCode } = useParams()
   const levelsManager = useLevels()
   const { pathname } = useLocation()
@@ -63,7 +63,7 @@ const Module = () => {
     <Container>
       <Wrapper inline>
         <h1 style={{ width: '100%', margin: 0 }}> {module.title}</h1>
-        {includeLevels && RegExp('.*/materials').test(pathname) && levelsManager.loaded && (
+        {gameSettingOn && RegExp('.*/materials').test(pathname) && levelsManager.loaded && (
           <LevelProgressBar level={levelsManager.level} progress={levelsManager.progress} />
         )}
       </Wrapper>

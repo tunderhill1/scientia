@@ -43,4 +43,5 @@ export const endpoints = {
   periods: (year: string) => `${baseURL}/${year}/periods`,
   feedback: (year: string) => `${baseURL}/me/${year}/feedback`,
   feedbackFile: (feedbackId: number) => `${baseURL}/feedback/${feedbackId}/file`,
+  gameSetting: `${baseURL}/game/setting`,
 }

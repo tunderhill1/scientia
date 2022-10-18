@@ -25,8 +25,8 @@ function App() {
       <ThemeProvider>
         <ToastProvider>
           <UserProvider>
-            <GameProvider>
-              <AxiosInstanceProvider config={{ baseURL }}>
+            <AxiosInstanceProvider config={{ baseURL }}>
+              <GameProvider>
                 <Area>
                   <ScrollViewport>
                     {/* TODO: Add a no-match route (i.e. 404 Not Found) */}
@@ -55,8 +55,8 @@ function App() {
                     <Thumb />
                   </Scrollbar>
                 </Area>
-              </AxiosInstanceProvider>
-            </GameProvider>
+              </GameProvider>
+            </AxiosInstanceProvider>
           </UserProvider>
         </ToastProvider>
       </ThemeProvider>

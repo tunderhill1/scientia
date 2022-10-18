@@ -14,8 +14,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { LINKS } from '../constants/links'
 import useAuth from '../lib/auth.service'
-import { useGame } from '../lib/game/game.context'
-import { gameEnabled } from '../lib/game/levels.service'
+import { globalGameEnabled, useGame } from '../lib/game/game.context'
 import { ThemeContext } from '../lib/theme.context'
 import { useUser } from '../lib/user.context'
 import { capitaliseFirstLetter, formatShortYear, shortYear } from '../lib/utilities.service'
@@ -46,7 +45,7 @@ export const Navigation = () => {
   const { year } = useParams()
   const currentYear = shortYear()
   const { theme, toggleTheme } = useContext(ThemeContext)
-  const { includeLevels, toggleIncludeLevels } = useGame()
+  const { gameSettingOn, gameSettingVisible, toggleGameSetting } = useGame()
   const navigate = useNavigate()
   const { isLoggedIn } = useAuth()
 
@@ -134,9 +133,9 @@ export const Navigation = () => {
               <YearSwitcher />
               <Separator />
 
-              {gameEnabled && !userDetails?.isStaff && (
+              {gameSettingVisible && globalGameEnabled && !userDetails?.isStaff && (
                 <>
-                  <CheckboxItem checked={includeLevels} onCheckedChange={toggleIncludeLevels}>
+                  <CheckboxItem checked={gameSettingOn} onCheckedChange={toggleGameSetting}>
                     <Dice5Fill size={20} style={{ margin: '0 0.5rem' }} />
                     <span style={{ flexGrow: 1 }}>Game Levels</span>
                     <ItemIndicator>

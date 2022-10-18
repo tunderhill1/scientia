@@ -71,7 +71,7 @@ build frontend image:
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
     GIT_SUBMODULE_STRATEGY: recursive
-    REACT_APP_GAME_LEVELS: $GAME_LEVELS
+    REACT_APP_GAMIFICATION: $GAMIFICATION
   tags:
     - docker
   services:

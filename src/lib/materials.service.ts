@@ -44,16 +44,16 @@ export const useMaterials = ({
 
   const axiosInstance = useContext(AxiosContext)
   const { addToast } = useToast()
-  const { includeLevels } = useGame()
+  const { gameSettingOn } = useGame()
   const { moduleCode } = useOutletContext<{ moduleCode: string | null }>()
 
   const [materialsLoaded, setMaterialsLoaded] = useState(false)
   const groupedMaterials = useMemo(
     () =>
-      includeLevels && hasMinLevels
+      gameSettingOn && hasMinLevels
         ? concatGrouped(unleveledMaterials, leveledMaterials?.at(selectedLevel - 1) ?? {})
         : (groupByProperty(rawMaterials, 'category', 'index', true) as GroupedMaterials),
-    [includeLevels, rawMaterials, leveledMaterials, unleveledMaterials, selectedLevel, hasMinLevels]
+    [gameSettingOn, rawMaterials, leveledMaterials, unleveledMaterials, selectedLevel, hasMinLevels]
   )
   useEffect(() => {
     setMaterialsLoaded(false)
@@ -75,7 +75,7 @@ export const useMaterials = ({
   }, [year])
 
   function isLoaded(): boolean {
-    return materialsLoaded && (!includeLevels || levelsLoaded)
+    return materialsLoaded && (!gameSettingOn || levelsLoaded)
   }
 
   function noMaterials() {
@@ -102,17 +102,17 @@ export const useMaterials = ({
 
   /* Group materials by category */
   useEffect(() => {
-    if (includeLevels) {
+    if (gameSettingOn) {
       const [newLeveledMaterials, newUnleveledMaterials] = groupByLevel(rawMaterials)
       setTotalLevels(newLeveledMaterials.length)
       setUnleveledMaterials(newUnleveledMaterials)
       setLeveledMaterials(newLeveledMaterials)
     }
-  }, [includeLevels, rawMaterials, setTotalLevels])
+  }, [gameSettingOn, rawMaterials, setTotalLevels])
 
   /* Fetch complete resources */
   useEffect(() => {
-    if (includeLevels) {
+    if (gameSettingOn) {
       axiosInstance
         .request({
           url: endpoints.resourcesComplete,
@@ -127,14 +127,14 @@ export const useMaterials = ({
           console.error(error)
         })
     }
-  }, [addToast, includeLevels, axiosInstance, moduleCode])
+  }, [addToast, gameSettingOn, axiosInstance, moduleCode])
 
   /* Update the user level and progress */
   useEffect(() => {
-    if (includeLevels && leveledMaterials && completeResources) {
+    if (gameSettingOn && leveledMaterials && completeResources) {
       updateLevel(leveledMaterials, completeResources)
     }
-  }, [includeLevels, completeResources, leveledMaterials, updateLevel])
+  }, [gameSettingOn, completeResources, leveledMaterials, updateLevel])
 
   return {
     groupedMaterials,
