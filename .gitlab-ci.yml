@@ -71,7 +71,6 @@ build frontend image:
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
     GIT_SUBMODULE_STRATEGY: recursive
-    REACT_APP_GAMIFICATION: $GAMIFICATION
   tags:
     - docker
   services:
@@ -82,6 +81,7 @@ build frontend image:
       docker build
       --tag $CI_REGISTRY_IMAGE:latest
       --build-arg api_entrypoint=https://scientia.doc.ic.ac.uk/api
+      --build-arg app_gamification=$GAMIFICATION
       --cache-from $CI_REGISTRY_IMAGE:latest
       .
     - docker tag $CI_REGISTRY_IMAGE:latest $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
