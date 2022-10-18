@@ -21,6 +21,10 @@ export class UserDetails {
   @Type(() => Module)
   modules: Module[]
 
+  @Type(() => Module)
+  @Expose({ name: 'modules_helped' })
+  modulesHelped: Module[]
+
   get isStaff(): boolean {
     return this.roleInDepartment === 'staff'
   }

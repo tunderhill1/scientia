@@ -30,7 +30,7 @@ const Modules = () => {
       </section>
 
       <Tabs
-        data={userDetails?.modules}
+        data={userDetails?.modules.concat(userDetails?.modulesHelped ?? [])}
         generator={(tab: any) => (
           <>
             {/* TODO: Update title style if module has no resources */}
