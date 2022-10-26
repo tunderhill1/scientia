@@ -21,6 +21,7 @@ export const itemStyles = {
 
 export const Toggle = styled(TogglePrimitive, {
   ...itemStyles,
+  cursor: 'pointer',
   display: 'inline-flex',
   padding: '0 1rem 0 1rem',
   borderRadius: '0.5rem',
