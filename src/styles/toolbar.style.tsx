@@ -28,8 +28,7 @@ export const Button = styled(ToolbarButton, {
 export const Toggle = styled(TogglePrimitive, {
   ...itemStyles,
   display: 'inline-flex',
-  width: '2.75rem',
-  height: '2.75rem',
+  padding: '0 1rem 0 1rem',
   borderRadius: '0.5rem',
   '&[data-state=on]': {
     backgroundColor: '$elementActive',
