@@ -10,6 +10,7 @@ import { getUTCDatetime } from '../../../../lib/resource.service'
 import { ThemeContext } from '../../../../lib/theme.context'
 import { useToast } from '../../../../lib/toast.context'
 import { displayTimestamp, now } from '../../../../lib/utilities.service'
+import { Footnote } from '../../../../styles/_app.style'
 import {
   ApplyToAllButton,
   CalendarInput,
@@ -137,6 +138,10 @@ const ResourceDetailsForm = ({
             maxMenuHeight={MAX_OPTIONS_MENU_HEIGHT}
           />
         </div>
+
+        <Footnote muted css={{ fontSize: '0.8rem', margin: '0.5rem 0 0 0.5rem' }}>
+          You can create a new category by typing the desired category name and hitting enter.
+        </Footnote>
       </div>
 
       <div style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}>
