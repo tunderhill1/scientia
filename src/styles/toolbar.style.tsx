@@ -1,5 +1,5 @@
 import { Toggle as TogglePrimitive } from '@radix-ui/react-toggle'
-import { ToolbarButton, Toolbar as ToolbarPrimitive } from '@radix-ui/react-toolbar'
+import { Toolbar as ToolbarPrimitive } from '@radix-ui/react-toolbar'
 
 import { styled } from './stitches.config'
 
@@ -19,12 +19,6 @@ export const itemStyles = {
   justifyContent: 'center',
 }
 
-export const Button = styled(ToolbarButton, {
-  ...itemStyles,
-  paddingLeft: 10,
-  paddingRight: 10,
-})
-
 export const Toggle = styled(TogglePrimitive, {
   ...itemStyles,
   display: 'inline-flex',
@@ -37,12 +31,3 @@ export const Toggle = styled(TogglePrimitive, {
     backgroundColor: '$elementHover',
   },
 })
-
-// export const ToggleItem = styled(ToolbarPrimitive.ToggleItem, {
-//   ...itemStyles,
-//   boxShadow: 0,
-//   backgroundColor: 'white',
-//   marginLeft: 2,
-//   '&:first-child': { marginLeft: 0 },
-//   '&[data-state=on]': { backgroundColor: violet.violet5, color: violet.violet11 },
-// })
