@@ -10,7 +10,6 @@ import {
   Link,
   PencilSquare,
   Trash3Fill,
-  UiChecks,
   Upload,
 } from 'react-bootstrap-icons'
 import { Helmet } from 'react-helmet-async'
@@ -230,6 +229,14 @@ const Materials = () => {
         ) : (
           <>
             {gameSettingOn && levelsManager.hasMinLevels && <LevelToggles {...levelsManager} />}
+            {userDetails?.isStaff && (
+              <p style={{ margin: '1rem 1rem 2rem 1rem', textAlign: 'center' }}>
+                <b>
+                  The materials you upload here will be visible to all students. Please refrain from
+                  uploading model answers and solutions to courseworks here.
+                </b>
+              </p>
+            )}
             {toolbar}
             <CollapsibleList
               data={groupedMaterials}
