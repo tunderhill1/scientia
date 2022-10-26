@@ -34,6 +34,9 @@ export const Toggle = styled(TogglePrimitive, {
   '&[data-state=on]': {
     backgroundColor: '$elementActive',
   },
+  '&:hover': {
+    backgroundColor: '$elementHover',
+  },
 })
 
 // export const ToggleItem = styled(ToolbarPrimitive.ToggleItem, {
