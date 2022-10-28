@@ -23,6 +23,9 @@ Spearheaded by the [DoC EdTech Lab](https://edtech.pages.doc.ic.ac.uk/), Scienti
 - [Bootstrap Icons](https://icons.getbootstrap.com/) for... well, icons
 - [Yarn](https://yarnpkg.com/) for dependency management
 
+# Contributing to the code
+
+Contributions to the project are encouraged. Contribution guidelines can be found [here](CONTRIBUTING.md).
 
 # Running the app in dev
 
