@@ -12,7 +12,7 @@ import { errorMessage } from './utilities.service'
 
 export const useGroup = ({ moduleCode, number: exerciseNumber, submissionType }: Exercise) => {
   const axiosInstance = useContext(AxiosContext)
-  const { requestedYear: year } = useParams()
+  const { year } = useParams()
   const { addToast } = useToast()
   const [groupIsLoaded, setGroupIsLoaded] = useState<boolean>(false)
 
