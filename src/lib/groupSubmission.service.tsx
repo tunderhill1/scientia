@@ -48,9 +48,9 @@ export const useGroup = ({ moduleCode, number: exerciseNumber, submissionType }:
       })
       .catch((error) => {
         console.error(error)
-        addToast({ variant: 'error', title: 'Unable to get ' })
+        addToast({ variant: 'error', title: 'Unable to get list of students enrolled to module' })
       })
-  }, [addToast, axiosInstance, exerciseNumber, moduleCode, year])
+  }, [addToast, axiosInstance, exerciseNumber, moduleCode, submissionType, year])
 
   const deleteMember = (memberId: number, asMember: boolean = false) => {
     if (!group) return
