@@ -29,7 +29,10 @@ export const useGroup = ({ moduleCode, number: exerciseNumber, submissionType }:
       })
       .catch((error) => {
         const message = errorMessage(error)
-        if (!message?.startsWith('No group exists'))
+        if (
+          !message?.startsWith('No group exists') &&
+          !message?.startsWith('You are not a member of a group')
+        )
           addToast({ variant: 'error', title: 'Unable to get group details' })
       })
       .finally(() => setGroupIsLoaded(true))
