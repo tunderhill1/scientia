@@ -49,7 +49,7 @@ export const TrackItem = ({
               {exercise.type} {exercise.number}:
             </span>
             &nbsp;{exercise.title}
-            {exercise.estimatedWorkHours && (
+            {exercise.estimatedWorkHours ? (
               <div
                 className={css({
                   display: 'flex',
@@ -61,6 +61,8 @@ export const TrackItem = ({
               >
                 Estimate: {exercise.estimatedWorkHours}h
               </div>
+            ) : (
+              ''
             )}
           </>
         )}

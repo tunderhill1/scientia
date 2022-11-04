@@ -70,9 +70,10 @@ export const Button = styled('button', {
   fontSize: 'medium',
   userSelect: 'none',
   cursor: 'pointer',
-  display: 'flex',
+  display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
+  padding: '0 1rem 0 1rem',
   width: 'auto',
 
   '&:hover': {
@@ -103,12 +104,19 @@ export const Button = styled('button', {
       true: {
         width: '2.75rem',
         background: 'none',
+        padding: '0',
       },
     },
     active: {
       true: {
         backgroundColor: '$elementActive',
         '&:hover': { backgroundColor: '$elementHover' },
+      },
+    },
+    disabled: {
+      true: {
+        opacity: '30%',
+        cursor: 'not-allowed',
       },
     },
     /* Press and hold animation */
@@ -155,6 +163,7 @@ export const Wrapper = styled('div', {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        textAlign: 'center',
         padding: '1rem',
       },
     },

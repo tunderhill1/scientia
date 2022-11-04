@@ -18,6 +18,16 @@ const OCTOBER = 9
 /* A file to store miscellaneous utility functions */
 
 /**
+ * Extracts the response message from an Axios error object
+ */
+export function errorMessage(error: any): string | null {
+  const errorData = error?.response?.data || {}
+  if ('message' in errorData) return errorData.message
+  if ('detail' in errorData) return errorData.detail
+  return null
+}
+
+/**
  * Sorts an object alphabetically by key
  */
 export const sortObjectByKey = (object: { [_: string]: any }) =>

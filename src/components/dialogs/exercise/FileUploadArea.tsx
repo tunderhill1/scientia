@@ -74,7 +74,7 @@ const FileUploadArea = ({
           onClick={(event) => {
             if (!submittedFile) return
           }}
-          disabled={disabled || isLabTSHandIn}
+          disabled={!submittedFile && (disabled || isLabTSHandIn)}
         >
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             {submittedFile ? (

@@ -1,5 +1,5 @@
 import { Expose, Type } from 'class-transformer'
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, ReactNode, SetStateAction } from 'react'
 
 import cohorts from './cohorts'
 import { endpoints } from './endpoints'
@@ -89,6 +89,10 @@ export class Exercise {
   get deadline(): Date {
     return this.extendedEndDate ?? this.endDate
   }
+
+  get isGroup(): boolean {
+    return this.submissionType === 'group'
+  }
 }
 
 /* A track is a list of non-overlapping exercises */
@@ -176,4 +180,80 @@ export class Feedback {
 
   @Expose({ name: 'timestamp' })
   timestamp: Date | null
+}
+
+export interface GroupMembersActions {
+  deleteMember: (memberId: number, asMember?: boolean) => void
+  sendInvite: (invitedUsernames: string[]) => void
+  answerInvite: (accepted: boolean, memberId: number) => void
+}
+
+export class EnrolledStudent {
+  id: number
+  login: string
+  available: boolean
+  firstname: string
+  lastname: string
+
+  get fullname(): string {
+    return this.firstname + ' ' + this.lastname
+  }
+}
+
+export interface Option {
+  value: string
+  label: ReactNode
+  available: boolean
+}
+
+export class GroupMember {
+  id: number
+  username: string
+
+  @Expose({ name: 'is_leader' })
+  isLeader: boolean
+
+  invited: string | null
+  accepted: string | null
+
+  get role(): string {
+    return this.isLeader ? 'leader' : this.accepted ? 'member' : 'invited'
+  }
+
+  get isConfirmed(): boolean {
+    return this.isLeader || !!this.accepted
+  }
+
+  fullName(enrolledStudents: EnrolledStudent[]): string {
+    return (
+      enrolledStudents.find((person: EnrolledStudent) => person.login === this.username)
+        ?.fullname ?? ''
+    )
+  }
+}
+
+export class Group {
+  id: number
+  year: string
+
+  @Type(() => GroupMember)
+  members: GroupMember[]
+
+  @Expose({ name: 'exercise_number' })
+  exerciseNumber: number
+
+  @Expose({ name: 'module_code' })
+  moduleCode: string
+
+  get leader(): string | null {
+    return this.members.find((m) => m.isLeader)?.username ?? null
+  }
+
+  getMember(login: string): GroupMember | undefined {
+    return this.members.find((m) => m.username === login)
+  }
+
+  isMember(login: string): boolean {
+    return this.members.some((member) => member.username === login)
+  }
 }
