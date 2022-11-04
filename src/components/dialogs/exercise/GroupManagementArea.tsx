@@ -146,7 +146,7 @@ export const GroupManagementArea = ({
                     <Trash3Fill size={20} />
                   </Button>
                 ) : (
-                  <div style={{ height: '2.75rem' }}></div>
+                  <div style={{ height: '2.75rem' }} key={index}></div>
                 )
               )}
             </div>
