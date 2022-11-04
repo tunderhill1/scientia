@@ -111,6 +111,7 @@ export const GroupManagementArea = ({
             }}
           >
             <Tabs
+              attribute={'id'}
               data={group.members.sort((m1, m2) => m1.id - m2.id)}
               generator={(member: GroupMember) => (
                 <>
