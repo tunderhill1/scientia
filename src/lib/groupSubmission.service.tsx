@@ -99,7 +99,7 @@ export const useGroup = ({ moduleCode, number: exerciseNumber, submissionType }:
     axiosInstance
       .request({
         method: 'POST',
-        url: endpoints.inviteMembers(group.id),
+        url: endpoints.inviteMembers(year!, moduleCode, exerciseNumber),
         data: invitedUsernames.map((username) => ({ username })),
       })
       .then(({ data }: { data: any }) => {
