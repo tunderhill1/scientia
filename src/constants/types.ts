@@ -183,7 +183,7 @@ export class Feedback {
 }
 
 export interface GroupMembersActions {
-  deleteMember: (memberId: number, asMember?: boolean) => void
+  deleteMember: (member: GroupMember, asMember?: boolean) => void
   sendInvite: (invitedUsernames: string[]) => void
   answerInvite: (accepted: boolean, memberId: number) => void
 }

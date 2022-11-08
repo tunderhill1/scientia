@@ -74,7 +74,7 @@ export const GroupManagementArea = ({
           {member.isConfirmed ? 'Your Group' : 'You are invited to this group'}
         </h4>
         {member.isConfirmed ? (
-          <Button type="button" onClick={() => membersActions.deleteMember(member.id, true)}>
+          <Button type="button" onClick={() => membersActions.deleteMember(member, true)}>
             Leave
           </Button>
         ) : (
@@ -140,7 +140,7 @@ export const GroupManagementArea = ({
                   <Button
                     type="button"
                     icon
-                    onClick={() => membersActions.deleteMember(member.id)}
+                    onClick={() => membersActions.deleteMember(member)}
                     key={index}
                   >
                     <Trash3Fill size={20} />

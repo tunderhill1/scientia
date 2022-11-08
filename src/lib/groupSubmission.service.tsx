@@ -3,7 +3,13 @@ import { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { endpoints } from '../constants/endpoints'
-import { EnrolledStudent, Exercise, Group, GroupMembersActions } from '../constants/types'
+import {
+  EnrolledStudent,
+  Exercise,
+  Group,
+  GroupMember,
+  GroupMembersActions,
+} from '../constants/types'
 import { AxiosContext } from './axios.context'
 import { useToast } from './toast.context'
 import { errorMessage } from './utilities.service'
@@ -55,15 +61,15 @@ export const useGroup = ({ moduleCode, number: exerciseNumber, submissionType }:
       })
   }, [addToast, axiosInstance, exerciseNumber, moduleCode, submissionType, year])
 
-  const deleteMember = (memberId: number, asMember: boolean = false) => {
+  const deleteMember = (member: GroupMember, asMember: boolean = false) => {
     if (!group) return
     axiosInstance
       .request({
         method: 'DELETE',
-        url: endpoints.groupMember(group.id, memberId),
+        url: endpoints.groupMember(year!, moduleCode, exerciseNumber, member.username),
       })
       .then(() => {
-        let deletedMember = group.members.find((member) => member.id === memberId)
+        let deletedMember = group.members.find((m) => m.id === member.id)
         if (asMember) {
           // User is leaving the group: reset the group
           setGroup(null)
@@ -71,7 +77,7 @@ export const useGroup = ({ moduleCode, number: exerciseNumber, submissionType }:
         } else if (deletedMember !== undefined) {
           // Leader is deleting a member: update the group
           setGroup((group) => {
-            const newMembers = group!.members.filter((member) => member.id !== memberId)
+            const newMembers = group!.members.filter((m) => m.id !== member.id)
 
             // There *must* be a way to avoid (de)serialisation and treat Group as a simple class. Need to dig deeper.
             return plainToInstance(Group, {
