@@ -41,8 +41,8 @@ export const endpoints = {
     `${baseURL}/me/${year}/${moduleCode}/exercises/${exerciseNumber}/group/members`,
   groupMember: (groupId: number, memberId: number) =>
     `${baseURL}/groups/${groupId}/members/${memberId}`,
-  submissionUpdateInvitationStatus: (groupId: number, memberId: number) =>
-    `${baseURL}/groups/${groupId}/members/${memberId}`,
+  membershipInvitation: (year: string, moduleCode: string, exerciseNumber: number) =>
+    `${baseURL}/me/${year}/${moduleCode}/exercises/${exerciseNumber}/group-membership`,
   submissionGroup: (year: string, moduleCode: string, exerciseNumber: number) =>
     `${baseURL}/me/${year}/${moduleCode}/exercises/${exerciseNumber}/group`,
   resources: `${baseURL}/resources`,

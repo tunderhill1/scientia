@@ -132,7 +132,7 @@ export const useGroup = ({ moduleCode, number: exerciseNumber, submissionType }:
     axiosInstance
       .request({
         method: 'PATCH',
-        url: endpoints.submissionUpdateInvitationStatus(group.id, memberId),
+        url: endpoints.membershipInvitation(year!, moduleCode, exerciseNumber),
         params: { accepted },
       })
       .then(() => {
