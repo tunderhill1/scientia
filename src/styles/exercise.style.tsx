@@ -1,13 +1,7 @@
 import { Progress, ProgressIndicator } from '@radix-ui/react-progress'
 import { BoxArrowUpRight } from 'react-bootstrap-icons'
 
-import { DIVIDER_HEIGHT } from '../constants/global'
 import { styled } from './stitches.config'
-
-export const NotFound = styled('p', {
-  textAlign: 'center',
-  fontWeight: '600',
-})
 
 export const Link = styled('a', {
   fontSize: '$lg',
@@ -23,32 +17,6 @@ export const Link = styled('a', {
   '&:hover': {
     textDecorationColor: '$sand12 !important',
   },
-})
-
-export const TrashButton = styled('button', {
-  width: 'fit-content',
-  alignItems: 'center',
-  padding: '0.5rem',
-  color: '$sand12',
-  fill: '$sand12',
-  fontWeight: 500,
-  fontSize: '$md',
-  borderRadius: '8px',
-  display: 'inline-flex',
-  cursor: 'pointer',
-  transition: 'backgroundColor .1s ease-in',
-  border: '2px solid $sand8',
-  backgroundColor: 'sand1',
-  '&:hover': {
-    backgroundColor: '$sand5',
-  },
-})
-
-export const Hr = styled('hr', {
-  backgroundColor: '$sand7',
-  border: 'none',
-  height: DIVIDER_HEIGHT,
-  width: 'auto',
 })
 
 export const UploadWrapper = styled('div', {
@@ -120,22 +88,6 @@ export const LinkIcon = styled(BoxArrowUpRight, {
   fill: 'inherit',
 })
 
-export const TitleWrapper = styled('div', {
-  display: 'flex',
-  flexWrap: 'wrap',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  marginBottom: '2rem',
-  gap: '1rem',
-})
-
-export const ExerciseTitle = styled('h3', {
-  fontWeight: 300,
-  fontSize: '$xxl',
-  width: 'fit-content',
-  margin: 0,
-})
-
 export const Deadline = styled('p', {
   fontSize: '$md',
   fontWeight: 600,
@@ -152,7 +104,7 @@ export const Deadline = styled('p', {
 export const PlagiarismDisclaimer = styled('p', {
   fontSize: '$sm',
   color: '$sand11',
-  marginTop: '1rem',
+  margin: '1rem 0 3rem 0',
   textAlign: 'center',
 })
 

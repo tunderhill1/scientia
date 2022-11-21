@@ -9,31 +9,51 @@ import { AxiosContext } from './axios.context'
 import { useToast } from './toast.context'
 import { useUser } from './user.context'
 
-export const useExercise = ({ moduleCode, number: exerciseNumber }: Exercise) => {
+export const useExercise = () => {
   const axiosInstance = useContext(AxiosContext)
-  const { year } = useParams()
+  const { year, moduleCode, exerciseNumber } = useParams()
   const { addToast } = useToast()
   const { userDetails } = useUser()
+
+  const [exercise, setExercise] = useState<Exercise>()
+  const [exerciseIsLoaded, setExerciseIsLoaded] = useState<boolean>(false)
+  useEffect(() => {
+    axiosInstance
+      .request({
+        method: 'GET',
+        url: endpoints.exercise(year!, moduleCode!, parseInt(exerciseNumber!)),
+      })
+      .then(({ data }: { data: any }) => {
+        setExercise(plainToInstance(Exercise, data))
+      })
+      .catch(() => addToast({ variant: 'error', title: 'Unable to fetch exercise' }))
+      .finally(() => setExerciseIsLoaded(true))
+  }, [addToast, axiosInstance, exerciseNumber, moduleCode, year])
 
   const [exerciseMaterials, setExerciseMaterials] = useState<ExerciseMaterials | null>(null)
   useEffect(() => {
     axiosInstance
       .request({
         method: 'GET',
-        url: endpoints.exerciseMaterials(year!, moduleCode, exerciseNumber, userDetails!.cohort),
+        url: endpoints.exerciseMaterials(
+          year!,
+          moduleCode!,
+          parseInt(exerciseNumber!),
+          userDetails!.cohort
+        ),
       })
       .then(({ data }: { data: any }) => {
         setExerciseMaterials(plainToInstance(ExerciseMaterials, data))
       })
       .catch(() => addToast({ variant: 'error', title: 'Unable to get exercise details' }))
-  }, [year])
+  }, [addToast, axiosInstance, exerciseNumber, moduleCode, userDetails, year])
 
   const [submittedFiles, setSubmittedFiles] = useState<SubmittedFile[]>([])
   useEffect(() => {
     axiosInstance
       .request({
         method: 'GET',
-        url: endpoints.submissions(year!, moduleCode, exerciseNumber),
+        url: endpoints.submissions(year!, moduleCode!, parseInt(exerciseNumber!)),
       })
       .then(({ data }: { data: any }) => {
         setSubmittedFiles(
@@ -43,7 +63,7 @@ export const useExercise = ({ moduleCode, number: exerciseNumber }: Exercise) =>
       .catch(() => {
         addToast({ variant: 'error', title: 'Error fetching submitted files' })
       })
-  }, [year])
+  }, [addToast, axiosInstance, exerciseNumber, moduleCode, year])
 
   const submitFile = (file: File, targetFileName: string) => {
     let formData = new FormData()
@@ -51,7 +71,7 @@ export const useExercise = ({ moduleCode, number: exerciseNumber }: Exercise) =>
     axiosInstance
       .request({
         method: 'POST',
-        url: endpoints.submissions(year!, moduleCode, exerciseNumber),
+        url: endpoints.submissions(year!, moduleCode!, parseInt(exerciseNumber!)),
         data: formData,
       })
       .then(({ data }: { data: SubmittedFile }) => {
@@ -99,12 +119,14 @@ export const useExercise = ({ moduleCode, number: exerciseNumber }: Exercise) =>
     if (workload === '') return
     axiosInstance.request({
       method: 'POST',
-      url: endpoints.submissionWorkload(year!, moduleCode, exerciseNumber),
+      url: endpoints.submissionWorkload(year!, moduleCode!, parseInt(exerciseNumber!)),
       params: { workload },
     })
   }
 
   return {
+    exercise,
+    exerciseIsLoaded,
     exerciseMaterials,
     submittedFiles,
     submitFile,

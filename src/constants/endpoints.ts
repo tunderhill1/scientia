@@ -20,6 +20,8 @@ export const endpoints = {
 
   module: (year: string, moduleCode: string) => `${baseURL}/${year}/modules/${moduleCode}`,
   exercises: (year: string) => `${baseURL}/${year}/exercises`,
+  exercise: (year: string, moduleCode: string, exerciseNumber: number) =>
+    `${baseURL}/${year}/modules/${moduleCode}/exercises/${exerciseNumber}`,
   exerciseMaterials: (year: string, moduleCode: string, exerciseNumber: number, cohort: string) =>
     `/${year}/modules/${moduleCode}/exercises/${exerciseNumber}/materials/${cohort}`,
   submissions: (year: string, moduleCode: string, exerciseNumber: number) =>

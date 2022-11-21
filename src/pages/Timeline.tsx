@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useParams } from 'react-router-dom'
 
-import ExerciseDialog from '../components/dialogs/ExerciseDialog'
 import { MainBackground } from '../components/timeline/MainBackground'
 import { Modules } from '../components/timeline/Modules'
 import { Switcher } from '../components/timeline/Switcher'
@@ -56,7 +55,6 @@ const Timeline = () => {
   const [modulesForTerm, setModulesForTerm] = useState<Module[]>([])
   const [trackMapForTerm, setTrackMapForTerm] = useState<TrackMap>({})
   const [rowHeights, setRowHeights] = useState<{ [code: string]: string }>({})
-  const [exercise, setExercise] = useState<Exercise | null>(null)
 
   useEffect(() => {
     if (terms.length > 0) {
@@ -125,12 +123,7 @@ const Timeline = () => {
                 <Switcher term={term.name} setTerm={setTerm} terms={terms} />
                 <Weeks start={term.start} weeks={term.weeks} />
                 <Modules modules={modulesForTerm} rowHeights={rowHeights} />
-                <Tracks
-                  term={term}
-                  weeks={term.weeks}
-                  trackMap={trackMapForTerm}
-                  setExercise={setExercise}
-                />
+                <Tracks term={term} weeks={term.weeks} trackMap={trackMapForTerm} />
                 <MainBackground cols={term.weeks} rowHeights={rowHeights} />
               </Container>
             </Viewport>
@@ -142,7 +135,6 @@ const Timeline = () => {
             </Scrollbar>
             <Corner />
           </Area>
-          {exercise && <ExerciseDialog exercise={exercise} setExercise={setExercise} />}
         </>
       ) : (
         <div>Loading...</div>

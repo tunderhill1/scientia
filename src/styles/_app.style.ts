@@ -7,6 +7,7 @@ import {
   ScrollAreaViewport,
 } from '@radix-ui/react-scroll-area'
 
+import { DIVIDER_HEIGHT } from '../constants/global'
 import { styled } from './stitches.config'
 
 export const Container = styled('div', {
@@ -253,4 +254,10 @@ export const Indicator = styled(CheckboxIndicator, {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+})
+export const Hr = styled('hr', {
+  backgroundColor: '$sand7',
+  border: 'none',
+  height: DIVIDER_HEIGHT,
+  width: 'auto',
 })

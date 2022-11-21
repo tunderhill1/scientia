@@ -1,7 +1,7 @@
 import { Fragment, ReactNode, useRef, useState } from 'react'
 
 import { DragDropOptions, addDroppable } from '../lib/dragDrop.service'
-import { Hr } from '../styles/exerciseDialog.style'
+import { Hr } from '../styles/_app.style'
 import { Tab, TabsHighlight, TabsWrapper } from '../styles/tabs.style'
 
 /**
@@ -177,7 +177,7 @@ export const Tabs = ({
 
       {dragDropOptions !== null
         ? addDroppable(data, attribute, dragDropOptions, renderTab)
-        : data?.map(renderTab)}
+        : data?.map((d: any, i: number) => renderTab(d, i))}
     </TabsWrapper>
   )
 }

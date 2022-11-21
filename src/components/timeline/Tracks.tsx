@@ -1,7 +1,8 @@
 import { max, min } from 'date-fns'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { DIVIDER_HEIGHT, TIMELINE_TRACK_HEIGHT } from '../../constants/global'
-import { Exercise, SetState, Term, Track, TrackMap } from '../../constants/types'
+import { Exercise, Term, Track, TrackMap } from '../../constants/types'
 import { now } from '../../lib/utilities.service'
 import { dateToColumn } from '../../pages/Timeline'
 import { WEEKDAYS_WIDTHS, WEEKEND_WIDTH } from '../../styles/timeline/constants.style'
@@ -12,13 +13,14 @@ export const Tracks = ({
   term,
   trackMap,
   weeks,
-  setExercise,
 }: {
   term: Term
   trackMap: TrackMap
   weeks: number
-  setExercise: SetState<Exercise | null>
 }) => {
+  const navigate = useNavigate()
+  const { year } = useParams()
+
   // Ad hoc calculation of grid-template-rows heights to align to the hardcoded padding of the Module tabs
 
   const gridTemplateRows = Object.keys(trackMap)
@@ -75,7 +77,10 @@ export const Tracks = ({
                   row={rowIndex}
                   disabled={exercise.startDate >= now()}
                   onClick={() => {
-                    if (exercise.startDate <= now()) setExercise(exercise)
+                    if (exercise.startDate <= now())
+                      navigate(
+                        `/${year}/modules/${exercise.moduleCode}/exercises/${exercise.number}`
+                      )
                   }}
                 />
               ))

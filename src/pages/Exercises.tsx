@@ -1,9 +1,8 @@
 import { plainToInstance } from 'class-transformer'
 import { Fragment, useContext, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
-import ExerciseDialog from '../components/dialogs/ExerciseDialog'
 import { endpoints } from '../constants/endpoints'
 import titles from '../constants/titles'
 import { Exercise, Feedback } from '../constants/types'
@@ -12,7 +11,7 @@ import { useToast } from '../lib/toast.context'
 import { useUser } from '../lib/user.context'
 import { calculateGrade, displayTimestamp, now, percentage } from '../lib/utilities.service'
 import { Wrapper } from '../styles/_app.style'
-import { Link, LinkIcon } from '../styles/exerciseDialog.style'
+import { Link, LinkIcon } from '../styles/exercise.style'
 import {
   Header,
   HorizontalRow,
@@ -27,6 +26,7 @@ const Exercises = () => {
   const { addToast } = useToast()
   const { userDetails } = useUser()
   const { moduleCode } = useParams()
+  const navigate = useNavigate()
   const moduleTitle = userDetails?.modules.find((m) => m.code === moduleCode)?.title
 
   const [exercises, setExercises] = useState<Exercise[]>([])
@@ -111,7 +111,7 @@ const Exercises = () => {
                 <td>
                   <ViewExerciseButton
                     onClick={() => {
-                      if (e.startDate <= now()) setExerciseForDialog(e)
+                      if (e.startDate <= now()) navigate(`${window.location.pathname}/${e.number}`)
                     }}
                     title="View exercise details"
                   >
@@ -154,9 +154,6 @@ const Exercises = () => {
           ))}
         </tbody>
       </Table>
-      {exerciseForDialog && (
-        <ExerciseDialog exercise={exerciseForDialog} setExercise={setExerciseForDialog} />
-      )}
     </>
   )
 }

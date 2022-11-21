@@ -10,12 +10,12 @@ import {
   GroupMember,
   GroupMembersActions,
   Option,
-} from '../../../constants/types'
-import { useUser } from '../../../lib/user.context'
-import { capitaliseFirstLetter } from '../../../lib/utilities.service'
-import { Button, Wrapper } from '../../../styles/_app.style'
-import { DropdownStyle, MemberName, MemberRole } from '../../../styles/groupSubmission.style'
-import { Tabs } from '../../Tabs'
+} from '../../constants/types'
+import { useUser } from '../../lib/user.context'
+import { capitaliseFirstLetter } from '../../lib/utilities.service'
+import { Button, Wrapper } from '../../styles/_app.style'
+import { DropdownStyle, MemberName, MemberRole } from '../../styles/groupSubmission.style'
+import { Tabs } from '../Tabs'
 
 const EnrolledStudentSelectLabel = ({ enrolledStudent }: { enrolledStudent: EnrolledStudent }) => {
   const { login, fullname, available } = enrolledStudent

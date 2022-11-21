@@ -14,9 +14,7 @@ import { AxiosContext } from './axios.context'
 import { useToast } from './toast.context'
 import { errorMessage } from './utilities.service'
 
-/* --------------------------- ExerciseDialog.tsx --------------------------- */
-
-export const useGroup = ({ moduleCode, number: exerciseNumber, submissionType }: Exercise) => {
+export const useGroup = (exercise: Exercise | undefined) => {
   const axiosInstance = useContext(AxiosContext)
   const { year } = useParams()
   const { addToast } = useToast()
@@ -24,11 +22,11 @@ export const useGroup = ({ moduleCode, number: exerciseNumber, submissionType }:
 
   const [group, setGroup] = useState<Group | null>(null)
   useEffect(() => {
-    if (submissionType !== 'group') return
+    if (!exercise || exercise.submissionType !== 'group') return
     axiosInstance
       .request({
         method: 'GET',
-        url: endpoints.submissionGroup(year!, moduleCode!, exerciseNumber),
+        url: endpoints.submissionGroup(year!, exercise.moduleCode, exercise.number),
       })
       .then(({ data }: { data: any }) => {
         setGroup(plainToInstance(Group, data))
@@ -42,15 +40,19 @@ export const useGroup = ({ moduleCode, number: exerciseNumber, submissionType }:
           addToast({ variant: 'error', title: 'Unable to get group details' })
       })
       .finally(() => setGroupIsLoaded(true))
-  }, [addToast, axiosInstance, exerciseNumber, moduleCode, submissionType, year])
+  }, [addToast, axiosInstance, exercise, year])
 
   const [enrolledStudents, setEnrolledStudents] = useState<EnrolledStudent[]>([])
   useEffect(() => {
-    if (!(moduleCode && exerciseNumber && submissionType === 'group')) return
+    if (!exercise || exercise.submissionType !== 'group') return
     axiosInstance
       .request({
         method: 'GET',
-        url: endpoints.enrolledStudentsWithAvailability(year!, moduleCode, exerciseNumber),
+        url: endpoints.enrolledStudentsWithAvailability(
+          year!,
+          exercise.moduleCode,
+          exercise.number
+        ),
       })
       .then(({ data }: { data: any }) => {
         setEnrolledStudents(data.map((person: any) => plainToInstance(EnrolledStudent, person)))
@@ -59,14 +61,14 @@ export const useGroup = ({ moduleCode, number: exerciseNumber, submissionType }:
         console.error(error)
         addToast({ variant: 'error', title: 'Unable to get list of students enrolled to module' })
       })
-  }, [addToast, axiosInstance, exerciseNumber, moduleCode, submissionType, year])
+  }, [addToast, axiosInstance, exercise, year])
 
   const deleteMember = (member: GroupMember, asMember: boolean = false) => {
-    if (!group) return
+    if (!exercise || !group) return
     axiosInstance
       .request({
         method: 'DELETE',
-        url: endpoints.groupMember(year!, moduleCode, exerciseNumber, member.username),
+        url: endpoints.groupMember(year!, exercise.moduleCode, exercise.number, member.username),
       })
       .then(() => {
         let deletedMember = group.members.find((m) => m.id === member.id)
@@ -101,11 +103,11 @@ export const useGroup = ({ moduleCode, number: exerciseNumber, submissionType }:
   }
 
   const sendInvite = (invitedUsernames: string[]) => {
-    if (!group) return
+    if (!exercise || !group) return
     axiosInstance
       .request({
         method: 'POST',
-        url: endpoints.inviteMembers(year!, moduleCode, exerciseNumber),
+        url: endpoints.inviteMembers(year!, exercise.moduleCode, exercise.number),
         data: invitedUsernames.map((username) => ({ username })),
       })
       .then(({ data }: { data: any }) => {
@@ -134,11 +136,11 @@ export const useGroup = ({ moduleCode, number: exerciseNumber, submissionType }:
    * @param memberId ID of the member to accept/decline.
    */
   const answerInvite = (accepted: boolean, memberId: number) => {
-    if (!group) return
+    if (!exercise || !group) return
     axiosInstance
       .request({
         method: 'PATCH',
-        url: endpoints.membershipInvitation(year!, moduleCode, exerciseNumber),
+        url: endpoints.membershipInvitation(year!, exercise.moduleCode, exercise.number),
         params: { accepted },
       })
       .then(() => {
@@ -169,14 +171,15 @@ export const useGroup = ({ moduleCode, number: exerciseNumber, submissionType }:
   }
 
   const createGroup = () => {
+    if (!exercise) return
     axiosInstance
       .request({
         method: 'POST',
         url: endpoints.submissionGroups,
         data: {
           year,
-          module_code: moduleCode!,
-          exercise_number: exerciseNumber,
+          module_code: exercise.moduleCode,
+          exercise_number: exercise.number,
         },
       })
       .then(({ data }: { data: any }) => setGroup(plainToInstance(Group, data)))
