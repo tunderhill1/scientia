@@ -26,6 +26,7 @@ Spearheaded by the [DoC EdTech Lab](https://edtech.pages.doc.ic.ac.uk/), Scienti
 # Contributing to the code
 
 Contributions to the project are encouraged. Contribution guidelines can be found [here](CONTRIBUTING.md).
+Please check out the [wiki](https://gitlab.doc.ic.ac.uk/edtech/scientia/-/wikis/home) for further documentation.
 
 # Running the app in dev
 
@@ -49,6 +50,30 @@ The only caveat is for the NGINX configuration: on changing it, you should also 
 docker exec $(docker ps -qf "name=proxy" | head -n1) nginx -s reload
 ```
 
+## Dev users
+
+You can access the application with the following users:
+
+* `hpotter` and `rweasley` - students
+* `adumble` - staff
+
+Users enabled for access in dev are defined in the following places:
+
+* [`app/mocks/ldap_authentication.py`](https://gitlab.doc.ic.ac.uk/edtech/materials/-/blob/master/app/mocks/ldap_authentication.py) in **Materials**;
+* [`app/mocks/ldap_authentication.py`](https://gitlab.doc.ic.ac.uk/edtech/emarking/-/blob/master/app/mocks/ldap_authentication.py) in **Emarking**;
+* [`app/dev_upstream_services/ldap_authentication.py`](https://gitlab.doc.ic.ac.uk/edtech/scientia-api/-/blob/master/app/dev_upstream_services/ldap_authentication.py) in the **Gateway API**.
+
+These files, which provide a mock LDAP access directory, must be kept in sync with one another to allow access of dev users across the whole stack.
+
+## Dev data
+
+Example/dev data is provided at two different levels:
+
+* microservice-specific data (i.e. for Materials or Emarking) - this is inserted into the corresponding database via executing `setup_clean_dev_env` ([see above](https://gitlab.doc.ic.ac.uk/edtech/scientia#running-the-app-in-dev));
+* central departmental data (which would be provided by the ABC API) - this data is hardcoded in the [fake ABC API handler defined in the Gateway API](https://gitlab.doc.ic.ac.uk/edtech/scientia-api/-/blob/master/app/dev_upstream_services/abc_api_service.py).
+
+All the current dev data refers to academic year 2021-2022.
+Semantic consistency (e.g. relevancy to the same academic year) across all of the dev data must be retained. This is currently done manually.
 
 # Running tests locally
 
