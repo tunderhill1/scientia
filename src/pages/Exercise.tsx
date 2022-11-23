@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useParams } from 'react-router-dom'
 
@@ -22,10 +23,22 @@ import { css } from '../styles/stitches.config'
 const Exercise = () => {
   const { userDetails } = useUser()
   const { moduleCode, exerciseNumber } = useParams()
-  const { exercise, exerciseIsLoaded, exerciseMaterials, submittedFiles, submitFile, deleteFile } =
-    useExercise()
+  const {
+    exercise,
+    exerciseIsLoaded,
+    exerciseMaterials,
+    submittedFiles,
+    submitFile,
+    deleteFile,
+    loadSubmittedFiles,
+  } = useExercise()
   const { spec, dataFiles, modelAnswers, fileRequirements } = exerciseMaterials || {}
   const { groupIsLoaded, enrolledStudents, group, createGroup, membersActions } = useGroup(exercise)
+
+  useEffect(() => {
+    if (!exercise) return
+    loadSubmittedFiles()
+  }, [exercise, group, loadSubmittedFiles])
 
   function isUploadEnabled(): boolean {
     function studentCanInteractWithSubmission(): boolean {

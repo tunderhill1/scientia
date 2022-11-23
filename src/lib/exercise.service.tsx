@@ -1,6 +1,6 @@
 import confetti from 'canvas-confetti'
 import { plainToInstance } from 'class-transformer'
-import { useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { endpoints } from '../constants/endpoints'
@@ -15,6 +15,7 @@ export const useExercise = () => {
   const { addToast } = useToast()
   const { userDetails } = useUser()
 
+  const [submittedFiles, setSubmittedFiles] = useState<SubmittedFile[]>([])
   const [exercise, setExercise] = useState<Exercise>()
   const [exerciseIsLoaded, setExerciseIsLoaded] = useState<boolean>(false)
   useEffect(() => {
@@ -48,8 +49,7 @@ export const useExercise = () => {
       .catch(() => addToast({ variant: 'error', title: 'Unable to get exercise details' }))
   }, [addToast, axiosInstance, exerciseNumber, moduleCode, userDetails, year])
 
-  const [submittedFiles, setSubmittedFiles] = useState<SubmittedFile[]>([])
-  useEffect(() => {
+  const loadSubmittedFiles = useCallback(() => {
     axiosInstance
       .request({
         method: 'GET',
@@ -132,5 +132,6 @@ export const useExercise = () => {
     submitFile,
     deleteFile,
     submitWorkload,
+    loadSubmittedFiles,
   }
 }
