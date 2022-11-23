@@ -29,6 +29,30 @@ const EnrolledStudentSelectLabel = ({ enrolledStudent }: { enrolledStudent: Enro
 
 const animatedComponents = makeAnimated()
 
+function DeleteGroupDialog({
+  open,
+  onOpenChange,
+  onDelete,
+}: {
+  open: boolean
+  onOpenChange: (_: boolean) => void
+  onDelete: () => void
+}) {
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={onOpenChange}
+      title="Delete group"
+      primaryButtonText="Yes, delete"
+      secondaryButtonText="No, cancel"
+      onPrimaryClick={onDelete}
+    >
+      This action will permanently erase your group and any associated file/LabTS submission
+      associated to it. Are you sure?
+    </Dialog>
+  )
+}
+
 export const GroupManagementArea = ({
   group,
   enrolledStudents,
@@ -203,17 +227,12 @@ export const GroupManagementArea = ({
           </div>
         )}
       </div>
-      <Dialog
+
+      <DeleteGroupDialog
         open={deleteGroupDialogOpen}
         onOpenChange={setDeleteGroupDialogOpen}
-        title="Delete group"
-        primaryButtonText="Yes, delete"
-        secondaryButtonText="No, cancel"
-        onPrimaryClick={() => console.log('Deleted')}
-      >
-        This action will permanently erase your group and any associated file/LabTS submission
-        associated to it. Are you sure?
-      </Dialog>
+        onDelete={() => console.log('Deleted')}
+      />
     </>
   )
 }
