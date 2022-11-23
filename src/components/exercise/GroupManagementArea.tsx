@@ -97,7 +97,19 @@ export const GroupManagementArea = ({
     <>
       <div>
         {userMember.isLeader ? (
-          <h4 style={{ marginBottom: '1.5rem' }}>Your Group</h4>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '1.5rem',
+            }}
+          >
+            <h4>Your Group</h4>
+            <Button type="button" onClick={() => console.log('Open delete dialog')}>
+              Delete group
+            </Button>
+          </div>
         ) : (
           <GroupMemberHeader member={userMember} />
         )}
