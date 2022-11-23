@@ -55,6 +55,8 @@ services:
       - "80:80"
       - "443:443"
     deploy:
+      mode: replicated
+      replicas: 2
       placement:
         constraints:
           - node.role == manager
