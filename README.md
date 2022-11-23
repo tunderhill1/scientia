@@ -1,16 +1,13 @@
 <div align="center">
   <a href="https://www.scientia.doc.ic.ac.uk">
-    <img src="https://scientia.doc.ic.ac.uk/images/logo.svg" height="96">
+    <img src="public/assets/logo-adaptive.svg" height="96">
     <div align="center">
       <h3>Scientia</h3>
     </div>
   </a>
-  <div align="center">A Unified DoC EdTech Platform</div>
+  <h4 align="center">A Unified DoC EdTech Platform</h4>
+  <p align="center">Spearheaded by [DoC EdTech](https://edtech.pages.doc.ic.ac.uk/), Scientia enhances the remote learning experience for staff and students.</p>
 </div>
-
----
-
-Spearheaded by the [DoC EdTech Lab](https://edtech.pages.doc.ic.ac.uk/), Scientia is a platform that focuses on ehancing the remote learning experience for staff and students alike.
 
 # Tech Stack
 
