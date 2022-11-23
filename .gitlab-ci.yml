@@ -17,36 +17,42 @@ before_script:
 type-checks:
   stage: linting
   interruptible: true
-  except:
-    refs:
-      - schedules
-    changes:
-      - "**/README.md"
-      - "nginx/*"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "push"
+      changes:
+        - "**/README.md"
+        - "nginx/*"
+      when: never
   script:
     - yarn tsc
 
 style-checks:
   stage: linting
   interruptible: true
-  except:
-    refs:
-      - schedules
-    changes:
-      - "**/README.md"
-      - "nginx/*"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "push"
+      changes:
+        - "**/README.md"
+        - "nginx/*"
+      when: never
   script:
     - yarn prettier -c src/**/*
 
 unit-tests:
   stage: testing
   interruptible: true
-  except:
-    refs:
-      - schedules
-    changes:
-      - "**/README.md"
-      - "nginx/*"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "push"
+      changes:
+        - "**/README.md"
+        - "nginx/*"
+      when: never
   script:
     - yarn test:ci
   artifacts:
@@ -62,12 +68,12 @@ build frontend image:
   image: docker:latest
   stage: building
   interruptible: true
-  except:
-    changes:
-      - "**/README.md"
-      - "nginx/*"
-  only:
-    - master
+  rules:
+    - if: $CI_PROJECT_NAMESPACE == "edtech" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - "**/README.md"
+        - "nginx/*"
+      when: never
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
     GIT_SUBMODULE_STRATEGY: recursive
@@ -92,11 +98,11 @@ build nginx image:
   image: docker:latest
   stage: building
   interruptible: true
-  except:
-    changes:
-      - "**/README.md"
-  only:
-    - master
+  rules:
+    - if: $CI_PROJECT_NAMESPACE == "edtech" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - "**/README.md"
+      when: never
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
     GIT_SUBMODULE_STRATEGY: recursive
@@ -130,12 +136,9 @@ deploy prod:
     DB_EDTECH_CONNECTION_STRING: $DB_EDTECH_CONNECTION_STRING
     STORAGE_ROOT: $STORAGE_ROOT
   stage: deploying
-  except:
-    changes:
-      - "**/README.md"
-  only:
-    - master
-  when: manual
+  rules:
+    - if: $CI_PROJECT_NAMESPACE == "edtech" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
   before_script: []
   script:
     - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
@@ -148,13 +151,10 @@ deploy prod:
 
 run db migrations:
   stage: deploying
-  except:
-    changes:
-      - "**/README.md"
-  only:
-    - master
+  rules:
+    - if: $CI_PROJECT_NAMESPACE == "edtech" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
   before_script: []
-  when: manual
   script:
     - docker exec $(docker ps -qf "name=emarking" | head -n1) flask db upgrade
     - docker exec $(docker ps -qf "name=materials" | head -n1) flask db upgrade
