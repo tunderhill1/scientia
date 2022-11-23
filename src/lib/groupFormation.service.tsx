@@ -189,10 +189,29 @@ export const useGroup = (exercise: Exercise | undefined) => {
       })
   }
 
+  const deleteGroup = () => {
+    if (!exercise || !group) return
+
+    axiosInstance
+      .request({
+        method: 'DELETE',
+        url: endpoints.submissionGroup(year!, exercise.moduleCode, exercise.number),
+      })
+      .then(() => {
+        setGroup(null)
+        addToast({ variant: 'success', title: 'The group was deleted' })
+      })
+      .catch((error) => {
+        console.error(error)
+        addToast({ variant: 'error', title: 'Unable to delete group' })
+      })
+  }
+
   const membersActions: GroupMembersActions = {
     deleteMember,
     sendInvite,
     answerInvite,
+    deleteGroup,
   }
 
   return { groupIsLoaded, enrolledStudents, group, setGroup, createGroup, membersActions }

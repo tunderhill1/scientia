@@ -186,6 +186,7 @@ export interface GroupMembersActions {
   deleteMember: (member: GroupMember, asMember?: boolean) => void
   sendInvite: (invitedUsernames: string[]) => void
   answerInvite: (accepted: boolean, memberId: number) => void
+  deleteGroup: () => void
 }
 
 export class EnrolledStudent {
