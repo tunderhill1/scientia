@@ -14,14 +14,13 @@ Spearheaded by the [DoC EdTech Lab](https://edtech.pages.doc.ic.ac.uk/), Scienti
 
 # Tech Stack
 
-- 🛠 [nvm](https://github.com/nvm-sh/nvm) for managing different Node versions [recommended]
-
-- Node 16
-- React & Typescript for the baseline
-- [Radix UI](https://www.radix-ui.com/) for unstyled accessible components
-- [Stitches](https://stitches.dev/) for styling
-- [Bootstrap Icons](https://icons.getbootstrap.com/) for... well, icons
-- [Yarn](https://yarnpkg.com/) for dependency management
+* 🛠 [nvm](https://github.com/nvm-sh/nvm) for managing different Node versions [recommended]
+* Node 16
+* React & Typescript for the baseline
+* [Radix UI](https://www.radix-ui.com/) for unstyled accessible components
+* [Stitches](https://stitches.dev/) for styling
+* [Bootstrap Icons](https://icons.getbootstrap.com/) for... well, icons
+* [Yarn](https://yarnpkg.com/) for dependency management
 
 # Contributing to the code
 
@@ -56,6 +55,8 @@ You can access the application with the following users:
 
 * `hpotter` and `rweasley` - students
 * `adumble` - staff
+
+Passwords are not checked in dev, so any string is a valid password for any of the above.
 
 Users enabled for access in dev are defined in the following places:
 
