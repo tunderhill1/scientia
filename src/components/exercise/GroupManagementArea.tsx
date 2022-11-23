@@ -16,6 +16,7 @@ import { capitaliseFirstLetter } from '../../lib/utilities.service'
 import { Button, Wrapper } from '../../styles/_app.style'
 import { DropdownStyle, MemberName, MemberRole } from '../../styles/groupSubmission.style'
 import { Tabs } from '../Tabs'
+import Dialog from '../dialogs/Dialog'
 
 const EnrolledStudentSelectLabel = ({ enrolledStudent }: { enrolledStudent: EnrolledStudent }) => {
   const { login, fullname, available } = enrolledStudent
@@ -41,6 +42,7 @@ export const GroupManagementArea = ({
   const [inviteOptions, setInviteOptions] = useState<Option[]>([])
   const [optionsSelected, setOptionsSelected] = useState<Option[]>([])
   const [userMember, setUserMember] = useState<GroupMember>()
+  const [deleteGroupDialogOpen, setDeleteGroupDialogOpen] = useState<boolean>(false)
 
   useEffect(() => {
     if (!(group && userLogin)) return
@@ -106,7 +108,7 @@ export const GroupManagementArea = ({
             }}
           >
             <h4>Your Group</h4>
-            <Button type="button" onClick={() => console.log('Open delete dialog')}>
+            <Button type="button" onClick={() => setDeleteGroupDialogOpen(true)}>
               Delete group
             </Button>
           </div>
@@ -201,6 +203,17 @@ export const GroupManagementArea = ({
           </div>
         )}
       </div>
+      <Dialog
+        open={deleteGroupDialogOpen}
+        onOpenChange={setDeleteGroupDialogOpen}
+        title="Delete group"
+        primaryButtonText="Yes, delete"
+        secondaryButtonText="No, cancel"
+        onPrimaryClick={() => console.log('Deleted')}
+      >
+        This action will permanently erase your group and any associated file/LabTS submission
+        associated to it. Are you sure?
+      </Dialog>
     </>
   )
 }
