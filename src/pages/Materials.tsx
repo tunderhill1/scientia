@@ -109,6 +109,7 @@ const Materials = () => {
       )}
       href={(tab) => (tab.type === 'link' ? tab.path : endpoints.resourceFile(tab.id))}
       target="_blank"
+      download={(tab) => (tab.type === 'file' ? tab.path : null)}
       dragDropOptions={{
         dragEnabled,
         droppableId: items[0]?.category ?? 'empty',

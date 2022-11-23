@@ -28,6 +28,7 @@ export const Tabs = ({
   animate = false,
   href = (_: any) => '#',
   target = '_self',
+  download = (_: any) => null,
   dragDropOptions = null,
   dividers = false,
 }: {
@@ -38,6 +39,7 @@ export const Tabs = ({
   animate?: boolean
   href?: (tab: any) => string
   target?: string
+  download?: (tab: any) => string | null
   dragDropOptions?: DragDropOptions | null
   dividers?: boolean
 }) => {
@@ -132,6 +134,7 @@ export const Tabs = ({
         {...props}
         href={href(tab)}
         target={target}
+        download={download(tab)}
         /* NOTE: Unique identifier to find the element */
         id={prefixRef.current.toString() + index.toString()}
         onMouseOver={(event: any) => repositionHighlight(event, tab)}
