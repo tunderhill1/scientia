@@ -9,7 +9,7 @@
   <p align="center">Spearheaded by [DoC EdTech](https://edtech.pages.doc.ic.ac.uk/), Scientia enhances the remote learning experience for staff and students.</p>
 </div>
 
-# Tech Stack
+# Tech Stack and architecture
 
 * 🛠 [nvm](https://github.com/nvm-sh/nvm) for managing different Node versions [recommended]
 * Node 16
@@ -19,10 +19,12 @@
 * [Bootstrap Icons](https://icons.getbootstrap.com/) for... well, icons
 * [Yarn](https://yarnpkg.com/) for dependency management
 
+
+An overview of the application's architecture can be found in the [wiki's home page](https://gitlab.doc.ic.ac.uk/edtech/scientia/-/wikis/home).
+
 # Contributing to the code
 
 Contributions to the project are encouraged. Contribution guidelines can be found [here](CONTRIBUTING.md).
-Please check out the [wiki](https://gitlab.doc.ic.ac.uk/edtech/scientia/-/wikis/home) for further documentation.
 
 # Running the app in dev
 
@@ -72,6 +74,22 @@ Example/dev data is provided at two different levels:
 
 All the current dev data refers to academic year 2021-2022.
 Semantic consistency (e.g. relevancy to the same academic year) across all of the dev data must be retained. This is currently done manually.
+
+# Working with the APIs
+
+| API | Docs in local | Authentication |
+| ------ | ------ | -------- |
+| Gateway (a.k.a. Scientia API) | <localhost:8080/api> | JSON Web Tokens |
+| Materials | <localhost:8080/materials> | Basic |
+| Emarking | <localhost:8080/emarking> | Basic |
+
+Should you need to contact the microservices' APIs, you may do so via GUI apps like POSTman or via CLI with `cURL` or [`httpie`](https://httpie.io/docs/cli) (recommended). For example, to get all the available teaching resources available to `hpotter` for year 2021-2022:
+
+```shell
+http -a hpotter:p :8080/materials/resources year==2122
+```
+
+The above performs basic auth for `hpotter` against this URL: <localhost:8080/materials/resources?year=2122>. 
 
 # Running tests locally
 
