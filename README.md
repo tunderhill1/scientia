@@ -28,7 +28,14 @@ Contributions to the project are encouraged. Contribution guidelines can be foun
 
 # Running the app in dev
 
-> Make sure that the project folder sits next to the [Materials](https://gitlab.doc.ic.ac.uk/edtech/materials), [Emarking](https://gitlab.doc.ic.ac.uk/edtech/emarking) and [ScientiaAPI](https://gitlab.doc.ic.ac.uk/edtech/scientia-api) project folders. 
+> Make sure that the project folder sits next to the [Materials](https://gitlab.doc.ic.ac.uk/edtech/materials), [Emarking](https://gitlab.doc.ic.ac.uk/edtech/emarking) and [ScientiaAPI](https://gitlab.doc.ic.ac.uk/edtech/scientia-api) project folders.
+
+First, install the project dependencies:
+
+```shell
+nvm use 16  # To use Node 16
+yarn install
+```
 
 To make sure that cookies are sent correctly from the backend and stored correctly in the client, we use a docker-compose
 stack with an Nginx reverse proxy (pretty much what we use in production -just with simpler configs).
