@@ -11,6 +11,7 @@ services:
       - AUTH_JWT_SECRET_KEY
       - API_ROLE_USERNAME
       - API_ROLE_PASSWORD
+      - IMPERSONATORS
     deploy:
       mode: replicated
       replicas: 1
