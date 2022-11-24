@@ -95,6 +95,7 @@ build nginx image:
   rules:
     - changes:
         - "**/README.md"
+        - "nginx/dev.conf"
       when: never
     - if: $CI_PROJECT_NAMESPACE == "edtech" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   variables:
@@ -131,6 +132,10 @@ deploy prod:
     STORAGE_ROOT: $STORAGE_ROOT
   stage: deploying
   rules:
+    - changes:
+        - "**/README.md"
+        - "nginx/dev.conf"
+      when: never
     - if: $CI_PROJECT_NAMESPACE == "edtech" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: manual
   before_script: []
@@ -146,6 +151,10 @@ deploy prod:
 run db migrations:
   stage: deploying
   rules:
+    - changes:
+        - "**/README.md"
+        - "nginx/dev.conf"
+      when: never
     - if: $CI_PROJECT_NAMESPACE == "edtech" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: manual
   before_script: []
