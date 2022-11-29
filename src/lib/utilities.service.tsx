@@ -214,3 +214,13 @@ export function concatGrouped<T>(
 export function range(lower: number, upper: number): number[] {
   return Array.from({ length: upper - lower }, (_, i) => lower + i)
 }
+
+/**
+ * Extract the file extension from its path
+ * @param path a string representing the file path e.g. `path/to/file.pdf`
+ * @returns the file extension e.g. `.pdf`
+ */
+export const getFileExtension = (path: string) => {
+  const extension = path.slice(((path.lastIndexOf('.') - 1) >>> 0) + 2)
+  return extension ? `.${extension}` : ''
+}

@@ -32,6 +32,7 @@ import { useGame } from '../lib/game/game.context'
 import { LevelsManager } from '../lib/game/levels.service'
 import { useMaterials } from '../lib/materials.service'
 import { useUser } from '../lib/user.context'
+import { getFileExtension } from '../lib/utilities.service'
 import { Button, Checkbox, Footnote, Indicator, Wrapper } from '../styles/_app.style'
 import { Caret } from '../styles/collapsible-list.style'
 import { ToggleDragDropButton } from '../styles/dragDrop.style'
@@ -107,7 +108,10 @@ const Materials = () => {
           </Tags>
         </Material>
       )}
-      href={(tab) => (tab.type === 'link' ? tab.path : endpoints.resourceFile(tab.id))}
+      href={(tab) => {
+        const fileName = `${tab.title}${getFileExtension(tab.path)}`
+        return tab.type === 'link' ? tab.path : endpoints.resourceFile(tab.id, fileName)
+      }}
       target="_blank"
       dragDropOptions={{
         dragEnabled,

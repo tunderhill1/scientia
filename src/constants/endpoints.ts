@@ -9,7 +9,6 @@
  *
  * TODO: Not verified after latest updates using docker for local development.
  */
-
 export const baseURL = process.env.REACT_APP_API_ENTRYPOINT || 'http://localhost:8080/api'
 
 export const endpoints = {
@@ -51,7 +50,7 @@ export const endpoints = {
   submissionGroups: `${baseURL}/groups`,
   resource: (id: number) => `${baseURL}/resources/${id}`,
   resourcesComplete: `${baseURL}/resources/complete`,
-  resourceFile: (id: number) => `${baseURL}/resources/${id}/file`,
+  resourceFile: (id: number, fileName: string) => `${baseURL}/resources/${id}/file/${fileName}`,
   resourcesArchive: `${baseURL}/resources/zipped`,
   periods: (year: string) => `${baseURL}/${year}/periods`,
   feedback: (year: string) => `${baseURL}/me/${year}/feedback`,
