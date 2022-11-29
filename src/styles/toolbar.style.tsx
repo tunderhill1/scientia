@@ -25,10 +25,11 @@ export const Toggle = styled(TogglePrimitive, {
   display: 'inline-flex',
   padding: '0 1rem 0 1rem',
   borderRadius: '0.5rem',
+  backgroundColor: '$elementHover',
   '&[data-state=on]': {
     backgroundColor: '$elementActive',
   },
   '&:hover': {
-    backgroundColor: '$elementHover',
+    backgroundColor: '$elementActive',
   },
 })
