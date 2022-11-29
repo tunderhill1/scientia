@@ -110,7 +110,7 @@ const Materials = () => {
       )}
       href={(tab) => {
         const fileName = `${tab.title}${getFileExtension(tab.path)}`
-        return tab.type === 'link' ? tab.path : endpoints.resourceFile(tab.id, fileName)
+        return tab.type === 'link' ? tab.path : endpoints.resourceFileToGet(tab.id, fileName)
       }}
       target="_blank"
       dragDropOptions={{

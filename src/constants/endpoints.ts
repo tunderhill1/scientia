@@ -50,7 +50,9 @@ export const endpoints = {
   submissionGroups: `${baseURL}/groups`,
   resource: (id: number) => `${baseURL}/resources/${id}`,
   resourcesComplete: `${baseURL}/resources/complete`,
-  resourceFile: (id: number, fileName: string) => `${baseURL}/resources/${id}/file/${fileName}`,
+  resourceFileToGet: (id: number, fileName: string) =>
+    `${baseURL}/resources/${id}/file/${fileName}`,
+  resourceFileToUpdate: (id: number) => `${baseURL}/resources/${id}/file`,
   resourcesArchive: `${baseURL}/resources/zipped`,
   periods: (year: string) => `${baseURL}/${year}/periods`,
   feedback: (year: string) => `${baseURL}/me/${year}/feedback`,

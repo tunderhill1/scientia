@@ -152,6 +152,16 @@ export const Footnote = styled('p', {
   },
 })
 
+export const StandardDiv = styled('div', {
+  all: 'unset',
+  justifyContent: 'space-between',
+  display: 'flex',
+  flexGrow: 2,
+  padding: '0.75rem',
+  background: '$sand3',
+  borderRadius: '0.5rem',
+})
+
 /* Syntatic sugar for a plain div with functionality to center content if needed */
 export const Wrapper = styled('div', {
   width: '100%',

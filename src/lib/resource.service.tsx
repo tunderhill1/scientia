@@ -39,7 +39,7 @@ export const useResources = (): any => {
           axiosInstance
             .request({
               method: 'PUT',
-              url: endpoints.resources + '/' + data.id + '/file',
+              url: endpoints.resourceFileToUpdate(data.id),
               data: formData,
             })
             .catch((error: any) => {
