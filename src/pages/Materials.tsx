@@ -140,7 +140,7 @@ const Materials = () => {
   const toolbar = (
     <Toolbar style={{ marginBottom: '1rem' }}>
       <Toggle defaultPressed={checklistMode} onClick={(event) => setSelectionMode(!checklistMode)}>
-        Bulk actions
+        Actions
       </Toggle>
       <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
         {!checklistMode && userDetails?.isStaff && (
