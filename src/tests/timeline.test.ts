@@ -1,12 +1,12 @@
 import { plainToInstance } from 'class-transformer'
 
-import { Exercise, Term, Track, TrackMap } from '../../constants/types'
+import { Exercise, Term, Track, TrackMap } from '../constants/types'
 import {
   computeTracks,
   exercisesOverlap,
   generateTrackMap,
   padForModulesWithNoExercises,
-} from '../../lib/utilities.service'
+} from '../lib/utilities.service'
 
 const EXERCISE_TEMPLATE = {
   number: 1,
