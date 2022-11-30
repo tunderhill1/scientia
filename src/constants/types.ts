@@ -163,6 +163,9 @@ export class SubmittedFile {
   @Expose({ name: 'exercise_number' })
   exerciseNumber: number
 
+  @Expose({ name: 'gitlab_hash' })
+  gitlabHash: string
+
   get url(): string {
     return endpoints.submissionFile(this.year, this.moduleCode, this.exerciseNumber, this.id)
   }

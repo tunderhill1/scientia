@@ -91,7 +91,7 @@ const FileUploadArea = ({
                   : fileName[0].toUpperCase() + fileName.substring(1).replace(/[-_]/g, ' ')}
               </p>
               <p className={css({ fontSize: '$md', color: '$sand9', marginTop: '0.125rem' })()}>
-                {fileType}
+                {submittedFile?.gitlabHash || fileType}
               </p>
             </div>
           </div>
