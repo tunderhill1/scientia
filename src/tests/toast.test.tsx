@@ -1,8 +1,8 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
 
-import { ToastProps } from '../../components/Toast'
-import { ToastProvider, useToast } from '../../lib/toast.context'
-import { ToastVariant } from '../../styles/toast.style'
+import { ToastProps } from '../components/Toast'
+import { ToastProvider, useToast } from '../lib/toast.context'
+import { ToastVariant } from '../styles/toast.style'
 
 const Toaster = (toasts: ToastProps[] = [{ title: 'Toast title', variant: 'info' }]) => {
   const TestComponent = () => {
