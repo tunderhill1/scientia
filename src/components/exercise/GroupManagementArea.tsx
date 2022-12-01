@@ -241,7 +241,7 @@ export const GroupManagementArea = ({
 
 export const DefaultGroupArea = ({ onCreateGroup }: { onCreateGroup: () => void }) => {
   return (
-    <>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem' }}>
       <Banner center>
         <b>This is a group exercise and you are currently not in a group.</b>
         Wait for another student to invite you as member of an existing group <br />
@@ -252,6 +252,6 @@ export const DefaultGroupArea = ({ onCreateGroup }: { onCreateGroup: () => void 
           Create group
         </Button>
       </div>
-    </>
+    </div>
   )
 }
