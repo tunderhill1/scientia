@@ -102,7 +102,10 @@ const Exercise = () => {
 
   const GroupSection = () => {
     if (!groupIsLoaded) return <Banner center>Loading group data...</Banner>
-    if (!group) return <DefaultGroupArea onCreateGroup={createGroup} />
+    if (!group) {
+      if (exerciseIsOpen()) return <DefaultGroupArea onCreateGroup={createGroup} />
+      return <></>
+    }
     return (
       <GroupManagementArea
         group={group}
