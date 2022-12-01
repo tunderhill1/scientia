@@ -182,6 +182,7 @@ export const GroupManagementArea = ({
               {group.members.map((member: GroupMember, index) =>
                 !member.isLeader ? (
                   <Button
+                    disabled={disabled}
                     type="button"
                     icon
                     onClick={() => membersActions.deleteMember(member)}
