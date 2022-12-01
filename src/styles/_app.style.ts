@@ -165,10 +165,16 @@ export const StandardDiv = styled('div', {
 /* Syntatic sugar for a plain div with functionality to center content if needed */
 export const Wrapper = styled('div', {
   width: '100%',
+  backgroundColor: '$subtleBackground',
+  borderRadius: '0.5rem',
   variants: {
+    level: {
+      warning: {
+        backgroundColor: '$warningBackground',
+      },
+    },
     center: {
       true: {
-        backgroundColor: '$subtleBackground',
         minHeight: '10rem',
         display: 'flex',
         flexDirection: 'column',

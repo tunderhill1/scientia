@@ -73,6 +73,8 @@ export const { styled, css, globalCss, theme } = createStitches({
       overlayBackground: '$blackA9',
       errorBackground: '$red9',
       successBackground: '$green9',
+      warningBackground: '$amber4',
+      dangerBackground: '$red5',
       infoBackground: '$cyan9',
     },
   },

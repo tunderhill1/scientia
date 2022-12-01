@@ -55,6 +55,26 @@ const Exercise = () => {
     return !userDetails?.isStaff && studentCanInteractWithSubmission()
   }
 
+  const SubmissionUploadAvailabilityWarning = () => {
+    if (now() < exercise!.latePeriodDeadline)
+      return (
+        <Wrapper center level={'warning'}>
+          <p>
+            Your deadline has passed.
+            <br /> Further modifications to your work will be classified as <b>late</b>.
+          </p>
+        </Wrapper>
+      )
+    return (
+      <Wrapper center>
+        <p>
+          You are more than 10 days past your deadline. <br />
+          No further modifications to your work are possible.
+        </p>
+      </Wrapper>
+    )
+  }
+
   const ExerciseMaterialsSection = () => {
     return (
       <ResourcesWrapper>
@@ -146,6 +166,7 @@ const Exercise = () => {
         >
           <ExerciseMaterialsSection />
           <Hr />
+          {now() > exercise.deadline && <SubmissionUploadAvailabilityWarning />}
           {exercise.submissionType === 'group' && <GroupSection />}
 
           {(exercise.submissionType === 'individual' || group) && !!fileRequirements?.length && (
