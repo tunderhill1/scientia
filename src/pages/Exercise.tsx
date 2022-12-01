@@ -40,19 +40,17 @@ const Exercise = () => {
     loadSubmittedFiles()
   }, [exercise, group, loadSubmittedFiles])
 
-  function exerciseIsOpen(): boolean {
-    function studentCanInteractWithSubmission(): boolean {
-      // This is admittedly a hack, but gets easily around the pure date comparison
-      // limitations (which would make dev interactions cumbersome)
-      const appIsRunningInDev = process.env.NODE_ENV === 'development'
-      const isWithinExercisePeriod =
-        now() < exercise!.latePeriodDeadline && now() > exercise!.startDate
-      const studentIsLeader =
-        exercise!.submissionType === 'individual' || group?.leader === userDetails!.login
-      return (appIsRunningInDev || isWithinExercisePeriod) && studentIsLeader
-    }
+  function studentIsLeader(): boolean {
+    return exercise!.submissionType === 'individual' || group?.leader === userDetails!.login
+  }
 
-    return !userDetails?.isStaff && studentCanInteractWithSubmission()
+  function exerciseIsOpen(): boolean {
+    // This is admittedly a hack, but gets easily around the pure date comparison
+    // limitations (which would make dev interactions cumbersome)
+    const appIsRunningInDev = process.env.NODE_ENV === 'development'
+    const isWithinExercisePeriod =
+      now() < exercise!.latePeriodDeadline && now() > exercise!.startDate
+    return !userDetails?.isStaff && (appIsRunningInDev || isWithinExercisePeriod)
   }
 
   const SubmissionUploadAvailabilityWarning = () => {
@@ -201,7 +199,7 @@ const Exercise = () => {
                   <FileUploadArea
                     key={index}
                     exercise={exercise}
-                    disabled={!exerciseIsOpen()}
+                    disabled={!(exerciseIsOpen() && studentIsLeader())}
                     fileRequirement={fileRequirement}
                     submittedFiles={submittedFiles}
                     submitFile={submitFile}
