@@ -55,6 +55,31 @@ const Exercise = () => {
     return !userDetails?.isStaff && studentCanInteractWithSubmission()
   }
 
+  const ExerciseMaterialsSection = () => {
+    return (
+      <ResourcesWrapper>
+        {spec && (
+          <Link target="_blank" href={spec.url}>
+            <LinkIcon />
+            Specification
+          </Link>
+        )}
+        {!!dataFiles?.length && (
+          <Link target="_blank" href={dataFiles[0].url}>
+            <LinkIcon />
+            Data Files
+          </Link>
+        )}
+        {!!modelAnswers?.length && (
+          <Link target="_blank" href={modelAnswers[0].url}>
+            <LinkIcon />
+            Model Answers
+          </Link>
+        )}
+      </ResourcesWrapper>
+    )
+  }
+
   const GroupSection = () => {
     if (!groupIsLoaded) return <Wrapper center>Loading group data...</Wrapper>
     if (!group) return <DefaultGroupArea onCreateGroup={createGroup} />
@@ -119,26 +144,7 @@ const Exercise = () => {
             gap: '2rem',
           }}
         >
-          <ResourcesWrapper>
-            {spec && (
-              <Link target="_blank" href={spec.url}>
-                <LinkIcon />
-                Specification
-              </Link>
-            )}
-            {!!dataFiles?.length && (
-              <Link target="_blank" href={dataFiles[0].url}>
-                <LinkIcon />
-                Data Files
-              </Link>
-            )}
-            {!!modelAnswers?.length && (
-              <Link target="_blank" href={modelAnswers[0].url}>
-                <LinkIcon />
-                Model Answers
-              </Link>
-            )}
-          </ResourcesWrapper>
+          <ExerciseMaterialsSection />
           <Hr />
           {exercise.submissionType === 'group' && <GroupSection />}
 
