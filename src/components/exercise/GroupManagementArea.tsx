@@ -33,10 +33,12 @@ export const GroupManagementArea = ({
   group,
   enrolledStudents,
   membersActions,
+  disabled,
 }: {
   group: Group | null
   enrolledStudents: EnrolledStudent[]
   membersActions: GroupMembersActions
+  disabled: boolean
 }) => {
   const { userDetails: { login: userLogin } = {} } = useUser()
   const [inviteOptions, setInviteOptions] = useState<Option[]>([])
@@ -96,7 +98,11 @@ export const GroupManagementArea = ({
           {member.isConfirmed ? 'Your Group' : 'You are invited to this group'}
         </h4>
         {member.isConfirmed ? (
-          <Button type="button" onClick={() => membersActions.deleteMember(member, true)}>
+          <Button
+            disabled={disabled}
+            type="button"
+            onClick={() => membersActions.deleteMember(member, true)}
+          >
             Leave
           </Button>
         ) : (
@@ -128,7 +134,11 @@ export const GroupManagementArea = ({
             }}
           >
             <h4>Your Group</h4>
-            <Button type="button" onClick={() => setDeleteGroupDialogOpen(true)}>
+            <Button
+              disabled={disabled}
+              type="button"
+              onClick={() => setDeleteGroupDialogOpen(true)}
+            >
               Delete group
             </Button>
           </div>

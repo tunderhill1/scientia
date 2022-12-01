@@ -1,5 +1,7 @@
 import { plainToInstance } from 'class-transformer'
+import { addDays } from 'date-fns'
 
+import { GRACE_PERIOD_AFTER_DEADLINE_IN_DAYS } from '../../constants/global'
 import { Exercise } from '../../constants/types'
 
 const DEADLINE = new Date(2022, 9, 29, 19)
@@ -38,5 +40,11 @@ describe('Exercise', () => {
     ${exerciseWithExtension}    | ${EXTENDED_DEADLINE}
   `(`exposes deadline for $exercise.title`, ({ exercise, expected }) => {
     expect(exercise.deadline).toEqual(expected)
+  })
+
+  it(`exposes late period deadline as formal deadline + 10 days`, () => {
+    expect(exerciseWithoutExtension.latePeriodDeadline).toEqual(
+      addDays(DEADLINE, GRACE_PERIOD_AFTER_DEADLINE_IN_DAYS)
+    )
   })
 })

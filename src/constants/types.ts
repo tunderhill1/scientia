@@ -1,8 +1,10 @@
 import { Expose, Type } from 'class-transformer'
+import { addDays } from 'date-fns'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
 
 import cohorts from './cohorts'
 import { endpoints } from './endpoints'
+import { GRACE_PERIOD_AFTER_DEADLINE_IN_DAYS } from './global'
 
 export type SetState<Value> = Dispatch<SetStateAction<Value>>
 export type LocationState = { next: string }
@@ -88,6 +90,10 @@ export class Exercise {
 
   get deadline(): Date {
     return this.extendedEndDate ?? this.endDate
+  }
+
+  get latePeriodDeadline(): Date {
+    return addDays(this.deadline, GRACE_PERIOD_AFTER_DEADLINE_IN_DAYS)
   }
 
   get isGroup(): boolean {
