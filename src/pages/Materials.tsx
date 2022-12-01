@@ -7,8 +7,13 @@ import {
   Check2Circle,
   Dash,
   Download,
+  FileEarmarkCodeFill,
+  FileEarmarkFill,
+  FileEarmarkImageFill,
+  FileEarmarkPdfFill,
   Link,
   PencilSquare,
+  PlayFill,
   Trash3Fill,
   Upload,
 } from 'react-bootstrap-icons'
@@ -36,7 +41,7 @@ import { getFileExtension } from '../lib/utilities.service'
 import { Banner, Button, Checkbox, Footnote, Indicator, Wrapper } from '../styles/_app.style'
 import { Caret } from '../styles/collapsible-list.style'
 import { ToggleDragDropButton } from '../styles/dragDrop.style'
-import { Material, Tag, Tags } from '../styles/materials.style'
+import { Tag, Tags } from '../styles/materials.style'
 import { Toggle } from '../styles/toolbar.style'
 
 const Materials = () => {
@@ -85,6 +90,27 @@ const Materials = () => {
     )
   }
 
+  function resourceIcon(resource: any) {
+    function isPanopto(): boolean {
+      return ['imperial.cloud.panopto.eu/', 'Viewer.aspx?id='].every((s) =>
+        resource.path.includes(s)
+      )
+    }
+
+    const CODE_EXTS = ['java', 'c', 'cpp', 'h', 'hs', 'py', 'sh', 'kt', 'sql']
+    const IMG_EXTS = ['jpeg', 'jpg', 'png', 'svg']
+    const iconProps = { color: 'grey', size: 26 }
+    if (resource.type === 'link') {
+      return isPanopto() ? <PlayFill {...iconProps} /> : <Link {...iconProps} />
+    }
+    if (resource.path.endsWith('.pdf')) return <FileEarmarkPdfFill {...iconProps} />
+    if (CODE_EXTS.some((ext) => resource.path.endsWith(ext)))
+      return <FileEarmarkCodeFill {...iconProps} />
+    if (IMG_EXTS.some((ext) => resource.path.endsWith(ext)))
+      return <FileEarmarkImageFill {...iconProps} />
+    return <FileEarmarkFill {...iconProps} />
+  }
+
   const headerGenerator = (collection: string, _: object[]) => (
     <>
       <Caret />
@@ -95,18 +121,29 @@ const Materials = () => {
   const contentGenerator = (_: string, items: { [_: string]: any }[]) => (
     <Tabs
       data={items}
-      generator={(tab: any) => (
-        <Material>
-          <Wrapper inline>
-            <span>{tab.title}</span>
-            {gameSettingOn && isComplete(tab.id) && <Check2Circle size={19} />}
-          </Wrapper>
-          <Tags>
-            {tab.tags.map((tag: string) => (
-              <Tag key={`${tab.id}${tag}`}>#{tag}</Tag>
-            ))}
-          </Tags>
-        </Material>
+      generator={(resource: any) => (
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            minHeight: '2.5rem',
+            gap: '0.5rem',
+            width: '100%',
+          }}
+        >
+          {resourceIcon(resource)}
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <Wrapper inline>
+              <span>{resource.title}</span>
+              {gameSettingOn && isComplete(resource.id) && <Check2Circle size={19} />}
+            </Wrapper>
+            <Tags>
+              {resource.tags.map((tag: string) => (
+                <Tag key={`${resource.id}${tag}`}>#{tag}</Tag>
+              ))}
+            </Tags>
+          </div>
+        </div>
       )}
       href={(tab) => {
         const fileName = `${tab.title}${getFileExtension(tab.path)}`

@@ -10,11 +10,3 @@ export const Tags = styled('div', {
   flexWrap: 'wrap',
   columnGap: '0.5rem',
 })
-
-export const Material = styled('div', {
-  minHeight: '2.5rem',
-  gap: '0.1rem',
-  display: 'flex',
-  justifyContent: 'center',
-  flexDirection: 'column',
-})
