@@ -162,8 +162,20 @@ export const StandardDiv = styled('div', {
   borderRadius: '0.5rem',
 })
 
-/* Syntatic sugar for a plain div with functionality to center content if needed */
 export const Wrapper = styled('div', {
+  width: '100%',
+  variants: {
+    inline: {
+      true: {
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '0.5rem',
+      },
+    },
+  },
+})
+
+export const Banner = styled('div', {
   width: '100%',
   backgroundColor: '$subtleBackground',
   borderRadius: '0.5rem',

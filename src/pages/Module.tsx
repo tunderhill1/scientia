@@ -9,7 +9,7 @@ import { AxiosContext } from '../lib/axios.context'
 import { useGame } from '../lib/game/game.context'
 import { useLevels } from '../lib/game/levels.service'
 import { useToast } from '../lib/toast.context'
-import { Button, Container, Wrapper } from '../styles/_app.style'
+import { Banner, Button, Container, Wrapper } from '../styles/_app.style'
 import { css } from '../styles/stitches.config'
 
 const Module = () => {
@@ -51,9 +51,9 @@ const Module = () => {
       <Container>
         <h1> {moduleCode}</h1>
         {moduleIsLoaded && (
-          <Wrapper center>
+          <Banner center>
             <span>Troubles loading data for this module. Please try refreshing.</span>
-          </Wrapper>
+          </Banner>
         )}
       </Container>
     )

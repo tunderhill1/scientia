@@ -8,7 +8,7 @@ import { useExercise } from '../lib/exercise.service'
 import { useGroup } from '../lib/groupFormation.service'
 import { useUser } from '../lib/user.context'
 import { displayTimestamp, now } from '../lib/utilities.service'
-import { Container, Hr, Wrapper } from '../styles/_app.style'
+import { Banner, Container, Hr } from '../styles/_app.style'
 import {
   Deadline,
   Link,
@@ -58,20 +58,20 @@ const Exercise = () => {
   const SubmissionUploadAvailabilityWarning = () => {
     if (now() < exercise!.latePeriodDeadline)
       return (
-        <Wrapper center level={'warning'}>
+        <Banner center level={'warning'}>
           <p>
             Your deadline has passed.
             <br /> Further modifications to your work will be classified as <b>late</b>.
           </p>
-        </Wrapper>
+        </Banner>
       )
     return (
-      <Wrapper center>
+      <Banner center>
         <p>
           You are more than 10 days past your deadline. <br />
           No further modifications to your work are possible.
         </p>
-      </Wrapper>
+      </Banner>
     )
   }
 
@@ -101,7 +101,7 @@ const Exercise = () => {
   }
 
   const GroupSection = () => {
-    if (!groupIsLoaded) return <Wrapper center>Loading group data...</Wrapper>
+    if (!groupIsLoaded) return <Banner center>Loading group data...</Banner>
     if (!group) return <DefaultGroupArea onCreateGroup={createGroup} />
     return (
       <GroupManagementArea
@@ -121,11 +121,11 @@ const Exercise = () => {
             {moduleCode}: {exerciseNumber}
           </h1>
         </section>
-        <Wrapper center>
+        <Banner center>
           <span>
             {!exerciseIsLoaded ? 'Loading exercise...' : 'No information for this exercise.'}
           </span>
-        </Wrapper>
+        </Banner>
       </Container>
     )
   }

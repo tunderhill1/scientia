@@ -10,7 +10,7 @@ import { AxiosContext } from '../lib/axios.context'
 import { useToast } from '../lib/toast.context'
 import { useUser } from '../lib/user.context'
 import { calculateGrade, displayTimestamp, now, percentage } from '../lib/utilities.service'
-import { Wrapper } from '../styles/_app.style'
+import { Banner } from '../styles/_app.style'
 import { Link, LinkIcon } from '../styles/exercise.style'
 import {
   Header,
@@ -84,11 +84,11 @@ const Exercises = () => {
 
   if (!exercises?.length || userDetails?.isStaff)
     return (
-      <Wrapper center>
+      <Banner center>
         {userDetails?.isStaff
           ? '🚧 Staff area under construction.'
           : 'No exercises available for this module.'}
-      </Wrapper>
+      </Banner>
     )
 
   return (

@@ -13,7 +13,7 @@ import {
 } from '../../constants/types'
 import { useUser } from '../../lib/user.context'
 import { capitaliseFirstLetter } from '../../lib/utilities.service'
-import { Button, Wrapper } from '../../styles/_app.style'
+import { Banner, Button } from '../../styles/_app.style'
 import { DropdownStyle, MemberName, MemberRole } from '../../styles/groupSubmission.style'
 import { Tabs } from '../Tabs'
 import Dialog from '../dialogs/Dialog'
@@ -119,7 +119,7 @@ export const GroupManagementArea = ({
     )
   }
 
-  if (!(group && userMember)) return <Wrapper center>Loading...</Wrapper>
+  if (!(group && userMember)) return <Banner center>Loading...</Banner>
 
   return (
     <>
@@ -242,11 +242,11 @@ export const GroupManagementArea = ({
 export const DefaultGroupArea = ({ onCreateGroup }: { onCreateGroup: () => void }) => {
   return (
     <>
-      <Wrapper center>
+      <Banner center>
         <b>This is a group exercise and you are currently not in a group.</b>
         Wait for another student to invite you as member of an existing group <br />
         or create a new one as leader.
-      </Wrapper>
+      </Banner>
       <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
         <Button type="button" onClick={onCreateGroup}>
           Create group

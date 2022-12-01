@@ -33,7 +33,7 @@ import { LevelsManager } from '../lib/game/levels.service'
 import { useMaterials } from '../lib/materials.service'
 import { useUser } from '../lib/user.context'
 import { getFileExtension } from '../lib/utilities.service'
-import { Button, Checkbox, Footnote, Indicator, Wrapper } from '../styles/_app.style'
+import { Banner, Button, Checkbox, Footnote, Indicator, Wrapper } from '../styles/_app.style'
 import { Caret } from '../styles/collapsible-list.style'
 import { ToggleDragDropButton } from '../styles/dragDrop.style'
 import { Material, Tag, Tags } from '../styles/materials.style'
@@ -226,9 +226,9 @@ const Materials = () => {
         {noMaterials() ? (
           <>
             {initialToolbar}
-            <Wrapper center>
+            <Banner center>
               <span>{!isLoaded() ? 'Loading materials...' : 'No materials for this module.'}</span>
-            </Wrapper>
+            </Banner>
           </>
         ) : (
           <>
