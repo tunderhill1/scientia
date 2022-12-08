@@ -24,7 +24,9 @@ const FileUploadArea = ({
   submitFile: (file: File, targetFileName: string) => void
   deleteFile: (_: SubmittedFile) => void
 }) => {
-  const [fileName, fileType] = fileRequirement.name.split('.')
+  const lastSeparator = fileRequirement.name.lastIndexOf('.')
+  const fileName = fileRequirement.name.slice(0, lastSeparator)
+  const fileType = fileRequirement.name.slice(lastSeparator + 1)
   const submittedFile =
     submittedFiles.find((file) => file.targetFileName === fileRequirement.name) ?? null
   const isLabTSHandIn = fileType === GITLAB_HASH
