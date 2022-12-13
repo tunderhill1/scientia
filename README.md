@@ -42,8 +42,10 @@ stack with an Nginx reverse proxy (pretty much what we use in production -just w
 
 ```shell
 docker-compose -f dev.docker-compose.yml up [--build]
+docker exec $(docker ps -qf "name=materials" | head -n1) flask drop_all
 docker exec $(docker ps -qf "name=materials" | head -n1) flask create_all
 docker exec $(docker ps -qf "name=materials" | head -n1) flask setup_clean_dev_env
+docker exec $(docker ps -qf "name=emarking" | head -n1) flask drop_all
 docker exec $(docker ps -qf "name=emarking" | head -n1) flask create_all
 docker exec $(docker ps -qf "name=emarking" | head -n1) flask setup_clean_dev_env
 ```
