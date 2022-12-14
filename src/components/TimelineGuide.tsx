@@ -7,7 +7,7 @@ import { Exercise } from '../constants/types'
 import { Button } from '../styles/_app.style'
 import { Content } from '../styles/navigation.style'
 import { styled } from '../styles/stitches.config'
-import { trackItemStyles } from '../styles/timeline/track-item.style'
+import { trackItemExerciseStyle } from '../styles/timeline/track-item.style'
 
 const ExerciseExample = styled('div', { borderRadius: '0.5rem', padding: '0.75rem' })
 
@@ -46,7 +46,10 @@ const TimelineGuideButton = () => {
         style={{ cursor: 'default', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
       >
         {examples.map(({ title, exercise }) => (
-          <ExerciseExample key={title} css={trackItemStyles(plainToInstance(Exercise, exercise))}>
+          <ExerciseExample
+            key={title}
+            css={trackItemExerciseStyle(plainToInstance(Exercise, exercise))}
+          >
             {title}
           </ExerciseExample>
         ))}

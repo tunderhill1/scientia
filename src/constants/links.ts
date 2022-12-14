@@ -1,7 +1,7 @@
 import {
   CameraReelsFill,
+  ChatLeftTextFill,
   EnvelopeFill,
-  ExplicitFill,
   Git,
   Icon,
   PeopleFill,
@@ -22,6 +22,12 @@ export const LINKS: Link[] = [
     description: 'Q&A discussion board',
     url: 'https://edstem.org',
     icon: PeopleFill,
+  },
+  {
+    title: 'eMarking',
+    description: 'Assessment feedback',
+    url: 'https://emarking.doc.ic.ac.uk',
+    icon: ChatLeftTextFill,
   },
   {
     title: 'GitLab',
@@ -53,10 +59,4 @@ export const LINKS: Link[] = [
     url: 'https://peer-assessment.doc.ic.ac.uk',
     icon: StarHalf,
   },
-  {
-    title: 'eMarking',
-    description: 'Assessment feedback',
-    url: 'http://emarking.doc.ic.ac.uk/',
-    icon: ExplicitFill,
-  },
-]
+].sort((a, b) => a.title.localeCompare(b.title))

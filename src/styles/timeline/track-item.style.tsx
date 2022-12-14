@@ -4,14 +4,6 @@ import { Exercise } from '../../constants/types'
 import { now } from '../../lib/utilities.service'
 import { styled } from '../stitches.config'
 
-export const TrackItemWrapper = styled('div', {
-  borderRadius: '0.5rem',
-  display: 'flex',
-  alignItems: 'center',
-  height: 'fit-content',
-  margin: 'auto 0',
-})
-
 export const TrackItemTitle = styled('div', {
   fontSize: '1rem',
   textOverflow: 'ellipsis',
@@ -20,6 +12,37 @@ export const TrackItemTitle = styled('div', {
 })
 
 export const trackItemStyles = ({
+  exercise,
+  startColumn,
+  endColumn,
+  row,
+}: {
+  exercise: Exercise
+  startColumn: number
+  endColumn: number
+  row: number
+}) => {
+  const isSingleDay = endColumn - startColumn < 2
+  return {
+    borderRadius: '0.5rem',
+    display: 'flex',
+    alignItems: 'center',
+    height: 'fit-content',
+    margin: 'auto 0',
+
+    gridColumn: `${startColumn} / ${endColumn}`,
+    gridRow: `${row + 1}`, // Grid is 1-indexed
+    justifyContent: isSingleDay ? 'center' : 'space-between',
+    padding: isSingleDay ? '0.25rem' : '0.5rem',
+    textAlign: isSingleDay ? 'center' : 'left',
+    ...trackItemExerciseStyle(exercise),
+  }
+}
+
+/**
+ * Style each track item's border, colour, etc. based on the exercise details
+ * to help users distinguish group/individual etc */
+export const trackItemExerciseStyle = ({
   submissionType,
   isAssessed,
   startDate,

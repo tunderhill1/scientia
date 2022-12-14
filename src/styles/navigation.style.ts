@@ -93,6 +93,7 @@ export const Content = styled(DropdownMenuContent, {
   borderRadius: '0.75rem',
   padding: '0.5rem',
   border: '0.0625rem solid $separator',
+  boxShadow: '$md',
 })
 
 export const Item = styled(DropdownMenuItem, itemStyle)

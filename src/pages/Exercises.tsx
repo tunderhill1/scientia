@@ -80,8 +80,6 @@ const Exercises = () => {
       })
   }, [exercises])
 
-  const [exerciseForDialog, setExerciseForDialog] = useState<Exercise | null>(null)
-
   if (!exercises?.length || userDetails?.isStaff)
     return (
       <Banner center>
@@ -110,9 +108,8 @@ const Exercises = () => {
               <tr>
                 <td>
                   <ViewExerciseButton
-                    onClick={() => {
-                      if (e.startDate <= now()) navigate(`${window.location.pathname}/${e.number}`)
-                    }}
+                    disabled={e.startDate > now()}
+                    href={e.startDate <= now() ? `${window.location.pathname}/${e.number}` : '#'}
                     title="View exercise details"
                   >
                     <p>

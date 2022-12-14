@@ -1,48 +1,46 @@
+import { ReactNode } from 'react'
+import { useParams } from 'react-router-dom'
 import { format as formatTimeAgo } from 'timeago.js'
 
 import { Exercise } from '../../constants/types'
+import { now } from '../../lib/utilities.service'
 import { css } from '../../styles/stitches.config'
-import {
-  TrackItemTitle,
-  TrackItemWrapper,
-  trackItemStyles,
-} from '../../styles/timeline/track-item.style'
+import { TrackItemTitle, trackItemStyles } from '../../styles/timeline/track-item.style'
 
-export const TrackItem = ({
-  exercise,
-  startColumn,
-  endColumn,
-  row,
-  onClick,
-  disabled,
-}: {
+export const TrackItem = (props: {
   exercise: Exercise
   startColumn: number
   endColumn: number
   row: number
-  onClick: () => void
-  disabled: boolean
 }) => {
+  const { exercise, startColumn, endColumn } = props
+  const { year } = useParams()
+
+  const AnchorWrapper = ({ children }: { children: ReactNode }) => {
+    const title = `${exercise.type}: ${exercise.title} - due ${formatTimeAgo(exercise.deadline)}`
+    const style = { className: css(trackItemStyles(props))() }
+
+    return exercise.startDate <= now() ? (
+      <a
+        href={`/${year}/modules/${exercise.moduleCode}/exercises/${exercise.number}`}
+        title={title}
+        {...style}
+      >
+        {children}
+      </a>
+    ) : (
+      <div title={title} {...style}>
+        {children}
+      </div>
+    )
+  }
+
   const isSingleDay = endColumn - startColumn < 2
   return (
-    <TrackItemWrapper
-      title={`${exercise.type}: ${exercise.title} - due ${formatTimeAgo(exercise.deadline)}`}
-      onClick={onClick}
-      className={css({
-        cursor: disabled ? 'default' : 'pointer',
-        gridColumn: `${startColumn} / ${endColumn}`,
-        gridRow: `${row + 1}`, // Grid is 1-indexed
-        justifyContent: isSingleDay ? 'center' : 'space-between',
-        padding: isSingleDay ? '0.25rem' : '0.5rem',
-        textAlign: isSingleDay ? 'center' : 'left',
-        ...trackItemStyles(exercise),
-      })()}
-    >
+    <AnchorWrapper>
       <TrackItemTitle>
         {isSingleDay ? (
-          <>
-            <span style={{ fontWeight: 500 }}>{exercise.number}</span>
-          </>
+          <span style={{ fontWeight: 500 }}>{exercise.number}</span>
         ) : (
           <>
             <span style={{ fontWeight: 500 }}>
@@ -67,6 +65,6 @@ export const TrackItem = ({
           </>
         )}
       </TrackItemTitle>
-    </TrackItemWrapper>
+    </AnchorWrapper>
   )
 }

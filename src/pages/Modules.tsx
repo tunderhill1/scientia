@@ -30,7 +30,9 @@ const Modules = () => {
       </section>
 
       <Tabs
-        data={userDetails?.modules.concat(userDetails?.modulesHelped ?? [])}
+        data={userDetails?.modules
+          .concat(userDetails?.modulesHelped ?? [])
+          .sort((a, b) => a.code.localeCompare(b.code))}
         generator={(tab: any) => (
           <>
             {/* TODO: Update title style if module has no resources */}

@@ -18,7 +18,7 @@ export const VerticalDayLine = ({ term }: { term: Term }) => {
   const fieldRef = useRef<null | HTMLDivElement>(null)
   useEffect(() => {
     fieldRef.current?.scrollIntoView({ inline: 'center' })
-  }, [])
+  }, [term])
 
   return term.start <= now() && now() <= term.end ? (
     <div

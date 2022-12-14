@@ -37,7 +37,7 @@ export const HorizontalRow = ({ colSpan }: { colSpan: number }) => (
   </tr>
 )
 
-export const ViewExerciseButton = styled('button', {
+export const ViewExerciseButton = styled('a', {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'start',
@@ -64,7 +64,7 @@ export const ViewExerciseButton = styled('button', {
       true: {
         cursor: 'not-allowed',
         pointerEvents: 'none',
-        opacity: '40%',
+        opacity: '70%',
         '&:hover': {
           backgroundColor: 'white',
         },

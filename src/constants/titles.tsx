@@ -1,4 +1,5 @@
 import { capitaliseFirstLetter, formatShortYear, shortYear } from '../lib/utilities.service'
+import { Exercise } from './types'
 
 // Scientia's meta titles
 
@@ -18,6 +19,17 @@ const titles = {
 
   exercises: (year?: string, moduleCode?: string | null, moduleTitle?: string) =>
     [addYear(year), 'Exercises •', moduleCode ?? 'Module', moduleTitle, SCIENTIA].join(' '),
+
+  exercise: (year?: string, exercise?: Exercise, moduleCode?: string, exerciseNumber?: string) =>
+    [
+      addYear(year),
+      exercise?.type,
+      exercise ? `${exerciseNumber}:` : `Exercise ${exerciseNumber}`,
+      exercise?.title,
+      '•',
+      exercise?.moduleName ?? moduleCode,
+      SCIENTIA,
+    ].join(' '),
 
   timeline: (year?: string, term?: string, cohortName?: string) =>
     [

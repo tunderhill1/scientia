@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 
 import FileUploadArea from '../components/exercise/FileUploadArea'
 import { DefaultGroupArea, GroupManagementArea } from '../components/exercise/GroupManagementArea'
+import titles from '../constants/titles'
 import { useExercise } from '../lib/exercise.service'
 import { useGroup } from '../lib/groupFormation.service'
 import { useUser } from '../lib/user.context'
@@ -21,6 +22,7 @@ import {
 import { css } from '../styles/stitches.config'
 
 const Exercise = () => {
+  const { year } = useParams()
   const { userDetails } = useUser()
   const { moduleCode, exerciseNumber } = useParams()
   const {
@@ -117,6 +119,9 @@ const Exercise = () => {
   if (!exercise || (!spec && !fileRequirements?.length)) {
     return (
       <Container>
+        <Helmet>
+          <title>{titles.exercise(year, exercise, moduleCode, exerciseNumber)}</title>
+        </Helmet>
         <section style={{ marginBottom: '2rem' }}>
           <h1>
             {moduleCode}: {exerciseNumber}
@@ -135,9 +140,7 @@ const Exercise = () => {
   return (
     <Container>
       <Helmet>
-        <title>
-          {moduleCode}/{exerciseNumber}
-        </title>
+        <title>{titles.exercise(year, exercise, moduleCode, exerciseNumber)}</title>
       </Helmet>
       <section style={{ marginBottom: '2rem' }}>
         <h1>
