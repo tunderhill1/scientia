@@ -2,7 +2,7 @@ import { Expose, Type } from 'class-transformer'
 import { addDays } from 'date-fns'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
 
-import cohorts from './cohorts'
+import cohortMappings from './cohortMappings'
 import { endpoints } from './endpoints'
 import { GRACE_PERIOD_AFTER_DEADLINE_IN_DAYS } from './global'
 
@@ -32,7 +32,7 @@ export class UserDetails {
   }
 
   get cohortName(): string | undefined {
-    return cohorts?.[this.cohort]
+    return cohortMappings?.[this.cohort]
   }
 }
 
@@ -49,6 +49,10 @@ export class Module {
   code: string
   title: string
   terms: number[]
+
+  @Expose({ name: 'applicable_cohorts' })
+  applicableCohorts: string[]
+
   level?: number
 
   @Type(() => ModuleStaff)

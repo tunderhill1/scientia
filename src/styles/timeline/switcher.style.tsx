@@ -39,19 +39,3 @@ export const TermSwitchArrow = styled('button', {
     },
   },
 })
-
-export const SwitcherWrapper = styled('div', {
-  width: '100%',
-  gridArea: 'switcher',
-  display: 'flex',
-  justifyContent: 'space-evenly',
-  alignItems: 'center',
-  verticalAlign: 'middle',
-  top: 0,
-  left: 0,
-  position: 'sticky',
-  zIndex: 5,
-  background: '$appBackground',
-  paddingTop: '1rem',
-  borderRight: '1px solid $elementBorder',
-})

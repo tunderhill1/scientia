@@ -17,6 +17,7 @@ export const endpoints = {
   refresh: `${baseURL}/auth/refresh`,
   personal: (year: string) => `${baseURL}/${year}/personal`,
 
+  modules: (year: string) => `${baseURL}/${year}/modules`,
   module: (year: string, moduleCode: string) => `${baseURL}/${year}/modules/${moduleCode}`,
   exercises: (year: string) => `${baseURL}/${year}/exercises`,
   exercise: (year: string, moduleCode: string, exerciseNumber: number) =>

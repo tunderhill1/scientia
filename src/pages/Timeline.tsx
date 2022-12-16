@@ -1,5 +1,6 @@
+import { plainToInstance } from 'class-transformer'
 import { differenceInBusinessDays, differenceInCalendarWeeks, isMonday } from 'date-fns'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useParams } from 'react-router-dom'
 
@@ -8,10 +9,14 @@ import { Modules } from '../components/timeline/Modules'
 import { Switcher } from '../components/timeline/Switcher'
 import { Tracks } from '../components/timeline/Tracks'
 import { Weeks } from '../components/timeline/Weeks'
+import cohortMappings from '../constants/cohortMappings'
+import { endpoints } from '../constants/endpoints'
 import { INDEXING_OFFSET, NAVIGATION_HEIGHT, TIMELINE_TRACK_HEIGHT } from '../constants/global'
 import titles from '../constants/titles'
 import { Exercise, Module, Term, TrackMap } from '../constants/types'
+import { AxiosContext } from '../lib/axios.context'
 import { useTimeline } from '../lib/timeline.service'
+import { useToast } from '../lib/toast.context'
 import { useUser } from '../lib/user.context'
 import {
   generateTrackMap,
@@ -20,6 +25,8 @@ import {
   sortObjectByKey,
 } from '../lib/utilities.service'
 import { Area, Container, Corner, Scrollbar, Thumb, Viewport } from '../styles/_app.style'
+
+const DEFAULT_MODULES_FILTER = 'Your selected modules'
 
 // differenceInCalendarWeeks returns number of weekends in between the 2 dates
 export function dateToColumn(date: Date, startDate: Date): number {
@@ -49,12 +56,42 @@ const Timeline = () => {
   const { userDetails } = useUser()
   const { terms, exercises } = useTimeline()
   const { year } = useParams()
+  const { addToast } = useToast()
+  const axiosInstance = useContext(AxiosContext)
 
   const [term, setTerm] = useState<Term>()
-  const userModules: Module[] = userDetails?.modules as Module[]
+  const [modulesForCohort, setModulesForCohort] = useState<Module[]>([])
   const [modulesForTerm, setModulesForTerm] = useState<Module[]>([])
   const [trackMapForTerm, setTrackMapForTerm] = useState<TrackMap>({})
   const [rowHeights, setRowHeights] = useState<{ [code: string]: string }>({})
+  const [modulesCohortFilter, setModulesCohortFilter] = useState<string>(DEFAULT_MODULES_FILTER)
+  const modulesCohortFilters = [DEFAULT_MODULES_FILTER].concat(
+    Object.entries(cohortMappings).map(([code, title]) => `${code}: ${title}`)
+  )
+
+  useEffect(() => {
+    if (!year) return
+    if (modulesCohortFilter === DEFAULT_MODULES_FILTER)
+      setModulesForCohort(userDetails?.modules as Module[])
+    else {
+      axiosInstance
+        .request({
+          method: 'GET',
+          url: endpoints.modules(year),
+          params: { cohort: modulesCohortFilter },
+        })
+        .then(({ data }: { data: any }) => {
+          if (!data?.length) setModulesForCohort([])
+          setModulesForCohort(data.map((m: any) => plainToInstance(Module, m)))
+        })
+        .catch(() =>
+          addToast({
+            variant: 'error',
+            title: `Unable to fetch modules for cohort '${modulesCohortFilter}'`,
+          })
+        )
+    }
+  }, [addToast, axiosInstance, year, modulesCohortFilter, userDetails?.modules])
 
   useEffect(() => {
     if (terms.length > 0) {
@@ -73,7 +110,7 @@ const Timeline = () => {
     // For given term, show only modules
     // (a) taught in that term or
     // (b) whose exercises fall within the term's start and end dates.
-    const modulesToShow = userModules
+    const modulesToShow = modulesForCohort
       .filter(
         (module) =>
           module.terms.includes(termToNumber(term)) ||
@@ -91,7 +128,7 @@ const Timeline = () => {
         Object.entries(trackMap).filter(([code, _]) => moduleCodesForTerm.includes(code))
       )
     )
-  }, [term, exercises, userModules])
+  }, [term, exercises, modulesCohortFilter, modulesForCohort])
 
   useEffect(() => {
     setRowHeights(
@@ -120,7 +157,13 @@ const Timeline = () => {
           >
             <Viewport>
               <Container timeline>
-                <Switcher term={term.name} setTerm={setTerm} terms={terms} />
+                <Switcher
+                  term={term.name}
+                  setTerm={setTerm}
+                  terms={terms}
+                  modulesCohortFilters={modulesCohortFilters}
+                  setModulesCohortFilter={setModulesCohortFilter}
+                />
                 <Weeks start={term.start} weeks={term.weeks} />
                 <Modules modules={modulesForTerm} rowHeights={rowHeights} />
                 <Tracks term={term} weeks={term.weeks} trackMap={trackMapForTerm} />
