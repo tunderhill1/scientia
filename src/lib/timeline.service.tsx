@@ -20,11 +20,11 @@ import {
 export interface UseTimelineVars {
   terms: Term[]
   term: Term
-  setTerm: (_: Term) => void
-  setModulesCohortFilter: (_: string) => void
   modulesForTerm: Module[]
   trackMapForTerm: TrackMap
   rowHeights: { [code: string]: string }
+  setTerm: (_: Term) => void
+  setModulesCohortFilter: (_: string) => void
 }
 
 function termToNumber({ name }: Term): number {
@@ -119,7 +119,6 @@ export const useTimeline = (): any => {
   }, [year, modulesForCohort, axiosInstance])
 
   const [modulesForTerm, setModulesForTerm] = useState<Module[]>([])
-  const [trackMapForTerm, setTrackMapForTerm] = useState<TrackMap>({})
   useEffect(() => {
     if (!term) return
 
@@ -139,8 +138,13 @@ export const useTimeline = (): any => {
       )
       .sort((m1, m2) => (m1.code < m2.code ? -1 : 1))
     setModulesForTerm(modulesToShow)
+  }, [term, exercises, modulesCohortFilter, modulesForCohort])
 
-    const moduleCodesForTerm = modulesToShow.map((m) => m.code)
+  const [trackMapForTerm, setTrackMapForTerm] = useState<TrackMap>({})
+  useEffect(() => {
+    if (!term) return
+
+    const moduleCodesForTerm = modulesForTerm.map((m) => m.code)
     const trackMap: TrackMap = sortObjectByKey(
       padForModulesWithNoExercises(moduleCodesForTerm, generateTrackMap(exercises, term))
     )
@@ -149,7 +153,7 @@ export const useTimeline = (): any => {
         Object.entries(trackMap).filter(([code, _]) => moduleCodesForTerm.includes(code))
       )
     )
-  }, [term, exercises, modulesCohortFilter, modulesForCohort])
+  }, [exercises, modulesForTerm, term])
 
   const [rowHeights, setRowHeights] = useState<{ [code: string]: string }>({})
   useEffect(() => {
@@ -167,10 +171,10 @@ export const useTimeline = (): any => {
   return {
     terms,
     term,
-    setTerm,
-    setModulesCohortFilter,
     modulesForTerm,
     trackMapForTerm,
     rowHeights,
+    setTerm,
+    setModulesCohortFilter,
   }
 }

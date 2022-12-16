@@ -43,11 +43,11 @@ const Timeline = () => {
   const {
     terms,
     term,
-    setTerm,
-    setModulesCohortFilter,
     modulesForTerm,
     trackMapForTerm,
     rowHeights,
+    setTerm,
+    setModulesCohortFilter,
   }: UseTimelineVars = useTimeline()
   const { year } = useParams()
 
