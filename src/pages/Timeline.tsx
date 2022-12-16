@@ -1,6 +1,4 @@
-import { plainToInstance } from 'class-transformer'
 import { differenceInBusinessDays, differenceInCalendarWeeks, isMonday } from 'date-fns'
-import { useContext, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useParams } from 'react-router-dom'
 
@@ -10,25 +8,19 @@ import { Switcher } from '../components/timeline/Switcher'
 import { Tracks } from '../components/timeline/Tracks'
 import { Weeks } from '../components/timeline/Weeks'
 import cohortMappings from '../constants/cohortMappings'
-import { endpoints } from '../constants/endpoints'
-import { INDEXING_OFFSET, NAVIGATION_HEIGHT, TIMELINE_TRACK_HEIGHT } from '../constants/global'
-import titles from '../constants/titles'
-import { Exercise, Module, Term, TrackMap } from '../constants/types'
-import { AxiosContext } from '../lib/axios.context'
-import { useTimeline } from '../lib/timeline.service'
-import { useToast } from '../lib/toast.context'
-import { useUser } from '../lib/user.context'
 import {
-  generateTrackMap,
-  groupByProperty,
-  now,
-  padForModulesWithNoExercises,
-  sortObjectByKey,
-} from '../lib/utilities.service'
+  INDEXING_OFFSET,
+  NAVIGATION_HEIGHT,
+  TIMELINE_DEFAULT_VIEW_LABEL,
+} from '../constants/global'
+import titles from '../constants/titles'
+import { UseTimelineVars, useTimeline } from '../lib/timeline.service'
+import { useUser } from '../lib/user.context'
 import { Area, Container, Corner, Scrollbar, Thumb, Viewport } from '../styles/_app.style'
 
-const DEFAULT_MODULES_FILTER = 'Your selected modules'
-
+const COHORT_FILTER_LABELS = [TIMELINE_DEFAULT_VIEW_LABEL].concat(
+  Object.entries(cohortMappings).map(([code, title]) => `${code}: ${title}`)
+)
 // differenceInCalendarWeeks returns number of weekends in between the 2 dates
 export function dateToColumn(date: Date, startDate: Date): number {
   if (!isMonday(startDate)) throw new Error('Parameter startDate MUST be a monday.')
@@ -40,13 +32,6 @@ export function dateToColumn(date: Date, startDate: Date): number {
   )
 }
 
-function termToNumber({ name }: Term): number {
-  if (name === 'autumn term') return 1
-  if (name === 'spring term') return 2
-  if (name === 'summer term') return 3
-  return -1
-}
-
 /* Top margin to position the scroll area 1rem right under the navigation bar */
 const TOP_MARGIN = `(${NAVIGATION_HEIGHT})`
 
@@ -55,113 +40,19 @@ const TOP_MARGIN = `(${NAVIGATION_HEIGHT})`
  */
 const Timeline = () => {
   const { userDetails } = useUser()
-  const { terms } = useTimeline()
+  const {
+    terms,
+    modulesForCohort,
+    exercises,
+    term,
+    setTerm,
+    modulesCohortFilter,
+    setModulesCohortFilter,
+    modulesForTerm,
+    trackMapForTerm,
+    rowHeights,
+  }: UseTimelineVars = useTimeline()
   const { year } = useParams()
-  const { addToast } = useToast()
-  const axiosInstance = useContext(AxiosContext)
-
-  const [term, setTerm] = useState<Term>()
-  const [exercises, setExercises] = useState<{ [code: string]: Exercise[] }>({})
-  const [modulesForCohort, setModulesForCohort] = useState<Module[]>(
-    userDetails?.modules as Module[]
-  )
-  const [modulesForTerm, setModulesForTerm] = useState<Module[]>([])
-  const [trackMapForTerm, setTrackMapForTerm] = useState<TrackMap>({})
-  const [rowHeights, setRowHeights] = useState<{ [code: string]: string }>({})
-  const [modulesCohortFilter, setModulesCohortFilter] = useState<string>(DEFAULT_MODULES_FILTER)
-  const modulesCohortFilters = [DEFAULT_MODULES_FILTER].concat(
-    Object.entries(cohortMappings).map(([code, title]) => `${code}: ${title}`)
-  )
-
-  useEffect(() => {
-    if (!year) return
-    if (modulesCohortFilter === DEFAULT_MODULES_FILTER)
-      setModulesForCohort(userDetails?.modules as Module[])
-    else {
-      axiosInstance
-        .request({
-          method: 'GET',
-          url: endpoints.modules(year),
-          params: { cohort: modulesCohortFilter },
-        })
-        .then(({ data }: { data: any }) => {
-          if (!data?.length) setModulesForCohort([])
-          setModulesForCohort(data.map((m: any) => plainToInstance(Module, m)))
-        })
-        .catch(() =>
-          addToast({
-            variant: 'error',
-            title: `Unable to fetch modules for cohort '${modulesCohortFilter}'`,
-          })
-        )
-    }
-  }, [addToast, axiosInstance, year, modulesCohortFilter, userDetails?.modules])
-
-  useEffect(() => {
-    if (terms.length > 0) {
-      setTerm(terms.find((term: Term) => term.start < now() && term.end > now()) || terms[0])
-    }
-  }, [terms])
-
-  useEffect(() => {
-    axiosInstance
-      .request({
-        url: endpoints.exercises(year!),
-        method: 'GET',
-        params: { module_code: modulesForCohort.map((m) => m.code) },
-      })
-      .then(({ data }: { data: any }) => {
-        const deserialisedExercises = data.map((e: any) => plainToInstance(Exercise, e))
-        setExercises(
-          groupByProperty(deserialisedExercises, 'moduleCode', 'number') as {
-            [code: string]: Exercise[]
-          }
-        )
-      })
-  }, [year, modulesForCohort, axiosInstance])
-
-  useEffect(() => {
-    if (!term) return
-
-    const moduleCodesForExercisesInTerm = (Object.values(exercises) as Exercise[][])
-      .flat()
-      .filter((e) => e.deadline > term.start && e.startDate < term.end)
-      .map((e) => e.moduleCode)
-
-    // For given term, show only modules
-    // (a) taught in that term or
-    // (b) whose exercises fall within the term's start and end dates.
-    const modulesToShow = modulesForCohort
-      .filter(
-        (module) =>
-          module.terms.includes(termToNumber(term)) ||
-          moduleCodesForExercisesInTerm.includes(module.code)
-      )
-      .sort((m1, m2) => (m1.code < m2.code ? -1 : 1))
-    setModulesForTerm(modulesToShow)
-
-    const moduleCodesForTerm = modulesToShow.map((m) => m.code)
-    const trackMap: TrackMap = sortObjectByKey(
-      padForModulesWithNoExercises(moduleCodesForTerm, generateTrackMap(exercises, term))
-    )
-    setTrackMapForTerm(
-      Object.fromEntries(
-        Object.entries(trackMap).filter(([code, _]) => moduleCodesForTerm.includes(code))
-      )
-    )
-  }, [term, exercises, modulesCohortFilter, modulesForCohort])
-
-  useEffect(() => {
-    setRowHeights(
-      Object.entries(trackMapForTerm).reduce(
-        (accumulator: { [code: string]: string }, [code, tracks]): { [code: string]: string } => {
-          accumulator[code] = `calc(${TIMELINE_TRACK_HEIGHT} * ${tracks.length || 1})`
-          return accumulator
-        },
-        {}
-      )
-    )
-  }, [trackMapForTerm])
 
   return (
     <>
@@ -182,8 +73,8 @@ const Timeline = () => {
                   term={term.name}
                   setTerm={setTerm}
                   terms={terms}
-                  modulesCohortFilters={modulesCohortFilters}
-                  setModulesCohortFilter={setModulesCohortFilter}
+                  modulesCohortFilters={COHORT_FILTER_LABELS}
+                  onModuleCohortFilterChange={setModulesCohortFilter}
                 />
                 <Weeks start={term.start} weeks={term.weeks} />
                 <Modules modules={modulesForTerm} rowHeights={rowHeights} />

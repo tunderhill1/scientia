@@ -12,13 +12,13 @@ export const Switcher = ({
   setTerm,
   terms,
   modulesCohortFilters,
-  setModulesCohortFilter,
+  onModuleCohortFilterChange,
 }: {
   term: string
   setTerm: (_: Term) => void
   terms: Term[]
   modulesCohortFilters: string[]
-  setModulesCohortFilter: (_: string) => void
+  onModuleCohortFilterChange: (_: string) => void
 }) => {
   const periods = Object.keys(groupByProperty(terms, 'name', 'start'))
   const [periodIndex, setPeriodIndex] = useState(periods.findIndex((p) => p === term))
@@ -29,8 +29,8 @@ export const Switcher = ({
   }, [periodIndex, periods, setTerm, terms])
 
   useEffect(() => {
-    setModulesCohortFilter(modulesCohortFilters[moduleFilterIndex].split(':')[0])
-  }, [moduleFilterIndex, modulesCohortFilters, setModulesCohortFilter, setTerm, terms])
+    onModuleCohortFilterChange(modulesCohortFilters[moduleFilterIndex].split(':')[0])
+  }, [moduleFilterIndex, modulesCohortFilters, onModuleCohortFilterChange, setTerm, terms])
 
   const TermSwitcher = () => {
     return (
