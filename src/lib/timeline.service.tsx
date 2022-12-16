@@ -19,11 +19,8 @@ import {
 
 export interface UseTimelineVars {
   terms: Term[]
-  modulesForCohort: Module[]
-  exercises: { [code: string]: Exercise[] }
   term: Term
   setTerm: (_: Term) => void
-  modulesCohortFilter: string
   setModulesCohortFilter: (_: string) => void
   modulesForTerm: Module[]
   trackMapForTerm: TrackMap
@@ -169,11 +166,8 @@ export const useTimeline = (): any => {
 
   return {
     terms,
-    modulesForCohort,
-    exercises,
     term,
     setTerm,
-    modulesCohortFilter,
     setModulesCohortFilter,
     modulesForTerm,
     trackMapForTerm,

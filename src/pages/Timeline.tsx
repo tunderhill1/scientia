@@ -42,11 +42,8 @@ const Timeline = () => {
   const { userDetails } = useUser()
   const {
     terms,
-    modulesForCohort,
-    exercises,
     term,
     setTerm,
-    modulesCohortFilter,
     setModulesCohortFilter,
     modulesForTerm,
     trackMapForTerm,
