@@ -1,6 +1,7 @@
 import { HelmetProvider } from 'react-helmet-async'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
+import ExternalResource from '../components/ExternalResource'
 import { ProtectedRoute } from '../components/ProtectedRoute'
 import { YearRoute } from '../components/YearRoute'
 import { baseURL } from '../constants/endpoints'
@@ -34,6 +35,7 @@ function App() {
                     <Routes>
                       <Route index element={<Login />} />
                       <Route element={<ProtectedRoute />}>
+                        <Route path="external-resource" element={<ExternalResource />} />
                         <Route path=":year" element={<YearRoute />}>
                           <Route path="timeline" element={<Timeline />} />
                           <Route path="modules">

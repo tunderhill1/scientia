@@ -9,4 +9,6 @@ export const LONDON_TIMEZONE = 'Europe/London'
 export const GITLAB_HASH = 'SHA1'
 export const GRACE_PERIOD_AFTER_DEADLINE_IN_DAYS = 10
 
+export const SHORT_YEAR_REGEX = /^\d{4}$/
+
 export const TIMELINE_DEFAULT_VIEW_LABEL = 'Your selected modules'

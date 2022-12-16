@@ -130,7 +130,7 @@ export const Tabs = ({
       {dividers && index > 0 && <Hr />}
       <Tab
         {...props}
-        href={href(tab)}
+        to={href(tab)}
         target={target}
         /* NOTE: Unique identifier to find the element */
         id={prefixRef.current.toString() + index.toString()}

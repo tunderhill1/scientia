@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 import { styled } from './stitches.config'
 
 export const TabsWrapper = styled('div', {
@@ -6,7 +8,7 @@ export const TabsWrapper = styled('div', {
 })
 
 /* TODO: Implement user specified overrides */
-export const Tab = styled('a', {
+export const Tab = styled(Link, {
   all: 'unset',
   padding: '0.75rem',
   color: '$highContrast',

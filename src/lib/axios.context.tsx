@@ -1,15 +1,16 @@
-import axios, { AxiosInstance, Method } from 'axios'
+import axios, { AxiosInstance } from 'axios'
 import { plainToInstance } from 'class-transformer'
 import qs from 'qs'
-import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
+import React, { createContext, useRef } from 'react'
 
-import { endpoints } from '../constants/endpoints'
 import { UserDetails } from '../constants/types'
-import useAuth from './auth.service'
+import useTokenRefresh from './tokenRefresh.service'
 import { useUser } from './user.context'
+import { getCookie } from './utilities.service'
 
 export const CSRF_ACCESS_COOKIE = 'csrf_access_token'
-export const CSRF_REFRESH_COOKIE = 'csrf_refresh_token'
+
+export const AxiosContext = createContext<AxiosInstance>(axios)
 
 /**
  * Code for the axios instance provider and the accompanying useAxios hook was sourced (and modified) from the following
@@ -26,15 +27,6 @@ export const CSRF_REFRESH_COOKIE = 'csrf_refresh_token'
  *
  */
 
-export function getCookie(cookieName: string): string {
-  const value = `; ${document.cookie}`
-  const parts = value.split(`; ${cookieName}=`)
-  return parts.length === 2 ? parts.pop()?.split(';').shift() || '' : ''
-}
-
-export const AxiosContext = createContext<AxiosInstance>(axios)
-
-/* TODO: Support multiple instances with additional configurations; i.e. create a ref for each instance */
 export const AxiosInstanceProvider = ({
   config = {},
   children,
@@ -44,21 +36,7 @@ export const AxiosInstanceProvider = ({
 }) => {
   const instanceRef = useRef<AxiosInstance | null>(null)
   const { storeUserDetails } = useUser()
-  const { logoutUser } = useAuth()
-
-  function refreshAccessToken() {
-    return axios({
-      method: 'post',
-      headers: { 'X-CSRF-TOKEN': getCookie(CSRF_REFRESH_COOKIE) },
-      url: endpoints.refresh,
-    })
-      .then((response) => {
-        storeUserDetails(plainToInstance(UserDetails, response.data))
-      })
-      .catch((_) => {
-        logoutUser()
-      })
-  }
+  const { refreshAccessToken } = useTokenRefresh()
 
   /* NOTE: See https://beta.reactjs.org/apis/useref#avoiding-recreating-the-ref-contents */
   if (instanceRef.current === null) {
@@ -83,7 +61,9 @@ export const AxiosInstanceProvider = ({
           !originalRequest._retry
         ) {
           originalRequest._retry = true
-          await refreshAccessToken()
+          await refreshAccessToken().then((response: any) => {
+            storeUserDetails(plainToInstance(UserDetails, response.data))
+          })
           return axiosInstance(originalRequest)
         }
         return Promise.reject(error)

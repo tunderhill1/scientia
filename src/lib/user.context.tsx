@@ -3,6 +3,7 @@ import { ReactNode, createContext, useContext, useEffect, useState } from 'react
 import { matchPath, useLocation } from 'react-router-dom'
 
 import { endpoints } from '../constants/endpoints'
+import { SHORT_YEAR_REGEX } from '../constants/global'
 import { UserDetails } from '../constants/types'
 import { AxiosContext } from './axios.context'
 import { useToast } from './toast.context'
@@ -32,9 +33,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const axiosInstance = useContext(AxiosContext)
   const { pathname } = useLocation()
 
-  const {
-    params: { year },
-  } = matchPath({ path: '/:year/*' }, pathname) ?? { params: {} }
   const { addToast } = useToast()
 
   const [userDetails, setUserDetails] = useState<UserDetails | undefined>(
@@ -51,8 +49,13 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem('userDetails')
   }
 
+  const {
+    params: { year },
+  } = matchPath({ path: '/:year/*' }, pathname) ?? { params: {} }
   useEffect(() => {
-    if (!year || year === userDetails?.year) return
+    // User details are only fetched on pages whose URL starts with a short year,
+    // iff user details for that short year have not been fetched yet
+    if (!year || !year.match(SHORT_YEAR_REGEX) || year === userDetails?.year) return
     axiosInstance
       .request({ method: 'GET', url: endpoints.personal(year) })
       .then(({ data }: { data: any }) => {

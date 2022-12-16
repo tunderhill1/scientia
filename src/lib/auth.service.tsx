@@ -4,8 +4,9 @@ import { useNavigate } from 'react-router-dom'
 
 import { endpoints } from '../constants/endpoints'
 import { UserDetails } from '../constants/types'
-import { CSRF_ACCESS_COOKIE, getCookie } from './axios.context'
+import { CSRF_ACCESS_COOKIE } from './axios.context'
 import { useUser } from './user.context'
+import { getCookie } from './utilities.service'
 
 /**
  * TODO: The plan is to process authentication- and authorisation-related queries here and update the user context based

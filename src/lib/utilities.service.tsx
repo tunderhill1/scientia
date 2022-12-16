@@ -224,3 +224,9 @@ export const getFileExtension = (path: string) => {
   const extension = path.slice(((path.lastIndexOf('.') - 1) >>> 0) + 2)
   return extension ? `.${extension}` : ''
 }
+
+export function getCookie(cookieName: string): string {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${cookieName}=`)
+  return parts.length === 2 ? parts.pop()?.split(';').shift() || '' : ''
+}

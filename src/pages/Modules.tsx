@@ -40,7 +40,7 @@ const Modules = () => {
             <span className={css({ color: '$lowContrast' })()}>{tab.code}</span>
           </>
         )}
-        href={(tab) => `modules/${tab.code}/materials`}
+        href={(tab) => `/${year}/modules/${tab.code}/materials`}
       />
     </Container>
   )
