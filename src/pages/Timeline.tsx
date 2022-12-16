@@ -20,6 +20,7 @@ import { useToast } from '../lib/toast.context'
 import { useUser } from '../lib/user.context'
 import {
   generateTrackMap,
+  groupByProperty,
   now,
   padForModulesWithNoExercises,
   sortObjectByKey,
@@ -54,13 +55,16 @@ const TOP_MARGIN = `(${NAVIGATION_HEIGHT})`
  */
 const Timeline = () => {
   const { userDetails } = useUser()
-  const { terms, exercises } = useTimeline()
+  const { terms } = useTimeline()
   const { year } = useParams()
   const { addToast } = useToast()
   const axiosInstance = useContext(AxiosContext)
 
   const [term, setTerm] = useState<Term>()
-  const [modulesForCohort, setModulesForCohort] = useState<Module[]>([])
+  const [exercises, setExercises] = useState<{ [code: string]: Exercise[] }>({})
+  const [modulesForCohort, setModulesForCohort] = useState<Module[]>(
+    userDetails?.modules as Module[]
+  )
   const [modulesForTerm, setModulesForTerm] = useState<Module[]>([])
   const [trackMapForTerm, setTrackMapForTerm] = useState<TrackMap>({})
   const [rowHeights, setRowHeights] = useState<{ [code: string]: string }>({})
@@ -100,9 +104,26 @@ const Timeline = () => {
   }, [terms])
 
   useEffect(() => {
+    axiosInstance
+      .request({
+        url: endpoints.exercises(year!),
+        method: 'GET',
+        params: { module_code: modulesForCohort.map((m) => m.code) },
+      })
+      .then(({ data }: { data: any }) => {
+        const deserialisedExercises = data.map((e: any) => plainToInstance(Exercise, e))
+        setExercises(
+          groupByProperty(deserialisedExercises, 'moduleCode', 'number') as {
+            [code: string]: Exercise[]
+          }
+        )
+      })
+  }, [year, modulesForCohort, axiosInstance])
+
+  useEffect(() => {
     if (!term) return
 
-    const moduleCodesForExercisesInTerm = (Object.values(exercises) as Exercise[])
+    const moduleCodesForExercisesInTerm = (Object.values(exercises) as Exercise[][])
       .flat()
       .filter((e) => e.deadline > term.start && e.startDate < term.end)
       .map((e) => e.moduleCode)
