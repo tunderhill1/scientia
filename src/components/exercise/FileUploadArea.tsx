@@ -32,6 +32,10 @@ const FileUploadArea = ({
   const isLabTSHandIn = fileType === GITLAB_HASH
 
   function onClick(event: any) {
+    if (isLabTSHandIn) {
+      window.open('https://teaching.doc.ic.ac.uk/labts', '_blank')
+      return
+    }
     if (!submittedFile) return
     if (
       event.target.classList.contains('delete-button') ||
@@ -45,10 +49,10 @@ const FileUploadArea = ({
   }
 
   const AnchorWrapper = ({ children }: { children: ReactNode }) => {
-    return submittedFile && !isLabTSHandIn ? (
+    return submittedFile || isLabTSHandIn ? (
       <a
-        href={submittedFile.url}
-        title={submittedFile.targetFileName}
+        href={isLabTSHandIn ? 'https://teaching.doc.ic.ac.uk/labts' : submittedFile!.url}
+        title={isLabTSHandIn ? 'Submit GitLab hash via LabTS' : submittedFile!.targetFileName}
         target="_blank"
         rel="noreferrer"
         onClick={onClick}
@@ -76,7 +80,7 @@ const FileUploadArea = ({
           onClick={(event) => {
             if (!submittedFile) return
           }}
-          disabled={!submittedFile && (disabled || isLabTSHandIn)}
+          disabled={!submittedFile && disabled}
         >
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             {submittedFile ? (
@@ -123,7 +127,7 @@ const FileUploadArea = ({
                   {formatTimeAgo(submittedFile.timestamp)}
                 </i>
                 <p className={css({ fontSize: '$sm', color: '$sand9' })()}>
-                  {prettyBytes(submittedFile.fileSize)}
+                  {!isLabTSHandIn && prettyBytes(submittedFile.fileSize)}
                 </p>
               </div>
               {!disabled && !isLabTSHandIn && (
