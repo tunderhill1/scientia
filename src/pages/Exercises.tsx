@@ -1,7 +1,7 @@
 import { plainToInstance } from 'class-transformer'
 import { Fragment, useContext, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import { endpoints } from '../constants/endpoints'
 import titles from '../constants/titles'
@@ -12,6 +12,7 @@ import { useUser } from '../lib/user.context'
 import { calculateGrade, displayTimestamp, now, percentage } from '../lib/utilities.service'
 import { Banner } from '../styles/_app.style'
 import { Link, LinkIcon } from '../styles/exercise.style'
+import { styleExerciseItem } from '../styles/exerciseItem.style'
 import {
   Header,
   HorizontalRow,
@@ -26,7 +27,6 @@ const Exercises = () => {
   const { addToast } = useToast()
   const { userDetails } = useUser()
   const { moduleCode } = useParams()
-  const navigate = useNavigate()
   const moduleTitle = userDetails?.modules.find((m) => m.code === moduleCode)?.title
 
   const [exercises, setExercises] = useState<Exercise[]>([])
@@ -111,9 +111,10 @@ const Exercises = () => {
                     disabled={e.startDate > now()}
                     href={e.startDate <= now() ? `${window.location.pathname}/${e.number}` : '#'}
                     title="View exercise details"
+                    css={styleExerciseItem(e)}
                   >
                     <p>
-                      {e.type}: {e.title}
+                      {e.type} {e.number}: {e.title}
                     </p>
                     <SubText>{displayTimestamp(e.deadline)}</SubText>
                   </ViewExerciseButton>
