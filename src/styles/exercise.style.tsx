@@ -15,6 +15,7 @@ export const Link = styled('a', {
   textUnderlineOffset: '4px',
   textDecorationColor: '$sand8 !important',
   '&:hover': {
+    textDecoration: 'underline',
     textDecorationColor: '$sand12 !important',
   },
 })

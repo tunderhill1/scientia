@@ -22,9 +22,8 @@ import {
 import { css } from '../styles/stitches.config'
 
 const Exercise = () => {
-  const { year } = useParams()
+  const { year, moduleCode, exerciseNumber } = useParams()
   const { userDetails } = useUser()
-  const { moduleCode, exerciseNumber } = useParams()
   const {
     exercise,
     exerciseIsLoaded,
@@ -146,16 +145,18 @@ const Exercise = () => {
         <h1>
           {exercise.type} {exerciseNumber}: {exercise.title}
         </h1>
-        <h3
-          className={css({
-            color: '$lowContrast',
-            margin: '0.5rem 0',
-            marginBottom: '1rem',
-            fontWeight: '400',
-          })()}
-        >
-          {moduleCode} {moduleTitle}
-        </h3>
+        <Link href={`/${year}/modules/${moduleCode}/materials`} css={{ textDecoration: 'none' }}>
+          <h3
+            className={css({
+              color: '$lowContrast',
+              margin: '0.5rem 0',
+              marginBottom: '1rem',
+              fontWeight: '400',
+            })()}
+          >
+            {moduleCode} {moduleTitle}
+          </h3>
+        </Link>
       </section>
 
       <>
