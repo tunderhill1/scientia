@@ -35,7 +35,7 @@ const Login = () => {
   useEffect(() => {
     const { next } = (state as LocationState) || { next: undefined }
     if (isLoggedIn()) navigate(next || homePath, { replace: true })
-  }, [isLoggedIn, navigate, state])
+  }, [isLoggedIn, navigate, state, homePath])
 
   return (
     <Container center expand dotted css={{ paddingTop: 0 }}>
