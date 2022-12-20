@@ -55,7 +55,13 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     // User details are only fetched on pages whose URL starts with a short year,
     // iff user details for that short year have not been fetched yet
-    if (!year || !year.match(SHORT_YEAR_REGEX) || year === userDetails?.year) return
+    if (
+      userDetails === undefined ||
+      !year ||
+      !year.match(SHORT_YEAR_REGEX) ||
+      year === userDetails.year
+    )
+      return
     axiosInstance
       .request({ method: 'GET', url: endpoints.personal(year) })
       .then(({ data }: { data: any }) => {
