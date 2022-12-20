@@ -1,6 +1,7 @@
 import { DropdownMenu, DropdownMenuTrigger, ItemIndicator } from '@radix-ui/react-dropdown-menu'
 import { useContext } from 'react'
 import {
+  Book,
   CalendarDate,
   Check,
   Dice5Fill,
@@ -10,7 +11,7 @@ import {
   MoonFill,
   SunFill,
 } from 'react-bootstrap-icons'
-import { useNavigate, useParams } from 'react-router-dom'
+import { matchPath, useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import { LINKS } from '../constants/links'
 import useAuth from '../lib/auth.service'
@@ -48,13 +49,17 @@ export const Navigation = () => {
   const { gameSettingOn, gameSettingVisible, toggleGameSetting } = useGame()
   const navigate = useNavigate()
   const { isLoggedIn } = useAuth()
+  const { pathname } = useLocation()
+  const [homePage, shortcutTarget] = userDetails?.isStaff
+    ? ['modules', 'timeline']
+    : ['timeline', 'modules']
 
   return (
     <Header>
       <Nav>
         {/* TODO: Is it a good idea to use an modified icon button here instead of a custom variant? */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <a href={isLoggedIn() ? `/${year}/modules` : '/'} title="View modules">
+          <a href={isLoggedIn() ? `/${year}/${homePage}` : '/'} title={`View ${homePage}`}>
             <Button
               icon
               role="link"
@@ -70,9 +75,9 @@ export const Navigation = () => {
             </Button>
           </a>
           <VerticalRule />
-          <a href={`/${year}/timeline`} title="View timeline">
-            <Button icon>
-              <CalendarDate size={22} />
+          <a href={`/${year}/${shortcutTarget}`} title={`View ${shortcutTarget}`}>
+            <Button icon active={!!matchPath({ path: `/:year/${shortcutTarget}/*` }, pathname)}>
+              {userDetails?.isStaff ? <CalendarDate size={22} /> : <Book size={22} />}
             </Button>
           </a>
         </div>

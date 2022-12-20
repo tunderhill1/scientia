@@ -110,7 +110,7 @@ export const Button = styled('button', {
     },
     active: {
       true: {
-        backgroundColor: '$elementActive',
+        backgroundColor: '$neutral6',
         '&:hover': { backgroundColor: '$elementHover' },
       },
     },

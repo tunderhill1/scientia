@@ -6,6 +6,7 @@ import titles from '../constants/titles'
 import { LocationState } from '../constants/types'
 import useAuth from '../lib/auth.service'
 import { ThemeContext } from '../lib/theme.context'
+import { useUser } from '../lib/user.context'
 import { shortYear } from '../lib/utilities.service'
 import { Container } from '../styles/_app.style'
 import { ActionButton } from '../styles/dialog.style'
@@ -28,9 +29,12 @@ const Login = () => {
     await loginUser({ username: username.toLowerCase(), password })
   }
 
+  const { userDetails } = useUser()
+  const homePath = `/${shortYear()}/${userDetails?.isStaff ? 'modules' : 'timeline'}`
+
   useEffect(() => {
     const { next } = (state as LocationState) || { next: undefined }
-    if (isLoggedIn()) navigate(next || `/${shortYear()}/modules`, { replace: true })
+    if (isLoggedIn()) navigate(next || homePath, { replace: true })
   }, [isLoggedIn, navigate, state])
 
   return (
