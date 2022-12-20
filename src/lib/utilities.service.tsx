@@ -230,3 +230,7 @@ export function getCookie(cookieName: string): string {
   const parts = value.split(`; ${cookieName}=`)
   return parts.length === 2 ? parts.pop()?.split(';').shift() || '' : ''
 }
+
+export function toPlainSelectOption(value: string) {
+  return { value: value, label: value }
+}

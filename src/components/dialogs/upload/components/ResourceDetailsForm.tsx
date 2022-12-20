@@ -1,15 +1,13 @@
 import { format } from 'date-fns'
-import { utcToZonedTime } from 'date-fns-tz'
 import { useContext, useEffect, useState } from 'react'
 import { InfoCircle } from 'react-bootstrap-icons'
 import Creatable from 'react-select/creatable'
 
-import { LONDON_TIMEZONE } from '../../../../constants/global'
-import { ResourceCreate } from '../../../../constants/types'
+import { ResourceCreate, SelectOption } from '../../../../constants/types'
 import { getUTCDatetime } from '../../../../lib/resource.service'
 import { ThemeContext } from '../../../../lib/theme.context'
 import { useToast } from '../../../../lib/toast.context'
-import { displayTimestamp, now } from '../../../../lib/utilities.service'
+import { displayTimestamp, now, toPlainSelectOption } from '../../../../lib/utilities.service'
 import { Footnote } from '../../../../styles/_app.style'
 import {
   ApplyToAllButton,
@@ -30,31 +28,37 @@ const ResourceDetailsForm = ({
   resource,
   onResourceChange,
   categoryOptions,
-  setCategoryOptions,
-  setForAllResources,
+  tagsOptions,
+  updateCategoryOptions,
+  updateTagOptions,
+  updateAttributeForAllResources,
 }: {
   resource: ResourceCreate
   onResourceChange: (key: string, value: any) => void
-  categoryOptions: { value: string; label: string }[]
-  setCategoryOptions: any
-  setForAllResources?: (key: string, value: any) => void
+  categoryOptions: SelectOption[]
+  tagsOptions: SelectOption[]
+  updateCategoryOptions?: any
+  updateTagOptions?: any
+  updateAttributeForAllResources?: (key: string, value: any) => void
 }) => {
   const { addToast } = useToast()
   const { theme } = useContext(ThemeContext)
   const [title, setTitle] = useState(resource.title)
   const [category, setCategory] = useState<string | null>(resource.category)
+  const [tags, setTags] = useState<string[]>(resource.tags)
   const [path, setPath] = useState(resource.path)
   const [visibleDate, setVisibleDate] = useState(format(resource.visible_after, 'yyyy-MM-dd'))
   const [visibleTime, setVisibleTime] = useState(format(resource.visible_after, 'HH:mm'))
 
-  useEffect(() => onResourceChange('title', title), [title])
-  useEffect(() => onResourceChange('category', category), [category])
-  useEffect(() => onResourceChange('path', path), [path])
+  useEffect(() => onResourceChange('title', title), [onResourceChange, title])
+  useEffect(() => onResourceChange('category', category), [category, onResourceChange])
+  useEffect(() => onResourceChange('tags', tags), [onResourceChange, tags])
+  useEffect(() => onResourceChange('path', path), [onResourceChange, path])
   useEffect(() => {
     visibleDate &&
       visibleTime &&
       onResourceChange('visible_after', getUTCDatetime(visibleDate, visibleTime))
-  }, [addToast, visibleDate, visibleTime])
+  }, [addToast, onResourceChange, visibleDate, visibleTime])
 
   if (resource === null) return null
   return (
@@ -102,12 +106,12 @@ const ResourceDetailsForm = ({
         >
           Category
         </Label>
-        {setForAllResources && (
+        {updateAttributeForAllResources && (
           <ApplyToAllButton
             type="button"
             onClick={() => {
               if (!category) return
-              setForAllResources('category', category)
+              updateAttributeForAllResources('category', category)
               addToast({
                 variant: 'info',
                 title: `Category '${category}' applied to all uploaded files`,
@@ -123,15 +127,15 @@ const ResourceDetailsForm = ({
             styles={DropdownStyle}
             isClearable
             placeholder={'Select or create a new category'}
-            value={category ? { value: category, label: category } : null}
+            value={category ? toPlainSelectOption(category) : null}
             onChange={(newValue) => setCategory(newValue?.value || null)}
             options={categoryOptions}
-            onCreateOption={(value) => {
-              setCategory(value)
-              if (value !== null)
-                setCategoryOptions((categoryOptions: any) => [
+            onCreateOption={(newCategory) => {
+              setCategory(newCategory)
+              if (newCategory !== null && updateCategoryOptions)
+                updateCategoryOptions((categoryOptions: any) => [
                   ...categoryOptions,
-                  { value, label: value },
+                  toPlainSelectOption(newCategory),
                 ])
             }}
             classNamePrefix={'edit-select'}
@@ -144,6 +148,56 @@ const ResourceDetailsForm = ({
         </Footnote>
       </div>
 
+      <div style={{ marginTop: '1rem' }}>
+        <Label
+          htmlFor="editTags"
+          css={{
+            marginRight: '1rem',
+            marginTop: '0.5rem',
+            marginBottom: '0.5rem',
+          }}
+        >
+          Tags
+        </Label>
+        {updateAttributeForAllResources && (
+          <ApplyToAllButton
+            type="button"
+            onClick={() => {
+              if (!tags) return
+              updateAttributeForAllResources('tags', tags)
+              addToast({
+                variant: 'info',
+                title: `Tags [${tags.join(', ')}] applied to all uploaded files`,
+              })
+            }}
+          >
+            Apply tags to all
+          </ApplyToAllButton>
+        )}
+
+        <div style={{ marginTop: '0.5rem' }}>
+          <Creatable
+            styles={DropdownStyle}
+            isClearable
+            isMulti
+            placeholder={'Select or create new tags'}
+            value={tags.map(toPlainSelectOption)}
+            onChange={(newValues) => setTags(newValues.map((v) => v.value))}
+            options={tagsOptions}
+            onCreateOption={(newTag) => {
+              setTags((tags) => [...tags, newTag])
+              if (newTag !== null && updateTagOptions)
+                updateTagOptions((tagOptions: any) => [...tagOptions, toPlainSelectOption(newTag)])
+            }}
+            classNamePrefix={'edit-select'}
+            maxMenuHeight={MAX_OPTIONS_MENU_HEIGHT}
+          />
+        </div>
+        <Footnote muted css={{ fontSize: '0.8rem', margin: '0.5rem 0 0 0.5rem' }}>
+          You can create a new tag by typing it and hitting enter.
+        </Footnote>
+      </div>
+
       <div style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}>
         <Label
           htmlFor="editVisibleAfter"
@@ -151,13 +205,13 @@ const ResourceDetailsForm = ({
         >
           Publish date:
         </Label>
-        {setForAllResources && (
+        {updateAttributeForAllResources && (
           <ApplyToAllButton
             type="button"
             onClick={() => {
               if (!visibleDate || !visibleTime) return
               const visibleAfter = getUTCDatetime(visibleDate, visibleTime)
-              setForAllResources('visible_after', visibleAfter)
+              updateAttributeForAllResources('visible_after', visibleAfter)
               addToast({
                 variant: 'info',
                 title: `All uploaded files set to publish at ${displayTimestamp(

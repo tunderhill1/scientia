@@ -9,6 +9,8 @@ import { GRACE_PERIOD_AFTER_DEADLINE_IN_DAYS } from './global'
 export type SetState<Value> = Dispatch<SetStateAction<Value>>
 export type LocationState = { next: string }
 
+export type SelectOption = { value: string; label: string }
+
 export class UserDetails {
   login: string
   year: string
@@ -127,6 +129,7 @@ export type Term = {
 export interface ResourceCreate {
   title: string
   category: string | null
+  tags: string[]
   file?: File
   visible_after: Date
   type: string

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useState } from 'react'
 import { Trash3Fill } from 'react-bootstrap-icons'
 import Dropzone from 'react-dropzone'
 import { useParams } from 'react-router-dom'
@@ -8,6 +8,7 @@ import { ResourceCreate } from '../../constants/types'
 import { AxiosContext } from '../../lib/axios.context'
 import { Resource } from '../../lib/materials.service'
 import { useToast } from '../../lib/toast.context'
+import { toPlainSelectOption } from '../../lib/utilities.service'
 import { Button, Hr, StandardDiv } from '../../styles/_app.style'
 import { DropzoneContainer } from '../../styles/upload-dialog.style'
 import Dialog from './Dialog'
@@ -17,14 +18,16 @@ const EditDialog = ({
   resourceToEdit,
   setResourceToEdit,
   onOpenChange,
-  categories,
+  existingCategories,
+  existingTags,
   moduleCode,
   setRawMaterials,
 }: {
   resourceToEdit: any
   setResourceToEdit: (_: any) => void
   onOpenChange: (_: boolean) => void
-  categories: string[]
+  existingCategories: string[]
+  existingTags: string[]
   moduleCode: string | null
   setRawMaterials: (_: Resource[]) => void
 }) => {
@@ -32,11 +35,6 @@ const EditDialog = ({
   const axiosInstance = useContext(AxiosContext)
   const { addToast } = useToast()
   const [newResourceFile, setNewResourceFile] = useState<File>()
-  const [categoryOptions, setCategoryOptions] = useState<{ value: string; label: string }[]>([])
-
-  useEffect(() => {
-    setCategoryOptions(categories.map((category) => ({ value: category, label: category })))
-  }, [categories])
 
   const onSubmit = async () => {
     if (newResourceFile) {
@@ -64,6 +62,7 @@ const EditDialog = ({
           title: resourceToEdit.title,
           category: resourceToEdit.category,
           visible_after: resourceToEdit.visible_after,
+          tags: resourceToEdit.tags,
         },
       })
       .then(() => {
@@ -94,9 +93,12 @@ const EditDialog = ({
     return true
   }
 
-  const onResourceChange = (key: string, value: string) => {
-    setResourceToEdit((resource: ResourceCreate) => ({ ...resource, [key]: value }))
-  }
+  const onResourceChange = useCallback(
+    (key: string, value: string) => {
+      setResourceToEdit((resource: ResourceCreate) => ({ ...resource, [key]: value }))
+    },
+    [setResourceToEdit]
+  )
 
   const UploadedFileRow = () => {
     return (
@@ -145,8 +147,8 @@ const EditDialog = ({
       <ResourceDetailsForm
         resource={resourceToEdit}
         onResourceChange={onResourceChange}
-        categoryOptions={categoryOptions}
-        setCategoryOptions={setCategoryOptions}
+        categoryOptions={existingCategories.map(toPlainSelectOption)}
+        tagsOptions={existingTags.map(toPlainSelectOption)}
       />
     </Dialog>
   )

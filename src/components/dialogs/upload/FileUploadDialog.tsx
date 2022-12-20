@@ -1,15 +1,14 @@
 import { Accordion, Item } from '@radix-ui/react-accordion'
-import { utcToZonedTime } from 'date-fns-tz'
-import { useEffect, useState } from 'react'
+import memoize from 'fast-memoize'
+import { useEffect, useMemo, useState } from 'react'
 import { X } from 'react-bootstrap-icons'
 import Dropzone from 'react-dropzone'
 
-import { LONDON_TIMEZONE } from '../../../constants/global'
-import { ResourceCreate } from '../../../constants/types'
+import { ResourceCreate, SelectOption } from '../../../constants/types'
 import { Resource } from '../../../lib/materials.service'
 import { useResources } from '../../../lib/resource.service'
 import { useToast } from '../../../lib/toast.context'
-import { now } from '../../../lib/utilities.service'
+import { now, toPlainSelectOption } from '../../../lib/utilities.service'
 import {
   Caret,
   Content,
@@ -36,23 +35,29 @@ function borderRadiusForIndex(
 const FileUploadDialog = ({
   open,
   onOpenChange,
-  categories,
+  existingCategories,
+  existingTags,
   setRawMaterials,
 }: {
   open: boolean
   onOpenChange: (_: boolean) => void
-  categories: string[]
+  existingCategories: string[]
+  existingTags: string[]
   setRawMaterials: (_: Resource[]) => void
 }) => {
   const { addToast } = useToast()
   const { uploadResource } = useResources()
   const [fileResources, setFileResources] = useState<ResourceCreate[]>([])
   const [openItemIndex, setOpenItemIndex] = useState('0')
-  const [categoryOptions, setCategoryOptions] = useState<{ value: string; label: string }[]>([])
-
+  const [categoryOptions, setCategoryOptions] = useState<SelectOption[]>([])
   useEffect(() => {
-    setCategoryOptions(categories.map((category) => ({ value: category, label: category })))
-  }, [categories])
+    setCategoryOptions(existingCategories.map(toPlainSelectOption))
+  }, [existingCategories])
+
+  const [tagsOptions, setTagsOptions] = useState<SelectOption[]>([])
+  useEffect(() => {
+    setTagsOptions(existingTags.map(toPlainSelectOption))
+  }, [existingTags])
 
   function onDrop(files: any) {
     setFileResources([
@@ -61,6 +66,7 @@ const FileUploadDialog = ({
         return {
           title: file.name,
           category: null,
+          tags: [],
           visible_after: now(),
           file,
           type: 'file',
@@ -70,12 +76,18 @@ const FileUploadDialog = ({
     ])
   }
 
-  function onResourceChange(resourceIndex: number) {
-    return (key: string, value: any) =>
-      setFileResources((resources: ResourceCreate[]) =>
-        resources.map((res, index) => (index === resourceIndex ? { ...res, [key]: value } : res))
-      )
-  }
+  const onResourceChange = useMemo(
+    () =>
+      memoize(
+        (resourceIndex: number) => (key: string, value: any) =>
+          setFileResources((resources: ResourceCreate[]) =>
+            resources.map((res, index) =>
+              index === resourceIndex ? { ...res, [key]: value } : res
+            )
+          )
+      ),
+    []
+  )
 
   const setForAllResources = (key: string, value: any) => {
     setFileResources((resources: ResourceCreate[]) =>
@@ -151,8 +163,10 @@ const FileUploadDialog = ({
                     onResourceChange={onResourceChange(index)}
                     resource={resource}
                     categoryOptions={categoryOptions}
-                    setCategoryOptions={setCategoryOptions}
-                    setForAllResources={setForAllResources}
+                    updateCategoryOptions={setCategoryOptions}
+                    updateAttributeForAllResources={setForAllResources}
+                    tagsOptions={tagsOptions}
+                    updateTagOptions={setTagsOptions}
                   />
                 </Content>
               </Item>

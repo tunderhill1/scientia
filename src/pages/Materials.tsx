@@ -71,6 +71,10 @@ const Materials = () => {
   } = useMaterials(levelsManager)
   const checklistManager = useChecklist(groupedMaterials, 'id', false)
   const { onDragEnd } = useReordering(setRawMaterials)
+  const existingCategories = Object.keys(groupedMaterials)
+  const existingTags = Object.values(groupedMaterials)
+    .flat()
+    .flatMap((m) => m.tags)
 
   const onComplete = () => {
     addCompleteResources(
@@ -320,7 +324,8 @@ const Materials = () => {
       {editDialogOpen && resourceToEdit !== null && (
         <EditDialog
           onOpenChange={setEditDialogOpen}
-          categories={Object.keys(groupedMaterials)}
+          existingCategories={existingCategories}
+          existingTags={existingTags}
           setResourceToEdit={setResourceToEdit}
           resourceToEdit={resourceToEdit}
           moduleCode={moduleCode}
@@ -331,14 +336,16 @@ const Materials = () => {
       <FileUploadDialog
         open={uploadDialogOpen}
         onOpenChange={setUploadDialogOpen}
-        categories={Object.keys(groupedMaterials)}
+        existingCategories={existingCategories}
+        existingTags={existingTags}
         setRawMaterials={setRawMaterials}
       />
 
       <LinkUploadDialog
         open={linkUploadDialogOpen}
         onOpenChange={setLinkUploadDialogOpen}
-        categories={Object.keys(groupedMaterials)}
+        existingCategories={existingCategories}
+        existingTags={existingTags}
         setRawMaterials={setRawMaterials}
       />
     </DragDropContext>
