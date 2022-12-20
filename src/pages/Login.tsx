@@ -31,7 +31,7 @@ const Login = () => {
   useEffect(() => {
     const { next } = (state as LocationState) || { next: undefined }
     if (isLoggedIn()) navigate(next || `/${shortYear()}/modules`, { replace: true })
-  }, [isLoggedIn, navigate])
+  }, [isLoggedIn, navigate, state])
 
   return (
     <Container center expand dotted css={{ paddingTop: 0 }}>

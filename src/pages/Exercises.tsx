@@ -51,7 +51,7 @@ const Exercises = () => {
         addToast({ variant: 'error', title: 'Error fetching exercises' })
         console.error(error)
       })
-  }, [year])
+  }, [addToast, axiosInstance, moduleCode, year])
 
   useEffect(() => {
     axiosInstance
@@ -78,7 +78,7 @@ const Exercises = () => {
         addToast({ variant: 'error', title: 'Error fetching feedback' })
         console.error(error)
       })
-  }, [exercises])
+  }, [addToast, axiosInstance, exercises, moduleCode, year])
 
   if (!exercises?.length || userDetails?.isStaff)
     return (

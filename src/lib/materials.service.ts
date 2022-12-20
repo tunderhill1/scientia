@@ -8,8 +8,7 @@ import { AxiosContext } from './axios.context'
 import { useGame } from './game/game.context'
 import { LevelsManager, groupByLevel } from './game/levels.service'
 import { useToast } from './toast.context'
-import { concatGrouped } from './utilities.service'
-import { groupByProperty } from './utilities.service'
+import { concatGrouped, groupByProperty } from './utilities.service'
 
 /* TODO: Is there any reason that we do not have a complete Resource/Material type */
 export type Resource = { tags: string[]; id: number; category: string }
@@ -72,7 +71,7 @@ export const useMaterials = ({
         addToast({ variant: 'error', title: 'Problem fetching resources' })
         console.error(error)
       })
-  }, [year])
+  }, [addToast, axiosInstance, moduleCode, year])
 
   function isLoaded(): boolean {
     return materialsLoaded && (!gameSettingOn || levelsLoaded)

@@ -39,7 +39,7 @@ const Module = () => {
         console.error(error)
       })
       .finally(() => setModuleIsLoaded(true))
-  }, [year])
+  }, [addToast, axiosInstance, moduleCode, year])
 
   const tabs = [
     { title: 'Materials', to: 'materials' },

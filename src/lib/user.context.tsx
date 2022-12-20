@@ -69,7 +69,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         })
         console.error(e)
       })
-  }, [year])
+  }, [addToast, axiosInstance, userDetails, year])
 
   return (
     <UserContext.Provider value={{ userDetails, storeUserDetails, clearUserDetails }}>
