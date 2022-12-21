@@ -234,3 +234,10 @@ export function getCookie(cookieName: string): string {
 export function toPlainSelectOption(value: string) {
   return { value: value, label: value }
 }
+
+export function encodeURL(url: string): string {
+  const replacementMappings: { [k: string]: string } = {
+    '+': '%2B',
+  }
+  return url.replace(/\+/g, (m) => replacementMappings[m])
+}

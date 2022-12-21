@@ -1,6 +1,7 @@
 import {
   calculateGrade,
   capitaliseFirstLetter,
+  encodeURL,
   formatDateRange,
   formatShortYear,
   getFileExtension,
@@ -211,4 +212,12 @@ describe('groupByProperty function', () => {
       `'${groupBy}' and '${orderBy}' need be properties of provided objects`
     )
   })
+})
+
+test.each`
+  URL                                         | encodedURL
+  ${'http://example.com'}                     | ${'http://example.com'}
+  ${'https://www.doc.ic.ac.uk/~wjk/C++Intro'} | ${'https://www.doc.ic.ac.uk/~wjk/C%2B%2BIntro'}
+`('encodeURL replaces $URL with $encodedURL', ({ URL, encodedURL }) => {
+  expect(encodeURL(URL)).toEqual(encodedURL)
 })
