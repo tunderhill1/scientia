@@ -6,7 +6,7 @@ services:
       dockerfile: dev.Dockerfile
     expose:
       - 6000
-    command: uvicorn main:app --reload --host 0.0.0.0 --port 6000
+    command: uvicorn main:app --reload --proxy-headers --forwarded-allow-ips '*' --host 0.0.0.0 --port 6000
     environment:
       - ENVIRONMENT=development
       - MATERIALS_ENTRYPOINT=http://materials:5001
