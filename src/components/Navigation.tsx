@@ -59,7 +59,7 @@ export const Navigation = () => {
       <Nav>
         {/* TODO: Is it a good idea to use an modified icon button here instead of a custom variant? */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <a href={isLoggedIn() ? `/${year}/${homePage}` : '/'} title={`View ${homePage}`}>
+          <a href={isLoggedIn ? `/${year}/${homePage}` : '/'} title={`View ${homePage}`}>
             <Button
               icon
               role="link"

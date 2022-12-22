@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { plainToInstance } from 'class-transformer'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { endpoints } from '../constants/endpoints'
@@ -23,6 +24,7 @@ type Credentials = {
 
 export default function useAuth() {
   const { userDetails, storeUserDetails, clearUserDetails } = useUser()
+  const [isLoggedIn, setIsLoggedIn] = useState(userDetails !== undefined)
   const navigate = useNavigate()
 
   const loginUser = async (data: Credentials) => {
@@ -40,9 +42,7 @@ export default function useAuth() {
       })
   }
 
-  const isLoggedIn = (): boolean => {
-    return userDetails !== undefined
-  }
+  useEffect(() => setIsLoggedIn(userDetails !== undefined), [userDetails])
 
   const logoutUser = () => {
     axios({

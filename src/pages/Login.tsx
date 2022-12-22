@@ -34,7 +34,7 @@ const Login = () => {
 
   useEffect(() => {
     const { next } = (state as LocationState) || { next: undefined }
-    if (isLoggedIn()) navigate(next || homePath, { replace: true })
+    if (isLoggedIn) navigate(next || homePath, { replace: true })
   }, [isLoggedIn, navigate, state, homePath])
 
   return (

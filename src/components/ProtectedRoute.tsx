@@ -12,15 +12,15 @@ import { Navigation } from './Navigation'
  */
 export const ProtectedRoute = ({ redirectPath = '/' }) => {
   const { isLoggedIn } = useAuth()
-  const location = useLocation()
+  const { pathname, search } = useLocation()
 
-  return isLoggedIn() ? (
+  return isLoggedIn ? (
     <>
       <Navigation />
       <Outlet />
       {/* TODO: Create a footer component */}
     </>
   ) : (
-    <Navigate to={redirectPath} state={{ next: location.pathname }} replace />
+    <Navigate to={redirectPath} state={{ next: `${pathname}${search}` }} />
   )
 }
