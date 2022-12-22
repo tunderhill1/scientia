@@ -24,8 +24,6 @@ export const GameContext = createContext<GameProviderType>(defaultGame)
 export const GameProvider = ({ children }: { children: React.ReactNode }) => {
   const [gameSettingOn, setGameSettingOn] = useState(defaultGame.gameSettingOn)
   const [gameSettingVisible, setGameSettingVisible] = useState(defaultGame.gameSettingVisible)
-  console.log(gameSettingVisible)
-
   const axiosInstance = useContext(AxiosContext)
   const { addToast } = useToast()
   const { userDetails } = useUser()
