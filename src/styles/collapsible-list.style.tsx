@@ -15,14 +15,15 @@ export const Header = styled(AccordionHeader, {
 
 /* TODO: Make the trigger height and style user-configurable */
 export const Trigger = styled(AccordionTrigger, {
-  all: 'unset',
   boxSizing: 'border-box',
   userSelect: 'none',
   cursor: 'pointer',
+  fontSize: '$md',
 
   display: 'flex',
   flexGrow: 1,
   alignItems: 'center',
+  border: 'none',
 
   height: '2.75rem',
   width: '100%',
@@ -32,27 +33,13 @@ export const Trigger = styled(AccordionTrigger, {
   zIndex: 1,
   position: 'sticky',
   backgroundColor: '$appBackground',
-  top: '4rem' /* Height of navigation bar */,
-
-  transition: 'all 250ms ease-in-out',
+  top: '4rem', // Height of navigation bar,
 
   '&:active': {
     backgroundColor: '$elementActive',
   },
   '&:hover': {
     backgroundColor: '$elementHover',
-  },
-
-  /* TODO: The style below is copied over from button; investigate a way to extract as common style */
-  outlineColor: 'transparent',
-  '&:focus': {
-    outline: 'none',
-  },
-  '&:focus-visible': {
-    outline: '0.25rem solid $elementBorder',
-    zIndex: 2,
-    /* NOTE: Transition "all" would cause a weird visual artefact as you're transitioning the outline width */
-    transition: 'outline-color 250ms ease-in-out 0s',
   },
 })
 
@@ -68,7 +55,6 @@ const slideUp = keyframes({
 })
 
 export const Content = styled(AccordionContent, {
-  overflow: 'hidden',
   /* The content aligns the items (wrapped in Box) and the checkboxes */
   display: 'flex',
   flexDirection: 'row',

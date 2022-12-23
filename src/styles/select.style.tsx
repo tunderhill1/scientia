@@ -6,7 +6,6 @@ import { styled } from './stitches.config'
 // Adapted from: https://www.radix-ui.com/docs/primitives/components/select
 
 const StyledTrigger = styled(SelectPrimitive.SelectTrigger, {
-  all: 'unset',
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -17,7 +16,7 @@ const StyledTrigger = styled(SelectPrimitive.SelectTrigger, {
   height: '2.719rem',
   flexGrow: 1,
   gap: 6,
-  boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1)',
+  boxShadow: '$sm',
   backgroundColor: '$appBackground',
   border: '1px solid $sand7',
   cursor: 'pointer',

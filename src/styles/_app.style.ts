@@ -87,14 +87,6 @@ export const Button = styled('button', {
     backgroundColor: '$elementActive',
   },
 
-  '&:focus': {
-    outline: 'none',
-  },
-  '&:focus-visible': {
-    outline: '0.25rem solid $elementBorder',
-    /* NOTE: Transition "all" would cause a weird visual artefact as you're transitioning the outline width */
-  },
-
   variants: {
     block: {
       true: {

@@ -80,7 +80,7 @@ export const ActionButton = {
     border: '2px solid $primary9',
     background: '$primary9',
     color: 'white',
-    boxShadow: shadowSm,
+    boxShadow: '$sm',
     '&:hover': {
       backgroundColor: '$primary10',
       borderColor: '$primary10',
@@ -105,7 +105,7 @@ export const ActionButton = {
   Secondary: styled(ButtonTemplate, {
     border: '2px solid $primary8',
     color: '$primary11',
-    boxShadow: shadowSm,
+    boxShadow: '$sm',
     backgroundColor: 'transparent',
     '&:hover': {
       backgroundColor: '$primary4',

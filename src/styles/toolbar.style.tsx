@@ -10,7 +10,6 @@ export const ToolbarContainer = styled(ToolbarPrimitive, {
 })
 
 export const itemStyles = {
-  all: 'unset',
   flex: '0 0 auto',
   height: '2.75rem',
   borderRadius: '0.5rem',
@@ -21,6 +20,8 @@ export const itemStyles = {
 
 export const Toggle = styled(TogglePrimitive, {
   ...itemStyles,
+  fontSize: '$md',
+  border: 'none',
   cursor: 'pointer',
   display: 'inline-flex',
   padding: '0 1rem 0 1rem',

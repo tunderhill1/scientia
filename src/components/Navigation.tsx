@@ -29,7 +29,9 @@ import {
   Item,
   Logo,
   Nav,
+  ScientiaTitle,
   Separator,
+  ShortcutLink,
   VerticalRule,
   WebsiteTitle,
 } from '../styles/navigation.style'
@@ -57,29 +59,26 @@ export const Navigation = () => {
   return (
     <Header>
       <Nav>
-        {/* TODO: Is it a good idea to use an modified icon button here instead of a custom variant? */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <a href={isLoggedIn ? `/${year}/${homePage}` : '/'} title={`View ${homePage}`}>
-            <Button
-              icon
-              role="link"
-              css={{ width: 'auto', '&:hover': { backgroundColor: 'transparent' } }}
-            >
-              {/* TODO: We might need to store logos separately if they're theme-configurable */}
-              <Logo
-                alt="Scientia logo"
-                src="/assets/logo-light.svg"
-                style={{ filter: `invert(${theme === 'dark' ? 1 : 0})` }}
-              />
-              <WebsiteTitle>Scientia</WebsiteTitle>
-            </Button>
-          </a>
+          <ScientiaTitle
+            href={isLoggedIn ? `/${year}/${homePage}` : '/'}
+            title={`View ${homePage}`}
+          >
+            <Logo
+              alt="Scientia logo"
+              src="/assets/logo-light.svg"
+              style={{ filter: `invert(${theme === 'dark' ? 1 : 0})` }}
+            />
+            <WebsiteTitle>Scientia</WebsiteTitle>
+          </ScientiaTitle>
           <VerticalRule />
-          <a href={`/${year}/${shortcutTarget}`} title={`View ${shortcutTarget}`}>
-            <Button icon active={!!matchPath({ path: `/:year/${shortcutTarget}/*` }, pathname)}>
-              {userDetails?.isStaff ? <CalendarDate size={22} /> : <Book size={22} />}
-            </Button>
-          </a>
+          <ShortcutLink
+            href={`/${year}/${shortcutTarget}`}
+            title={`View ${shortcutTarget}`}
+            active={!!matchPath({ path: `/:year/${shortcutTarget}/*` }, pathname)}
+          >
+            {userDetails?.isStaff ? <CalendarDate size={22} /> : <Book size={22} />}
+          </ShortcutLink>
         </div>
 
         {year !== currentYear && (

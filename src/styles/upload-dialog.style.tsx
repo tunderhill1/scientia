@@ -57,11 +57,6 @@ export const Trigger = styled(AccordionTrigger, {
     backgroundColor: '$sand8',
   },
 
-  /* TODO: The style below is copied over from button; investigate a way to extract as common style */
-  outlineColor: 'transparent',
-  '&:focus': {
-    outline: 'none',
-  },
   '&:focus-visible': {
     outline: '0.25rem solid $elementBorder',
     zIndex: 2,

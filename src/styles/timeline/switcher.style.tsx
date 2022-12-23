@@ -38,4 +38,7 @@ export const TermSwitchArrow = styled('button', {
       },
     },
   },
+  '&:hover': {
+    backgroundColor: '$neutral3',
+  },
 })

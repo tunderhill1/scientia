@@ -4,7 +4,7 @@ import { ToolbarContainer } from '../styles/toolbar.style'
 
 export const Toolbar = ({ style = {}, children }: { style?: any; children: React.ReactNode }) => {
   return (
-    <ToolbarContainer aria-label="" css={style}>
+    <ToolbarContainer aria-label="" css={style} tabIndex={-1}>
       {children}
     </ToolbarContainer>
   )

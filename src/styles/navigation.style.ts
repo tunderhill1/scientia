@@ -7,6 +7,35 @@ import {
 
 import { styled } from './stitches.config'
 
+export const ScientiaTitle = styled('a', {
+  userSelect: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+})
+
+export const ShortcutLink = styled('a', {
+  height: '2.75rem',
+  borderRadius: '0.5rem',
+  fontSize: 'medium',
+  userSelect: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '2.75rem',
+  '&:hover': {
+    backgroundColor: '$elementHover',
+  },
+  variants: {
+    active: {
+      true: {
+        backgroundColor: '$neutral6',
+        '&:hover': { backgroundColor: '$elementHover' },
+      },
+    },
+  },
+})
+
 const itemStyle = {
   borderRadius: '0.5rem',
   height: '2.75rem',
@@ -31,7 +60,8 @@ const itemStyle = {
           textDecoration: 'underline',
         },
         '&:focus-visible': {
-          backgroundColor: 'transparent',
+          color: '$sand12',
+          textDecoration: 'underline',
           outline: 'none',
         },
       },
