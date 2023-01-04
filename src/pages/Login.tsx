@@ -55,7 +55,7 @@ const Login = () => {
           <Label htmlFor="Username">Username</Label>
           <Input
             name="Username"
-            type="username"
+            autoComplete="username"
             value={username}
             placeholder="abc123"
             onChange={(e) => setUsername(e.target.value)}
@@ -68,6 +68,7 @@ const Login = () => {
           <Input
             name="Password"
             type="password"
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required

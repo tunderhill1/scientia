@@ -65,7 +65,6 @@ export const Title = styled(DialogTitle, {
   fontSize: 18,
 })
 
-const shadowSm = '0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.06)'
 const ButtonTemplate = styled('button', {
   padding: '0.75rem 1.5rem',
   fontWeight: 600,
