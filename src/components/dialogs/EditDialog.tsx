@@ -36,10 +36,13 @@ const EditDialog = ({
   const { addToast } = useToast()
   const [newResourceFile, setNewResourceFile] = useState<File>()
 
+  resourceToEdit.tags = resourceToEdit.tags.filter((tag: string) => tag !== 'new')
+
   const onSubmit = async () => {
     if (newResourceFile) {
       let formData = new FormData()
       formData.append('file', newResourceFile)
+
       await axiosInstance
         .request({
           method: 'PUT',
