@@ -104,7 +104,7 @@ const ResourceDetailsForm = ({
             marginBottom: '0.5rem',
           }}
         >
-          Category
+          Section Header
         </Label>
         {updateAttributeForAllResources && (
           <ApplyToAllButton
@@ -114,7 +114,7 @@ const ResourceDetailsForm = ({
               updateAttributeForAllResources('category', category)
               addToast({
                 variant: 'info',
-                title: `Category '${category}' applied to all uploaded files`,
+                title: `Section header '${category}' applied to all uploaded files`,
               })
             }}
           >
@@ -126,7 +126,7 @@ const ResourceDetailsForm = ({
           <Creatable
             styles={DropdownStyle}
             isClearable
-            placeholder={'Select or create a new category'}
+            placeholder={'Select or create a new section header'}
             value={category ? toPlainSelectOption(category) : null}
             onChange={(newValue) => setCategory(newValue?.value || null)}
             options={categoryOptions}
@@ -144,7 +144,8 @@ const ResourceDetailsForm = ({
         </div>
 
         <Footnote muted css={{ fontSize: '0.8rem', margin: '0.5rem 0 0 0.5rem' }}>
-          You can create a new category by typing the desired category name and hitting enter.
+          You can create a new section header by typing the desired name and hitting enter. Headers
+          are ordered alphabetically.
         </Footnote>
       </div>
 
