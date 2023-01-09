@@ -12,9 +12,9 @@ import { displayTimestamp, now } from '../lib/utilities.service'
 import { Banner, Container, Hr } from '../styles/_app.style'
 import {
   Deadline,
+  Footer,
   Link,
   LinkIcon,
-  PlagiarismDisclaimer,
   ProgressBar,
   ResourcesWrapper,
   UploadWrapper,
@@ -115,7 +115,7 @@ const Exercise = () => {
     )
   }
 
-  if (!exercise || (!spec && !fileRequirements?.length)) {
+  if (!exercise || (!spec && !fileRequirements?.length && !exercise.isGroupFormation)) {
     return (
       <Container>
         <Helmet>
@@ -136,6 +136,26 @@ const Exercise = () => {
   }
 
   const moduleTitle = userDetails?.modules.find((m) => m.code === exercise.moduleCode)?.title
+
+  const FooterMessage = () => {
+    const GROUP_FORMATION_FOOTER =
+      'This is a group formation exercise. No file nor code submission is expected.'
+    const GROUP_SUBMISSION_FOOTER =
+      "By accepting membership of this group, you agree that this is the group's collective work."
+    const INDIVIDUAL_SUBMISSION_FOOTER =
+      'By submitting, you agree that this is your own, unaided work.'
+
+    return (
+      <Footer>
+        {exercise.isGroupFormation
+          ? GROUP_FORMATION_FOOTER
+          : exercise.isGroup
+          ? GROUP_SUBMISSION_FOOTER
+          : INDIVIDUAL_SUBMISSION_FOOTER}
+      </Footer>
+    )
+  }
+
   return (
     <Container>
       <Helmet>
@@ -211,14 +231,10 @@ const Exercise = () => {
                   />
                 ))}
               </UploadWrapper>
-              {!!fileRequirements?.length && !userDetails?.isStaff && (
-                <PlagiarismDisclaimer>
-                  {exercise.isGroup
-                    ? "By accepting membership of this group, you agree that this is the group's collective work."
-                    : 'By submitting, you agree that this is your own, unaided work.'}
-                </PlagiarismDisclaimer>
-              )}
             </>
+          )}
+          {(exercise.isGroupFormation || (!!fileRequirements?.length && !userDetails?.isStaff)) && (
+            <FooterMessage />
           )}
         </div>
       </>

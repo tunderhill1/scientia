@@ -102,7 +102,7 @@ export const Deadline = styled('p', {
   },
 })
 
-export const PlagiarismDisclaimer = styled('p', {
+export const Footer = styled('footer', {
   fontSize: '$sm',
   color: '$sand11',
   margin: '1rem 0 3rem 0',

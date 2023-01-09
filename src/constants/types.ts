@@ -109,6 +109,10 @@ export class Exercise {
   get isGroup(): boolean {
     return this.submissionType === 'group'
   }
+
+  get isGroupFormation(): boolean {
+    return this.type === 'GF'
+  }
 }
 
 /* A track is a list of non-overlapping exercises */
