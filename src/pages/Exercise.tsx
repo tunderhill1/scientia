@@ -194,47 +194,47 @@ const Exercise = () => {
           {now() > exercise.deadline && <SubmissionUploadAvailabilityWarning />}
           {exercise.submissionType === 'group' && <GroupSection />}
 
-          {(exercise.submissionType === 'individual' || group) && !!fileRequirements?.length && (
+          {(exercise.submissionType === 'individual' || group) && (
             <>
-              <UploadWrapper>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    flexWrap: 'wrap-reverse',
-                    gap: '0.5rem 2rem',
-                  }}
-                >
-                  {!userDetails?.isStaff && (
-                    <Deadline css={{ color: '$green11' }}>
-                      {submittedFiles.length} out of {fileRequirements.length} submitted
-                      {submittedFiles.length === fileRequirements.length && (
-                        <>, and you are all done! 🎉</>
-                      )}
+              {!!fileRequirements?.length && (
+                <UploadWrapper>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      flexWrap: 'wrap-reverse',
+                      gap: '0.5rem 2rem',
+                    }}
+                  >
+                    {!userDetails?.isStaff && (
+                      <Deadline css={{ color: '$green11' }}>
+                        {submittedFiles.length} out of {fileRequirements.length} submitted
+                        {submittedFiles.length === fileRequirements.length && (
+                          <>, and you are all done! 🎉</>
+                        )}
+                      </Deadline>
+                    )}
+                    <Deadline completed={submittedFiles.length === fileRequirements.length}>
+                      Due {displayTimestamp(exercise.deadline)}
                     </Deadline>
-                  )}
-                  <Deadline completed={submittedFiles.length === fileRequirements.length}>
-                    Due {displayTimestamp(exercise.deadline)}
-                  </Deadline>
-                </div>
-                <ProgressBar value={submittedFiles.length} max={fileRequirements.length} />
-                {fileRequirements.map((fileRequirement, index) => (
-                  <FileUploadArea
-                    key={index}
-                    exercise={exercise}
-                    disabled={!(exerciseIsOpen() && studentIsLeader())}
-                    fileRequirement={fileRequirement}
-                    submittedFiles={submittedFiles}
-                    submitFile={submitFile}
-                    deleteFile={deleteFile}
-                  />
-                ))}
-              </UploadWrapper>
+                  </div>
+                  <ProgressBar value={submittedFiles.length} max={fileRequirements.length} />
+                  {fileRequirements.map((fileRequirement, index) => (
+                    <FileUploadArea
+                      key={index}
+                      exercise={exercise}
+                      disabled={!(exerciseIsOpen() && studentIsLeader())}
+                      fileRequirement={fileRequirement}
+                      submittedFiles={submittedFiles}
+                      submitFile={submitFile}
+                      deleteFile={deleteFile}
+                    />
+                  ))}
+                </UploadWrapper>
+              )}
+              {(!!fileRequirements?.length || exercise.isGroupFormation) && <FooterMessage />}
             </>
-          )}
-          {(exercise.isGroupFormation || (!!fileRequirements?.length && !userDetails?.isStaff)) && (
-            <FooterMessage />
           )}
         </div>
       </>
