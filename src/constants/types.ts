@@ -36,6 +36,10 @@ export class UserDetails {
   get cohortName(): string | undefined {
     return cohortMappings?.[this.cohort]
   }
+
+  isTaForModule(module: string): boolean {
+    return this.roleInDepartment === 'phd' && this.modulesHelped.map((m) => m.code).includes(module)
+  }
 }
 
 export class ModuleStaff {

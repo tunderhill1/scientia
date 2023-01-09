@@ -31,6 +31,7 @@ import { LevelToggles } from '../components/game/LevelToggles'
 import { endpoints } from '../constants/endpoints'
 import { LONDON_TIMEZONE } from '../constants/global'
 import titles from '../constants/titles'
+import { UserDetails } from '../constants/types'
 import useChecklist from '../lib/checkbox.service'
 import { useReordering } from '../lib/dragDrop.service'
 import { useGame } from '../lib/game/game.context'
@@ -115,6 +116,11 @@ const Materials = () => {
     return <FileEarmarkFill {...iconProps} />
   }
 
+  function staffView(moduleCode: string | null, userDetails: UserDetails | undefined): boolean {
+    if (!(moduleCode && userDetails)) return false
+    return userDetails.isStaff || userDetails.isTaForModule(moduleCode)
+  }
+
   const headerGenerator = (collection: string, _: object[]) => (
     <>
       <Caret />
@@ -166,7 +172,7 @@ const Materials = () => {
   const initialToolbar = (
     <Toolbar style={{ marginBottom: '1rem' }}>
       <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-        {userDetails?.isStaff && (
+        {staffView(moduleCode, userDetails) && (
           <>
             <Button icon onClick={() => setUploadDialogOpen(true)} title="Upload a file resources">
               <Upload size={22} />
@@ -190,7 +196,7 @@ const Materials = () => {
         Actions
       </Toggle>
       <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-        {!checklistMode && userDetails?.isStaff && (
+        {!checklistMode && staffView(moduleCode, userDetails) && (
           <>
             <Button icon onClick={() => setUploadDialogOpen(true)} title="Upload a file resources">
               <Upload size={22} />
