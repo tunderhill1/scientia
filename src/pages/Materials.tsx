@@ -2,7 +2,6 @@ import { utcToZonedTime } from 'date-fns-tz'
 import { useState } from 'react'
 import { DragDropContext } from 'react-beautiful-dnd'
 import {
-  ArrowDownUp,
   Check,
   Check2Circle,
   Dash,
@@ -195,7 +194,7 @@ const Materials = () => {
       <Toggle defaultPressed={checklistMode} onClick={(event) => setSelectionMode(!checklistMode)}>
         Actions
       </Toggle>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', gap: '0.2rem' }}>
         {!checklistMode && staffView(moduleCode, userDetails) && (
           <>
             <Button icon onClick={() => setUploadDialogOpen(true)} title="Upload a file resources">
@@ -210,12 +209,11 @@ const Materials = () => {
               <Link size={22} />
             </Button>
             <ToggleDragDropButton
-              icon
               dragEnabled={dragEnabled}
               onClick={() => setDragEnabled((prev) => !prev)}
               title={`${dragEnabled ? 'Disable' : 'Enable'} resource reordering`}
             >
-              <ArrowDownUp size={22} />
+              Reorder
             </ToggleDragDropButton>
           </>
         )}

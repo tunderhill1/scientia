@@ -28,7 +28,6 @@ export const ToggleDragDropButton = styled(Button, {
   variants: {
     dragEnabled: {
       true: {
-        border: '2px solid $blue11',
         backgroundColor: '$blue9',
         '&:hover': { backgroundColor: '$blue10' },
         shadow: '$sm',
