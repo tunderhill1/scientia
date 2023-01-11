@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 
 import FileUploadArea from '../components/exercise/FileUploadArea'
 import { DefaultGroupArea, GroupManagementArea } from '../components/exercise/GroupManagementArea'
+import { GRACE_PERIOD_AFTER_DEADLINE_IN_DAYS } from '../constants/global'
 import titles from '../constants/titles'
 import { useExercise } from '../lib/exercise.service'
 import { useGroup } from '../lib/groupFormation.service'
@@ -67,7 +68,7 @@ const Exercise = () => {
     return (
       <Banner center>
         <p>
-          You are more than 10 days past your deadline. <br />
+          You are more than {GRACE_PERIOD_AFTER_DEADLINE_IN_DAYS} days past your deadline. <br />
           No further modifications to your work are possible.
         </p>
       </Banner>

@@ -42,7 +42,7 @@ describe('Exercise', () => {
     expect(exercise.deadline).toEqual(expected)
   })
 
-  it(`exposes late period deadline as formal deadline + 10 days`, () => {
+  it(`exposes late period deadline as formal deadline + ${GRACE_PERIOD_AFTER_DEADLINE_IN_DAYS} days`, () => {
     expect(exerciseWithoutExtension.latePeriodDeadline).toEqual(
       addDays(DEADLINE, GRACE_PERIOD_AFTER_DEADLINE_IN_DAYS)
     )
