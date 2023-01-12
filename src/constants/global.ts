@@ -7,7 +7,7 @@ export const INDEXING_OFFSET = 1 /* Cols in grid 1-indexed */
 export const LONDON_TIMEZONE = 'Europe/London'
 
 export const GITLAB_HASH = 'SHA1'
-export const GRACE_PERIOD_AFTER_DEADLINE_IN_DAYS = 7
+export const GRACE_PERIOD_AFTER_DEADLINE_IN_DAYS = 14
 
 export const SHORT_YEAR_REGEX = /^\d{4}$/
 
