@@ -25,7 +25,7 @@ export const SubText = styled('div', {
 const shadowSm = '0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.06)'
 
 export const Table = styled('table', {
-  margin: '0 auto',
+  flexGrow: 1,
   alignSelf: 'center',
   borderSpacing: '1.25rem',
   '@media (max-width: 35rem)': { borderSpacing: '1rem' },
