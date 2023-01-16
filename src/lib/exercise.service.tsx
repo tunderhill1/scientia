@@ -33,6 +33,7 @@ export const useExercise = () => {
 
   const [exerciseMaterials, setExerciseMaterials] = useState<ExerciseMaterials | null>(null)
   useEffect(() => {
+    if (!userDetails) return
     axiosInstance
       .request({
         method: 'GET',
@@ -40,7 +41,7 @@ export const useExercise = () => {
           year!,
           moduleCode!,
           parseInt(exerciseNumber!),
-          userDetails!.cohort
+          userDetails.cohort
         ),
       })
       .then(({ data }: { data: any }) => {

@@ -43,7 +43,7 @@ const Exercise = () => {
   }, [exercise, group, loadSubmittedFiles])
 
   function studentIsLeader(): boolean {
-    return exercise!.submissionType === 'individual' || group?.leader === userDetails!.login
+    return exercise!.submissionType === 'individual' || group?.leader === userDetails?.login
   }
 
   function exerciseIsOpen(): boolean {
