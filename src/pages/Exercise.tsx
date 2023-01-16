@@ -162,82 +162,77 @@ const Exercise = () => {
       <Helmet>
         <title>{titles.exercise(year, exercise, moduleCode, exerciseNumber)}</title>
       </Helmet>
-      <section style={{ marginBottom: '2rem' }}>
-        <h1>
-          {exercise.type} {exerciseNumber}: {exercise.title}
-        </h1>
-        <Link href={`/${year}/modules/${moduleCode}/materials`} css={{ textDecoration: 'none' }}>
-          <h3
-            className={css({
-              color: '$lowContrast',
-              margin: '0.5rem 0',
-              marginBottom: '1rem',
-              fontWeight: '400',
-            })()}
-          >
-            {moduleCode} {moduleTitle}
-          </h3>
-        </Link>
-      </section>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-around',
+          flexWrap: 'wrap',
+          gap: '2rem',
+        }}
+      >
+        <section>
+          <h1>
+            {exercise.type} {exerciseNumber}: {exercise.title}
+          </h1>
+          <Link href={`/${year}/modules/${moduleCode}/materials`} css={{ textDecoration: 'none' }}>
+            <h3
+              className={css({
+                color: '$lowContrast',
+                fontWeight: '400',
+              })()}
+            >
+              {moduleCode} {moduleTitle}
+            </h3>
+          </Link>
+        </section>
+        {spec && <ExerciseMaterialsSection />}
+        <Hr />
+        <Deadline>Due {displayTimestamp(exercise.deadline)}</Deadline>
 
-      <>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-around',
-            flexWrap: 'wrap',
-            gap: '2rem',
-          }}
-        >
-          <ExerciseMaterialsSection />
-          <Hr />
-          <Deadline>Due {displayTimestamp(exercise.deadline)}</Deadline>
+        {now() > exercise.deadline && <SubmissionUploadAvailabilityWarning />}
+        {exercise.submissionType === 'group' && <GroupSection />}
 
-          {now() > exercise.deadline && <SubmissionUploadAvailabilityWarning />}
-          {exercise.submissionType === 'group' && <GroupSection />}
-
-          {(exercise.submissionType === 'individual' || group) && (
-            <>
-              {!!fileRequirements?.length && (
-                <UploadWrapper>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      flexWrap: 'wrap-reverse',
-                      gap: '0.5rem 2rem',
-                    }}
-                  >
-                    {!userDetails?.isStaff && (
-                      <Deadline css={{ color: '$green11' }}>
-                        {submittedFiles.length} out of {fileRequirements.length} submitted
-                        {submittedFiles.length === fileRequirements.length && (
-                          <>, and you are all done! 🎉</>
-                        )}
-                      </Deadline>
-                    )}
-                  </div>
-                  <ProgressBar value={submittedFiles.length} max={fileRequirements.length} />
-                  {fileRequirements.map((fileRequirement, index) => (
-                    <FileUploadArea
-                      key={index}
-                      exercise={exercise}
-                      disabled={!(exerciseIsOpen() && studentIsLeader())}
-                      fileRequirement={fileRequirement}
-                      submittedFiles={submittedFiles}
-                      submitFile={submitFile}
-                      deleteFile={deleteFile}
-                    />
-                  ))}
-                </UploadWrapper>
-              )}
-              {(!!fileRequirements?.length || exercise.isGroupFormation) && <FooterMessage />}
-            </>
-          )}
-        </div>
-      </>
+        {(exercise.submissionType === 'individual' || group) && (
+          <>
+            {!!fileRequirements?.length && (
+              <UploadWrapper>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    flexWrap: 'wrap-reverse',
+                    gap: '0.5rem 2rem',
+                  }}
+                >
+                  {!userDetails?.isStaff && (
+                    <Deadline css={{ color: '$green11' }}>
+                      {submittedFiles.length} out of {fileRequirements.length} submitted
+                      {submittedFiles.length === fileRequirements.length && (
+                        <>, and you are all done! 🎉</>
+                      )}
+                    </Deadline>
+                  )}
+                </div>
+                <ProgressBar value={submittedFiles.length} max={fileRequirements.length} />
+                {fileRequirements.map((fileRequirement, index) => (
+                  <FileUploadArea
+                    key={index}
+                    exercise={exercise}
+                    disabled={!(exerciseIsOpen() && studentIsLeader())}
+                    fileRequirement={fileRequirement}
+                    submittedFiles={submittedFiles}
+                    submitFile={submitFile}
+                    deleteFile={deleteFile}
+                  />
+                ))}
+              </UploadWrapper>
+            )}
+            {(!!fileRequirements?.length || exercise.isGroupFormation) && <FooterMessage />}
+          </>
+        )}
+      </div>
     </Container>
   )
 }
