@@ -192,6 +192,8 @@ const Exercise = () => {
         >
           <ExerciseMaterialsSection />
           <Hr />
+          <Deadline>Due {displayTimestamp(exercise.deadline)}</Deadline>
+
           {now() > exercise.deadline && <SubmissionUploadAvailabilityWarning />}
           {exercise.submissionType === 'group' && <GroupSection />}
 
@@ -216,9 +218,6 @@ const Exercise = () => {
                         )}
                       </Deadline>
                     )}
-                    <Deadline completed={submittedFiles.length === fileRequirements.length}>
-                      Due {displayTimestamp(exercise.deadline)}
-                    </Deadline>
                   </div>
                   <ProgressBar value={submittedFiles.length} max={fileRequirements.length} />
                   {fileRequirements.map((fileRequirement, index) => (
