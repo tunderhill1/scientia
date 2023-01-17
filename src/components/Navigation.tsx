@@ -11,7 +11,7 @@ import {
   MoonFill,
   SunFill,
 } from 'react-bootstrap-icons'
-import { matchPath, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import { LINKS } from '../constants/links'
 import useAuth from '../lib/auth.service'
@@ -55,7 +55,6 @@ export const Navigation = () => {
   const [homePage, shortcutTarget] = userDetails?.isStaff
     ? ['modules', 'timeline']
     : ['timeline', 'modules']
-
   return (
     <Header>
       <Nav>
@@ -73,11 +72,10 @@ export const Navigation = () => {
           </ScientiaTitle>
           <VerticalRule />
           <ShortcutLink
-            href={`/${year}/${shortcutTarget}`}
+            href={pathname.endsWith('/modules') ? `/${year}/timeline` : `/${year}/modules`}
             title={`View ${shortcutTarget}`}
-            active={!!matchPath({ path: `/:year/${shortcutTarget}/*` }, pathname)}
           >
-            {userDetails?.isStaff ? <CalendarDate size={22} /> : <Book size={22} />}
+            {pathname.endsWith('/modules') ? <CalendarDate size={22} /> : <Book size={22} />}
           </ShortcutLink>
         </div>
 
