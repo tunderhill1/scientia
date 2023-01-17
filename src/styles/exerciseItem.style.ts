@@ -1,7 +1,6 @@
 import { CSS } from '@stitches/react'
 
 import { Exercise } from '../constants/types'
-import { now } from '../lib/utilities.service'
 
 /**
  * Style each track item's border, colour, etc. based on the exercise details
@@ -40,13 +39,6 @@ export const styleExerciseItem = ({
       style.backgroundColor = '$orange4'
       style['&:hover'] = { backgroundColor: '$orange5' }
     }
-  }
-
-  // user can interact with exercise and hasn't submitted required files
-  if (startDate <= now() && now() < deadline && submissionType !== 'no submission required') {
-    style.borderWidth = 2
-    style.borderColor = '$red8'
-    style.fontWeight = 600
   }
 
   return style
