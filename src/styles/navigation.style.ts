@@ -26,14 +26,6 @@ export const ShortcutLink = styled('a', {
   '&:hover': {
     backgroundColor: '$elementHover',
   },
-  variants: {
-    active: {
-      true: {
-        backgroundColor: '$neutral6',
-        '&:hover': { backgroundColor: '$elementHover' },
-      },
-    },
-  },
 })
 
 const itemStyle = {
