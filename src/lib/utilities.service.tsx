@@ -111,11 +111,16 @@ export const formatShortYear = (year: string = shortYear()): string => {
 }
 
 /* Returns whether the given two exercises overlap */
-export const exercisesOverlap = (e1: Exercise, e2: Exercise): boolean =>
-  areIntervalsOverlapping(
-    { start: e1.startDate, end: e1.deadline },
-    { start: e2.startDate, end: e2.deadline }
+export const exercisesOverlap = (e1: Exercise, e2: Exercise): boolean => {
+  const dropTimeInfo = (d: Date) => new Date(d.toDateString())
+  const [e1StartDate, e1EndDate] = [e1.startDate, e1.deadline].map(dropTimeInfo)
+  const [e2StartDate, e2EndDate] = [e2.startDate, e2.deadline].map(dropTimeInfo)
+  return areIntervalsOverlapping(
+    { start: e1StartDate, end: e1EndDate },
+    { start: e2StartDate, end: e2EndDate },
+    { inclusive: true }
   )
+}
 
 /* Compute the exercise tracks for the exercises of each module */
 export function computeTracks(exercises: Exercise[], term: Term): Track[] {
