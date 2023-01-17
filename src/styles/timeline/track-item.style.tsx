@@ -1,3 +1,4 @@
+import { TIMELINE_TRACK_HEIGHT } from '../../constants/global'
 import { Exercise } from '../../constants/types'
 import { styleExerciseItem } from '../exerciseItem.style'
 import { styled } from '../stitches.config'
@@ -25,7 +26,7 @@ export const trackItemStyles = ({
     borderRadius: '0.5rem',
     display: 'flex',
     alignItems: 'center',
-    height: 'fit-content',
+    height: TIMELINE_TRACK_HEIGHT,
     margin: 'auto 0',
 
     gridColumn: `${startColumn} / ${endColumn}`,
