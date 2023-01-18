@@ -1,4 +1,5 @@
 import {
+  CalendarWeek,
   CameraReelsFill,
   ChatLeftTextFill,
   EnvelopeFill,
@@ -58,5 +59,11 @@ export const LINKS: Link[] = [
     description: 'Group project feedback',
     url: 'https://peer-assessment.doc.ic.ac.uk',
     icon: StarHalf,
+  },
+  {
+    title: 'CELCAT',
+    description: 'Imperial College Calendar',
+    url: 'https://www.imperial.ac.uk/timetabling/calendar/',
+    icon: CalendarWeek,
   },
 ].sort((a, b) => a.title.localeCompare(b.title))
