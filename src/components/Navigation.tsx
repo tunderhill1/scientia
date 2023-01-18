@@ -71,11 +71,11 @@ export const Navigation = () => {
             <WebsiteTitle>Scientia</WebsiteTitle>
           </ScientiaTitle>
           <VerticalRule />
-          <ShortcutLink
-            href={pathname.endsWith('/modules') ? `/${year}/timeline` : `/${year}/modules`}
-            title={`View ${shortcutTarget}`}
-          >
-            {pathname.endsWith('/modules') ? <CalendarDate size={22} /> : <Book size={22} />}
+          <ShortcutLink href={`/${year}/timeline`} title="View timeline">
+            <CalendarDate size={22} />
+          </ShortcutLink>
+          <ShortcutLink href={`/${year}/modules`} title="View Modules">
+            <Book size={22} />
           </ShortcutLink>
         </div>
 
