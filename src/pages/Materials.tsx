@@ -115,7 +115,7 @@ const Materials = () => {
     return <FileEarmarkFill {...iconProps} />
   }
 
-  function staffView(moduleCode: string | null, userDetails: UserDetails | undefined): boolean {
+  function isStaffView(moduleCode: string | null, userDetails: UserDetails | undefined): boolean {
     if (!(moduleCode && userDetails)) return false
     return userDetails.isStaff || userDetails.isTaForModule(moduleCode)
   }
@@ -171,7 +171,7 @@ const Materials = () => {
   const initialToolbar = (
     <Toolbar style={{ marginBottom: '1rem' }}>
       <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-        {staffView(moduleCode, userDetails) && (
+        {isStaffView(moduleCode, userDetails) && (
           <>
             <Button icon onClick={() => setUploadDialogOpen(true)} title="Upload a file resources">
               <Upload size={22} />
@@ -195,7 +195,7 @@ const Materials = () => {
         Actions
       </Toggle>
       <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', gap: '0.2rem' }}>
-        {!checklistMode && staffView(moduleCode, userDetails) && (
+        {!checklistMode && isStaffView(moduleCode, userDetails) && (
           <>
             <Button icon onClick={() => setUploadDialogOpen(true)} title="Upload a file resources">
               <Upload size={22} />
@@ -219,7 +219,7 @@ const Materials = () => {
         )}
         {checklistMode && (
           <>
-            {userDetails?.isStaff && (
+            {isStaffView(moduleCode, userDetails) && (
               <Button
                 icon
                 css={{ marginRight: '0.75rem' }}
@@ -280,7 +280,7 @@ const Materials = () => {
         ) : (
           <>
             {gameSettingOn && levelsManager.hasMinLevels && <LevelToggles {...levelsManager} />}
-            {userDetails?.isStaff && (
+            {isStaffView(moduleCode, userDetails) && (
               <p style={{ margin: '1rem 1rem 2rem 1rem', textAlign: 'center' }}>
                 <b>
                   The materials you upload here will be visible to all students. Please refrain from
@@ -296,7 +296,7 @@ const Materials = () => {
               headerGenerator={headerGenerator}
               contentGenerator={contentGenerator}
               mainItemAction={
-                (userDetails?.isStaff && {
+                (isStaffView(moduleCode, userDetails) && {
                   icon: <PencilSquare size={22} />,
                   action: (item: any) => {
                     setResourceToEdit({
