@@ -57,16 +57,16 @@ const EditDialog = ({
           console.error(error)
         })
     }
+
+    let resourceData = { ...resourceToEdit }
+
+    if ('link' != resourceToEdit.type) delete resourceData['path']
+
     await axiosInstance
       .request({
         method: 'PUT',
         url: endpoints.resource(resourceToEdit.id),
-        data: {
-          title: resourceToEdit.title,
-          category: resourceToEdit.category,
-          visible_after: resourceToEdit.visible_after,
-          tags: resourceToEdit.tags,
-        },
+        data: resourceData,
       })
       .then(() => {
         addToast({ variant: 'success', title: 'Resource successfully edited' })
