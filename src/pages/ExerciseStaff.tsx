@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import RawSubmissionsTable from '../components/tables/RawSubmissionsTable'
 import { endpoints } from '../constants/endpoints'
 import { Exercise, ExerciseSubmission, Mapping, SubmissionDataRow } from '../constants/types'
-import { useExerciseForStaff, useExerciseMaterials } from '../lib/exercise.service'
+import { useExerciseForStaff } from '../lib/exercise.service'
 import { displayTimestamp } from '../lib/utilities.service'
 import { AnchorButton } from '../styles/_app.style'
 import { Deadline } from '../styles/exercise.style'
@@ -16,7 +16,6 @@ const ExerciseStaff = ({ exercise }: { exercise: Exercise }) => {
   const { year, moduleCode, exerciseNumber } = useParams()
   const { studentLookup, studentSubmissionsLookup, studentGroupsLookup } =
     useExerciseForStaff(exercise)
-  const { spec, fileRequirements } = useExerciseMaterials()
 
   const [tableData, setTableData] = useState<SubmissionDataRow[]>([])
   useEffect(() => {
