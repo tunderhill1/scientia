@@ -63,9 +63,12 @@ const Module = () => {
     <Container>
       <Wrapper inline>
         <h1 style={{ width: '100%', margin: 0 }}> {module.title}</h1>
-        {gameSettingOn && RegExp('.*/materials').test(pathname) && levelsManager.loaded && (
-          <LevelProgressBar level={levelsManager.level} progress={levelsManager.progress} />
-        )}
+        {gameSettingOn &&
+          RegExp('.*/materials').test(pathname) &&
+          levelsManager.loaded &&
+          levelsManager.hasMinLevels && (
+            <LevelProgressBar level={levelsManager.level} levelProgress={levelsManager.progress} />
+          )}
       </Wrapper>
       <h3
         className={css({

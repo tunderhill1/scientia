@@ -1,5 +1,4 @@
 import { plainToInstance } from 'class-transformer'
-import { nextMonday } from 'date-fns'
 import { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
@@ -7,6 +6,7 @@ import { endpoints } from '../constants/endpoints'
 import { TIMELINE_DEFAULT_VIEW_LABEL, TIMELINE_TRACK_HEIGHT } from '../constants/global'
 import { Exercise, Module, Term, TrackMap } from '../constants/types'
 import { AxiosContext } from './axios.context'
+import { useTerms } from './terms.service'
 import { useToast } from './toast.context'
 import { useUser } from './user.context'
 import {
@@ -40,28 +40,7 @@ export const useTimeline = (): any => {
   const axiosInstance = useContext(AxiosContext)
   const { addToast } = useToast()
 
-  const [terms, setTerms] = useState<Term[]>([])
-  useEffect(() => {
-    axiosInstance
-      .request({
-        method: 'GET',
-        url: endpoints.periods(year!),
-      })
-      .then(({ data }: { data: any }) => {
-        if (!data?.length) setTerms([])
-        setTerms(
-          data.map(({ start, end, ...rest }: any) => ({
-            start: nextMonday(new Date(start)),
-            end: new Date(end),
-            ...rest,
-          }))
-        )
-      })
-      .catch((error) => {
-        addToast({ variant: 'error', title: 'Error fetching terms' })
-        console.error(error)
-      })
-  }, [addToast, axiosInstance, year])
+  const terms = useTerms()
 
   const [term, setTerm] = useState<Term>()
   useEffect(() => {

@@ -1,17 +1,23 @@
 import { useEffect, useRef, useState } from 'react'
 
-import { Progress, ProgressIndicator } from '../../styles/game/LevelProgressBar.style'
 import { GameElement } from '../../styles/game/game.style'
-import { LevelStar } from './game'
+import { ProgressBar } from '../statistics/ProgressBar'
+import { NumberedStar } from '../statistics/numberedIcons'
 
 const TRANSITION_TIME = 500
 
-export const LevelProgressBar = ({ level, progress }: { level: number; progress: number }) => {
+export const LevelProgressBar = ({
+  level,
+  levelProgress,
+}: {
+  level: number
+  levelProgress: number
+}) => {
   const [barProgress, setBarProgress] = useState(0)
 
   /**
    * Used to track if level changed due to user progression or just due to level being recalculated.
-   * For example, if a resource is deleted, the level will change, but there should be no level-up animation.
+   * For example, if a resource is deleted, the level may change, but there should be no level-up animation.
    * TODO: There must be a better way of managing the animation...
    */
   const hasProgressed = useRef(false)
@@ -33,17 +39,15 @@ export const LevelProgressBar = ({ level, progress }: { level: number; progress:
     const timeout = hasProgressed.current ? 0 : 2 * TRANSITION_TIME
     const timer = setTimeout(() => {
       hasProgressed.current = true
-      setBarProgress(progress)
+      setBarProgress(levelProgress)
     }, timeout)
     return () => clearTimeout(timer)
-  }, [progress, level])
+  }, [levelProgress, level])
 
   return (
-    <GameElement css={{ gap: '0.5rem' }}>
-      <LevelStar size={44} level={level} />
-      <Progress>
-        <ProgressIndicator css={{ transform: `translateX(-${100 - barProgress}%)` }} />
-      </Progress>
+    <GameElement css={{ width: '80%', gap: '0.5rem' }}>
+      <NumberedStar size={44} value={level} />
+      <ProgressBar progress={barProgress} />
     </GameElement>
   )
 }

@@ -246,3 +246,17 @@ export function encodeURL(url: string): string {
   }
   return url.replace(/\+/g, (m) => replacementMappings[m])
 }
+
+export function removeDuplicates<T extends string | number | boolean>(arr: T[]) {
+  return Array.from(new Set(arr))
+}
+
+/* Assume string is non-empty */
+export function capitalizeEachWord(sentence: string): string {
+  return sentence.split(' ').map(capitalizeFirstLetter).join(' ')
+}
+
+/* Assume string is non-empty */
+function capitalizeFirstLetter(word: string): string {
+  return word[0].toLocaleUpperCase() + word.slice(1)
+}

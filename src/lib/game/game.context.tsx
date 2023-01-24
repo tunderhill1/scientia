@@ -7,13 +7,11 @@ import { useUser } from '../user.context'
 
 type GameProviderType = {
   gameSettingOn: boolean
-  gameSettingVisible: boolean
   toggleGameSetting: () => void
 }
 
 const defaultGame: GameProviderType = {
   gameSettingOn: false,
-  gameSettingVisible: false,
   toggleGameSetting: () => {},
 }
 
@@ -23,7 +21,7 @@ export const GameContext = createContext<GameProviderType>(defaultGame)
 
 export const GameProvider = ({ children }: { children: React.ReactNode }) => {
   const [gameSettingOn, setGameSettingOn] = useState(defaultGame.gameSettingOn)
-  const [gameSettingVisible, setGameSettingVisible] = useState(defaultGame.gameSettingVisible)
+
   const axiosInstance = useContext(AxiosContext)
   const { addToast } = useToast()
   const { userDetails } = useUser()
@@ -38,7 +36,6 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
         })
         .then(({ data }) => {
           if ('game_enabled' in data) {
-            setGameSettingVisible(true)
             setGameSettingOn(data.game_enabled)
           }
         })
@@ -51,12 +48,14 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
 
   const toggleGameSetting = async () => {
     if (userDetails?.isStaff) throw new Error('Staff should NOT toggle game levels')
-    setGameSettingOn(!gameSettingOn)
     axiosInstance
       .request({
         method: 'PUT',
         url: endpoints.gameSetting,
         data: { game_enabled: !gameSettingOn },
+      })
+      .then(() => {
+        setGameSettingOn(!gameSettingOn)
       })
       .catch((error) => {
         addToast({ variant: 'error', title: 'Error toggling game setting' })
@@ -65,7 +64,7 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <GameContext.Provider value={{ gameSettingOn, gameSettingVisible, toggleGameSetting }}>
+    <GameContext.Provider value={{ gameSettingOn, toggleGameSetting }}>
       {children}
     </GameContext.Provider>
   )

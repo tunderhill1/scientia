@@ -116,7 +116,7 @@ export const useMaterials = ({
         .request({
           url: endpoints.resourcesComplete,
           method: 'GET',
-          params: { course: moduleCode },
+          params: { module_code: moduleCode },
         })
         .then(({ data }) => {
           setCompleteResources(Immutable.Set<number>(data))

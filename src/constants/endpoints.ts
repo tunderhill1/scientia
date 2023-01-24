@@ -59,4 +59,8 @@ export const endpoints = {
   feedback: (year: string) => `${baseURL}/me/${year}/feedback`,
   feedbackFile: (feedbackId: number) => `${baseURL}/feedback/${feedbackId}/file`,
   gameSetting: `${baseURL}/game/setting`,
+  enrolments: (year: string) => `${baseURL}/${year}/enrolments`,
+  players: `${baseURL}/game/players`,
+  moduleCompletions: (year: string) => `${baseURL}/modules/${year}/completion/mean`,
+  moduleDatedCompletions: (year: string) => `${baseURL}/modules/${year}/completion/dated`,
 }

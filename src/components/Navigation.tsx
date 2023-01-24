@@ -1,6 +1,7 @@
 import { DropdownMenu, DropdownMenuTrigger, ItemIndicator } from '@radix-ui/react-dropdown-menu'
 import { useContext } from 'react'
 import {
+  BarChart,
   Book,
   CalendarDate,
   Check,
@@ -48,7 +49,7 @@ export const Navigation = () => {
   const { year } = useParams()
   const currentYear = shortYear()
   const { theme, toggleTheme } = useContext(ThemeContext)
-  const { gameSettingOn, gameSettingVisible, toggleGameSetting } = useGame()
+  const { gameSettingOn, toggleGameSetting } = useGame()
   const navigate = useNavigate()
   const { isLoggedIn } = useAuth()
   const { pathname } = useLocation()
@@ -77,16 +78,21 @@ export const Navigation = () => {
           <ShortcutLink href={`/${year}/modules`} title="View Modules">
             <Book size={22} />
           </ShortcutLink>
-        </div>
+          {globalGameEnabled && (
+            <ShortcutLink href={`/${year}/analytics`} title={`View Game Analytics`}>
+              <BarChart size={22} />
+            </ShortcutLink>
+          )}
 
-        {year !== currentYear && (
-          <ActionButton.Primary
-            style={{ padding: '0.5rem 1rem' }}
-            onClick={() => navigate('/' + currentYear + window.location.pathname.slice(5))}
-          >
-            Go to {formatShortYear()}
-          </ActionButton.Primary>
-        )}
+          {year !== currentYear && (
+            <ActionButton.Primary
+              style={{ padding: '0.5rem 1rem' }}
+              onClick={() => navigate('/' + currentYear + window.location.pathname.slice(5))}
+            >
+              Go to {formatShortYear()}
+            </ActionButton.Primary>
+          )}
+        </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <TimelineGuideButton />
@@ -135,7 +141,7 @@ export const Navigation = () => {
               <YearSwitcher />
               <Separator />
 
-              {gameSettingVisible && globalGameEnabled && !userDetails?.isStaff && (
+              {globalGameEnabled && !userDetails?.isStaff && (
                 <>
                   <CheckboxItem checked={gameSettingOn} onCheckedChange={toggleGameSetting}>
                     <Dice5Fill size={20} style={{ margin: '0 0.5rem' }} />
