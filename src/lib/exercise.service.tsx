@@ -216,7 +216,7 @@ export const useExerciseForStaff = (exercise: Exercise) => {
       .request({
         method: 'GET',
         url: endpoints.submissionGroups,
-        data: {
+        params: {
           year,
           module_code: moduleCode,
           exercise_number: exerciseNumber,
