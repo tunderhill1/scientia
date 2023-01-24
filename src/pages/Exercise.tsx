@@ -8,7 +8,7 @@ import FileUploadArea from '../components/exercise/FileUploadArea'
 import { DefaultGroupArea, GroupManagementArea } from '../components/exercise/GroupManagementArea'
 import { GRACE_PERIOD_AFTER_DEADLINE_IN_DAYS } from '../constants/global'
 import titles from '../constants/titles'
-import { useExerciseForStudent } from '../lib/exercise.service'
+import { useExerciseForStudent, useExerciseMaterials } from '../lib/exercise.service'
 import { useGroup } from '../lib/groupFormation.service'
 import { useUser } from '../lib/user.context'
 import { displayTimestamp, now } from '../lib/utilities.service'
@@ -19,16 +19,9 @@ import { css } from '../styles/stitches.config'
 const Exercise = () => {
   const { year, moduleCode, exerciseNumber } = useParams()
   const { userDetails } = useUser()
-  const {
-    exercise,
-    exerciseIsLoaded,
-    exerciseMaterials,
-    submittedFiles,
-    submitFile,
-    deleteFile,
-    loadSubmittedFiles,
-  } = useExerciseForStudent()
-  const { spec, dataFiles, modelAnswers, fileRequirements } = exerciseMaterials
+  const { exercise, exerciseIsLoaded, submittedFiles, submitFile, deleteFile, loadSubmittedFiles } =
+    useExerciseForStudent()
+  const { spec, dataFiles, modelAnswers, fileRequirements } = useExerciseMaterials()
   const { groupIsLoaded, enrolledStudents, group, createGroup, membersActions } = useGroup(exercise)
   const pageTitle = titles.exercise(year, exercise, moduleCode, exerciseNumber)
 
@@ -187,7 +180,7 @@ const Exercise = () => {
                     disabled={!(exerciseIsOpen() && studentIsLeader())}
                     fileRequirement={fileRequirement}
                     submittedFiles={submittedFiles}
-                    submitFile={submitFile}
+                    submitFile={submitFile(fileRequirements.length)}
                     deleteFile={deleteFile}
                   />
                 ))}

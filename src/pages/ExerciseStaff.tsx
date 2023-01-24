@@ -9,7 +9,7 @@ import RawSubmissionsTable from '../components/tables/RawSubmissionsTable'
 import { endpoints } from '../constants/endpoints'
 import titles from '../constants/titles'
 import { ExerciseSubmission, Mapping, SubmissionDataRow } from '../constants/types'
-import { useExerciseForStaff } from '../lib/exercise.service'
+import { useExerciseForStaff, useExerciseMaterials } from '../lib/exercise.service'
 import { useUser } from '../lib/user.context'
 import { displayTimestamp } from '../lib/utilities.service'
 import { AnchorButton, Container, Hr } from '../styles/_app.style'
@@ -24,12 +24,11 @@ const ExerciseStaff = () => {
   const {
     exercise,
     exerciseIsLoaded,
-    exerciseMaterials,
     studentLookup,
     studentSubmissionsLookup,
     studentGroupsLookup,
   } = useExerciseForStaff()
-  const { spec, dataFiles, modelAnswers, fileRequirements } = exerciseMaterials
+  const { spec, dataFiles, modelAnswers, fileRequirements } = useExerciseMaterials()
   const pageTitle = titles.exercise(year, exercise, moduleCode, exerciseNumber)
 
   const [tableData, setTableData] = useState<SubmissionDataRow[]>([])
