@@ -153,9 +153,7 @@ const Exercises = () => {
             </span>
           </>
         )}
-        href={(exercise) =>
-          `/${year}/modules/${exercise.moduleCode}/exercises/${exercise.number}/manage`
-        }
+        href={(exercise) => `/${year}/modules/${exercise.moduleCode}/exercises/${exercise.number}`}
       />
     </div>
   )

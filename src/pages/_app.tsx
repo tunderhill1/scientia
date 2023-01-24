@@ -3,7 +3,6 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { AuthProtectedRoute } from '../components/AuthProtectedRoute'
 import ExternalResource from '../components/ExternalResource'
-import { StaffOnlyRoute } from '../components/StaffOnlyRoute'
 import { YearRoute } from '../components/YearRoute'
 import { baseURL } from '../constants/endpoints'
 import { AxiosInstanceProvider } from '../lib/axios.context'
@@ -15,7 +14,6 @@ import { Area, Viewport as ScrollViewport, Scrollbar, Thumb } from '../styles/_a
 import { globalStyles } from '../styles/stitches.config'
 import Analytics from './Analytics'
 import Exercise from './Exercise'
-import ExerciseStaff from './ExerciseStaff'
 import Exercises from './Exercises'
 import Login from './Login'
 import Materials from './Materials'
@@ -46,10 +44,6 @@ function App() {
                             <Route index element={<Modules />} />
                             <Route path=":moduleCode/exercises/:exerciseNumber">
                               <Route index element={<Exercise />} />
-                              <Route
-                                path="manage"
-                                element={<StaffOnlyRoute to={<ExerciseStaff />} />}
-                              />
                             </Route>
                             <Route path=":moduleCode" element={<Module />}>
                               <Route index element={<Navigate to="materials" />} />
