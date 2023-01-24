@@ -10,7 +10,7 @@ import { Navigation } from './Navigation'
  * TODO: Wrap header and possibly footer components around the outlet. Else create a separate layout component that
  * would add the header and footer with an option to disable it for certain pages.
  */
-export const ProtectedRoute = ({ redirectPath = '/' }) => {
+export const AuthProtectedRoute = ({ redirectPath = '/' }) => {
   const { isLoggedIn } = useAuth()
   const { pathname, search } = useLocation()
 
