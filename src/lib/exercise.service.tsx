@@ -53,13 +53,10 @@ export const useExerciseMaterials = () => {
   return exerciseMaterials
 }
 
-export const useExerciseForStudent = () => {
+export const useExercise = () => {
   const axiosInstance = useContext(AxiosContext)
   const { year, moduleCode, exerciseNumber } = useParams()
   const { addToast } = useToast()
-  const { userDetails } = useUser()
-
-  const [submittedFiles, setSubmittedFiles] = useState<ExerciseSubmission[]>([])
   const [exercise, setExercise] = useState<Exercise>()
   const [exerciseIsLoaded, setExerciseIsLoaded] = useState<boolean>(false)
   useEffect(() => {
@@ -75,6 +72,15 @@ export const useExerciseForStudent = () => {
       .finally(() => setExerciseIsLoaded(true))
   }, [addToast, axiosInstance, exerciseNumber, moduleCode, year])
 
+  return { exercise, exerciseIsLoaded }
+}
+
+export const useExerciseForStudent = (exercise: Exercise) => {
+  const axiosInstance = useContext(AxiosContext)
+  const { year, moduleCode, exerciseNumber } = useParams()
+  const { addToast } = useToast()
+
+  const [submittedFiles, setSubmittedFiles] = useState<ExerciseSubmission[]>([])
   const loadSubmittedFiles = useCallback(() => {
     axiosInstance
       .request({
@@ -147,8 +153,6 @@ export const useExerciseForStudent = () => {
   }
 
   return {
-    exercise,
-    exerciseIsLoaded,
     submittedFiles,
     submitFile,
     deleteFile,
@@ -157,26 +161,11 @@ export const useExerciseForStudent = () => {
   }
 }
 
-export const useExerciseForStaff = () => {
+export const useExerciseForStaff = (exercise: Exercise) => {
   const axiosInstance = useContext(AxiosContext)
   const { year, moduleCode, exerciseNumber } = useParams()
   const { addToast } = useToast()
   const { userDetails } = useUser()
-
-  const [exercise, setExercise] = useState<Exercise>()
-  const [exerciseIsLoaded, setExerciseIsLoaded] = useState<boolean>(false)
-  useEffect(() => {
-    axiosInstance
-      .request({
-        method: 'GET',
-        url: endpoints.exercise(year!, moduleCode!, parseInt(exerciseNumber!)),
-      })
-      .then(({ data }: { data: any }) => {
-        setExercise(plainToInstance(Exercise, data))
-      })
-      .catch(() => addToast({ variant: 'error', title: 'Unable to fetch exercise' }))
-      .finally(() => setExerciseIsLoaded(true))
-  }, [addToast, axiosInstance, exerciseNumber, moduleCode, year])
 
   const [enrolledStudents, setEnrolledStudents] = useState<EnrolledStudent[]>([])
   const [studentLookup, setStudentLookup] = useState<Mapping<string, EnrolledStudent>>({})
@@ -250,8 +239,6 @@ export const useExerciseForStaff = () => {
   }, [addToast, axiosInstance, exerciseNumber, moduleCode, userDetails, year])
 
   return {
-    exercise,
-    exerciseIsLoaded,
     enrolledStudents,
     studentSubmissionsLookup,
     studentGroupsLookup,

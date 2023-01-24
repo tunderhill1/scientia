@@ -3,21 +3,14 @@ import { Helmet } from 'react-helmet-async'
 
 import { Banner, Container } from '../styles/_app.style'
 
-const DEFAULT_LOADING_TEXT = 'Loading...'
-const DEFAULT_NO_INFO_TEXT = 'No information available on this resource.'
-
 const PagePlaceholder = ({
   title,
   header,
-  loading,
-  loadingText = DEFAULT_LOADING_TEXT,
-  noInfoText = DEFAULT_NO_INFO_TEXT,
+  text,
 }: {
   title: string
   header: string
-  loading: boolean
-  loadingText?: string
-  noInfoText?: string
+  text: string
 }) => {
   return (
     <Container>
@@ -28,7 +21,7 @@ const PagePlaceholder = ({
         <h1>{header}</h1>
       </section>
       <Banner center>
-        <span>{!loading ? loadingText : noInfoText}</span>
+        <span>{text}</span>
       </Banner>
     </Container>
   )

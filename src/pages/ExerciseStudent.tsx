@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import FileUploadArea from '../components/exercise/FileUploadArea'
 import { DefaultGroupArea, GroupManagementArea } from '../components/exercise/GroupManagementArea'
 import { GRACE_PERIOD_AFTER_DEADLINE_IN_DAYS } from '../constants/global'
+import { Exercise } from '../constants/types'
 import { useExerciseForStudent, useExerciseMaterials } from '../lib/exercise.service'
 import { useGroup } from '../lib/groupFormation.service'
 import { useUser } from '../lib/user.context'
@@ -10,10 +11,10 @@ import { displayTimestamp, now } from '../lib/utilities.service'
 import { Banner } from '../styles/_app.style'
 import { Deadline, Footer, ProgressBar, UploadWrapper } from '../styles/exercise.style'
 
-const ExerciseStudent = () => {
+const ExerciseStudent = ({ exercise }: { exercise: Exercise }) => {
   const { userDetails } = useUser()
-  const { exercise, exerciseIsLoaded, submittedFiles, submitFile, deleteFile, loadSubmittedFiles } =
-    useExerciseForStudent()
+  const { submittedFiles, submitFile, deleteFile, loadSubmittedFiles } =
+    useExerciseForStudent(exercise)
   const { spec, fileRequirements } = useExerciseMaterials()
   const { groupIsLoaded, enrolledStudents, group, createGroup, membersActions } = useGroup(exercise)
 
@@ -23,20 +24,19 @@ const ExerciseStudent = () => {
   }, [exercise, group, loadSubmittedFiles])
 
   function studentIsLeader(): boolean {
-    return exercise!.submissionType === 'individual' || group?.leader === userDetails?.login
+    return exercise.submissionType === 'individual' || group?.leader === userDetails?.login
   }
 
   function exerciseIsOpen(): boolean {
     // This is admittedly a hack, but gets easily around the pure date comparison
     // limitations (which would make dev interactions cumbersome)
     const appIsRunningInDev = process.env.NODE_ENV === 'development'
-    const isWithinExercisePeriod =
-      now() < exercise!.latePeriodDeadline && now() > exercise!.startDate
+    const isWithinExercisePeriod = now() < exercise.latePeriodDeadline && now() > exercise.startDate
     return !userDetails?.isStaff && (appIsRunningInDev || isWithinExercisePeriod)
   }
 
   const SubmissionUploadAvailabilityWarning = () => {
-    if (now() < exercise!.latePeriodDeadline)
+    if (now() < exercise.latePeriodDeadline)
       return (
         <Banner center level={'warning'}>
           <p>
@@ -71,12 +71,10 @@ const ExerciseStudent = () => {
     )
   }
 
-  if (!exercise || (!spec && !fileRequirements?.length && !exercise.isGroupFormation)) {
+  if (!spec && !fileRequirements?.length && !exercise.isGroupFormation) {
     return (
       <Banner center>
-        <span>
-          {!exerciseIsLoaded ? 'Loading exercise...' : 'No information available on this exercise.'}
-        </span>
+        <span>{'No details available for this exercise.'}</span>
       </Banner>
     )
   }

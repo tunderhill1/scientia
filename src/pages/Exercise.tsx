@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import PagePlaceholder from '../components/PagePlaceholder'
 import ExerciseMaterialsSection from '../components/exercise/ExerciseMaterialsSection'
 import titles from '../constants/titles'
-import { useExerciseForStudent, useExerciseMaterials } from '../lib/exercise.service'
+import { useExercise, useExerciseMaterials } from '../lib/exercise.service'
 import { useUser } from '../lib/user.context'
 import { Container, Hr } from '../styles/_app.style'
 import { Link } from '../styles/exercise.style'
@@ -16,18 +16,16 @@ import ExerciseStudent from './ExerciseStudent'
 const Exercise = () => {
   const { year, moduleCode, exerciseNumber } = useParams()
   const { userDetails } = useUser()
-  const { exercise, exerciseIsLoaded } = useExerciseForStudent()
-  const { spec, dataFiles, modelAnswers, fileRequirements } = useExerciseMaterials()
+  const { exercise, exerciseIsLoaded } = useExercise()
+  const { spec, dataFiles, modelAnswers } = useExerciseMaterials()
   const pageTitle = titles.exercise(year, exercise, moduleCode, exerciseNumber)
 
-  if (!exercise || (!spec && !fileRequirements?.length && !exercise.isGroupFormation)) {
+  if (!userDetails || !exercise) {
     return (
       <PagePlaceholder
         title={pageTitle}
         header={`${moduleCode}: ${exerciseNumber}`}
-        loading={!exerciseIsLoaded}
-        loadingText={'Loading exercise...'}
-        noInfoText={'No information for this exercise.'}
+        text={exerciseIsLoaded ? 'No information for this exercise.' : 'Loading exercise...'}
       />
     )
   }
@@ -66,12 +64,11 @@ const Exercise = () => {
           <ExerciseMaterialsSection spec={spec} dataFiles={dataFiles} modelAnswers={modelAnswers} />
         )}
         <Hr />
-        {userDetails &&
-          (userDetails.isStaff || userDetails.isTaForModule(moduleCode!) ? (
-            <ExerciseStaff />
-          ) : (
-            <ExerciseStudent />
-          ))}
+        {userDetails.isStaff || userDetails.isTaForModule(moduleCode!) ? (
+          <ExerciseStaff exercise={exercise} />
+        ) : (
+          <ExerciseStudent exercise={exercise} />
+        )}
       </div>
     </Container>
   )

@@ -4,28 +4,19 @@ import { useParams } from 'react-router-dom'
 
 import RawSubmissionsTable from '../components/tables/RawSubmissionsTable'
 import { endpoints } from '../constants/endpoints'
-import titles from '../constants/titles'
-import { ExerciseSubmission, Mapping, SubmissionDataRow } from '../constants/types'
+import { Exercise, ExerciseSubmission, Mapping, SubmissionDataRow } from '../constants/types'
 import { useExerciseForStaff, useExerciseMaterials } from '../lib/exercise.service'
-import { useUser } from '../lib/user.context'
 import { displayTimestamp } from '../lib/utilities.service'
-import { AnchorButton, Banner } from '../styles/_app.style'
+import { AnchorButton } from '../styles/_app.style'
 import { Deadline } from '../styles/exercise.style'
 
 const DATA_PLACEHOLDER = '-'
 
-const ExerciseStaff = () => {
+const ExerciseStaff = ({ exercise }: { exercise: Exercise }) => {
   const { year, moduleCode, exerciseNumber } = useParams()
-  const { userDetails } = useUser()
-  const {
-    exercise,
-    exerciseIsLoaded,
-    studentLookup,
-    studentSubmissionsLookup,
-    studentGroupsLookup,
-  } = useExerciseForStaff()
-  const { spec, dataFiles, modelAnswers, fileRequirements } = useExerciseMaterials()
-  const pageTitle = titles.exercise(year, exercise, moduleCode, exerciseNumber)
+  const { studentLookup, studentSubmissionsLookup, studentGroupsLookup } =
+    useExerciseForStaff(exercise)
+  const { spec, fileRequirements } = useExerciseMaterials()
 
   const [tableData, setTableData] = useState<SubmissionDataRow[]>([])
   useEffect(() => {
@@ -65,16 +56,6 @@ const ExerciseStaff = () => {
       })
     )
   }, [studentGroupsLookup, studentLookup, studentSubmissionsLookup])
-
-  if (!exercise || (!spec && !fileRequirements?.length && !exercise.isGroupFormation)) {
-    return (
-      <Banner center>
-        <span>
-          {!exerciseIsLoaded ? 'Loading exercise...' : 'No information available on this exercise.'}
-        </span>
-      </Banner>
-    )
-  }
 
   return (
     <>
