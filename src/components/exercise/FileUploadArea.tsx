@@ -4,7 +4,7 @@ import { Check2, Git, Trash3Fill, Upload } from 'react-bootstrap-icons'
 import { format as formatTimeAgo } from 'timeago.js'
 
 import { GITLAB_HASH } from '../../constants/global'
-import { Exercise, FileRequirement, SubmittedFile } from '../../constants/types'
+import { Exercise, ExerciseSubmission, FileRequirement } from '../../constants/types'
 import { DeleteButton } from '../../styles/deleteButton.style'
 import { UploadTrigger } from '../../styles/exercise.style'
 import { css } from '../../styles/stitches.config'
@@ -20,9 +20,9 @@ const FileUploadArea = ({
   exercise: Exercise
   disabled?: boolean
   fileRequirement: FileRequirement
-  submittedFiles: SubmittedFile[]
+  submittedFiles: ExerciseSubmission[]
   submitFile: (file: File, targetFileName: string) => void
-  deleteFile: (_: SubmittedFile) => void
+  deleteFile: (_: ExerciseSubmission) => void
 }) => {
   const lastSeparator = fileRequirement.name.lastIndexOf('.')
   const fileName = fileRequirement.name.slice(0, lastSeparator)

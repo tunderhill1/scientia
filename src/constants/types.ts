@@ -11,6 +11,17 @@ export type LocationState = { next: string }
 
 export type SelectOption = { value: string; label: string }
 
+export type Mapping<K extends string | number | symbol, V> = {
+  [_ in K]: V
+}
+
+export type SubmissionDataRow = {
+  login: string
+  fullName: string
+  latestSubmission: string
+  subRows?: SubmissionDataRow[]
+}
+
 export class UserDetails {
   login: string
   year: string
@@ -63,6 +74,18 @@ export class Module {
 
   @Type(() => ModuleStaff)
   staff: ModuleStaff[]
+}
+
+export class EnrolledStudent {
+  login: string
+  email: string
+  firstname: string
+  lastname: string
+  level: number
+
+  get fullName(): string {
+    return `${this.firstname} ${this.lastname}`
+  }
 }
 
 export class Exercise {
@@ -144,18 +167,18 @@ export interface ResourceCreate {
   path: string
 }
 
-interface Material {
+export class Material {
   name: string
   url: string
 }
 
-export interface FileRequirement {
+export class FileRequirement {
   name: string
   max_size: number
 }
 
 export class ExerciseMaterials {
-  spec: Material
+  spec: Material | null
 
   @Expose({ name: 'data_files' })
   dataFiles: Material[]
@@ -167,7 +190,7 @@ export class ExerciseMaterials {
   fileRequirements: FileRequirement[]
 }
 
-export class SubmittedFile {
+export class ExerciseSubmission {
   username: string
   id: number
   year: string
@@ -213,7 +236,7 @@ export interface GroupMembersActions {
   deleteGroup: () => void
 }
 
-export class EnrolledStudent {
+export class CandidateGroupMember {
   id: number
   login: string
   available: boolean
@@ -249,9 +272,9 @@ export class GroupMember {
     return this.isLeader || !!this.accepted
   }
 
-  fullName(enrolledStudents: EnrolledStudent[]): string {
+  fullName(enrolledStudents: CandidateGroupMember[]): string {
     return (
-      enrolledStudents.find((person: EnrolledStudent) => person.login === this.username)
+      enrolledStudents.find((person: CandidateGroupMember) => person.login === this.username)
         ?.fullname ?? ''
     )
   }

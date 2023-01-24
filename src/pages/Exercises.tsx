@@ -3,6 +3,7 @@ import { Fragment, useContext, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useParams } from 'react-router-dom'
 
+import { Tabs } from '../components/Tabs'
 import { endpoints } from '../constants/endpoints'
 import titles from '../constants/titles'
 import { Exercise, Feedback } from '../constants/types'
@@ -80,78 +81,97 @@ const Exercises = () => {
       })
   }, [addToast, axiosInstance, exercises, moduleCode, year])
 
-  if (!exercises?.length || userDetails?.isStaff)
-    return (
-      <Banner center>
-        {userDetails?.isStaff
-          ? '🚧 Staff area under construction.'
-          : 'No exercises available for this module.'}
-      </Banner>
-    )
+  const ExercisesTable = () => (
+    <Table>
+      <thead style={{ textAlign: 'left' }}>
+        <tr>
+          <Header>Exercise</Header>
+          <Header colSpan={3}>Mark</Header>
+        </tr>
+      </thead>
+      <tbody>
+        {exercises.map((e: Exercise) => (
+          <Fragment key={e.number}>
+            <HorizontalRow colSpan={4} />
+            <tr>
+              <td>
+                <ViewExerciseButton
+                  disabled={e.startDate > now()}
+                  href={e.startDate <= now() ? `${window.location.pathname}/${e.number}` : '#'}
+                  title="View exercise details"
+                  css={styleExerciseItem(e)}
+                >
+                  <p>
+                    {e.type} {e.number}: {e.title}
+                  </p>
+                  <SubText>{displayTimestamp(e.deadline)}</SubText>
+                </ViewExerciseButton>
+              </td>
+
+              <td>{e.mark ? <b>{calculateGrade(e.mark, e.maximumMark)}</b> : <p>n/a</p>}</td>
+
+              <td style={{ whiteSpace: 'nowrap' }}>
+                {e.mark && (
+                  <>
+                    {percentage(e.mark, e.maximumMark)}
+                    <br />
+                    <SubText>
+                      {e.mark} / {e.maximumMark}
+                    </SubText>
+                  </>
+                )}
+              </td>
+
+              {e.mark && e.number in feedbackLookup && (
+                <td>
+                  <Link
+                    css={{ fontSize: '$md' }}
+                    target="_blank"
+                    href={endpoints.feedbackFile(feedbackLookup[e.number].id)}
+                    title={`Feedback for ${e.title}`}
+                  >
+                    <LinkIcon />
+                    Feedback
+                  </Link>
+                </td>
+              )}
+            </tr>
+          </Fragment>
+        ))}
+      </tbody>
+    </Table>
+  )
+
+  const ExercisesList = () => (
+    <div style={{ flexGrow: 1 }}>
+      <Tabs
+        data={exercises}
+        generator={(exercise: Exercise) => (
+          <>
+            <span>
+              {exercise.type} {exercise.number}: {exercise.title}
+            </span>
+          </>
+        )}
+        href={(exercise) =>
+          `/${year}/modules/${exercise.moduleCode}/exercises/${exercise.number}/manage`
+        }
+      />
+    </div>
+  )
 
   return (
     <>
       <Helmet>
         <title>{titles.exercises(year, moduleCode, moduleTitle)}</title>
       </Helmet>
-      <Table>
-        <thead style={{ textAlign: 'left' }}>
-          <tr>
-            <Header>Exercise</Header>
-            <Header colSpan={3}>Mark</Header>
-          </tr>
-        </thead>
-        <tbody>
-          {exercises.map((e: Exercise) => (
-            <Fragment key={e.number}>
-              <HorizontalRow colSpan={4} />
-              <tr>
-                <td>
-                  <ViewExerciseButton
-                    disabled={e.startDate > now()}
-                    href={e.startDate <= now() ? `${window.location.pathname}/${e.number}` : '#'}
-                    title="View exercise details"
-                    css={styleExerciseItem(e)}
-                  >
-                    <p>
-                      {e.type} {e.number}: {e.title}
-                    </p>
-                    <SubText>{displayTimestamp(e.deadline)}</SubText>
-                  </ViewExerciseButton>
-                </td>
-
-                <td>{e.mark ? <b>{calculateGrade(e.mark, e.maximumMark)}</b> : <p>n/a</p>}</td>
-
-                <td style={{ whiteSpace: 'nowrap' }}>
-                  {e.mark && (
-                    <>
-                      {percentage(e.mark, e.maximumMark)}
-                      <br />
-                      <SubText>
-                        {e.mark} / {e.maximumMark}
-                      </SubText>
-                    </>
-                  )}
-                </td>
-
-                {e.mark && e.number in feedbackLookup && (
-                  <td>
-                    <Link
-                      css={{ fontSize: '$md' }}
-                      target="_blank"
-                      href={endpoints.feedbackFile(feedbackLookup[e.number].id)}
-                      title={`Feedback for ${e.title}`}
-                    >
-                      <LinkIcon />
-                      Feedback
-                    </Link>
-                  </td>
-                )}
-              </tr>
-            </Fragment>
-          ))}
-        </tbody>
-      </Table>
+      {exercises.length === 0 ? (
+        <Banner center>No exercises to show</Banner>
+      ) : userDetails?.isStaff ? (
+        <ExercisesList />
+      ) : (
+        <ExercisesTable />
+      )}
     </>
   )
 }

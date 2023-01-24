@@ -62,7 +62,7 @@ export const Container = styled('div', {
   },
 })
 
-export const Button = styled('button', {
+const defaultButtonStyle = {
   backgroundColor: '$elementBackground',
   color: '$highContrast',
   height: '2.75rem',
@@ -76,6 +76,21 @@ export const Button = styled('button', {
   justifyContent: 'center',
   padding: '0 1rem 0 1rem',
   width: 'auto',
+}
+
+export const AnchorButton = styled('a', {
+  ...defaultButtonStyle,
+  variants: {
+    thin: {
+      true: {
+        height: '2rem',
+        padding: '0 0.5rem 0 0.5rem',
+      },
+    },
+  },
+})
+export const Button = styled('button', {
+  ...defaultButtonStyle,
 
   '&:hover': {
     backgroundColor: '$elementHover',

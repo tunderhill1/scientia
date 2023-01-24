@@ -19,6 +19,8 @@ export const endpoints = {
 
   modules: (year: string) => `${baseURL}/${year}/modules`,
   module: (year: string, moduleCode: string) => `${baseURL}/${year}/modules/${moduleCode}`,
+  enrolledStudents: (year: string, moduleCode: string) =>
+    `${baseURL}/${year}/modules/${moduleCode}/enrolled`,
   exercises: (year: string) => `${baseURL}/${year}/exercises`,
   exercise: (year: string, moduleCode: string, exerciseNumber: number) =>
     `${baseURL}/${year}/modules/${moduleCode}/exercises/${exerciseNumber}`,
@@ -26,6 +28,12 @@ export const endpoints = {
     `/${year}/modules/${moduleCode}/exercises/${exerciseNumber}/materials/${cohort}`,
   submissions: (year: string, moduleCode: string, exerciseNumber: number) =>
     `${baseURL}/${year}/${moduleCode}/exercises/${exerciseNumber}/submissions`,
+  submissionsZipped: (year: string, moduleCode: string, exerciseNumber: number) =>
+    `${baseURL}/${year}/${moduleCode}/exercises/${exerciseNumber}/submissions/zipped`,
+  submissionZipped: (year: string, moduleCode: string, exerciseNumber: number, username: string) =>
+    `${baseURL}/${year}/${moduleCode}/exercises/${exerciseNumber}/submissions/${username}/zipped`,
+  submissionsForStaff: (year: string, moduleCode: string, exerciseNumber: number) =>
+    `${baseURL}/${year}/${moduleCode}/exercises/${exerciseNumber}/submissions/staff`,
   submission: (year: string, moduleCode: string, exerciseNumber: number, submissionId: number) =>
     `${baseURL}/${year}/${moduleCode}/exercises/${exerciseNumber}/submissions/${submissionId}`,
   submissionFile: (

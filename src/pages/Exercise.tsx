@@ -1,25 +1,19 @@
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useParams } from 'react-router-dom'
 
+import PagePlaceholder from '../components/PagePlaceholder'
+import ExerciseMaterialsSection from '../components/exercise/ExerciseMaterialsSection'
 import FileUploadArea from '../components/exercise/FileUploadArea'
 import { DefaultGroupArea, GroupManagementArea } from '../components/exercise/GroupManagementArea'
 import { GRACE_PERIOD_AFTER_DEADLINE_IN_DAYS } from '../constants/global'
 import titles from '../constants/titles'
-import { useExercise } from '../lib/exercise.service'
+import { useExerciseForStudent } from '../lib/exercise.service'
 import { useGroup } from '../lib/groupFormation.service'
 import { useUser } from '../lib/user.context'
 import { displayTimestamp, now } from '../lib/utilities.service'
 import { Banner, Container, Hr } from '../styles/_app.style'
-import {
-  Deadline,
-  Footer,
-  Link,
-  LinkIcon,
-  ProgressBar,
-  ResourcesWrapper,
-  UploadWrapper,
-} from '../styles/exercise.style'
+import { Deadline, Footer, Link, ProgressBar, UploadWrapper } from '../styles/exercise.style'
 import { css } from '../styles/stitches.config'
 
 const Exercise = () => {
@@ -33,9 +27,10 @@ const Exercise = () => {
     submitFile,
     deleteFile,
     loadSubmittedFiles,
-  } = useExercise()
-  const { spec, dataFiles, modelAnswers, fileRequirements } = exerciseMaterials || {}
+  } = useExerciseForStudent()
+  const { spec, dataFiles, modelAnswers, fileRequirements } = exerciseMaterials
   const { groupIsLoaded, enrolledStudents, group, createGroup, membersActions } = useGroup(exercise)
+  const pageTitle = titles.exercise(year, exercise, moduleCode, exerciseNumber)
 
   useEffect(() => {
     if (!exercise) return
@@ -75,31 +70,6 @@ const Exercise = () => {
     )
   }
 
-  const ExerciseMaterialsSection = () => {
-    return (
-      <ResourcesWrapper>
-        {spec && (
-          <Link target="_blank" href={spec.url}>
-            <LinkIcon />
-            Specification
-          </Link>
-        )}
-        {!!dataFiles?.length && (
-          <Link target="_blank" href={dataFiles[0].url}>
-            <LinkIcon />
-            Data Files
-          </Link>
-        )}
-        {!!modelAnswers?.length && (
-          <Link target="_blank" href={modelAnswers[0].url}>
-            <LinkIcon />
-            Model Answers
-          </Link>
-        )}
-      </ResourcesWrapper>
-    )
-  }
-
   const GroupSection = () => {
     if (!group) {
       if (!exerciseIsOpen()) return <></>
@@ -118,21 +88,13 @@ const Exercise = () => {
 
   if (!exercise || (!spec && !fileRequirements?.length && !exercise.isGroupFormation)) {
     return (
-      <Container>
-        <Helmet>
-          <title>{titles.exercise(year, exercise, moduleCode, exerciseNumber)}</title>
-        </Helmet>
-        <section style={{ marginBottom: '2rem' }}>
-          <h1>
-            {moduleCode}: {exerciseNumber}
-          </h1>
-        </section>
-        <Banner center>
-          <span>
-            {!exerciseIsLoaded ? 'Loading exercise...' : 'No information for this exercise.'}
-          </span>
-        </Banner>
-      </Container>
+      <PagePlaceholder
+        title={pageTitle}
+        header={`${moduleCode}: ${exerciseNumber}`}
+        loading={!exerciseIsLoaded}
+        loadingText={'Loading exercise...'}
+        noInfoText={'No information for this exercise.'}
+      />
     )
   }
 
@@ -160,7 +122,7 @@ const Exercise = () => {
   return (
     <Container>
       <Helmet>
-        <title>{titles.exercise(year, exercise, moduleCode, exerciseNumber)}</title>
+        <title>{pageTitle}</title>
       </Helmet>
       <div
         style={{
@@ -186,7 +148,9 @@ const Exercise = () => {
             </h3>
           </Link>
         </section>
-        {spec && <ExerciseMaterialsSection />}
+        {spec && (
+          <ExerciseMaterialsSection spec={spec} dataFiles={dataFiles} modelAnswers={modelAnswers} />
+        )}
         <Hr />
         <Deadline>Due {displayTimestamp(exercise.deadline)}</Deadline>
 

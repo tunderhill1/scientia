@@ -14,6 +14,7 @@ import { Area, Viewport as ScrollViewport, Scrollbar, Thumb } from '../styles/_a
 import { globalStyles } from '../styles/stitches.config'
 import Analytics from './Analytics'
 import Exercise from './Exercise'
+import ExerciseStaff from './ExerciseStaff'
 import Exercises from './Exercises'
 import Login from './Login'
 import Materials from './Materials'
@@ -42,10 +43,10 @@ function App() {
                           <Route path="timeline" element={<Timeline />} />
                           <Route path="modules">
                             <Route index element={<Modules />} />
-                            <Route
-                              path=":moduleCode/exercises/:exerciseNumber"
-                              element={<Exercise />}
-                            />
+                            <Route path=":moduleCode/exercises/:exerciseNumber">
+                              <Route index element={<Exercise />} />
+                              <Route path="manage" element={<ExerciseStaff />} />
+                            </Route>
                             <Route path=":moduleCode" element={<Module />}>
                               {/* TODO: Replace with the overview page afer Scientia backend is up and ready */}
                               <Route index element={<Navigate to="materials" />} />

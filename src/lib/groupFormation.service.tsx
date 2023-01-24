@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 
 import { endpoints } from '../constants/endpoints'
 import {
-  EnrolledStudent,
+  CandidateGroupMember,
   Exercise,
   Group,
   GroupMember,
@@ -42,7 +42,7 @@ export const useGroup = (exercise: Exercise | undefined) => {
       .finally(() => setGroupIsLoaded(true))
   }, [addToast, axiosInstance, exercise, year])
 
-  const [enrolledStudents, setEnrolledStudents] = useState<EnrolledStudent[]>([])
+  const [enrolledStudents, setEnrolledStudents] = useState<CandidateGroupMember[]>([])
   useEffect(() => {
     if (!exercise || exercise.submissionType !== 'group') return
     axiosInstance
@@ -55,7 +55,9 @@ export const useGroup = (exercise: Exercise | undefined) => {
         ),
       })
       .then(({ data }: { data: any }) => {
-        setEnrolledStudents(data.map((person: any) => plainToInstance(EnrolledStudent, person)))
+        setEnrolledStudents(
+          data.map((person: any) => plainToInstance(CandidateGroupMember, person))
+        )
       })
       .catch((error) => {
         console.error(error)
@@ -90,7 +92,7 @@ export const useGroup = (exercise: Exercise | undefined) => {
           setEnrolledStudents((people) =>
             people.map((person) =>
               person.login === deletedMember!.username
-                ? plainToInstance(EnrolledStudent, { ...person, available: true })
+                ? plainToInstance(CandidateGroupMember, { ...person, available: true })
                 : person
             )
           )
@@ -120,7 +122,10 @@ export const useGroup = (exercise: Exercise | undefined) => {
         setEnrolledStudents((people) =>
           people.map((person) =>
             invitedUsernames.includes(person.login)
-              ? plainToInstance(EnrolledStudent, { ...instanceToPlain(person), available: false })
+              ? plainToInstance(CandidateGroupMember, {
+                  ...instanceToPlain(person),
+                  available: false,
+                })
               : person
           )
         )

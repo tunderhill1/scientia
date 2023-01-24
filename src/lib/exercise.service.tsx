@@ -4,18 +4,33 @@ import { useCallback, useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { endpoints } from '../constants/endpoints'
-import { Exercise, ExerciseMaterials, SubmittedFile } from '../constants/types'
+import {
+  EnrolledStudent,
+  Exercise,
+  ExerciseMaterials,
+  ExerciseSubmission,
+  Group,
+  Mapping,
+} from '../constants/types'
 import { AxiosContext } from './axios.context'
 import { useToast } from './toast.context'
 import { useUser } from './user.context'
+import { groupByProperty } from './utilities.service'
 
-export const useExercise = () => {
+const defaultExerciseMaterials = {
+  spec: null,
+  dataFiles: [],
+  modelAnswers: [],
+  fileRequirements: [],
+}
+
+export const useExerciseForStudent = () => {
   const axiosInstance = useContext(AxiosContext)
   const { year, moduleCode, exerciseNumber } = useParams()
   const { addToast } = useToast()
   const { userDetails } = useUser()
 
-  const [submittedFiles, setSubmittedFiles] = useState<SubmittedFile[]>([])
+  const [submittedFiles, setSubmittedFiles] = useState<ExerciseSubmission[]>([])
   const [exercise, setExercise] = useState<Exercise>()
   const [exerciseIsLoaded, setExerciseIsLoaded] = useState<boolean>(false)
   useEffect(() => {
@@ -31,7 +46,8 @@ export const useExercise = () => {
       .finally(() => setExerciseIsLoaded(true))
   }, [addToast, axiosInstance, exerciseNumber, moduleCode, year])
 
-  const [exerciseMaterials, setExerciseMaterials] = useState<ExerciseMaterials | null>(null)
+  const [exerciseMaterials, setExerciseMaterials] =
+    useState<ExerciseMaterials>(defaultExerciseMaterials)
   useEffect(() => {
     if (!userDetails) return
     axiosInstance
@@ -58,7 +74,7 @@ export const useExercise = () => {
       })
       .then(({ data }: { data: any }) => {
         setSubmittedFiles(
-          data.map((submittedFile: any) => plainToInstance(SubmittedFile, submittedFile))
+          data.map((submittedFile: any) => plainToInstance(ExerciseSubmission, submittedFile))
         )
       })
       .catch(() => {
@@ -75,8 +91,8 @@ export const useExercise = () => {
         url: endpoints.submissions(year!, moduleCode!, parseInt(exerciseNumber!)),
         data: formData,
       })
-      .then(({ data }: { data: SubmittedFile }) => {
-        const submittedFile = plainToInstance(SubmittedFile, data)
+      .then(({ data }: { data: ExerciseSubmission }) => {
+        const submittedFile = plainToInstance(ExerciseSubmission, data)
         addToast({
           variant: 'success',
           title: `${targetFileName} submitted successfully.`,
@@ -99,7 +115,7 @@ export const useExercise = () => {
       })
   }
 
-  const deleteFile = (file: SubmittedFile) => {
+  const deleteFile = (file: ExerciseSubmission) => {
     axiosInstance
       .request({
         method: 'DELETE',
@@ -134,5 +150,128 @@ export const useExercise = () => {
     deleteFile,
     submitWorkload,
     loadSubmittedFiles,
+  }
+}
+
+export const useExerciseForStaff = () => {
+  const axiosInstance = useContext(AxiosContext)
+  const { year, moduleCode, exerciseNumber } = useParams()
+  const { addToast } = useToast()
+  const { userDetails } = useUser()
+
+  const [exercise, setExercise] = useState<Exercise>()
+  const [exerciseIsLoaded, setExerciseIsLoaded] = useState<boolean>(false)
+  useEffect(() => {
+    axiosInstance
+      .request({
+        method: 'GET',
+        url: endpoints.exercise(year!, moduleCode!, parseInt(exerciseNumber!)),
+      })
+      .then(({ data }: { data: any }) => {
+        setExercise(plainToInstance(Exercise, data))
+      })
+      .catch(() => addToast({ variant: 'error', title: 'Unable to fetch exercise' }))
+      .finally(() => setExerciseIsLoaded(true))
+  }, [addToast, axiosInstance, exerciseNumber, moduleCode, year])
+
+  const [exerciseMaterials, setExerciseMaterials] =
+    useState<ExerciseMaterials>(defaultExerciseMaterials)
+  useEffect(() => {
+    if (!userDetails) return
+    axiosInstance
+      .request({
+        method: 'GET',
+        url: endpoints.exerciseMaterials(
+          year!,
+          moduleCode!,
+          parseInt(exerciseNumber!),
+          userDetails.cohort
+        ),
+      })
+      .then(({ data }: { data: any }) => {
+        setExerciseMaterials(plainToInstance(ExerciseMaterials, data))
+      })
+      .catch(() => addToast({ variant: 'error', title: 'Unable to get exercise details' }))
+  }, [addToast, axiosInstance, exerciseNumber, moduleCode, userDetails, year])
+
+  const [enrolledStudents, setEnrolledStudents] = useState<EnrolledStudent[]>([])
+  const [studentLookup, setStudentLookup] = useState<Mapping<string, EnrolledStudent>>({})
+  useEffect(() => {
+    if (!userDetails) return
+    axiosInstance
+      .request({
+        method: 'GET',
+        url: endpoints.enrolledStudents(year!, moduleCode!),
+      })
+      .then(({ data }: { data: any }) => {
+        let enrolled = data.map((d: any) => plainToInstance(EnrolledStudent, d))
+        setEnrolledStudents(enrolled)
+        setStudentLookup(
+          enrolled.reduce((acc: Mapping<string, EnrolledStudent>, student: EnrolledStudent) => {
+            return { ...acc, [student.login]: student }
+          }, {})
+        )
+      })
+      .catch(() => addToast({ variant: 'error', title: 'Unable to get enrolled students' }))
+  }, [addToast, axiosInstance, exerciseNumber, moduleCode, userDetails, year])
+
+  const [studentSubmissionsLookup, setStudentSubmissionsLookup] = useState<
+    Mapping<string, ExerciseSubmission[]>
+  >({})
+  useEffect(() => {
+    if (!userDetails) return
+    axiosInstance
+      .request({
+        method: 'GET',
+        url: endpoints.submissionsForStaff(year!, moduleCode!, parseInt(exerciseNumber!)),
+      })
+      .then(({ data }: { data: any }) => {
+        let deserialisedData = data.map((d: any) => plainToInstance(ExerciseSubmission, d))
+        setStudentSubmissionsLookup(
+          groupByProperty(deserialisedData, 'username', 'timestamp') as {
+            [username: string]: ExerciseSubmission[]
+          }
+        )
+      })
+      .catch(() => addToast({ variant: 'error', title: 'Unable to get student submissions' }))
+  }, [addToast, axiosInstance, exerciseNumber, moduleCode, userDetails, year])
+
+  const [studentGroupsLookup, setStudentGroupsLookup] = useState<Mapping<string, Group>>({})
+  useEffect(() => {
+    if (!userDetails) return
+    axiosInstance
+      .request({
+        method: 'GET',
+        url: endpoints.submissionGroups,
+        data: {
+          year,
+          module_code: moduleCode,
+          exercise_number: exerciseNumber,
+        },
+      })
+      .then(({ data }: { data: any }) => {
+        const deserialised = data.map((d: any) => plainToInstance(Group, d))
+        const groupsByLeader = deserialised.reduce(
+          (grouped: Mapping<string, Group>, group: Group) => {
+            return { ...grouped, [group.leader as string]: group }
+          },
+          {}
+        )
+        setStudentGroupsLookup(groupsByLeader)
+      })
+      .catch((error) => {
+        console.log(error)
+        addToast({ variant: 'error', title: 'Failed to fetch groups' })
+      })
+  }, [addToast, axiosInstance, exerciseNumber, moduleCode, userDetails, year])
+
+  return {
+    exercise,
+    exerciseIsLoaded,
+    exerciseMaterials,
+    enrolledStudents,
+    studentSubmissionsLookup,
+    studentGroupsLookup,
+    studentLookup,
   }
 }

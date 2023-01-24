@@ -5,7 +5,7 @@ import Select from 'react-select'
 import makeAnimated from 'react-select/animated'
 
 import {
-  EnrolledStudent,
+  CandidateGroupMember,
   Group,
   GroupMember,
   GroupMembersActions,
@@ -18,7 +18,11 @@ import { DropdownStyle, MemberName, MemberRole } from '../../styles/groupSubmiss
 import { Tabs } from '../Tabs'
 import Dialog from '../dialogs/Dialog'
 
-const EnrolledStudentSelectLabel = ({ enrolledStudent }: { enrolledStudent: EnrolledStudent }) => {
+const EnrolledStudentSelectLabel = ({
+  enrolledStudent,
+}: {
+  enrolledStudent: CandidateGroupMember
+}) => {
   const { login, fullname, available } = enrolledStudent
   return (
     <span className={css({ color: available ? '$highContrast' : '$sand9' })()}>
@@ -36,7 +40,7 @@ export const GroupManagementArea = ({
   disabled,
 }: {
   group: Group | null
-  enrolledStudents: EnrolledStudent[]
+  enrolledStudents: CandidateGroupMember[]
   membersActions: GroupMembersActions
   disabled: boolean
 }) => {
