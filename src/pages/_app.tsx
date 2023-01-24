@@ -53,9 +53,6 @@ function App() {
                             </Route>
                             <Route path=":moduleCode" element={<Module />}>
                               <Route index element={<Navigate to="materials" />} />
-                              {/*This is for UI design purposes only. The *materials pages will need to be merged*/}
-                              {/*once logic to distinguish between staff and student is sorted out*/}
-                              {/*<Route path="staff-materials" element={<StaffMaterials />} />*/}
                               <Route path="materials" element={<Materials />} />
                               <Route path="exercises" element={<Exercises />} />
                             </Route>
