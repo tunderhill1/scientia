@@ -66,11 +66,12 @@ const Exercise = () => {
           <ExerciseMaterialsSection spec={spec} dataFiles={dataFiles} modelAnswers={modelAnswers} />
         )}
         <Hr />
-        {userDetails?.isStaff || userDetails?.isTaForModule(moduleCode!) ? (
-          <ExerciseStaff />
-        ) : (
-          <ExerciseStudent />
-        )}
+        {userDetails &&
+          (userDetails.isStaff || userDetails.isTaForModule(moduleCode!) ? (
+            <ExerciseStaff />
+          ) : (
+            <ExerciseStudent />
+          ))}
       </div>
     </Container>
   )
