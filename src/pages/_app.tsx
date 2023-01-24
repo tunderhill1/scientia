@@ -46,9 +46,10 @@ function App() {
                             <Route index element={<Modules />} />
                             <Route path=":moduleCode/exercises/:exerciseNumber">
                               <Route index element={<Exercise />} />
-                              <Route element={<StaffOnlyRoute />}>
-                                <Route path="manage" element={<ExerciseStaff />} />
-                              </Route>
+                              <Route
+                                path="manage"
+                                element={<StaffOnlyRoute to={<ExerciseStaff />} />}
+                              />
                             </Route>
                             <Route path=":moduleCode" element={<Module />}>
                               <Route index element={<Navigate to="materials" />} />

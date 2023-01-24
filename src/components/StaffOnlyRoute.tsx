@@ -1,9 +1,10 @@
-import { Navigate, Outlet, useParams } from 'react-router-dom'
+import { ReactNode } from 'react'
+import { Navigate, useParams } from 'react-router-dom'
 
 import { useUser } from '../lib/user.context'
 import { Navigation } from './Navigation'
 
-export const StaffOnlyRoute = () => {
+export const StaffOnlyRoute = ({ to }: { to: ReactNode }) => {
   const { year, moduleCode, exerciseNumber } = useParams()
   const { userDetails } = useUser()
   const redirectPath = `/${year}/modules/${moduleCode}/exercises/${exerciseNumber}`
@@ -11,7 +12,7 @@ export const StaffOnlyRoute = () => {
   return userDetails?.isStaff || userDetails?.isTaForModule(moduleCode!) ? (
     <>
       <Navigation />
-      <Outlet />
+      {to}
     </>
   ) : (
     <Navigate to={redirectPath} />
