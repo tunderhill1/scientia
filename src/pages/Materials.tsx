@@ -75,6 +75,7 @@ const Materials = () => {
   const existingTags = Object.values(groupedMaterials)
     .flat()
     .flatMap((m) => m.tags)
+    .filter((tag, pos, ar) => ar.indexOf(tag) === pos)
 
   const onComplete = () => {
     addCompleteResources(
