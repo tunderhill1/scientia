@@ -14,7 +14,7 @@ const DATA_PLACEHOLDER = '-'
 
 const ExerciseStaff = ({ exercise }: { exercise: Exercise }) => {
   const { year, moduleCode, exerciseNumber } = useParams()
-  const { studentLookup, studentSubmissionsLookup, studentGroupsLookup } =
+  const { studentLookup, studentSubmissionsLookup, studentGroupsLookup, marksLookup } =
     useExerciseForStaff(exercise)
   const showBulkDownloadButton: boolean = Object.keys(studentSubmissionsLookup).length !== 0
   const [tableData, setTableData] = useState<SubmissionDataRow[]>([])
@@ -41,6 +41,7 @@ const ExerciseStaff = ({ exercise }: { exercise: Exercise }) => {
             submissions.length > 0
               ? format(submissions[submissions.length - 1].timestamp, 'dd/MM/yy HH:mm:ss')
               : DATA_PLACEHOLDER,
+          mark: marksLookup[leader] || DATA_PLACEHOLDER,
           subRows:
             studentGroupsLookup[leader]?.members
               .filter((m) => !m.isLeader)
@@ -49,6 +50,7 @@ const ExerciseStaff = ({ exercise }: { exercise: Exercise }) => {
                   login: username,
                   fullName: studentLookup[username]?.fullName || DATA_PLACEHOLDER,
                   latestSubmission: '',
+                  mark: marksLookup[username] || DATA_PLACEHOLDER,
                 }
               }) || [],
         }

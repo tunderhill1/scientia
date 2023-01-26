@@ -11,6 +11,7 @@ import {
   ExerciseSubmission,
   Group,
   Mapping,
+  Mark,
 } from '../constants/types'
 import { AxiosContext } from './axios.context'
 import { useToast } from './toast.context'
@@ -238,10 +239,30 @@ export const useExerciseForStaff = (exercise: Exercise) => {
       })
   }, [addToast, axiosInstance, exerciseNumber, moduleCode, userDetails, year])
 
+  const [marksLookup, setMarksLookup] = useState<Mapping<string, number>>({})
+  useEffect(() => {
+    if (!userDetails) return
+    axiosInstance
+      .request({
+        method: 'GET',
+        url: endpoints.marks(year!, moduleCode!, parseInt(exerciseNumber!)),
+      })
+      .then(({ data }: { data: any }) => {
+        let deserialised = data.map((d: any) => plainToInstance(Mark, d))
+        setMarksLookup(
+          deserialised.reduce((grouped: Mapping<string, Mark>, mark: Mark) => {
+            return { ...grouped, [mark.student_username]: mark.mark }
+          }, {})
+        )
+      })
+      .catch(() => addToast({ variant: 'error', title: 'Unable to get marks' }))
+  }, [addToast, axiosInstance, exerciseNumber, moduleCode, userDetails, year])
+
   return {
     enrolledStudents,
     studentSubmissionsLookup,
     studentGroupsLookup,
     studentLookup,
+    marksLookup,
   }
 }

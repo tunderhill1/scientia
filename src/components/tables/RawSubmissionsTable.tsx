@@ -85,6 +85,12 @@ const RawSubmissionsTable = ({
       header: 'Latest Submission',
       footer: (info) => info.column.id,
     }),
+    columnHelper.accessor((row) => row.mark, {
+      id: 'mark',
+      cell: (info) => info.getValue(),
+      header: 'Mark',
+      footer: (info) => info.column.id,
+    }),
   ]
 
   const [expanded, setExpanded] = useState<ExpandedState>({})

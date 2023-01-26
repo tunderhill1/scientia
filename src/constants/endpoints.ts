@@ -45,6 +45,8 @@ export const endpoints = {
     `${baseURL}/${year}/${moduleCode}/exercises/${exerciseNumber}/submissions/${submissionId}/file`,
   submissionWorkload: (year: string, moduleCode: string, exerciseNumber: number) =>
     `${baseURL}/${year}/${moduleCode}/exercises/${exerciseNumber}/workload`,
+  marks: (year: string, moduleCode: string, exerciseNumber: number) =>
+    `${baseURL}/${year}/${moduleCode}/exercises/${exerciseNumber}/marks`,
   enrolledStudentsWithAvailability: (year: string, moduleCode: string, exerciseNumber: number) =>
     `${baseURL}/${year}/modules/${moduleCode}/exercises/${exerciseNumber}/group-members-availability`,
   inviteMembers: (year: string, moduleCode: string, exerciseNumber: number) =>

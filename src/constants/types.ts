@@ -19,6 +19,7 @@ export type SubmissionDataRow = {
   login: string
   fullName: string
   latestSubmission: string
+  mark: number | string
   subRows?: SubmissionDataRow[]
 }
 
@@ -188,6 +189,12 @@ export class ExerciseMaterials {
 
   @Expose({ name: 'hand_ins' })
   fileRequirements: FileRequirement[]
+}
+
+export class Mark {
+  student_username: string
+  marker: string
+  mark: number
 }
 
 export class ExerciseSubmission {
