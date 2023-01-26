@@ -16,7 +16,7 @@ const ExerciseStaff = ({ exercise }: { exercise: Exercise }) => {
   const { year, moduleCode, exerciseNumber } = useParams()
   const { studentLookup, studentSubmissionsLookup, studentGroupsLookup } =
     useExerciseForStaff(exercise)
-
+  const showBulkDownloadButton: boolean = Object.keys(studentSubmissionsLookup).length !== 0
   const [tableData, setTableData] = useState<SubmissionDataRow[]>([])
   useEffect(() => {
     const members = new Set(
@@ -60,12 +60,18 @@ const ExerciseStaff = ({ exercise }: { exercise: Exercise }) => {
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Deadline>Due {displayTimestamp(exercise.deadline)}</Deadline>
-        <AnchorButton
-          href={endpoints.submissionsZipped(year!, moduleCode!, parseInt(exerciseNumber as string))}
-          title="Download raw submissions"
-        >
-          Bulk download
-        </AnchorButton>
+        {showBulkDownloadButton && (
+          <AnchorButton
+            href={endpoints.submissionsZipped(
+              year!,
+              moduleCode!,
+              parseInt(exerciseNumber as string)
+            )}
+            title="Download raw submissions"
+          >
+            Bulk download
+          </AnchorButton>
+        )}
       </div>
       <div style={{ overflowX: 'scroll' }}>
         <RawSubmissionsTable exercise={exercise} data={tableData} />
