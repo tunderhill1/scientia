@@ -6,8 +6,9 @@ import { useNavigate } from 'react-router-dom'
 import { endpoints } from '../constants/endpoints'
 import { UserDetails } from '../constants/types'
 import { CSRF_ACCESS_COOKIE } from './axios.context'
+import { useToast } from './toast.context'
 import { useUser } from './user.context'
-import { getCookie } from './utilities.service'
+import { errorMessage, getCookie } from './utilities.service'
 
 /**
  * TODO: The plan is to process authentication- and authorisation-related queries here and update the user context based
@@ -23,12 +24,12 @@ type Credentials = {
 }
 
 export default function useAuth() {
+  const { addToast } = useToast()
   const { userDetails, storeUserDetails, clearUserDetails } = useUser()
   const [isLoggedIn, setIsLoggedIn] = useState(userDetails !== undefined)
   const navigate = useNavigate()
 
   const loginUser = async (data: Credentials) => {
-    /* TODO: Use the axios hook here instead! */
     return axios({
       url: endpoints.login,
       method: 'post',
@@ -38,7 +39,11 @@ export default function useAuth() {
         storeUserDetails(plainToInstance(UserDetails, response.data))
       })
       .catch((error) => {
-        console.log(error)
+        const msg =
+          error.response.status === 500
+            ? 'The server encountered an error while fetching your details. Contact DoC EdTech.'
+            : errorMessage(error) || 'Login failed.'
+        addToast({ variant: 'error', title: msg })
       })
   }
 
