@@ -1,7 +1,7 @@
 import { differenceInDays, nextMonday } from 'date-fns'
 
-import { DatedModuleMeanCompletions } from '../../constants/gameTypes'
 import { now } from '../../lib/utilities.service'
+import { DatedModuleMeanCompletions } from '../../types/schemas/gamification'
 import { LineChart, LineChartDataPoint } from '../statistics/LineChart'
 
 /* Recent completion must be sorted by date */

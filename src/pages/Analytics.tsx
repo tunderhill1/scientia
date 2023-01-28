@@ -10,7 +10,6 @@ import { StudentProgressLineChart } from '../components/game/StudentProgressLine
 import { Statistic } from '../components/statistics/Statistic'
 import { NumberedAward, NumberedCircle } from '../components/statistics/numberedIcons'
 import { endpoints } from '../constants/endpoints'
-import { DatedModuleMeanCompletions, ModuleMeanCompletion } from '../constants/gameTypes'
 import { AxiosContext } from '../lib/axios.context'
 import { useRecentAcademicTerm } from '../lib/terms.service'
 import { useToast } from '../lib/toast.context'
@@ -18,6 +17,7 @@ import { useUser } from '../lib/user.context'
 import { capitalizeEachWord, now, shortYear } from '../lib/utilities.service'
 import { Banner, Container } from '../styles/_app.style'
 import { Grid } from '../styles/statistics/analytics.style'
+import { DatedModuleMeanCompletions, ModuleMeanCompletion } from '../types/schemas/gamification'
 
 const AFFILIATED_COMPLETIONS_RESULTS_LIMIT = 3
 const OVERALL_COMPLETIONS_RESULTS_LIMIT = 10

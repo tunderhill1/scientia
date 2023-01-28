@@ -1,4 +1,4 @@
-import { ModuleMeanCompletion } from '../../constants/gameTypes'
+import { ModuleMeanCompletion } from '../../types/schemas/gamification'
 import { IconRanking, IconRankingItem } from '../statistics/IconRanking'
 import { NumberedIcon } from '../statistics/numberedIcons'
 
