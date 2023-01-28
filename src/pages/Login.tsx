@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import titles from '../constants/titles'
-import { LocationState } from '../constants/types'
 import useAuth from '../lib/auth.service'
 import { ThemeContext } from '../lib/theme.context'
 import { useUser } from '../lib/user.context'
@@ -11,6 +10,7 @@ import { shortYear } from '../lib/utilities.service'
 import { Container } from '../styles/_app.style'
 import { ActionButton } from '../styles/dialog.style'
 import { Fieldset, Form, Input, Label, Logo, Name, Tagline } from '../styles/login.style'
+import { LocationState } from '../types/global'
 
 /* TODO: Add a help toggle to the login form (i.e. information for new users to the platform) */
 const Login = () => {

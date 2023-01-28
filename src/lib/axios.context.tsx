@@ -3,7 +3,7 @@ import { plainToInstance } from 'class-transformer'
 import qs from 'qs'
 import React, { createContext, useRef } from 'react'
 
-import { UserDetails } from '../constants/types'
+import { UserDetails } from '../types/schemas/abc'
 import useTokenRefresh from './tokenRefresh.service'
 import { useUser } from './user.context'
 import { getCookie } from './utilities.service'

@@ -1,5 +1,5 @@
 import { TIMELINE_TRACK_HEIGHT } from '../../constants/global'
-import { Exercise } from '../../constants/types'
+import { Exercise } from '../../types/schemas/abc'
 import { styleExerciseItem } from '../exerciseItem.style'
 import { styled } from '../stitches.config'
 

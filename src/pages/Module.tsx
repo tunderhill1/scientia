@@ -4,13 +4,13 @@ import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import { LevelProgressBar } from '../components/game/LevelProgressBar'
 import { endpoints } from '../constants/endpoints'
-import { Module as ModuleType } from '../constants/types'
 import { AxiosContext } from '../lib/axios.context'
 import { useGame } from '../lib/game/game.context'
 import { useLevels } from '../lib/game/levels.service'
 import { useToast } from '../lib/toast.context'
 import { Banner, Button, Container, Wrapper } from '../styles/_app.style'
 import { css } from '../styles/stitches.config'
+import { Module as ModuleType } from '../types/schemas/abc'
 
 const Module = () => {
   const { gameSettingOn } = useGame()

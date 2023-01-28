@@ -4,11 +4,14 @@ import { useParams } from 'react-router-dom'
 
 import RawSubmissionsTable from '../components/tables/RawSubmissionsTable'
 import { endpoints } from '../constants/endpoints'
-import { Exercise, ExerciseSubmission, Mapping, SubmissionDataRow } from '../constants/types'
 import { useExerciseForStaff } from '../lib/exercise.service'
 import { displayTimestamp } from '../lib/utilities.service'
 import { AnchorButton } from '../styles/_app.style'
 import { Deadline } from '../styles/exercise.style'
+import { Mapping } from '../types/global'
+import { Exercise } from '../types/schemas/abc'
+import { ExerciseSubmission } from '../types/schemas/emarking'
+import { SubmissionDataRow } from '../types/tablesDataRows'
 
 const DATA_PLACEHOLDER = '-'
 

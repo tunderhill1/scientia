@@ -2,7 +2,7 @@ import { plainToInstance } from 'class-transformer'
 import { addDays } from 'date-fns'
 
 import { GRACE_PERIOD_AFTER_DEADLINE_IN_DAYS } from '../../constants/global'
-import { Exercise } from '../../constants/types'
+import { Exercise } from '../../types/schemas/abc'
 
 const DEADLINE = new Date(2022, 9, 29, 19)
 const EXTENDED_DEADLINE = new Date(2022, 10, 2, 19)

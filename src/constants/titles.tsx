@@ -1,5 +1,5 @@
 import { capitaliseFirstLetter, formatShortYear, shortYear } from '../lib/utilities.service'
-import { Exercise } from './types'
+import { Exercise } from '../types/schemas/abc'
 
 // Scientia's meta titles
 

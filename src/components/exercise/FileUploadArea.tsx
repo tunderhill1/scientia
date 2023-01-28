@@ -4,10 +4,11 @@ import { Check2, Git, Trash3Fill, Upload } from 'react-bootstrap-icons'
 import { format as formatTimeAgo } from 'timeago.js'
 
 import { GITLAB_HASH } from '../../constants/global'
-import { Exercise, ExerciseSubmission, FileRequirement } from '../../constants/types'
 import { DeleteButton } from '../../styles/deleteButton.style'
 import { UploadTrigger } from '../../styles/exercise.style'
 import { css } from '../../styles/stitches.config'
+import { Exercise, FileRequirement } from '../../types/schemas/abc'
+import { ExerciseSubmission } from '../../types/schemas/emarking'
 
 const FileUploadArea = ({
   exercise,

@@ -3,13 +3,13 @@ import React, { useEffect } from 'react'
 import FileUploadArea from '../components/exercise/FileUploadArea'
 import { DefaultGroupArea, GroupManagementArea } from '../components/exercise/GroupManagementArea'
 import { GRACE_PERIOD_AFTER_DEADLINE_IN_DAYS } from '../constants/global'
-import { Exercise } from '../constants/types'
 import { useExerciseForStudent, useExerciseMaterials } from '../lib/exercise.service'
 import { useGroup } from '../lib/groupFormation.service'
 import { useUser } from '../lib/user.context'
 import { displayTimestamp, now } from '../lib/utilities.service'
 import { Banner } from '../styles/_app.style'
 import { Deadline, Footer, ProgressBar, UploadWrapper } from '../styles/exercise.style'
+import { Exercise } from '../types/schemas/abc'
 
 const ExerciseStudent = ({ exercise }: { exercise: Exercise }) => {
   const { userDetails } = useUser()

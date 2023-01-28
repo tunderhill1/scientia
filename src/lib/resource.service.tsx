@@ -4,7 +4,7 @@ import { useOutletContext, useParams } from 'react-router-dom'
 
 import { endpoints } from '../constants/endpoints'
 import { LONDON_TIMEZONE } from '../constants/global'
-import { ResourceCreate } from '../constants/types'
+import { ResourceCreate } from '../types/materials'
 import { AxiosContext } from './axios.context'
 import { Resource } from './materials.service'
 import { useToast } from './toast.context'

@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { Material } from '../../constants/types'
 import { Link, LinkIcon, ResourcesWrapper } from '../../styles/exercise.style'
+import { Material } from '../../types/schemas/abc'
 
 const ExerciseMaterialsSection = ({
   spec,

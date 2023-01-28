@@ -4,15 +4,9 @@ import { useCallback, useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { endpoints } from '../constants/endpoints'
-import {
-  EnrolledStudent,
-  Exercise,
-  ExerciseMaterials,
-  ExerciseSubmission,
-  Group,
-  Mapping,
-  Mark,
-} from '../constants/types'
+import { Mapping } from '../types/global'
+import { EnrolledStudent, Exercise, ExerciseMaterials } from '../types/schemas/abc'
+import { ExerciseSubmission, Group, Mark } from '../types/schemas/emarking'
 import { AxiosContext } from './axios.context'
 import { useToast } from './toast.context'
 import { useUser } from './user.context'

@@ -2,10 +2,10 @@ import { ReactNode } from 'react'
 import { useParams } from 'react-router-dom'
 import { format as formatTimeAgo } from 'timeago.js'
 
-import { Exercise } from '../../constants/types'
 import { now } from '../../lib/utilities.service'
 import { css } from '../../styles/stitches.config'
 import { TrackItemTitle, trackItemStyles } from '../../styles/timeline/track-item.style'
+import { Exercise } from '../../types/schemas/abc'
 
 export const TrackItem = (props: {
   exercise: Exercise

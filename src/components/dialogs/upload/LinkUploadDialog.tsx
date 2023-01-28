@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react'
 
-import { ResourceCreate } from '../../../constants/types'
 import { Resource } from '../../../lib/materials.service'
 import { useResources } from '../../../lib/resource.service'
 import { useToast } from '../../../lib/toast.context'
 import { now, toPlainSelectOption } from '../../../lib/utilities.service'
+import { ResourceCreate } from '../../../types/materials'
 import Dialog from '../Dialog'
 import ResourceDetailsForm from './components/ResourceDetailsForm'
 

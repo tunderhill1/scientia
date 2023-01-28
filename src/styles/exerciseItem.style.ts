@@ -1,6 +1,6 @@
 import { CSS } from '@stitches/react'
 
-import { Exercise } from '../constants/types'
+import { Exercise } from '../types/schemas/abc'
 
 /**
  * Style each track item's border, colour, etc. based on the exercise details

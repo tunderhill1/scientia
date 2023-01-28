@@ -1,9 +1,9 @@
 import { isWeekend } from 'date-fns'
 import { useEffect, useRef } from 'react'
 
-import { Term } from '../../constants/types'
 import { now } from '../../lib/utilities.service'
 import { dateToColumn } from '../../pages/Timeline'
+import { Term } from '../../types/schemas/abc'
 import { css, styled } from '../stitches.config'
 
 export const Grid = styled('div', {

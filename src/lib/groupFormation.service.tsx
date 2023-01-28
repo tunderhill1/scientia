@@ -3,13 +3,9 @@ import { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { endpoints } from '../constants/endpoints'
-import {
-  CandidateGroupMember,
-  Exercise,
-  Group,
-  GroupMember,
-  GroupMembersActions,
-} from '../constants/types'
+import { GroupMembersActions } from '../types/hooks'
+import { Exercise } from '../types/schemas/abc'
+import { CandidateGroupMember, Group, GroupMember } from '../types/schemas/emarking'
 import { AxiosContext } from './axios.context'
 import { useToast } from './toast.context'
 import { errorMessage } from './utilities.service'

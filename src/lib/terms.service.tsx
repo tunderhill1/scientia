@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { endpoints } from '../constants/endpoints'
-import { Term } from '../constants/types'
+import { Term } from '../types/schemas/abc'
 import { AxiosContext } from './axios.context'
 import { useToast } from './toast.context'
 import { now } from './utilities.service'

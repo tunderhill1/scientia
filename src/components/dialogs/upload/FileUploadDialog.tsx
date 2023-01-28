@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from 'react'
 import { X } from 'react-bootstrap-icons'
 import Dropzone from 'react-dropzone'
 
-import { ResourceCreate, SelectOption } from '../../../constants/types'
 import { Resource } from '../../../lib/materials.service'
 import { useResources } from '../../../lib/resource.service'
 import { useToast } from '../../../lib/toast.context'
@@ -16,6 +15,8 @@ import {
   Header,
   Trigger,
 } from '../../../styles/upload-dialog.style'
+import { SelectOption } from '../../../types/global'
+import { ResourceCreate } from '../../../types/materials'
 import Dialog from '../Dialog'
 import ResourceDetailsForm from './components/ResourceDetailsForm'
 

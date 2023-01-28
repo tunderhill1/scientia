@@ -4,17 +4,12 @@ import { Trash3Fill } from 'react-bootstrap-icons'
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated'
 
-import {
-  CandidateGroupMember,
-  Group,
-  GroupMember,
-  GroupMembersActions,
-  Option,
-} from '../../constants/types'
 import { useUser } from '../../lib/user.context'
 import { capitaliseFirstLetter } from '../../lib/utilities.service'
 import { Banner, Button } from '../../styles/_app.style'
 import { DropdownStyle, MemberName, MemberRole } from '../../styles/groupSubmission.style'
+import { GroupInviteOption, GroupMembersActions } from '../../types/hooks'
+import { CandidateGroupMember, Group, GroupMember } from '../../types/schemas/emarking'
 import { Tabs } from '../Tabs'
 import Dialog from '../dialogs/Dialog'
 
@@ -45,8 +40,8 @@ export const GroupManagementArea = ({
   disabled: boolean
 }) => {
   const { userDetails: { login: userLogin } = {} } = useUser()
-  const [inviteOptions, setInviteOptions] = useState<Option[]>([])
-  const [optionsSelected, setOptionsSelected] = useState<Option[]>([])
+  const [inviteOptions, setInviteOptions] = useState<GroupInviteOption[]>([])
+  const [optionsSelected, setOptionsSelected] = useState<GroupInviteOption[]>([])
   const [userMember, setUserMember] = useState<GroupMember>()
   const [deleteGroupDialogOpen, setDeleteGroupDialogOpen] = useState<boolean>(false)
 

@@ -3,7 +3,6 @@ import { useContext, useEffect, useState } from 'react'
 import { InfoCircle } from 'react-bootstrap-icons'
 import Creatable from 'react-select/creatable'
 
-import { ResourceCreate, SelectOption } from '../../../../constants/types'
 import { getUTCDatetime } from '../../../../lib/resource.service'
 import { ThemeContext } from '../../../../lib/theme.context'
 import { useToast } from '../../../../lib/toast.context'
@@ -19,6 +18,8 @@ import {
   TitleInput,
   Visibility,
 } from '../../../../styles/resource-details-form.style'
+import { SelectOption } from '../../../../types/global'
+import { ResourceCreate } from '../../../../types/materials'
 
 // maximum height of dropdown menu before scrolling
 // https://react-select.com/props#creatable-props (see maxMenuHeight)

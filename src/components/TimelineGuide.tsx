@@ -3,11 +3,11 @@ import { plainToInstance } from 'class-transformer'
 import { InfoCircle } from 'react-bootstrap-icons'
 import { matchPath, useLocation } from 'react-router-dom'
 
-import { Exercise } from '../constants/types'
 import { Button } from '../styles/_app.style'
 import { styleExerciseItem } from '../styles/exerciseItem.style'
 import { Content } from '../styles/navigation.style'
 import { styled } from '../styles/stitches.config'
+import { Exercise } from '../types/schemas/abc'
 
 const ExerciseExample = styled('div', { borderRadius: '0.5rem', padding: '0.75rem' })
 

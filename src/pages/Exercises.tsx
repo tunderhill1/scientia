@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom'
 import { Tabs } from '../components/Tabs'
 import { endpoints } from '../constants/endpoints'
 import titles from '../constants/titles'
-import { Exercise, Feedback } from '../constants/types'
 import { AxiosContext } from '../lib/axios.context'
 import { useToast } from '../lib/toast.context'
 import { useUser } from '../lib/user.context'
@@ -21,6 +20,8 @@ import {
   Table,
   ViewExerciseButton,
 } from '../styles/exercises-page.style'
+import { Exercise } from '../types/schemas/abc'
+import { Feedback } from '../types/schemas/emarking'
 
 const Exercises = () => {
   const axiosInstance = useContext(AxiosContext)

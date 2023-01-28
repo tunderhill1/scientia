@@ -4,7 +4,7 @@ import { matchPath, useLocation } from 'react-router-dom'
 
 import { endpoints } from '../constants/endpoints'
 import { SHORT_YEAR_REGEX } from '../constants/global'
-import { UserDetails } from '../constants/types'
+import { UserDetails } from '../types/schemas/abc'
 import { AxiosContext } from './axios.context'
 import { useToast } from './toast.context'
 import { formatShortYear } from './utilities.service'

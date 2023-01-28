@@ -13,9 +13,10 @@ import { CaretDownFill, CaretRightFill, CaretUpFill, Icon } from 'react-bootstra
 import { useParams } from 'react-router-dom'
 
 import { endpoints } from '../../constants/endpoints'
-import { Exercise, SubmissionDataRow } from '../../constants/types'
 import { AnchorButton } from '../../styles/_app.style'
 import { Table, Td, Th, ThContainer } from '../../styles/table.style'
+import { Exercise } from '../../types/schemas/abc'
+import { SubmissionDataRow } from '../../types/tablesDataRows'
 
 const DATE_PATTERN = /\d{2}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}/g
 

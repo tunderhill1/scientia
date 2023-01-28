@@ -30,7 +30,6 @@ import { LevelToggles } from '../components/game/LevelToggles'
 import { endpoints } from '../constants/endpoints'
 import { LONDON_TIMEZONE } from '../constants/global'
 import titles from '../constants/titles'
-import { UserDetails } from '../constants/types'
 import useChecklist from '../lib/checkbox.service'
 import { useReordering } from '../lib/dragDrop.service'
 import { useGame } from '../lib/game/game.context'
@@ -43,6 +42,7 @@ import { Caret } from '../styles/collapsible-list.style'
 import { ToggleDragDropButton } from '../styles/dragDrop.style'
 import { Tag, Tags } from '../styles/materials.style'
 import { Toggle } from '../styles/toolbar.style'
+import { UserDetails } from '../types/schemas/abc'
 
 const Materials = () => {
   const [checklistMode, setSelectionMode] = useState(false)

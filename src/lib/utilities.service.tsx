@@ -10,7 +10,8 @@ import {
 import { formatInTimeZone, utcToZonedTime } from 'date-fns-tz'
 
 import { LONDON_TIMEZONE } from '../constants/global'
-import { Exercise, Term, Track, TrackMap } from '../constants/types'
+import { Exercise, Term } from '../types/schemas/abc'
+import { Track, TrackMap } from '../types/timeline'
 
 const SEPTEMBER = 8
 const OCTOBER = 9

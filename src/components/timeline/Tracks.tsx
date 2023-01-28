@@ -1,10 +1,11 @@
 import { max, min } from 'date-fns'
 
 import { DIVIDER_HEIGHT, TIMELINE_TRACK_HEIGHT } from '../../constants/global'
-import { Exercise, Term, Track, TrackMap } from '../../constants/types'
 import { dateToColumn } from '../../pages/Timeline'
 import { WEEKDAYS_WIDTHS, WEEKEND_WIDTH } from '../../styles/timeline/constants.style'
 import { Grid, VerticalDayLine } from '../../styles/timeline/tracks.style'
+import { Exercise, Term } from '../../types/schemas/abc'
+import { Track, TrackMap } from '../../types/timeline'
 import { TrackItem } from './TrackItem'
 
 export const Tracks = ({

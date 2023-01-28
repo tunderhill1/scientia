@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'react-bootstrap-icons'
 
-import { Term } from '../../constants/types'
 import { groupByProperty } from '../../lib/utilities.service'
 import { Wrapper } from '../../styles/_app.style'
 import { TermSwitchArrow } from '../../styles/timeline/switcher.style'
+import { Term } from '../../types/schemas/abc'
 import { SelectBox } from '../Select'
 
 export const Switcher = ({

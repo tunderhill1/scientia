@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { endpoints } from '../constants/endpoints'
-import { UserDetails } from '../constants/types'
+import { UserDetails } from '../types/schemas/abc'
 import { CSRF_ACCESS_COOKIE } from './axios.context'
 import { useToast } from './toast.context'
 import { useUser } from './user.context'

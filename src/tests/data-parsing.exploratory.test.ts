@@ -1,6 +1,6 @@
 import { plainToInstance } from 'class-transformer'
 
-import { Exercise } from '../constants/types'
+import { Exercise } from '../types/schemas/abc'
 
 test('can parse Date correctly from string', () => {
   const rawExercise = {
